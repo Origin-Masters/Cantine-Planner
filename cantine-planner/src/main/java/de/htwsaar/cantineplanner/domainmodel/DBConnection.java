@@ -1,4 +1,4 @@
-package de.htwsaar.cantineplanner;
+package de.htwsaar.cantineplanner.domainmodel;
 
 import org.jooq.DSLContext;
 import org.jooq.SQLDialect;
@@ -8,12 +8,14 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 
-public class App {
-    public static void main(String[] args) {
-        String dbUrl = "jdbc:sqlite:src/main/resources/database.db"; // Pfad zur SQLite-Datenbank
+public class DBConnection {
+    private DSLContext create;
+    private String dbUrl = "jdbc:sqlite:src/main/resources/database.db"; // Pfad zur SQLite-Datenbank
 
+
+    public DBConnection() {
         try (Connection connection = DriverManager.getConnection(dbUrl)) {
-            DSLContext create = DSL.using(connection, SQLDialect.SQLITE);
+            create = DSL.using(connection, SQLDialect.SQLITE);
 
             // SQL-Abfrage
             String sql = """
@@ -36,4 +38,13 @@ public class App {
             e.printStackTrace();
         }
     }
+
+    public DSLContext getCreate() {
+        return create;
+    }
+
+    // JOOQ Connection
+
+
+
 }
