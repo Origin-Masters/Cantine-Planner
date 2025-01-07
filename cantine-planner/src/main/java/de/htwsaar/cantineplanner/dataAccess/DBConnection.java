@@ -1,4 +1,4 @@
-package de.htwsaar.cantineplanner.domainmodel;
+package de.htwsaar.cantineplanner.dataAccess;
 
 import org.jooq.DSLContext;
 import org.jooq.SQLDialect;

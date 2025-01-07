@@ -1,9 +1,9 @@
 package de.htwsaar.cantineplanner.presentation;
 
-public class CLI {
+public class TUI {
     private final ProgrammHelper myhelper ;
 
-    public CLI() {
+    public TUI() {
             myhelper = new ProgrammHelper();
     }
     public int chooseAction() {
