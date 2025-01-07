@@ -21,9 +21,15 @@ jobs:
           java-version: '21'
           cache: 'maven'
           maven-version: 'latest'
+      - name: Navigate to Project Directory
+        working-directory: cantine-helper
+        run: |
+          echo "Navigated to cantine-helper directory."
       - name: Build with Maven
+        working-directory: cantine-helper
         run: mvn clean install
       - name: Run Tests
+        working-directory: cantine-helper
         run: mvn test
 
   create_tag:
@@ -33,6 +39,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Navigate to Project Directory
+        working-directory: cantine-helper
+        run: |
+          echo "Navigated to cantine-helper directory."
       - name: Create Tag
         run: |
           git config --global user.name "github-actions"
@@ -61,10 +71,16 @@ jobs:
           java-version: '21'
           cache: 'maven'
           maven-version: 'latest'
+      - name: Navigate to Project Directory
+        working-directory: cantine-helper
+        run: |
+          echo "Navigated to cantine-helper directory."
       - name: Build with Maven
+        working-directory: cantine-helper
         run: mvn clean install
       - name: Get Maven Project Version
         id: get_version
+        working-directory: cantine-helper
         run: echo "::set-output name=VERSION::$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)"
       - name: Delete Existing Release
         env:
