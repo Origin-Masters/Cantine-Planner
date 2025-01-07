@@ -27,10 +27,23 @@
         <type>pom</type>
         <scope>import</scope>
       </dependency>
+      <dependency>
+        <groupId>com.google.guava</groupId>
+        <artifactId>guava</artifactId>
+        <version>33.4.0-jre</version>
+      </dependency>
+
     </dependencies>
   </dependencyManagement>
 
   <dependencies>
+    <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <!-- No version is needed here as it's inherited from dependencyManagement -->
+    </dependency>
+
     <!-- jOOQ dependencies -->
     <!-- Database driver (example for PostgreSQL) -->
     <!-- https://mvnrepository.com/artifact/org.jooq/jooq -->

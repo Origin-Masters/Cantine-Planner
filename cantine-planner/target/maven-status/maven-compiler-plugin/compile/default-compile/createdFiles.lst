@@ -1,4 +1,5 @@
-de/htwsaar/cantineplanner/DBConnection.class
-de/htwsaar/cantineplanner/App.class
-de/htwsaar/cantineplanner/Controlling.class
-de/htwsaar/cantineplanner/CLI.class
+de/htwsaar/cantineplanner/presentation/ProgrammHelper.class
+de/htwsaar/cantineplanner/businessLogic/Controlling.class
+de/htwsaar/cantineplanner/presentation/TUI.class
+de/htwsaar/cantineplanner/dataAccess/DBConnection.class
+de/htwsaar/cantineplanner/presentation/App.class

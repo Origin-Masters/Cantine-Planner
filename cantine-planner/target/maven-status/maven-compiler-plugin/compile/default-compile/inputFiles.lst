@@ -1,4 +1,5 @@
-/Users/michalroziel/Documents/HTW SAAR/Semester 3/prog3/XuChVaMi/cantine-planner/src/main/java/de/htwsaar/cantineplanner/App.java
-/Users/michalroziel/Documents/HTW SAAR/Semester 3/prog3/XuChVaMi/cantine-planner/src/main/java/de/htwsaar/cantineplanner/CLI.java
-/Users/michalroziel/Documents/HTW SAAR/Semester 3/prog3/XuChVaMi/cantine-planner/src/main/java/de/htwsaar/cantineplanner/Controlling.java
-/Users/michalroziel/Documents/HTW SAAR/Semester 3/prog3/XuChVaMi/cantine-planner/src/main/java/de/htwsaar/cantineplanner/DBConnection.java
+/Users/michalroziel/Documents/HTW SAAR/Semester 3/prog3/Cantine-Planner/cantine-planner/src/main/java/de/htwsaar/cantineplanner/businessLogic/Controlling.java
+/Users/michalroziel/Documents/HTW SAAR/Semester 3/prog3/Cantine-Planner/cantine-planner/src/main/java/de/htwsaar/cantineplanner/dataAccess/DBConnection.java
+/Users/michalroziel/Documents/HTW SAAR/Semester 3/prog3/Cantine-Planner/cantine-planner/src/main/java/de/htwsaar/cantineplanner/presentation/App.java
+/Users/michalroziel/Documents/HTW SAAR/Semester 3/prog3/Cantine-Planner/cantine-planner/src/main/java/de/htwsaar/cantineplanner/presentation/ProgrammHelper.java
+/Users/michalroziel/Documents/HTW SAAR/Semester 3/prog3/Cantine-Planner/cantine-planner/src/main/java/de/htwsaar/cantineplanner/presentation/TUI.java
