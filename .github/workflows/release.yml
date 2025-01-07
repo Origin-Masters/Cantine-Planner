@@ -91,6 +91,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          JAR_FILE=$(ls target/*.jar)
+          JAR_FILE=$(ls cantine-planner/target/*.jar)
           VERSION=${{ steps.get_version.outputs.VERSION }}
           gh release create submission $JAR_FILE --title "$VERSION" --notes "Release $VERSION"
