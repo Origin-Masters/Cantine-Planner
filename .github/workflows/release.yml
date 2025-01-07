@@ -1,0 +1,80 @@
+name: Release
+on:
+  push:
+    branches:
+      - master
+
+permissions:
+  contents: write # for checkout
+
+jobs:
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Set up JDK 21
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+          cache: 'maven'
+          maven-version: 'latest'
+      - name: Build with Maven
+        run: mvn clean install
+      - name: Run Tests
+        run: mvn test
+
+  create_tag:
+    name: Create Tag
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Create Tag
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          if git rev-parse submission >/dev/null 2>&1; then
+            git tag -d submission
+            git push origin :refs/tags/submission
+          fi
+          git tag submission
+          git push --force --tags --prune origin
+
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    needs: create_tag
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Set up JDK 21
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+          cache: 'maven'
+          maven-version: 'latest'
+      - name: Build with Maven
+        run: mvn clean install
+      - name: Get Maven Project Version
+        id: get_version
+        run: echo "::set-output name=VERSION::$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)"
+      - name: Delete Existing Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release delete submission -y || true
+      - name: Create GitHub Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          JAR_FILE=$(ls target/*.jar)
+          VERSION=${{ steps.get_version.outputs.VERSION }}
+          gh release create submission $JAR_FILE --title "$VERSION" --notes "Release $VERSION"
