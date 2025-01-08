@@ -13,5 +13,4 @@ public class TUI {
         System.out.println(" 2.Open statistics");
         return myhelper.promptNumber("");
     }
-
 }
