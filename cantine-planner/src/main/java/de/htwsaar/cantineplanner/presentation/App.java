@@ -1,10 +1,10 @@
 package de.htwsaar.cantineplanner.presentation;
 
-import de.htwsaar.cantineplanner.businessLogic.Controlling;
+import de.htwsaar.cantineplanner.businessLogic.Controller;
 
 public class App {
     public static void main(String[] args) {
-        Controlling controlling = new Controlling();
-        controlling.start();
+        Controller controller = new Controller();
+        controller.start();
     }
 }
