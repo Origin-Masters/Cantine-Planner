@@ -5,20 +5,18 @@ import java.util.ArrayList;
 public class Meal {
 
     private String name;
-    private String description;
+    private String allergy;
     private double price;
     private int mealId;
     private int calories;
+    private int meat;
 
     private ArrayList<String> ingredients ;
 
-    public Meal(String name, String description, double price, int mealId, int calories) {
+    public Meal(String name, String allergy, double price, int mealId, int calories, int meat) {
 
         if (name == null || name.isEmpty()) {
             throw new IllegalArgumentException("The meal name cannot be empty !");
-        }
-        if (description == null || description.isEmpty()) {
-            throw new IllegalArgumentException("The meal description cannot be empty !");
         }
         if (price < 0) {
             throw new IllegalArgumentException("The meal price cannot be negative !");
@@ -32,7 +30,7 @@ public class Meal {
         }
 
         this.name = name;
-        this.description = description;
+        this.allergy = allergy;
         this.price = price;
         this.mealId = mealId;
         this.calories = calories;
@@ -57,12 +55,12 @@ public class Meal {
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
+    public String getAllergy() {
+        return allergy;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setAllergy(String allergy) {
+        this.allergy = allergy;
     }
 
     public double getPrice() {
