@@ -1,16 +1,19 @@
 package de.htwsaar.cantineplanner.presentation;
 
+import com.googlecode.lanterna.gui2.*;
+import com.googlecode.lanterna.screen.Screen;
+import com.googlecode.lanterna.screen.TerminalScreen;
+import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
+import com.googlecode.lanterna.terminal.Terminal;
+import com.googlecode.lanterna.terminal.swing.SwingTerminalFrame;
+
+import java.io.IOException;
+
 public class TUI {
-    private final ProgrammHelper myhelper ;
 
     public TUI() {
-            myhelper = new ProgrammHelper();
     }
-    public int chooseAction() {
-        System.out.println("===== Action MENU =====");
-        System.out.println(" Choose: "  );
-        System.out.println(" 1.Add new dish");
-        System.out.println(" 2.Open statistics");
-        return myhelper.promptNumber("");
+
+    public void test() {
     }
 }

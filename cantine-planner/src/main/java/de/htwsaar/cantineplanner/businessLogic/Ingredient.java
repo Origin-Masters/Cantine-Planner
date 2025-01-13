@@ -8,7 +8,7 @@ public class Ingredient {
     private int protein;
     private int fat;
 
-    public Ingredient(String name, int ingredientId, int carbs, int protein, int fat) {
+    public Ingredient(String name, int ingredientId, int carbs, int protein, int fat,int grams) {
         this.name = name;
         this.ingredientId = ingredientId;
         this.carbs = carbs;

@@ -14,9 +14,7 @@ public class Meal {
 
     private ArrayList<Ingredient> ingredients;
 
-
-
-    public Meal(String name, String allergy, double price, int mealId, int calories, int meat, ArrayList<Ingredient> givenIngredients) {
+    public Meal(String name, String allergy, double price, int mealId, int calories, int meat) {
 
         if (name == null || name.isEmpty()) {
             throw new IllegalArgumentException("The meal name cannot be empty !");
@@ -32,11 +30,6 @@ public class Meal {
             throw new IllegalArgumentException("The meal calorie count cannot be zero or less than zero !");
         }
 
-        if ( givenIngredients == null){
-            throw new IllegalArgumentException("A meal must have Ingredients ! ");
-        }
-
-        this.ingredients = givenIngredients;
         this.name = name;
         this.allergy = allergy;
         this.price = price;
@@ -45,13 +38,6 @@ public class Meal {
     }
 
 
-    public ArrayList<Ingredient> getIngredients() {
-        return ingredients;
-    }
-
-    public void setIngredients(ArrayList<Ingredient> ingredients) {
-        this.ingredients = ingredients;
-    }
 
     public int getCalories() {
         return calories;

@@ -9,7 +9,7 @@ public class Controller {
         TUI = new TUI();
     }
     public void start(){
-        TUI.chooseAction();
+        TUI.test();
     }
 
 
