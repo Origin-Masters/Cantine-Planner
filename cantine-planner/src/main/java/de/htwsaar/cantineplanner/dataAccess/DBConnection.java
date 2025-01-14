@@ -14,37 +14,20 @@ public class DBConnection {
 
 
     public DBConnection() {
-        try (Connection connection = DriverManager.getConnection(dbUrl)) {
-            create = DSL.using(connection, SQLDialect.SQLITE);
+        try {
+            System.out.println("Starte Anwendung...");
+            DBService dbService = new DBService();
 
-            // SQL-Abfrage
-            String sql = """
-                SELECT dishes.name, ratings.rating, ratings.comment
-                FROM ratings
-                JOIN dishes ON ratings.dish_id = dishes.dish_id
-                WHERE dishes.featured = 1;
-            """;
-
-            ResultSet result = connection.createStatement().executeQuery(sql);
-
-            // Ergebnisse ausgeben
-            while (result.next()) {
-                System.out.println("Gericht: " + result.getString("name"));
-                System.out.println("Bewertung: " + result.getInt("rating"));
-                System.out.println("Kommentar: " + result.getString("comment"));
-                System.out.println("---------");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+            // Beispiel-Query ausführen
+            dbService.fetchAllMeals();
+        } finally {
+            // Pool sauber schließen
+            HikariCPDataSource.closeDataSource();
+            System.out.println("Datenbankverbindung geschlossen.");
         }
+
+        // JOOQ Connection
+
+
     }
-
-    public DSLContext getCreate() {
-        return create;
-    }
-
-    // JOOQ Connection
-
-
-
 }
