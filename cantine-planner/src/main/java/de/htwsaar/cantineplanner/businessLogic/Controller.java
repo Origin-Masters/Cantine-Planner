@@ -1,18 +1,36 @@
 package de.htwsaar.cantineplanner.businessLogic;
 
+import de.htwsaar.cantineplanner.dataAccess.DBConnection;
 import de.htwsaar.cantineplanner.presentation.TUI;
 
 public class Controller {
-    private TUI TUI;
+    private TUI tui;
+    private DBConnection dbConnection;
 
     public Controller() {
-        TUI = new TUI();
+        this.tui = new TUI();
+        this.dbConnection = new DBConnection();
+
     }
     public void start(){
-        if (TUI.test() != -1) {
-            System.out.println("Test");
+        int choice = (int) tui.test();
+        switch (choice){
+            case 1:
+                dbConnection.allMeals();
+                break;
+            case 2:
+                dbConnection.createMeal(tui.createMeal());
+                break;
+
+            case 3 :
+
+            default:
+                System.out.println("Invalid Input");
         }
     }
+
+
+
 
 
 }
