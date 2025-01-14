@@ -10,10 +10,15 @@ import com.googlecode.lanterna.terminal.swing.SwingTerminalFrame;
 import java.io.IOException;
 
 public class TUI {
-
+    private ProgrammHelper programmHelper;
     public TUI() {
+        programmHelper = new ProgrammHelper();
     }
 
-    public void test() {
+    public int test() {
+        System.out.println("----Test Menü----");
+        System.out.println("1. Alle Gerichte anzeigen");
+        System.out.println("2. Gericht hinzufügen");
+        return programmHelper.promptNumber("> ");
     }
 }

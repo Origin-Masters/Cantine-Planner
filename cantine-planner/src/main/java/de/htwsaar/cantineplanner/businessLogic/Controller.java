@@ -9,7 +9,9 @@ public class Controller {
         TUI = new TUI();
     }
     public void start(){
-        TUI.test();
+        if (TUI.test() != -1) {
+            System.out.println("Test");
+        }
     }
 
 
