@@ -48,4 +48,16 @@ public class DBConnection {
                     System.out.println("---------");
                 });
     }
+
+    public void allAllergies(){
+
+        dsl.selectFrom(DSL.table("meals"))
+                .fetch()
+                .forEach(record -> {
+
+                    System.out.println("Allergie: " + record.get("allergene"));
+
+                });
+
+    }
 }

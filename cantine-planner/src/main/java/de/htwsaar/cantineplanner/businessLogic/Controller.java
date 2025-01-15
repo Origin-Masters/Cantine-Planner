@@ -23,6 +23,7 @@ public class Controller {
                 break;
 
             case 3 :
+                dbConnection.allAllergies();
 
             default:
                 System.out.println("Invalid Input");
