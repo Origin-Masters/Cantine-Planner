@@ -7,6 +7,7 @@ import org.jooq.DSLContext;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
 
+import java.nio.file.Paths;
 import java.sql.Connection;
 
 public class DBConnection {
@@ -15,7 +16,8 @@ public class DBConnection {
 
     public DBConnection() {
         HikariConfig config = new HikariConfig();
-        config.setJdbcUrl("jdbc:sqlite:src/main/resources/database.db");
+        String dbPath = Paths.get(System.getProperty("user.dir"), "database.db").toString();
+        config.setJdbcUrl("jdbc:sqlite:" + dbPath);
         config.setUsername("");
         config.setPassword("");
         config.addDataSourceProperty("cachePrepStmts", "true");

@@ -17,16 +17,6 @@ public class HikariCPDataSource {
         try {
             HikariConfig config = new HikariConfig();
 
-            // Lade die Datenbankdatei über den Klassenpfad
-            URL resource = HikariCPDataSource.class.getClassLoader().getResource("database.db");
-            if (resource == null) {
-                throw new IllegalArgumentException("Datenbankdatei nicht im Klassenpfad gefunden!");
-            }
-
-            // Absoluten Pfad zur Datenbank generieren
-            String dbPath = Paths.get(resource.toURI()).toString();
-            config.setJdbcUrl("jdbc:sqlite:" + dbPath);
-
             // HikariCP-Konfiguration
             config.setMaximumPoolSize(10);
             config.setMinimumIdle(2);
@@ -36,7 +26,6 @@ public class HikariCPDataSource {
 
             // Datenquelle erstellen
             dataSource = new HikariDataSource(config);
-
         } catch (Exception e) {
             throw new RuntimeException("Fehler beim Initialisieren des HikariCP-Pools", e);
         }
