@@ -115,6 +115,37 @@
 
   <build>
     <plugins>
+
+      <plugin>
+        <groupId>org.jooq</groupId>
+        <artifactId>jooq-codegen-maven</artifactId>
+        <executions>
+          <execution>
+            <id>jooq-codegen</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <jdbc>
+            <driver>org.sqlite.JDBC</driver>
+            <url>jdbc:sqlite:${project.basedir}/database/database.sqlite</url>
+          </jdbc>
+          <generator>
+            <database>
+              <name>org.jooq.meta.sqlite.SQLiteDatabase</name>
+            </database>
+            <target>
+              <packageName>de.hase.hasev2.database</packageName>
+              <directory>src/main/java</directory>
+            </target>
+          </generator>
+        </configuration>
+
+
+      </plugin>
       <!-- Enforce minimum Maven version -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
