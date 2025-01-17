@@ -1,21 +1,21 @@
-C:\Users\stehl\OneDrive\Desktop\Cantine-Planner\cantine-planner\src\main\java\de\htwsaar\cantineplanner\businessLogic\Allergen.java
-C:\Users\stehl\OneDrive\Desktop\Cantine-Planner\cantine-planner\src\main\java\de\htwsaar\cantineplanner\businessLogic\Controller.java
-C:\Users\stehl\OneDrive\Desktop\Cantine-Planner\cantine-planner\src\main\java\de\htwsaar\cantineplanner\businessLogic\Diet.java
-C:\Users\stehl\OneDrive\Desktop\Cantine-Planner\cantine-planner\src\main\java\de\htwsaar\cantineplanner\businessLogic\Ingredient.java
-C:\Users\stehl\OneDrive\Desktop\Cantine-Planner\cantine-planner\src\main\java\de\htwsaar\cantineplanner\businessLogic\Meal.java
-C:\Users\stehl\OneDrive\Desktop\Cantine-Planner\cantine-planner\src\main\java\de\htwsaar\cantineplanner\businessLogic\User.java
-C:\Users\stehl\OneDrive\Desktop\Cantine-Planner\cantine-planner\src\main\java\de\htwsaar\cantineplanner\codegen\DefaultCatalog.java
-C:\Users\stehl\OneDrive\Desktop\Cantine-Planner\cantine-planner\src\main\java\de\htwsaar\cantineplanner\codegen\DefaultSchema.java
-C:\Users\stehl\OneDrive\Desktop\Cantine-Planner\cantine-planner\src\main\java\de\htwsaar\cantineplanner\codegen\Keys.java
-C:\Users\stehl\OneDrive\Desktop\Cantine-Planner\cantine-planner\src\main\java\de\htwsaar\cantineplanner\codegen\Tables.java
-C:\Users\stehl\OneDrive\Desktop\Cantine-Planner\cantine-planner\src\main\java\de\htwsaar\cantineplanner\codegen\tables\Meals.java
-C:\Users\stehl\OneDrive\Desktop\Cantine-Planner\cantine-planner\src\main\java\de\htwsaar\cantineplanner\codegen\tables\records\MealsRecord.java
-C:\Users\stehl\OneDrive\Desktop\Cantine-Planner\cantine-planner\src\main\java\de\htwsaar\cantineplanner\codegen\tables\records\ReviewRecord.java
-C:\Users\stehl\OneDrive\Desktop\Cantine-Planner\cantine-planner\src\main\java\de\htwsaar\cantineplanner\codegen\tables\records\UsersRecord.java
-C:\Users\stehl\OneDrive\Desktop\Cantine-Planner\cantine-planner\src\main\java\de\htwsaar\cantineplanner\codegen\tables\Review.java
-C:\Users\stehl\OneDrive\Desktop\Cantine-Planner\cantine-planner\src\main\java\de\htwsaar\cantineplanner\codegen\tables\Users.java
-C:\Users\stehl\OneDrive\Desktop\Cantine-Planner\cantine-planner\src\main\java\de\htwsaar\cantineplanner\dataAccess\DBConnection.java
-C:\Users\stehl\OneDrive\Desktop\Cantine-Planner\cantine-planner\src\main\java\de\htwsaar\cantineplanner\dataAccess\HikariCPDataSource.java
-C:\Users\stehl\OneDrive\Desktop\Cantine-Planner\cantine-planner\src\main\java\de\htwsaar\cantineplanner\presentation\App.java
-C:\Users\stehl\OneDrive\Desktop\Cantine-Planner\cantine-planner\src\main\java\de\htwsaar\cantineplanner\presentation\ProgrammHelper.java
-C:\Users\stehl\OneDrive\Desktop\Cantine-Planner\cantine-planner\src\main\java\de\htwsaar\cantineplanner\presentation\TUI.java
+/Users/michalroziel/Documents/HTW SAAR/Semester 3/prog3/Cantine-Planner/cantine-planner/src/main/java/de/htwsaar/cantineplanner/businessLogic/Allergen.java
+/Users/michalroziel/Documents/HTW SAAR/Semester 3/prog3/Cantine-Planner/cantine-planner/src/main/java/de/htwsaar/cantineplanner/businessLogic/Controller.java
+/Users/michalroziel/Documents/HTW SAAR/Semester 3/prog3/Cantine-Planner/cantine-planner/src/main/java/de/htwsaar/cantineplanner/businessLogic/Diet.java
+/Users/michalroziel/Documents/HTW SAAR/Semester 3/prog3/Cantine-Planner/cantine-planner/src/main/java/de/htwsaar/cantineplanner/businessLogic/Ingredient.java
+/Users/michalroziel/Documents/HTW SAAR/Semester 3/prog3/Cantine-Planner/cantine-planner/src/main/java/de/htwsaar/cantineplanner/businessLogic/Meal.java
+/Users/michalroziel/Documents/HTW SAAR/Semester 3/prog3/Cantine-Planner/cantine-planner/src/main/java/de/htwsaar/cantineplanner/businessLogic/User.java
+/Users/michalroziel/Documents/HTW SAAR/Semester 3/prog3/Cantine-Planner/cantine-planner/src/main/java/de/htwsaar/cantineplanner/codegen/DefaultCatalog.java
+/Users/michalroziel/Documents/HTW SAAR/Semester 3/prog3/Cantine-Planner/cantine-planner/src/main/java/de/htwsaar/cantineplanner/codegen/DefaultSchema.java
+/Users/michalroziel/Documents/HTW SAAR/Semester 3/prog3/Cantine-Planner/cantine-planner/src/main/java/de/htwsaar/cantineplanner/codegen/Keys.java
+/Users/michalroziel/Documents/HTW SAAR/Semester 3/prog3/Cantine-Planner/cantine-planner/src/main/java/de/htwsaar/cantineplanner/codegen/Tables.java
+/Users/michalroziel/Documents/HTW SAAR/Semester 3/prog3/Cantine-Planner/cantine-planner/src/main/java/de/htwsaar/cantineplanner/codegen/tables/Meals.java
+/Users/michalroziel/Documents/HTW SAAR/Semester 3/prog3/Cantine-Planner/cantine-planner/src/main/java/de/htwsaar/cantineplanner/codegen/tables/Review.java
+/Users/michalroziel/Documents/HTW SAAR/Semester 3/prog3/Cantine-Planner/cantine-planner/src/main/java/de/htwsaar/cantineplanner/codegen/tables/Users.java
+/Users/michalroziel/Documents/HTW SAAR/Semester 3/prog3/Cantine-Planner/cantine-planner/src/main/java/de/htwsaar/cantineplanner/codegen/tables/records/MealsRecord.java
+/Users/michalroziel/Documents/HTW SAAR/Semester 3/prog3/Cantine-Planner/cantine-planner/src/main/java/de/htwsaar/cantineplanner/codegen/tables/records/ReviewRecord.java
+/Users/michalroziel/Documents/HTW SAAR/Semester 3/prog3/Cantine-Planner/cantine-planner/src/main/java/de/htwsaar/cantineplanner/codegen/tables/records/UsersRecord.java
+/Users/michalroziel/Documents/HTW SAAR/Semester 3/prog3/Cantine-Planner/cantine-planner/src/main/java/de/htwsaar/cantineplanner/dataAccess/DBConnection.java
+/Users/michalroziel/Documents/HTW SAAR/Semester 3/prog3/Cantine-Planner/cantine-planner/src/main/java/de/htwsaar/cantineplanner/dataAccess/HikariCPDataSource.java
+/Users/michalroziel/Documents/HTW SAAR/Semester 3/prog3/Cantine-Planner/cantine-planner/src/main/java/de/htwsaar/cantineplanner/presentation/App.java
+/Users/michalroziel/Documents/HTW SAAR/Semester 3/prog3/Cantine-Planner/cantine-planner/src/main/java/de/htwsaar/cantineplanner/presentation/ProgrammHelper.java
+/Users/michalroziel/Documents/HTW SAAR/Semester 3/prog3/Cantine-Planner/cantine-planner/src/main/java/de/htwsaar/cantineplanner/presentation/TUI.java
