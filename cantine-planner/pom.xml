@@ -80,12 +80,12 @@
     <dependency>
       <groupId>org.jooq</groupId>
       <artifactId>jooq-meta</artifactId>
-      <version>3.18.5</version>
+      <version>3.19.18</version>
     </dependency>
     <dependency>
       <groupId>org.jooq</groupId>
       <artifactId>jooq-codegen</artifactId>
-      <version>3.18.5</version>
+      <version>3.19.18</version>
     </dependency>
 
     <!-- SLF4J für Logging (optional) -->
@@ -131,14 +131,14 @@
         <configuration>
           <jdbc>
             <driver>org.sqlite.JDBC</driver>
-            <url>jdbc:sqlite:${project.basedir}/database/database.sqlite</url>
+            <url>jdbc:sqlite:${project.basedir}/database/database.db</url>
           </jdbc>
           <generator>
             <database>
               <name>org.jooq.meta.sqlite.SQLiteDatabase</name>
             </database>
             <target>
-              <packageName>de.hase.hasev2.database</packageName>
+              <packageName>de.htwsaar.cantineplanner.codegen</packageName>
               <directory>src/main/java</directory>
             </target>
           </generator>
