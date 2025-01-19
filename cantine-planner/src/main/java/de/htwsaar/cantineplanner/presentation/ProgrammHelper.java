@@ -1,4 +1,5 @@
 package de.htwsaar.cantineplanner.presentation;
+
 import java.util.InputMismatchException;
 import java.util.Objects;
 import java.util.Scanner;

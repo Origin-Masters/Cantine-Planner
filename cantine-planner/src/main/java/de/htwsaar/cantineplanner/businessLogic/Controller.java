@@ -1,6 +1,5 @@
 package de.htwsaar.cantineplanner.businessLogic;
 
-import com.google.j2objc.annotations.Weak;
 import de.htwsaar.cantineplanner.dataAccess.DBConnection;
 import de.htwsaar.cantineplanner.presentation.TUI;
 

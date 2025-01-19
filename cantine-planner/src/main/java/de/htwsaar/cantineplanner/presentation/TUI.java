@@ -6,6 +6,7 @@ import de.htwsaar.cantineplanner.codegen.tables.records.MealsRecord;
 
 public class TUI {
     private ProgrammHelper programmHelper;
+
     public TUI() {
         programmHelper = new ProgrammHelper();
     }
@@ -21,6 +22,7 @@ public class TUI {
         System.out.println("7. Beenden");
         return programmHelper.promptNumber("");
     }
+
     public MealsRecord createMeal() {
         MealsRecord mealRecord = new MealsRecord();
         System.out.println("----Gericht erstellen----");
@@ -32,12 +34,15 @@ public class TUI {
         mealRecord.setMeat((int) programmHelper.promptNumber("Fleisch"));
         return mealRecord;
     }
+
     public int deleteMeal() {
         return (int) programmHelper.promptNumber("MealId des zu löschenden Gerichts eingeben:");
     }
+
     public String searchMeal() {
         return programmHelper.promptString("Name des zu suchenden Gerichts eingeben:");
     }
+
     public int searchMealById() {
         return (int) programmHelper.promptNumber("MealId des zu suchenden Gerichts eingeben:");
     }
