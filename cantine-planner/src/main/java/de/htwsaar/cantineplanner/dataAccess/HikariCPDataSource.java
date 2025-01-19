@@ -13,7 +13,9 @@ public class HikariCPDataSource {
 
     private static HikariDataSource dataSource;
 
-    // Static initialization block
+    /**
+     * Load the HikariCP configuration from hikari.properties and create the data source pool
+     */
     static {
         try (InputStream input = HikariCPDataSource.class.getClassLoader().getResourceAsStream("hikari.properties")) {
             if (input == null) {
@@ -30,15 +32,25 @@ public class HikariCPDataSource {
         }
     }
 
-    // Private constructor to prevent instantiation
-    private HikariCPDataSource() {}
+    /**
+     * Private constructor to prevent instantiation
+     */
+    private HikariCPDataSource() {
+    }
 
-    // Get connection from the pool
+    /**
+     * Get a connection from the data source
+     *
+     * @return Connection from the data source
+     * @throws SQLException If a database access error occurs
+     */
     public static Connection getConnection() throws SQLException {
         return dataSource.getConnection();
     }
 
-    // Close the data source
+    /**
+     * Close the data source
+     */
     public static void closeDataSource() {
         if (dataSource != null) {
             dataSource.close();
