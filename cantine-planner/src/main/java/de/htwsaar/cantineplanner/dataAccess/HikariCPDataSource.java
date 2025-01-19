@@ -3,43 +3,42 @@ package de.htwsaar.cantineplanner.dataAccess;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
-import java.net.URL;
-import java.nio.file.Paths;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Properties;
 
 public class HikariCPDataSource {
 
     private static HikariDataSource dataSource;
 
-    // Statischer Initialisierungsblock
+    // Static initialization block
     static {
-        try {
-            HikariConfig config = new HikariConfig();
+        try (InputStream input = HikariCPDataSource.class.getClassLoader().getResourceAsStream("hikari.properties")) {
+            if (input == null) {
+                throw new RuntimeException("Unable to find hikari.properties");
+            }
 
-            // HikariCP-Konfiguration
-            config.setMaximumPoolSize(10);
-            config.setMinimumIdle(2);
-            config.setIdleTimeout(600000);
-            config.setMaxLifetime(1800000);
-            config.setConnectionTimeout(30000);
+            Properties properties = new Properties();
+            properties.load(input);
 
-            // Datenquelle erstellen
+            HikariConfig config = new HikariConfig(properties);
             dataSource = new HikariDataSource(config);
-        } catch (Exception e) {
-            throw new RuntimeException("Fehler beim Initialisieren des HikariCP-Pools", e);
+        } catch (IOException e) {
+            throw new RuntimeException("Error loading HikariCP configuration", e);
         }
     }
 
-    // Privater Konstruktor, um Instanziierung zu verhindern
+    // Private constructor to prevent instantiation
     private HikariCPDataSource() {}
 
-    // Verbindung aus dem Pool abrufen
+    // Get connection from the pool
     public static Connection getConnection() throws SQLException {
         return dataSource.getConnection();
     }
 
-    // Datenquelle schließen
+    // Close the data source
     public static void closeDataSource() {
         if (dataSource != null) {
             dataSource.close();

@@ -132,7 +132,7 @@
         <configuration>
           <jdbc>
             <driver>org.sqlite.JDBC</driver>
-            <url>jdbc:sqlite:${project.basedir}/database/database.db</url>
+            <url>jdbc:sqlite:${project.basedir}/src/main/resources/database.db</url>
           </jdbc>
           <generator>
             <database>

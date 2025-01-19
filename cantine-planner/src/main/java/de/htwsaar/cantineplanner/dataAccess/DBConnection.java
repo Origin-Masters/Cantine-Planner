@@ -2,64 +2,64 @@ package de.htwsaar.cantineplanner.dataAccess;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import de.htwsaar.cantineplanner.businessLogic.Meal;
 import org.jooq.DSLContext;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
+import de.htwsaar.cantineplanner.codegen.tables.records.MealsRecord;
+import de.htwsaar.cantineplanner.codegen.tables.Meals;
 
-import java.nio.file.Paths;
 import java.sql.Connection;
+import java.net.URL;
+import java.nio.file.Paths;
 
 public class DBConnection {
-    private HikariDataSource dataSource;
-    private DSLContext dsl;
+    private static HikariDataSource dataSource;
+    private static DSLContext dsl;
 
-    public DBConnection() {
-        HikariConfig config = new HikariConfig();
-        String dbPath = Paths.get(System.getProperty("user.dir"), "database.db").toString();
-        config.setJdbcUrl("jdbc:sqlite:" + dbPath);
-        config.setUsername("");
-        config.setPassword("");
-        config.addDataSourceProperty("cachePrepStmts", "true");
-        config.addDataSourceProperty("prepStmtCacheSize", "250");
-        config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+    static {
+        try {
+            URL resource = DBConnection.class.getClassLoader().getResource("database.db");
+            if (resource == null) {
+                throw new IllegalStateException("Database file not found!");
+            }
+            String dbPath = Paths.get(resource.toURI()).toString();
 
-        this.dataSource = new HikariDataSource(config);
-        try (Connection connection = dataSource.getConnection()) {
-            this.dsl = DSL.using(connection, SQLDialect.SQLITE);
+            HikariConfig config = new HikariConfig("/hikari.properties");
+            config.setJdbcUrl("jdbc:sqlite:" + dbPath);
+            dataSource = new HikariDataSource(config);
+
+            Connection connection = dataSource.getConnection();
+            dsl = DSL.using(connection, SQLDialect.SQLITE);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void createMeal(Meal meal) {
-        dsl.insertInto(DSL.table("meals"),
-                        DSL.field("Name"), DSL.field("Price"), DSL.field("calories"))
-                .values(meal.getName(), meal.getPrice(), meal.getCalories())
+    public void addMeal(MealsRecord meal) {
+        dsl.insertInto(Meals.MEALS)
+                .set(Meals.MEALS.NAME, meal.getName())
+                .set(Meals.MEALS.PRICE, meal.getPrice())
+                .set(Meals.MEALS.CALORIES, meal.getCalories())
                 .execute();
         System.out.println("Meal added: " + meal.getName());
     }
 
     public void allMeals() {
-        dsl.selectFrom(DSL.table("meals"))
+        dsl.selectFrom(Meals.MEALS)
                 .fetch()
                 .forEach(record -> {
-                    System.out.println("Gericht: " + record.get("Name"));
-                    System.out.println("Preis: " + record.get("Price"));
-                    System.out.println("Kalorien: " + record.get("calories"));
+                    System.out.println("Gericht: " + record.get(Meals.MEALS.NAME));
+                    System.out.println("Preis: " + record.get(Meals.MEALS.PRICE));
+                    System.out.println("Kalorien: " + record.get(Meals.MEALS.CALORIES));
                     System.out.println("---------");
                 });
     }
 
-    public void allAllergies(){
-
-        dsl.selectFrom(DSL.table("meals"))
+    public void allAllergies() {
+        dsl.selectFrom(Meals.MEALS)
                 .fetch()
                 .forEach(record -> {
-
-                    System.out.println("Allergie: " + record.get("allergene"));
-
+                    System.out.println("Allergie: " + record.get(Meals.MEALS.ALLERGY));
                 });
-
     }
 }

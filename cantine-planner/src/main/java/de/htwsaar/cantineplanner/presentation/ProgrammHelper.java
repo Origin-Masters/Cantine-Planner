@@ -11,7 +11,6 @@ public class ProgrammHelper {
             if (prompt != "") {
                 System.out.println(prompt + ":");
             }
-            System.out.print("> ");
             int number = scanner.nextInt();
             System.out.println("STDIN: " + number);
             return number;
@@ -28,7 +27,6 @@ public class ProgrammHelper {
             if (prompt != "") {
                 System.out.println(prompt + ":");
             }
-            System.out.print("> ");
             String string = scanner.nextLine();
             System.out.println("STDIN: " + string);
             return string;

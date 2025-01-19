@@ -1,14 +1,8 @@
 package de.htwsaar.cantineplanner.presentation;
 
-import com.googlecode.lanterna.gui2.*;
-import com.googlecode.lanterna.screen.Screen;
-import com.googlecode.lanterna.screen.TerminalScreen;
-import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
-import com.googlecode.lanterna.terminal.Terminal;
-import com.googlecode.lanterna.terminal.swing.SwingTerminalFrame;
-import de.htwsaar.cantineplanner.businessLogic.Meal;
 
-import java.io.IOException;
+import de.htwsaar.cantineplanner.codegen.tables.records.MealsRecord;
+
 
 public class TUI {
     private ProgrammHelper programmHelper;
@@ -22,14 +16,23 @@ public class TUI {
         System.out.println("2. Gericht hinzufügen");
         return programmHelper.promptNumber("> ");
     }
-    public Meal createMeal() {
+    public MealsRecord createMeal() {
         System.out.println("----Gericht erstellen----");
         String name = programmHelper.promptString("Name");
         String allergy = programmHelper.promptString("Allergie");
-        double price = (double) programmHelper.promptNumber("Preis");
+        float price = (float) programmHelper.promptNumber("Preis");
         int mealId = (int) programmHelper.promptNumber("MealId");
         int calories = (int) programmHelper.promptNumber("Kalorien");
         int meat = (int) programmHelper.promptNumber("Fleisch");
-        return new Meal(name, allergy, price, mealId, calories, meat);
+
+        MealsRecord mealRecord = new MealsRecord();
+        mealRecord.setName(name);
+        mealRecord.setAllergy(allergy);
+        mealRecord.setPrice(price);
+        mealRecord.setMealId(mealId);
+        mealRecord.setCalories(calories);
+        mealRecord.setMeat(meat);
+
+        return mealRecord;
     }
 }

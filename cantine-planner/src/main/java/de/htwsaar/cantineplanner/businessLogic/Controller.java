@@ -10,28 +10,23 @@ public class Controller {
     public Controller() {
         this.tui = new TUI();
         this.dbConnection = new DBConnection();
-
     }
-    public void start(){
+
+    public void start() {
         int choice = (int) tui.test();
-        switch (choice){
+        switch (choice) {
             case 1:
                 dbConnection.allMeals();
                 break;
             case 2:
-                dbConnection.createMeal(tui.createMeal());
+                dbConnection.addMeal(tui.createMeal());
                 break;
-
-            case 3 :
+            case 3:
                 dbConnection.allAllergies();
-
+                break;
             default:
                 System.out.println("Invalid Input");
         }
     }
-
-
-
-
 
 }
