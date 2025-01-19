@@ -56,7 +56,8 @@ public class DBConnection {
     }
 
     public void allAllergies() {
-        dsl.selectFrom(Meals.MEALS)
+        dsl.select(Meals.MEALS.ALLERGY)
+                .from(Meals.MEALS)
                 .fetch()
                 .forEach(record -> {
                     System.out.println("Allergie: " + record.get(Meals.MEALS.ALLERGY));
