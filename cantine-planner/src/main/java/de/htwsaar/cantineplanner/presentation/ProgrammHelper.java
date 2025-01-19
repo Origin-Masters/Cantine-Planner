@@ -1,5 +1,6 @@
 package de.htwsaar.cantineplanner.presentation;
 import java.util.InputMismatchException;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class ProgrammHelper {
@@ -8,9 +9,10 @@ public class ProgrammHelper {
 
     public int promptNumber(String prompt) {
         try {
-            if (prompt != "") {
+            if (!Objects.equals(prompt, "")) {
                 System.out.println(prompt + ":");
             }
+            System.out.println("> ");
             int number = scanner.nextInt();
             System.out.println("STDIN: " + number);
             return number;
@@ -24,9 +26,10 @@ public class ProgrammHelper {
 
     public String promptString(String prompt) {
         try {
-            if (prompt != "") {
+            if (!Objects.equals(prompt, "")) {
                 System.out.println(prompt + ":");
             }
+            System.out.println("> ");
             String string = scanner.nextLine();
             System.out.println("STDIN: " + string);
             return string;
@@ -39,7 +42,7 @@ public class ProgrammHelper {
 
     public double promptDouble(String prompt) {
         try {
-            if (prompt != "") {
+            if (!Objects.equals(prompt, "")) {
                 System.out.println(prompt + ":");
             }
             System.out.print("> ");

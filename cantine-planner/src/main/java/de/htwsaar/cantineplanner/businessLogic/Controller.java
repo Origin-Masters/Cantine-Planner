@@ -35,6 +35,15 @@ public class Controller {
                 dbConnection.allAllergies();
                 break;
             case 4:
+                dbConnection.deleteMeal(tui.deleteMeal());
+                break;
+            case 5:
+                dbConnection.searchMeal(tui.searchMeal());
+                break;
+            case 6:
+                dbConnection.mealDetails(tui.searchMealById());
+                break;
+            case 7:
                 running = false;
                 System.out.println("Goodbye!");
                 break;
