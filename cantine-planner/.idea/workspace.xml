@@ -48,6 +48,7 @@
     "Application.Unnamed.executor": "Run",
     "Maven.cantine-planner [org.jooq:jooq-codegen-maven:3.19.18:generate].executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
     "git-widget-placeholder": "<unknown>",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/stehl/OneDrive/Desktop/Cantine-Planner/cantine-planner",
@@ -88,7 +89,8 @@
       <option name="presentableId" value="Default" />
       <updated>1737119676626</updated>
       <workItem from="1737119678436" duration="1768000" />
-      <workItem from="1737382939167" duration="4564000" />
+      <workItem from="1737382939167" duration="4849000" />
+      <workItem from="1737389955099" duration="433000" />
     </task>
     <servers />
   </component>

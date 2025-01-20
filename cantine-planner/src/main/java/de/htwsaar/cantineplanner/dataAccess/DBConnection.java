@@ -249,17 +249,7 @@ public class DBConnection {
 
         try (Connection connection = dataSource.getConnection()) {
 
-            connection.setAutoCommit(false);
 
-            PreparedStatement stmt = connection.prepareStatement(
-                    "INSERT INTO review (meal_id, rating, comment) VALUES (?, ?, ?)"
-            );
-            stmt.setInt(1, givenReview.getMealId());
-            stmt.setInt(2, givenReview.getRating());
-            stmt.setString(3, givenReview.getComment());
-            stmt.executeUpdate();
-            connection.commit();
-           /*
             DSLContext dsl = getDSLContext(connection);
             dsl.insertInto(Review.REVIEW)
                     .set(Review.REVIEW.MEAL_ID, givenReview.getMealId())
@@ -267,7 +257,7 @@ public class DBConnection {
                     .set(Review.REVIEW.COMMENT, givenReview.getComment())
                     .execute();
             System.out.println("Review added for meal with ID " + givenReview.getMealId());
-            */
+
 
 
         } catch (SQLException e) {
