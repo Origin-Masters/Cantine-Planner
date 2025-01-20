@@ -63,11 +63,13 @@ public class Controller {
                 break;
                 // add Review
             case 2:
-                System.out.println("Cumming soon");
+
+                dbConnection.addReview(tui.createReview());
                 break;
                 // delete Review
             case 3:
-                System.out.println("Cumming soon");
+
+                dbConnection.deleteReview(tui.searchReview());
                 break;
                 // Look for Review via meal iD
             case 4:

@@ -1,6 +1,7 @@
 package de.htwsaar.cantineplanner.dataAccess;
 
 import de.htwsaar.cantineplanner.codegen.tables.Review;
+import de.htwsaar.cantineplanner.codegen.tables.records.ReviewRecord;
 import org.jooq.DSLContext;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
@@ -8,6 +9,7 @@ import de.htwsaar.cantineplanner.codegen.tables.records.MealsRecord;
 import de.htwsaar.cantineplanner.codegen.tables.Meals;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class DBConnection {
@@ -63,6 +65,8 @@ public class DBConnection {
                         System.out.println("Gericht: " + record.get(Meals.MEALS.NAME));
                         System.out.println("Preis: " + record.get(Meals.MEALS.PRICE));
                         System.out.println("Kalorien: " + record.get(Meals.MEALS.CALORIES));
+                        System.out.println("Allergene : " + record.get(Meals.MEALS.ALLERGY));
+                        System.out.println("Fleisch: " + record.get(Meals.MEALS.MEAT));
                         System.out.println("---------");
                     });
         } catch (SQLException e) {
@@ -224,6 +228,49 @@ public class DBConnection {
                     });
 
         } catch (RuntimeException | SQLException e ){
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteReview(int ratingId){
+        try (Connection connection = dataSource.getConnection()) {
+            DSLContext dsl = getDSLContext(connection);
+            dsl.deleteFrom(Review.REVIEW)
+                    .where(Review.REVIEW.RATING_ID.eq(ratingId))
+                    .execute();
+            System.out.println("Review with ID " + ratingId + " deleted");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void addReview(ReviewRecord givenReview){
+
+
+        try (Connection connection = dataSource.getConnection()) {
+
+            connection.setAutoCommit(false);
+
+            PreparedStatement stmt = connection.prepareStatement(
+                    "INSERT INTO review (meal_id, rating, comment) VALUES (?, ?, ?)"
+            );
+            stmt.setInt(1, givenReview.getMealId());
+            stmt.setInt(2, givenReview.getRating());
+            stmt.setString(3, givenReview.getComment());
+            stmt.executeUpdate();
+            connection.commit();
+           /*
+            DSLContext dsl = getDSLContext(connection);
+            dsl.insertInto(Review.REVIEW)
+                    .set(Review.REVIEW.MEAL_ID, givenReview.getMealId())
+                    .set(Review.REVIEW.RATING, givenReview.getRating())
+                    .set(Review.REVIEW.COMMENT, givenReview.getComment())
+                    .execute();
+            System.out.println("Review added for meal with ID " + givenReview.getMealId());
+            */
+
+
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }

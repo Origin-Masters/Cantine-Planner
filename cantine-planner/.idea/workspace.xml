@@ -27,12 +27,12 @@
     &quot;assignee&quot;: &quot;sh11n3&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "git@github.com:Origin-Masters/Cantine-Planner.git",
-    "accountId": "ac7420c0-b0ea-43f5-bbec-9b4bc8832792"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;git@github.com:Origin-Masters/Cantine-Planner.git&quot;,
+    &quot;accountId&quot;: &quot;ac7420c0-b0ea-43f5-bbec-9b4bc8832792&quot;
   }
-}]]></component>
+}</component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
   &quot;associatedIndex&quot;: 1
@@ -45,6 +45,7 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Application.App.executor": "Run",
+    "Application.Unnamed.executor": "Run",
     "Maven.cantine-planner [org.jooq:jooq-codegen-maven:3.19.18:generate].executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "<unknown>",
@@ -61,6 +62,15 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RunManager">
+    <configuration name="Unnamed" type="Application" factoryName="Application" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="de.htwsaar.cantineplanner.presentation.App" />
+      <module name="cantine-planner" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -78,7 +88,7 @@
       <option name="presentableId" value="Default" />
       <updated>1737119676626</updated>
       <workItem from="1737119678436" duration="1768000" />
-      <workItem from="1737382939167" duration="1043000" />
+      <workItem from="1737382939167" duration="4564000" />
     </task>
     <servers />
   </component>

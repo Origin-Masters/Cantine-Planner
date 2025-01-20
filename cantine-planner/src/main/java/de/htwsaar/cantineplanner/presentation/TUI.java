@@ -2,6 +2,7 @@ package de.htwsaar.cantineplanner.presentation;
 
 
 import de.htwsaar.cantineplanner.codegen.tables.records.MealsRecord;
+import de.htwsaar.cantineplanner.codegen.tables.records.ReviewRecord;
 
 
 public class TUI {
@@ -77,12 +78,31 @@ public class TUI {
     }
 
     /**
+     * Method to create a review
+     */
+    public ReviewRecord createReview() {
+        ReviewRecord reviewRecord = new ReviewRecord();
+        System.out.println("----Review erstellen----");
+
+        reviewRecord.setMealId(programmHelper.promptNumber("MealId"));
+        reviewRecord.setRating(programmHelper.promptNumber("Bewertung"));
+        reviewRecord.setComment(programmHelper.promptString("Kommentar"));
+
+        return  reviewRecord;
+    }
+
+    /**
      * Method to delete a meal
      *
      * @return MealId of the meal to be deleted
      */
     public int deleteMeal() {
         return (int) programmHelper.promptNumber("MealId des zu löschenden Gerichts eingeben:");
+    }
+
+
+    public int searchReview() {
+        return programmHelper.promptNumber("ID des zu suchenden Review eingeben:");
     }
 
     /**
