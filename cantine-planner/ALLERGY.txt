@@ -1,0 +1,16 @@
+ALLERGENE:
+Fisch: F
+Nüsse: N
+Gluten: G
+Milch: M
+Eier: E
+Soja: S
+Sellerie: C
+Senf: U
+Sesam: T
+Lupinen: L
+Erdnüsse: P
+Sulfite: I
+Krebstiere: K
+Weichtiere: W
+Schalenfrüchte: H
