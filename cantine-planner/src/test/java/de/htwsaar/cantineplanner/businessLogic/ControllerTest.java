@@ -16,7 +16,7 @@ public class ControllerTest {
     private TUI tuiMock;
     private DBConnection dbConnectionMock;
 
-    @Before
+    @Before //junit4
     public void setUP() {
         controller = new Controller();
         tuiMock = Mockito.mock(TUI.class);
