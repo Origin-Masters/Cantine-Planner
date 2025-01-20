@@ -27,12 +27,12 @@
     &quot;assignee&quot;: &quot;sh11n3&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/Origin-Masters/Cantine-Planner.git&quot;,
-    &quot;accountId&quot;: &quot;f507d445-db3c-4230-8056-730ea9046eef&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "git@github.com:Origin-Masters/Cantine-Planner.git",
+    "accountId": "ac7420c0-b0ea-43f5-bbec-9b4bc8832792"
   }
-}</component>
+}]]></component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
   &quot;associatedIndex&quot;: 1
@@ -47,6 +47,7 @@
     "Application.App.executor": "Run",
     "Maven.cantine-planner [org.jooq:jooq-codegen-maven:3.19.18:generate].executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "<unknown>",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/stehl/OneDrive/Desktop/Cantine-Planner/cantine-planner",
     "node.js.detected.package.eslint": "true",
@@ -63,8 +64,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-28b599e66164-intellij.indexing.shared.core-IU-242.23339.11" />
-        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-IU-242.23339.11" />
+        <option value="bundled-jdk-9823dce3aa75-fdfe4dae3a2d-intellij.indexing.shared.core-IU-243.21565.193" />
+        <option value="bundled-js-predefined-d6986cc7102b-e768b9ed790e-JavaScript-IU-243.21565.193" />
       </set>
     </attachedChunks>
   </component>
@@ -77,6 +78,7 @@
       <option name="presentableId" value="Default" />
       <updated>1737119676626</updated>
       <workItem from="1737119678436" duration="1768000" />
+      <workItem from="1737382939167" duration="1043000" />
     </task>
     <servers />
   </component>

@@ -75,7 +75,7 @@ public class Controller {
                 break;
                 // Show All Reviews per Meal Name
             case 5:
-                System.out.println("Cumming soon");
+                dbConnection.reviewsByMealName(tui.searchMeal());
                 break;
                 // show main menu
             case 6:
