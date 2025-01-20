@@ -125,5 +125,13 @@ public class Controller {
                 System.out.println("Invalid Input");
         }
     }
+
+    public int getCurrentMenu() {
+        return currentMenu;
+    }
+
+    public boolean isRunning() {
+        return running;
+    }
 }
 
