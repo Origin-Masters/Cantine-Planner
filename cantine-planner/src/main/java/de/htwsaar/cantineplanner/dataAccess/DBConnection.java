@@ -10,23 +10,19 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 public class DBConnection {
-    /**
-     * Get DSLContext
-     *
-     * @param connection Connection to the database
-     * @return
-     */
+
+    private HikariCPDataSource dataSource;
+
+    public DBConnection() {
+        this.dataSource = new HikariCPDataSource();
+    }
+
     private DSLContext getDSLContext(Connection connection) {
         return DSL.using(connection, SQLDialect.SQLITE);
     }
 
-    /**
-     * Add a meal for the database
-     *
-     * @param meal Meal to add
-     */
     public void addMeal(MealsRecord meal) {
-        try (Connection connection = HikariCPDataSource.getConnection()) {
+        try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
             dsl.insertInto(Meals.MEALS)
                     .set(Meals.MEALS.NAME, meal.getName())
@@ -40,11 +36,8 @@ public class DBConnection {
         }
     }
 
-    /**
-     * Show all meals in the database
-     */
     public void allMeals() {
-        try (Connection connection = HikariCPDataSource.getConnection()) {
+        try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
             dsl.selectFrom(Meals.MEALS)
                     .fetch()
@@ -59,11 +52,8 @@ public class DBConnection {
         }
     }
 
-    /**
-     * Shows all allergies of each meal in the database
-     */
     public void allAllergies() {
-        try (Connection connection = HikariCPDataSource.getConnection()) {
+        try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
             dsl.select(Meals.MEALS.NAME, Meals.MEALS.ALLERGY)
                     .from(Meals.MEALS)
@@ -78,13 +68,8 @@ public class DBConnection {
         }
     }
 
-    /**
-     * Delete a meal from the database
-     *
-     * @param mealId ID of the meal to delete
-     */
     public void deleteMeal(int mealId) {
-        try (Connection connection = HikariCPDataSource.getConnection()) {
+        try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
             dsl.deleteFrom(Meals.MEALS)
                     .where(Meals.MEALS.MEAL_ID.eq(mealId))
@@ -95,13 +80,8 @@ public class DBConnection {
         }
     }
 
-    /**
-     * Search for a meal by name
-     *
-     * @param name Name of the meal to search for
-     */
     public void searchMeal(String name) {
-        try (Connection connection = HikariCPDataSource.getConnection()) {
+        try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
             dsl.selectFrom(Meals.MEALS)
                     .where(Meals.MEALS.NAME.eq(name))
@@ -117,13 +97,8 @@ public class DBConnection {
         }
     }
 
-    /**
-     * Show details of a meal by ID
-     *
-     * @param mealId ID of the meal to show details of
-     */
     public void mealDetails(int mealId) {
-        try (Connection connection = HikariCPDataSource.getConnection()) {
+        try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
             dsl.selectFrom(Meals.MEALS)
                     .where(Meals.MEALS.MEAL_ID.eq(mealId))
