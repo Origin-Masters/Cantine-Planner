@@ -53,10 +53,10 @@ public class TUI {
         System.out.println("1. Alle Reviews anzeigen");
         System.out.println("2. Review hinzufügen");
         System.out.println("3. Review löschen");
-        System.out.println("5. Review nach ID suchen");
-        System.out.println("6. Alle Reviews eines Gerichts anzeigen");
-        System.out.println("7. Main Menü");
-        System.out.println("8. Beenden");
+        System.out.println("4. Review nach Meal iD suchen");
+        System.out.println("5. Alle Reviews eines Gerichts anzeigen");
+        System.out.println("6. Main Menü");
+        System.out.println("7. Beenden");
         return programmHelper.promptNumber("");
     }
 
@@ -68,7 +68,6 @@ public class TUI {
     public MealsRecord createMeal() {
         MealsRecord mealRecord = new MealsRecord();
         System.out.println("----Gericht erstellen----");
-        mealRecord.setMealId((int) programmHelper.promptNumber("MealId"));
         mealRecord.setName(programmHelper.promptString("Name"));
         mealRecord.setAllergy(programmHelper.promptString("Allergie"));
         mealRecord.setPrice((float) programmHelper.promptNumber("Preis"));

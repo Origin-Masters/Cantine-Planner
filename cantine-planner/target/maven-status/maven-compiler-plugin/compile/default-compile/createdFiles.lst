@@ -1,6 +1,5 @@
 de/htwsaar/cantineplanner/codegen/tables/Users.class
 de/htwsaar/cantineplanner/codegen/tables/records/ReviewRecord.class
-de/htwsaar/cantineplanner/presentation/TUI.class
 de/htwsaar/cantineplanner/codegen/tables/records/MealsRecord.class
 de/htwsaar/cantineplanner/codegen/Tables.class
 de/htwsaar/cantineplanner/dataAccess/DBConnection.class

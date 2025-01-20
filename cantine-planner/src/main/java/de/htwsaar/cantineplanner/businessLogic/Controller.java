@@ -9,6 +9,7 @@ public class Controller {
     private boolean running;
     private int currentMenu;
 
+
     public Controller() {
         this.tui = new TUI();
         this.dbConnection = new DBConnection();
@@ -56,28 +57,32 @@ public class Controller {
     public void reviewMenue(){
         int choice = (int) tui.reviewMenue();
         switch (choice) {
+                // show all Reviews
             case 1:
                dbConnection.allReviews();
                 break;
+                // add Review
             case 2:
                 System.out.println("Cumming soon");
                 break;
+                // delete Review
             case 3:
                 System.out.println("Cumming soon");
                 break;
+                // Look for Review via meal iD
             case 4:
-                System.out.println("Cumming soon");
+               dbConnection.reviewByMealiD(tui.searchMealById());
                 break;
+                // Show All Reviews per Meal Name
             case 5:
                 System.out.println("Cumming soon");
                 break;
+                // show main menu
             case 6:
-                System.out.println("Cumming soon");
-                break;
-            case 7:
                 currentMenu = 0;
                 break;
-            case 8:
+                // quit programme
+            case 7:
                 running = false;
                 System.out.println("Goodbye!");
                 break;

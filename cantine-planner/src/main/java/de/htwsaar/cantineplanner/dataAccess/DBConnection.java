@@ -176,6 +176,33 @@ public class DBConnection {
         }
     }
 
+    public void reviewByMealiD(int giveniD ){
+
+        try ( Connection connection  = dataSource.getConnection()){
+
+            DSLContext dsl = getDSLContext(connection);
+            dsl.select()
+                    .from(Review.REVIEW)
+                    .join(Meals.MEALS)
+                    .on(Review.REVIEW.MEAL_ID.eq(Meals.MEALS.MEAL_ID))
+                    .where(Meals.MEALS.MEAL_ID.eq(giveniD))
+                    .fetch()
+                    .forEach(record -> {
+
+                        System.out.println("Rating iD :" + record.get(Review.REVIEW.RATING_ID) );
+                        System.out.println("Meal ID : " + record.get(Review.REVIEW.MEAL_ID));
+                        System.out.println("Meal Name :" + record.get(Meals.MEALS.NAME));
+                        System.out.println("Rating : " + record.get(Review.REVIEW.RATING));
+                        System.out.println("Comment : " + record.get(Review.REVIEW.COMMENT));
+                        System.out.println("Date created : " + record.get(Review.REVIEW.CREATED_AT));
+                        System.out.println("---------");
+                    });
+
+        } catch (RuntimeException | SQLException e ){
+            e.printStackTrace();
+        }
+    }
+
 
     
 }
