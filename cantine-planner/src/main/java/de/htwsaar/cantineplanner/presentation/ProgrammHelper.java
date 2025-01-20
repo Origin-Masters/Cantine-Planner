@@ -30,6 +30,9 @@ public class ProgrammHelper {
             if (!Objects.equals(prompt, "")) {
                 System.out.println(prompt + ":");
             }
+            if (scanner.hasNextLine()) {
+                scanner.nextLine();
+            }
             System.out.println("> ");
             String string = scanner.nextLine();
             System.out.println("STDIN: " + string);

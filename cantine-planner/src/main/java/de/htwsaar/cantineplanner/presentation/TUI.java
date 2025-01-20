@@ -16,15 +16,47 @@ public class TUI {
      *
      * @return Number of the selected option
      */
-    public Number testMenue() {
-        System.out.println("----Test Menü----");
+    public Number mainMenue() {
+        System.out.println("----Main Menü----");
+        System.out.println("1. Meal Menü");
+        System.out.println("2. Review Menü");
+        System.out.println("3. Beenden");
+        return programmHelper.promptNumber("");
+    }
+
+    /**
+     * Method to display the main menu
+     *
+     * @return Number of the selected option
+     */
+    public Number mealMenue() {
+        System.out.println("----Meal Menü----");
         System.out.println("1. Alle Gerichte anzeigen");
         System.out.println("2. Gericht hinzufügen");
         System.out.println("3. Alle Allergien anzeigen");
         System.out.println("4. Gericht löschen");
         System.out.println("5. Gericht nach Name suchen");
         System.out.println("6. Gerichtdetails nach ID anzeigen");
-        System.out.println("7. Beenden");
+        System.out.println("7. Main Menü");
+        System.out.println("8. Beenden");
+        return programmHelper.promptNumber("");
+    }
+
+    /**
+     * Method to display the review menu
+     *
+     * @return Number of the selected option
+     */
+
+    public Number reviewMenue() {
+        System.out.println("----Review Menü----");
+        System.out.println("1. Alle Reviews anzeigen");
+        System.out.println("2. Review hinzufügen");
+        System.out.println("3. Review löschen");
+        System.out.println("5. Review nach ID suchen");
+        System.out.println("6. Alle Reviews eines Gerichts anzeigen");
+        System.out.println("7. Main Menü");
+        System.out.println("8. Beenden");
         return programmHelper.promptNumber("");
     }
 
