@@ -1,2 +1,4 @@
 de/htwsaar/cantineplanner/businessLogic/ControllerTest.class
+de/htwsaar/cantineplanner/dataAccess/DBConnectionTest.class
 de/htwsaar/cantineplanner/AppTest.class
+de/htwsaar/cantineplanner/dataAccess/HikariCPDataSourceTest.class

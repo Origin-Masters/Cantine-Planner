@@ -1,0 +1,408 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.1" name="de.htwsaar.cantineplanner.dataAccess.DBConnectionTest" time="1.055" tests="10" errors="0" skipped="0" failures="0">
+  <properties>
+    <property name="java.specification.version" value="23"/>
+    <property name="sun.jnu.encoding" value="UTF-8"/>
+    <property name="java.class.path" value="/Users/michalroziel/Documents/HTW SAAR/Semester 3/prog3/Cantine-Planner/cantine-planner/target/test-classes:/Users/michalroziel/Documents/HTW SAAR/Semester 3/prog3/Cantine-Planner/cantine-planner/target/classes:/Users/michalroziel/.m2/repository/junit/junit/4.13.1/junit-4.13.1.jar:/Users/michalroziel/.m2/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar:/Users/michalroziel/.m2/repository/org/mockito/mockito-core/4.9.0/mockito-core-4.9.0.jar:/Users/michalroziel/.m2/repository/net/bytebuddy/byte-buddy/1.12.16/byte-buddy-1.12.16.jar:/Users/michalroziel/.m2/repository/net/bytebuddy/byte-buddy-agent/1.12.16/byte-buddy-agent-1.12.16.jar:/Users/michalroziel/.m2/repository/org/objenesis/objenesis/3.3/objenesis-3.3.jar:/Users/michalroziel/.m2/repository/com/google/guava/guava/33.4.0-jre/guava-33.4.0-jre.jar:/Users/michalroziel/.m2/repository/com/google/guava/failureaccess/1.0.2/failureaccess-1.0.2.jar:/Users/michalroziel/.m2/repository/com/google/guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar:/Users/michalroziel/.m2/repository/com/google/code/findbugs/jsr305/3.0.2/jsr305-3.0.2.jar:/Users/michalroziel/.m2/repository/org/checkerframework/checker-qual/3.43.0/checker-qual-3.43.0.jar:/Users/michalroziel/.m2/repository/com/google/errorprone/error_prone_annotations/2.36.0/error_prone_annotations-2.36.0.jar:/Users/michalroziel/.m2/repository/com/google/j2objc/j2objc-annotations/3.0.0/j2objc-annotations-3.0.0.jar:/Users/michalroziel/.m2/repository/org/jooq/jooq/3.19.18/jooq-3.19.18.jar:/Users/michalroziel/.m2/repository/io/r2dbc/r2dbc-spi/1.0.0.RELEASE/r2dbc-spi-1.0.0.RELEASE.jar:/Users/michalroziel/.m2/repository/org/reactivestreams/reactive-streams/1.0.3/reactive-streams-1.0.3.jar:/Users/michalroziel/.m2/repository/com/zaxxer/HikariCP/5.0.1/HikariCP-5.0.1.jar:/Users/michalroziel/.m2/repository/com/googlecode/lanterna/lanterna/3.1.2/lanterna-3.1.2.jar:/Users/michalroziel/.m2/repository/org/xerial/sqlite-jdbc/3.47.1.0/sqlite-jdbc-3.47.1.0.jar:/Users/michalroziel/.m2/repository/org/jooq/jooq-meta/3.19.18/jooq-meta-3.19.18.jar:/Users/michalroziel/.m2/repository/jakarta/xml/bind/jakarta.xml.bind-api/4.0.0/jakarta.xml.bind-api-4.0.0.jar:/Users/michalroziel/.m2/repository/jakarta/activation/jakarta.activation-api/2.1.0/jakarta.activation-api-2.1.0.jar:/Users/michalroziel/.m2/repository/org/jooq/jooq-codegen/3.19.18/jooq-codegen-3.19.18.jar:/Users/michalroziel/.m2/repository/org/slf4j/slf4j-api/2.0.9/slf4j-api-2.0.9.jar:/Users/michalroziel/.m2/repository/org/slf4j/slf4j-simple/2.0.9/slf4j-simple-2.0.9.jar:/Users/michalroziel/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.11.4/junit-jupiter-api-5.11.4.jar:/Users/michalroziel/.m2/repository/org/opentest4j/opentest4j/1.3.0/opentest4j-1.3.0.jar:/Users/michalroziel/.m2/repository/org/junit/platform/junit-platform-commons/1.11.4/junit-platform-commons-1.11.4.jar:/Users/michalroziel/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:/Users/michalroziel/.m2/repository/org/junit/jupiter/junit-jupiter-params/5.11.4/junit-jupiter-params-5.11.4.jar:"/>
+    <property name="java.vm.vendor" value="Homebrew"/>
+    <property name="sun.arch.data.model" value="64"/>
+    <property name="java.vendor.url" value="https://github.com/Homebrew/homebrew-core/issues"/>
+    <property name="user.timezone" value="Europe/Berlin"/>
+    <property name="os.name" value="Mac OS X"/>
+    <property name="java.vm.specification.version" value="23"/>
+    <property name="sun.java.launcher" value="SUN_STANDARD"/>
+    <property name="user.country" value="US"/>
+    <property name="sun.boot.library.path" value="/opt/homebrew/Cellar/openjdk/23.0.1/libexec/openjdk.jdk/Contents/Home/lib"/>
+    <property name="sun.java.command" value="/Users/michalroziel/Documents/HTW SAAR/Semester 3/prog3/Cantine-Planner/cantine-planner/target/surefire/surefirebooter-20250121190432341_3.jar /Users/michalroziel/Documents/HTW SAAR/Semester 3/prog3/Cantine-Planner/cantine-planner/target/surefire 2025-01-21T19-04-32_286-jvmRun1 surefire-20250121190432341_1tmp surefire_0-20250121190432341_2tmp"/>
+    <property name="http.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
+    <property name="jdk.debug" value="release"/>
+    <property name="surefire.test.class.path" value="/Users/michalroziel/Documents/HTW SAAR/Semester 3/prog3/Cantine-Planner/cantine-planner/target/test-classes:/Users/michalroziel/Documents/HTW SAAR/Semester 3/prog3/Cantine-Planner/cantine-planner/target/classes:/Users/michalroziel/.m2/repository/junit/junit/4.13.1/junit-4.13.1.jar:/Users/michalroziel/.m2/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar:/Users/michalroziel/.m2/repository/org/mockito/mockito-core/4.9.0/mockito-core-4.9.0.jar:/Users/michalroziel/.m2/repository/net/bytebuddy/byte-buddy/1.12.16/byte-buddy-1.12.16.jar:/Users/michalroziel/.m2/repository/net/bytebuddy/byte-buddy-agent/1.12.16/byte-buddy-agent-1.12.16.jar:/Users/michalroziel/.m2/repository/org/objenesis/objenesis/3.3/objenesis-3.3.jar:/Users/michalroziel/.m2/repository/com/google/guava/guava/33.4.0-jre/guava-33.4.0-jre.jar:/Users/michalroziel/.m2/repository/com/google/guava/failureaccess/1.0.2/failureaccess-1.0.2.jar:/Users/michalroziel/.m2/repository/com/google/guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar:/Users/michalroziel/.m2/repository/com/google/code/findbugs/jsr305/3.0.2/jsr305-3.0.2.jar:/Users/michalroziel/.m2/repository/org/checkerframework/checker-qual/3.43.0/checker-qual-3.43.0.jar:/Users/michalroziel/.m2/repository/com/google/errorprone/error_prone_annotations/2.36.0/error_prone_annotations-2.36.0.jar:/Users/michalroziel/.m2/repository/com/google/j2objc/j2objc-annotations/3.0.0/j2objc-annotations-3.0.0.jar:/Users/michalroziel/.m2/repository/org/jooq/jooq/3.19.18/jooq-3.19.18.jar:/Users/michalroziel/.m2/repository/io/r2dbc/r2dbc-spi/1.0.0.RELEASE/r2dbc-spi-1.0.0.RELEASE.jar:/Users/michalroziel/.m2/repository/org/reactivestreams/reactive-streams/1.0.3/reactive-streams-1.0.3.jar:/Users/michalroziel/.m2/repository/com/zaxxer/HikariCP/5.0.1/HikariCP-5.0.1.jar:/Users/michalroziel/.m2/repository/com/googlecode/lanterna/lanterna/3.1.2/lanterna-3.1.2.jar:/Users/michalroziel/.m2/repository/org/xerial/sqlite-jdbc/3.47.1.0/sqlite-jdbc-3.47.1.0.jar:/Users/michalroziel/.m2/repository/org/jooq/jooq-meta/3.19.18/jooq-meta-3.19.18.jar:/Users/michalroziel/.m2/repository/jakarta/xml/bind/jakarta.xml.bind-api/4.0.0/jakarta.xml.bind-api-4.0.0.jar:/Users/michalroziel/.m2/repository/jakarta/activation/jakarta.activation-api/2.1.0/jakarta.activation-api-2.1.0.jar:/Users/michalroziel/.m2/repository/org/jooq/jooq-codegen/3.19.18/jooq-codegen-3.19.18.jar:/Users/michalroziel/.m2/repository/org/slf4j/slf4j-api/2.0.9/slf4j-api-2.0.9.jar:/Users/michalroziel/.m2/repository/org/slf4j/slf4j-simple/2.0.9/slf4j-simple-2.0.9.jar:/Users/michalroziel/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.11.4/junit-jupiter-api-5.11.4.jar:/Users/michalroziel/.m2/repository/org/opentest4j/opentest4j/1.3.0/opentest4j-1.3.0.jar:/Users/michalroziel/.m2/repository/org/junit/platform/junit-platform-commons/1.11.4/junit-platform-commons-1.11.4.jar:/Users/michalroziel/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:/Users/michalroziel/.m2/repository/org/junit/jupiter/junit-jupiter-params/5.11.4/junit-jupiter-params-5.11.4.jar:"/>
+    <property name="sun.cpu.endian" value="little"/>
+    <property name="user.home" value="/Users/michalroziel"/>
+    <property name="user.language" value="en"/>
+    <property name="java.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.version.date" value="2024-10-15"/>
+    <property name="java.home" value="/opt/homebrew/Cellar/openjdk/23.0.1/libexec/openjdk.jdk/Contents/Home"/>
+    <property name="file.separator" value="/"/>
+    <property name="basedir" value="/Users/michalroziel/Documents/HTW SAAR/Semester 3/prog3/Cantine-Planner/cantine-planner"/>
+    <property name="java.vm.compressedOopsMode" value="Zero based"/>
+    <property name="line.separator" value="&#10;"/>
+    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+    <property name="java.specification.name" value="Java Platform API Specification"/>
+    <property name="apple.awt.application.name" value="ForkedBooter"/>
+    <property name="surefire.real.class.path" value="/Users/michalroziel/Documents/HTW SAAR/Semester 3/prog3/Cantine-Planner/cantine-planner/target/surefire/surefirebooter-20250121190432341_3.jar"/>
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+    <property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
+    <property name="java.runtime.version" value="23.0.1"/>
+    <property name="user.name" value="michalroziel"/>
+    <property name="stdout.encoding" value="UTF-8"/>
+    <property name="path.separator" value=":"/>
+    <property name="os.version" value="15.1"/>
+    <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
+    <property name="file.encoding" value="UTF-8"/>
+    <property name="java.vm.name" value="OpenJDK 64-Bit Server VM"/>
+    <property name="java.vendor.version" value="Homebrew"/>
+    <property name="localRepository" value="/Users/michalroziel/.m2/repository"/>
+    <property name="java.vendor.url.bug" value="https://github.com/Homebrew/homebrew-core/issues"/>
+    <property name="java.io.tmpdir" value="/var/folders/2s/vd7b_xhn4k5gfdfh7n9385300000gn/T/"/>
+    <property name="com.zaxxer.hikari.pool_number" value="10"/>
+    <property name="java.version" value="23.0.1"/>
+    <property name="user.dir" value="/Users/michalroziel/Documents/HTW SAAR/Semester 3/prog3/Cantine-Planner/cantine-planner"/>
+    <property name="os.arch" value="aarch64"/>
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+    <property name="native.encoding" value="UTF-8"/>
+    <property name="java.library.path" value="/Users/michalroziel/Library/Java/Extensions:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java:."/>
+    <property name="java.vm.info" value="mixed mode, sharing"/>
+    <property name="stderr.encoding" value="UTF-8"/>
+    <property name="java.vendor" value="Homebrew"/>
+    <property name="java.vm.version" value="23.0.1"/>
+    <property name="sun.io.unicode.encoding" value="UnicodeBig"/>
+    <property name="socksNonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
+    <property name="java.class.version" value="67.0"/>
+  </properties>
+  <testcase name="testAllMeals" classname="de.htwsaar.cantineplanner.dataAccess.DBConnectionTest" time="0.979">
+    <system-out><![CDATA[Gericht: Spaghetti Bolognese
+Preis: 5.99
+Kalorien: 450
+Allergene : null
+Fleisch: null
+---------
+Gericht: Caesar Salad
+Preis: 3.99
+Kalorien: 200
+Allergene : null
+Fleisch: null
+---------
+Gericht: Chicken Curry
+Preis: 6.99
+Kalorien: 550
+Allergene : null
+Fleisch: null
+---------
+Gericht: Vegetable Stir Fry
+Preis: 4.99
+Kalorien: 300
+Allergene : null
+Fleisch: null
+---------
+Gericht: Beef Burger
+Preis: 7.49
+Kalorien: 650
+Allergene : null
+Fleisch: null
+---------
+Gericht: Pasta Carbonara
+Preis: 8.99
+Kalorien: 850
+Allergene : G,M,E
+Fleisch: 0
+---------
+Gericht: Vegane Buddha Bowl
+Preis: 10.5
+Kalorien: 600
+Allergene : S,T
+Fleisch: 2
+---------
+Gericht: Hähnchen-Curry
+Preis: 12.75
+Kalorien: 900
+Allergene : G,M
+Fleisch: 0
+---------
+Gericht: Nussige Quinoa Bowl
+Preis: 9.3
+Kalorien: 750
+Allergene : N,G,S
+Fleisch: 1
+---------
+Gericht: Lachsfilet mit Gemüse
+Preis: 14.2
+Kalorien: 700
+Allergene : F
+Fleisch: 0
+---------
+]]></system-out>
+    <system-err><![CDATA[[main] INFO com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+[main] INFO com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection org.sqlite.jdbc4.JDBC4Connection@222a59e6
+[main] INFO com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+[main] INFO org.jooq.Constants - 
+                                      
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@  @@        @@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@        @@@@@@@@@@
+@@@@@@@@@@@@@@@@  @@  @@    @@@@@@@@@@
+@@@@@@@@@@  @@@@  @@  @@    @@@@@@@@@@
+@@@@@@@@@@        @@        @@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@        @@        @@@@@@@@@@
+@@@@@@@@@@    @@  @@  @@@@  @@@@@@@@@@
+@@@@@@@@@@    @@  @@  @@@@  @@@@@@@@@@
+@@@@@@@@@@        @@  @  @  @@@@@@@@@@
+@@@@@@@@@@        @@        @@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@  @@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  Thank you for using jOOQ 3.19.18 (Build date: 2025-01-15T11:37:37Z)
+                                      
+[main] INFO org.jooq.Constants - 
+
+jOOQ tip of the day: You can quickly navigate between child and parent records using TableRecord::fetchParent or TableRecord::parent and UpdatableRecord::fetchChildren or UpdatableRecord::children. Beware of N+1 problems, though!
+
+[main] INFO org.jooq.impl.DefaultExecuteContext.logVersionSupport - Version                  : Database version is supported by dialect SQLITE: 3.47.1
+]]></system-err>
+  </testcase>
+  <testcase name="testReviewByMealId" classname="de.htwsaar.cantineplanner.dataAccess.DBConnectionTest" time="0.016">
+    <system-out><![CDATA[Rating iD :1
+Meal ID : 1
+]]></system-out>
+    <system-err><![CDATA[[main] INFO com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Starting...
+[main] INFO com.zaxxer.hikari.pool.HikariPool - HikariPool-2 - Added connection org.sqlite.jdbc4.JDBC4Connection@211febf3
+[main] INFO com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Start completed.
+java.lang.IllegalArgumentException: Field "meals"."Name" is not contained in row type (
+  "review"."rating_id",
+  "review"."meal_id",
+  "review"."rating",
+  "review"."comment",
+  "review"."created_at"
+)
+	at org.jooq.impl.Tools.indexFail(Tools.java:2233)
+	at org.jooq.impl.AbstractRecord.get(AbstractRecord.java:336)
+	at de.htwsaar.cantineplanner.dataAccess.DBConnection.lambda$reviewByMealiD$5(DBConnection.java:196)
+	at java.base/java.lang.Iterable.forEach(Iterable.java:75)
+	at de.htwsaar.cantineplanner.dataAccess.DBConnection.reviewByMealiD(DBConnection.java:192)
+	at de.htwsaar.cantineplanner.dataAccess.DBConnectionTest.lambda$testReviewByMealId$6(DBConnectionTest.java:65)
+	at org.junit.jupiter.api.AssertDoesNotThrow.assertDoesNotThrow(AssertDoesNotThrow.java:49)
+	at org.junit.jupiter.api.AssertDoesNotThrow.assertDoesNotThrow(AssertDoesNotThrow.java:36)
+	at org.junit.jupiter.api.Assertions.assertDoesNotThrow(Assertions.java:3199)
+	at de.htwsaar.cantineplanner.dataAccess.DBConnectionTest.testReviewByMealId(DBConnectionTest.java:65)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:767)
+	at org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:60)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$ValidatingInvocation.proceed(InvocationInterceptorChain.java:131)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.intercept(TimeoutExtension.java:156)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestableMethod(TimeoutExtension.java:147)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestMethod(TimeoutExtension.java:86)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker$ReflectiveInterceptorCall.lambda$ofVoidMethod$0(InterceptingExecutableInvoker.java:103)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.lambda$invoke$0(InterceptingExecutableInvoker.java:93)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$InterceptedInvocation.proceed(InvocationInterceptorChain.java:106)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.proceed(InvocationInterceptorChain.java:64)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.chainAndInvoke(InvocationInterceptorChain.java:45)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.invoke(InvocationInterceptorChain.java:37)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invoke(InterceptingExecutableInvoker.java:92)
+	at org.junit.jupiter.engine.execution.InterceptingExecutableInvoker.invoke(InterceptingExecutableInvoker.java:86)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.lambda$invokeTestMethod$8(TestMethodTestDescriptor.java:217)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.invokeTestMethod(TestMethodTestDescriptor.java:213)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:138)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:68)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:156)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:146)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:144)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:143)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:100)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:41)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:160)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:146)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:144)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:143)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:100)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:41)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$6(NodeTestTask.java:160)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:146)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$9(NodeTestTask.java:144)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:143)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:100)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.submit(SameThreadHierarchicalTestExecutorService.java:35)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestExecutor.execute(HierarchicalTestExecutor.java:57)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestEngine.execute(HierarchicalTestEngine.java:54)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:198)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:169)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:93)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.lambda$execute$0(EngineExecutionOrchestrator.java:58)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.withInterceptedStreams(EngineExecutionOrchestrator.java:141)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:57)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:103)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:85)
+	at org.junit.platform.launcher.core.DelegatingLauncher.execute(DelegatingLauncher.java:47)
+	at org.apache.maven.surefire.junitplatform.LazyLauncher.execute(LazyLauncher.java:56)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.execute(JUnitPlatformProvider.java:184)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invokeAllTests(JUnitPlatformProvider.java:148)
+	at org.apache.maven.surefire.junitplatform.JUnitPlatformProvider.invoke(JUnitPlatformProvider.java:122)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+]]></system-err>
+  </testcase>
+  <testcase name="testAddMeal" classname="de.htwsaar.cantineplanner.dataAccess.DBConnectionTest" time="0.017">
+    <system-out><![CDATA[Meal added: Test Meal, Allergy: None
+]]></system-out>
+    <system-err><![CDATA[[main] INFO com.zaxxer.hikari.HikariDataSource - HikariPool-3 - Starting...
+[main] INFO com.zaxxer.hikari.pool.HikariPool - HikariPool-3 - Added connection org.sqlite.jdbc4.JDBC4Connection@1d0a61c8
+[main] INFO com.zaxxer.hikari.HikariDataSource - HikariPool-3 - Start completed.
+]]></system-err>
+  </testcase>
+  <testcase name="testSearchMeal" classname="de.htwsaar.cantineplanner.dataAccess.DBConnectionTest" time="0.003">
+    <system-out><![CDATA[Gericht: Test Meal
+Preis: 10.0
+Kalorien: 500
+---------
+]]></system-out>
+    <system-err><![CDATA[[main] INFO com.zaxxer.hikari.HikariDataSource - HikariPool-4 - Starting...
+[main] INFO com.zaxxer.hikari.pool.HikariPool - HikariPool-4 - Added connection org.sqlite.jdbc4.JDBC4Connection@5b051a5c
+[main] INFO com.zaxxer.hikari.HikariDataSource - HikariPool-4 - Start completed.
+]]></system-err>
+  </testcase>
+  <testcase name="testReviewsByMealName" classname="de.htwsaar.cantineplanner.dataAccess.DBConnectionTest" time="0.014">
+    <system-err><![CDATA[[main] INFO com.zaxxer.hikari.HikariDataSource - HikariPool-5 - Starting...
+[main] INFO com.zaxxer.hikari.pool.HikariPool - HikariPool-5 - Added connection org.sqlite.jdbc4.JDBC4Connection@27e5b378
+[main] INFO com.zaxxer.hikari.HikariDataSource - HikariPool-5 - Start completed.
+]]></system-err>
+  </testcase>
+  <testcase name="testDeleteReview" classname="de.htwsaar.cantineplanner.dataAccess.DBConnectionTest" time="0.007">
+    <system-out><![CDATA[Review with ID 1 deleted
+]]></system-out>
+    <system-err><![CDATA[[main] INFO com.zaxxer.hikari.HikariDataSource - HikariPool-6 - Starting...
+[main] INFO com.zaxxer.hikari.pool.HikariPool - HikariPool-6 - Added connection org.sqlite.jdbc4.JDBC4Connection@43b40233
+[main] INFO com.zaxxer.hikari.HikariDataSource - HikariPool-6 - Start completed.
+]]></system-err>
+  </testcase>
+  <testcase name="testAddReview" classname="de.htwsaar.cantineplanner.dataAccess.DBConnectionTest" time="0.004">
+    <system-out><![CDATA[Review added for meal with ID 1
+]]></system-out>
+    <system-err><![CDATA[[main] INFO com.zaxxer.hikari.HikariDataSource - HikariPool-7 - Starting...
+[main] INFO com.zaxxer.hikari.pool.HikariPool - HikariPool-7 - Added connection org.sqlite.jdbc4.JDBC4Connection@ef1695a
+[main] INFO com.zaxxer.hikari.HikariDataSource - HikariPool-7 - Start completed.
+]]></system-err>
+  </testcase>
+  <testcase name="testDeleteMeal" classname="de.htwsaar.cantineplanner.dataAccess.DBConnectionTest" time="0.006">
+    <system-out><![CDATA[Meal with ID 1 deleted
+]]></system-out>
+    <system-err><![CDATA[[main] INFO com.zaxxer.hikari.HikariDataSource - HikariPool-8 - Starting...
+[main] INFO com.zaxxer.hikari.pool.HikariPool - HikariPool-8 - Added connection org.sqlite.jdbc4.JDBC4Connection@150ede8b
+[main] INFO com.zaxxer.hikari.HikariDataSource - HikariPool-8 - Start completed.
+]]></system-err>
+  </testcase>
+  <testcase name="testMealDetails" classname="de.htwsaar.cantineplanner.dataAccess.DBConnectionTest" time="0.003">
+    <system-err><![CDATA[[main] INFO com.zaxxer.hikari.HikariDataSource - HikariPool-9 - Starting...
+[main] INFO com.zaxxer.hikari.pool.HikariPool - HikariPool-9 - Added connection org.sqlite.jdbc4.JDBC4Connection@7173ae5b
+[main] INFO com.zaxxer.hikari.HikariDataSource - HikariPool-9 - Start completed.
+]]></system-err>
+  </testcase>
+  <testcase name="testAllReviews" classname="de.htwsaar.cantineplanner.dataAccess.DBConnectionTest" time="0.005">
+    <system-out><![CDATA[Rating iD :2
+Meal ID : 2
+Meal Name :Caesar Salad
+Allergy : null
+Rating : 4
+Comment : Frisch und gesund, würde ich wieder bestellen.
+Date created : 2025-01-20T12:05
+---------
+Rating iD :3
+Meal ID : 3
+Meal Name :Chicken Curry
+Allergy : null
+Rating : 3
+Comment : Etwas zu scharf für meinen Geschmack, aber gut.
+Date created : 2025-01-20T12:10
+---------
+Rating iD :5
+Meal ID : 4
+Meal Name :Vegetable Stir Fry
+Allergy : null
+Rating : 4
+Comment : Die Nüsse waren sehr knackig, tolles Gericht.
+Date created : 2025-01-20T12:20
+---------
+Rating iD :6
+Meal ID : 5
+Meal Name :Beef Burger
+Allergy : null
+Rating : 5
+Comment : Der Lachs war saftig und gut gewürzt.
+Date created : 2025-01-20T12:25
+---------
+Rating iD :7
+Meal ID : 2
+Meal Name :Caesar Salad
+Allergy : null
+Rating : 3
+Comment : Etwas zu viel Dressing, aber sonst lecker.
+Date created : 2025-01-20T12:30
+---------
+Rating iD :8
+Meal ID : 3
+Meal Name :Chicken Curry
+Allergy : null
+Rating : 4
+Comment : Portion war reichlich, könnte aber würziger sein.
+Date created : 2025-01-20T12:35
+---------
+Rating iD :9
+Meal ID : 4
+Meal Name :Vegetable Stir Fry
+Allergy : null
+Rating : 5
+Comment : Sehr sättigend und gesund!
+Date created : 2025-01-20T12:40
+---------
+Rating iD :10
+Meal ID : 5
+Meal Name :Beef Burger
+Allergy : null
+Rating : 2
+Comment : Zu teuer für die Portionsgröße.
+Date created : 2025-01-20T12:45
+---------
+Rating iD :12
+Meal ID : 2
+Meal Name :Caesar Salad
+Allergy : null
+Rating : 5
+Comment : null
+Date created : 2025-01-20T13:05
+---------
+Rating iD :13
+Meal ID : 3
+Meal Name :Chicken Curry
+Allergy : null
+Rating : 3
+Comment : null
+Date created : 2025-01-20T13:10
+---------
+Rating iD :14
+Meal ID : 4
+Meal Name :Vegetable Stir Fry
+Allergy : null
+Rating : 2
+Comment : null
+Date created : 2025-01-20T13:15
+---------
+Rating iD :15
+Meal ID : 5
+Meal Name :Beef Burger
+Allergy : null
+Rating : 5
+Comment : null
+Date created : 2025-01-20T13:20
+---------
+]]></system-out>
+    <system-err><![CDATA[[main] INFO com.zaxxer.hikari.HikariDataSource - HikariPool-10 - Starting...
+[main] INFO com.zaxxer.hikari.pool.HikariPool - HikariPool-10 - Added connection org.sqlite.jdbc4.JDBC4Connection@55d9b8f0
+[main] INFO com.zaxxer.hikari.HikariDataSource - HikariPool-10 - Start completed.
+]]></system-err>
+  </testcase>
+</testsuite>

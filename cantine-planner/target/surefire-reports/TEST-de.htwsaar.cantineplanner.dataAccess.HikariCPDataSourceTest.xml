@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.1" name="de.htwsaar.cantineplanner.AppTest" time="0.028" tests="1" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.1" name="de.htwsaar.cantineplanner.dataAccess.HikariCPDataSourceTest" time="0.012" tests="2" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="23"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
@@ -7,6 +7,7 @@
     <property name="java.vm.vendor" value="Homebrew"/>
     <property name="sun.arch.data.model" value="64"/>
     <property name="java.vendor.url" value="https://github.com/Homebrew/homebrew-core/issues"/>
+    <property name="user.timezone" value="Europe/Berlin"/>
     <property name="os.name" value="Mac OS X"/>
     <property name="java.vm.specification.version" value="23"/>
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
@@ -44,6 +45,7 @@
     <property name="localRepository" value="/Users/michalroziel/.m2/repository"/>
     <property name="java.vendor.url.bug" value="https://github.com/Homebrew/homebrew-core/issues"/>
     <property name="java.io.tmpdir" value="/var/folders/2s/vd7b_xhn4k5gfdfh7n9385300000gn/T/"/>
+    <property name="com.zaxxer.hikari.pool_number" value="12"/>
     <property name="java.version" value="23.0.1"/>
     <property name="user.dir" value="/Users/michalroziel/Documents/HTW SAAR/Semester 3/prog3/Cantine-Planner/cantine-planner"/>
     <property name="os.arch" value="aarch64"/>
@@ -58,5 +60,20 @@
     <property name="socksNonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/>
     <property name="java.class.version" value="67.0"/>
   </properties>
-  <testcase name="shouldAnswerWithTrue" classname="de.htwsaar.cantineplanner.AppTest" time="0.015"/>
+  <testcase name="testGetConnection" classname="de.htwsaar.cantineplanner.dataAccess.HikariCPDataSourceTest" time="0.005">
+    <system-err><![CDATA[[main] INFO com.zaxxer.hikari.HikariDataSource - HikariPool-11 - Starting...
+[main] INFO com.zaxxer.hikari.pool.HikariPool - HikariPool-11 - Added connection org.sqlite.jdbc4.JDBC4Connection@20de05e5
+[main] INFO com.zaxxer.hikari.HikariDataSource - HikariPool-11 - Start completed.
+[main] INFO com.zaxxer.hikari.HikariDataSource - HikariPool-11 - Shutdown initiated...
+[main] INFO com.zaxxer.hikari.HikariDataSource - HikariPool-11 - Shutdown completed.
+]]></system-err>
+  </testcase>
+  <testcase name="testCloseDataSource" classname="de.htwsaar.cantineplanner.dataAccess.HikariCPDataSourceTest" time="0.005">
+    <system-err><![CDATA[[main] INFO com.zaxxer.hikari.HikariDataSource - HikariPool-12 - Starting...
+[main] INFO com.zaxxer.hikari.pool.HikariPool - HikariPool-12 - Added connection org.sqlite.jdbc4.JDBC4Connection@1174a305
+[main] INFO com.zaxxer.hikari.HikariDataSource - HikariPool-12 - Start completed.
+[main] INFO com.zaxxer.hikari.HikariDataSource - HikariPool-12 - Shutdown initiated...
+[main] INFO com.zaxxer.hikari.HikariDataSource - HikariPool-12 - Shutdown completed.
+]]></system-err>
+  </testcase>
 </testsuite>
