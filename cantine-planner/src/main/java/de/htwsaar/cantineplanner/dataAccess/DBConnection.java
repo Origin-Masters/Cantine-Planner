@@ -7,13 +7,15 @@ import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
 import de.htwsaar.cantineplanner.codegen.tables.records.MealsRecord;
 import de.htwsaar.cantineplanner.codegen.tables.Meals;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class DBConnection {
-
+    private static final Logger logger = LoggerFactory.getLogger(DBConnection.class);
     private HikariCPDataSource dataSource;
 
     /**
@@ -47,9 +49,9 @@ public class DBConnection {
                     .set(Meals.MEALS.CALORIES, meal.getCalories())
                     .set(Meals.MEALS.ALLERGY, meal.getAllergy())
                     .execute();
-            System.out.println("Meal added: " + meal.getName() + ", Allergy: " + meal.getAllergy());
+            logger.info("Meal added: {}, Allergy: {}", meal.getName(), meal.getAllergy());
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error adding meal", e);
         }
     }
 
