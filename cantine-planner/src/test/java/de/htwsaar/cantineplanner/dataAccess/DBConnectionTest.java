@@ -6,18 +6,15 @@ import de.htwsaar.cantineplanner.codegen.tables.records.MealsRecord;
 import de.htwsaar.cantineplanner.codegen.tables.records.ReviewRecord;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import java.sql.Connection;
 
 public class DBConnectionTest {
 
     private DBConnection dbConnection;
-    private Connection mockConnection;
+
 
     @BeforeEach
     public void setUp() {
         dbConnection = new DBConnection();
-        mockConnection = Mockito.mock(Connection.class);
     }
 
     @Test
