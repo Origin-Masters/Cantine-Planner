@@ -12,6 +12,8 @@ cantine-planner/.idea/
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
+cantine-planner/target/
+
 # Package Files #
 *.jar
 # But allow JARs in the release directory
