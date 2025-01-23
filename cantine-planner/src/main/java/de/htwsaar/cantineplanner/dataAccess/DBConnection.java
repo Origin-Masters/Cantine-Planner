@@ -71,8 +71,9 @@ public class DBConnection {
                         System.out.println("Fleisch: " + record.get(Meals.MEALS.MEAT));
                         System.out.println("---------");
                     });
+            logger.info("All meals displayed");
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error r meal", e);
         }
     }
 
@@ -90,8 +91,9 @@ public class DBConnection {
                         System.out.println("Allergie: " + record.get(Meals.MEALS.ALLERGY));
                         System.out.println("---------");
                     });
+            logger.info("All allergies displayed");
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error displaying allergies", e);
         }
     }
 
@@ -108,7 +110,7 @@ public class DBConnection {
                     .execute();
             System.out.println("Meal with ID " + mealId + " deleted");
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error deleting meal: ", e);
         }
     }
 
@@ -129,8 +131,9 @@ public class DBConnection {
                         System.out.println("Kalorien: " + record.get(Meals.MEALS.CALORIES));
                         System.out.println("---------");
                     });
+            logger.info("Meal searched: {}", name);
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error searching for meal: ", e);
         }
     }
 
@@ -153,14 +156,18 @@ public class DBConnection {
                         System.out.println("Fleisch: " + record.get(Meals.MEALS.MEAT));
                         System.out.println("---------");
                     });
+            logger.info("Meal details displayed: {}", mealId);
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error displaying meal details: ", e);
         }
     }
-    
-    public void allReviews(){
-        
-        try ( Connection connection = dataSource.getConnection()){
+
+    /**
+     * Method allReviews displays all reviews in the database
+     */
+    public void allReviews() {
+
+        try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
             dsl.select()  //hi from Herr Bohr
                     .from(Review.REVIEW)
@@ -168,7 +175,7 @@ public class DBConnection {
                     .on(Review.REVIEW.MEAL_ID.eq(Meals.MEALS.MEAL_ID))
                     .fetch()
                     .forEach(record -> {
-                        System.out.println("Rating iD :" + record.get(Review.REVIEW.RATING_ID) );
+                        System.out.println("Rating iD :" + record.get(Review.REVIEW.RATING_ID));
                         System.out.println("Meal ID : " + record.get(Review.REVIEW.MEAL_ID));
                         System.out.println("Meal Name :" + record.get(Meals.MEALS.NAME));
                         System.out.println("Allergy : " + record.get(Meals.MEALS.ALLERGY));
@@ -177,14 +184,20 @@ public class DBConnection {
                         System.out.println("Date created : " + record.get(Review.REVIEW.CREATED_AT));
                         System.out.println("---------");
                     });
+            logger.info("All reviews displayed");
         } catch (RuntimeException | SQLException e) {
-            e.printStackTrace();
+            logger.error("Error displaying all reviews", e);
         }
     }
 
-    public void reviewByMealiD(int giveniD ){
+    /**
+     * Method reviewByMealiD searches for a review by meal ID
+     *
+     * @param giveniD of type int of the meal to be searched
+     */
+    public void reviewByMealiD(int giveniD) {
 
-        try ( Connection connection  = dataSource.getConnection()){
+        try (Connection connection = dataSource.getConnection()) {
 
             DSLContext dsl = getDSLContext(connection);
             dsl.select()
@@ -192,8 +205,7 @@ public class DBConnection {
                     .where(Review.REVIEW.MEAL_ID.eq(giveniD))
                     .fetch()
                     .forEach(record -> {
-
-                        System.out.println("Rating iD :" + record.get(Review.REVIEW.RATING_ID) );
+                        System.out.println("Rating iD :" + record.get(Review.REVIEW.RATING_ID));
                         System.out.println("Meal ID : " + record.get(Review.REVIEW.MEAL_ID));
                         System.out.println("Meal Name :" + record.get(Meals.MEALS.NAME));
                         System.out.println("Rating : " + record.get(Review.REVIEW.RATING));
@@ -201,15 +213,20 @@ public class DBConnection {
                         System.out.println("Date created : " + record.get(Review.REVIEW.CREATED_AT));
                         System.out.println("---------");
                     });
-
-        } catch (RuntimeException | SQLException e ){
-            e.printStackTrace();
+            logger.info("Review searched by meal ID: {}", giveniD);
+        } catch (RuntimeException | SQLException e) {
+            logger.error("Error searching for review by meal ID", e);
         }
     }
 
-    public void reviewsByMealName(String mealName ){
+    /**
+     * Method reviewsByMealName searches for reviews by meal name
+     *
+     * @param mealName of type String of the meal to be searched
+     */
+    public void reviewsByMealName(String mealName) {
 
-        try ( Connection connection  = dataSource.getConnection()){
+        try (Connection connection = dataSource.getConnection()) {
 
             DSLContext dsl = getDSLContext(connection);
             dsl.select()
@@ -219,8 +236,7 @@ public class DBConnection {
                     .where(Meals.MEALS.NAME.eq(mealName))
                     .fetch()
                     .forEach(record -> {
-
-                        System.out.println("Rating iD :" + record.get(Review.REVIEW.RATING_ID) );
+                        System.out.println("Rating iD :" + record.get(Review.REVIEW.RATING_ID));
                         System.out.println("Meal ID : " + record.get(Review.REVIEW.MEAL_ID));
                         System.out.println("Meal Name :" + record.get(Meals.MEALS.NAME));
                         System.out.println("Rating : " + record.get(Review.REVIEW.RATING));
@@ -228,30 +244,38 @@ public class DBConnection {
                         System.out.println("Date created : " + record.get(Review.REVIEW.CREATED_AT));
                         System.out.println("---------");
                     });
-
-        } catch (RuntimeException | SQLException e ){
-            e.printStackTrace();
+            logger.info("Reviews searched by meal name: {}", mealName);
+        } catch (RuntimeException | SQLException e) {
+            logger.error("Error searching for reviews by meal name", e);
         }
     }
 
-    public void deleteReview(int ratingId){
+    /**
+     * Method deleteReview deletes a review from the database
+     *
+     * @param ratingId of type int of the review to be deleted
+     */
+    public void deleteReview(int ratingId) {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
             dsl.deleteFrom(Review.REVIEW)
                     .where(Review.REVIEW.RATING_ID.eq(ratingId))
                     .execute();
             System.out.println("Review with ID " + ratingId + " deleted");
+            logger.info("Review deleted: {}", ratingId);
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error deleting review: ", e);
         }
     }
 
-    public void addReview(ReviewRecord givenReview){
-
+    /**
+     * Method addReview adds a review for the database
+     *
+     * @param givenReview of type ReviewRecord to be added
+     */
+    public void addReview(ReviewRecord givenReview) {
 
         try (Connection connection = dataSource.getConnection()) {
-
-
             DSLContext dsl = getDSLContext(connection);
             dsl.insertInto(Review.REVIEW)
                     .set(Review.REVIEW.MEAL_ID, givenReview.getMealId())
@@ -259,14 +283,9 @@ public class DBConnection {
                     .set(Review.REVIEW.COMMENT, givenReview.getComment())
                     .execute();
             System.out.println("Review added for meal with ID " + givenReview.getMealId());
-
-
-
+            logger.info("Review added for meal with ID: {}", givenReview.getMealId());
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("Error adding review", e);
         }
     }
-
-
-    
 }
