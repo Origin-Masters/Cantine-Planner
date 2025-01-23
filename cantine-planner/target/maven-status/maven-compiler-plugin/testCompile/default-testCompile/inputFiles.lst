@@ -1,4 +1,3 @@
-/Users/michalroziel/Documents/HTW SAAR/Semester 3/prog3/Cantine-Planner/cantine-planner/src/test/java/de/htwsaar/cantineplanner/AppTest.java
-/Users/michalroziel/Documents/HTW SAAR/Semester 3/prog3/Cantine-Planner/cantine-planner/src/test/java/de/htwsaar/cantineplanner/businessLogic/ControllerTest.java
-/Users/michalroziel/Documents/HTW SAAR/Semester 3/prog3/Cantine-Planner/cantine-planner/src/test/java/de/htwsaar/cantineplanner/dataAccess/DBConnectionTest.java
-/Users/michalroziel/Documents/HTW SAAR/Semester 3/prog3/Cantine-Planner/cantine-planner/src/test/java/de/htwsaar/cantineplanner/dataAccess/HikariCPDataSourceTest.java
+C:\Users\stehl\OneDrive\Desktop\Cantine-Planner\cantine-planner\src\test\java\de\htwsaar\cantineplanner\AppTest.java
+C:\Users\stehl\OneDrive\Desktop\Cantine-Planner\cantine-planner\src\test\java\de\htwsaar\cantineplanner\dataAccess\DBConnectionTest.java
+C:\Users\stehl\OneDrive\Desktop\Cantine-Planner\cantine-planner\src\test\java\de\htwsaar\cantineplanner\dataAccess\HikariCPDataSourceTest.java
