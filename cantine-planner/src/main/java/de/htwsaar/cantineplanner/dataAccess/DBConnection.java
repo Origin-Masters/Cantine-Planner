@@ -1,5 +1,6 @@
 package de.htwsaar.cantineplanner.dataAccess;
 
+import de.htwsaar.cantineplanner.businessLogic.AllergenMapper;
 import de.htwsaar.cantineplanner.codegen.tables.Review;
 import de.htwsaar.cantineplanner.codegen.tables.records.ReviewRecord;
 import org.jooq.DSLContext;
@@ -9,10 +10,13 @@ import de.htwsaar.cantineplanner.codegen.tables.records.MealsRecord;
 import de.htwsaar.cantineplanner.codegen.tables.Meals;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import java.util.Optional;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 public class DBConnection {
     private static final Logger logger = LoggerFactory.getLogger(DBConnection.class);
@@ -64,16 +68,21 @@ public class DBConnection {
             dsl.selectFrom(Meals.MEALS)
                     .fetch()
                     .forEach(record -> {
+                        String allergens = Optional.ofNullable(record.get(Meals.MEALS.ALLERGY))
+                                .map(allergyField -> Arrays.stream(allergyField.split(""))
+                                        .map(AllergenMapper::getAllergenFullName)
+                                        .collect(Collectors.joining(" ")))
+                                .orElse("None");
                         System.out.println("Gericht: " + record.get(Meals.MEALS.NAME));
                         System.out.println("Preis: " + record.get(Meals.MEALS.PRICE));
                         System.out.println("Kalorien: " + record.get(Meals.MEALS.CALORIES));
-                        System.out.println("Allergene : " + record.get(Meals.MEALS.ALLERGY));
+                        System.out.println("Allergene: " + allergens);
                         System.out.println("Fleisch: " + record.get(Meals.MEALS.MEAT));
                         System.out.println("---------");
                     });
             logger.info("All meals displayed");
         } catch (SQLException e) {
-            logger.error("Error r meal", e);
+            logger.error("Error displaying meals", e);
         }
     }
 
@@ -87,8 +96,13 @@ public class DBConnection {
                     .from(Meals.MEALS)
                     .fetch()
                     .forEach(record -> {
+                        String allergens = Optional.ofNullable(record.get(Meals.MEALS.ALLERGY))
+                                .map(allergyField -> Arrays.stream(allergyField.split(""))
+                                        .map(AllergenMapper::getAllergenFullName)
+                                        .collect(Collectors.joining(" ")))
+                                .orElse("None");
                         System.out.println("Gericht: " + record.get(Meals.MEALS.NAME));
-                        System.out.println("Allergie: " + record.get(Meals.MEALS.ALLERGY));
+                        System.out.println("Allergie: " + allergens);
                         System.out.println("---------");
                     });
             logger.info("All allergies displayed");
@@ -126,9 +140,15 @@ public class DBConnection {
                     .where(Meals.MEALS.NAME.eq(name))
                     .fetch()
                     .forEach(record -> {
+                        String allergens = Optional.ofNullable(record.get(Meals.MEALS.ALLERGY))
+                                .map(allergyField -> Arrays.stream(allergyField.split(""))
+                                        .map(AllergenMapper::getAllergenFullName)
+                                        .collect(Collectors.joining(" ")))
+                                .orElse("None");
                         System.out.println("Gericht: " + record.get(Meals.MEALS.NAME));
                         System.out.println("Preis: " + record.get(Meals.MEALS.PRICE));
                         System.out.println("Kalorien: " + record.get(Meals.MEALS.CALORIES));
+                        System.out.println("Allergene: " + allergens);
                         System.out.println("---------");
                     });
             logger.info("Meal searched: {}", name);
@@ -149,10 +169,15 @@ public class DBConnection {
                     .where(Meals.MEALS.MEAL_ID.eq(mealId))
                     .fetch()
                     .forEach(record -> {
+                        String allergens = Optional.ofNullable(record.get(Meals.MEALS.ALLERGY))
+                                .map(allergyField -> Arrays.stream(allergyField.split(""))
+                                        .map(AllergenMapper::getAllergenFullName)
+                                        .collect(Collectors.joining(" ")))
+                                .orElse("None");
                         System.out.println("Gericht: " + record.get(Meals.MEALS.NAME));
                         System.out.println("Preis: " + record.get(Meals.MEALS.PRICE));
                         System.out.println("Kalorien: " + record.get(Meals.MEALS.CALORIES));
-                        System.out.println("Allergie: " + record.get(Meals.MEALS.ALLERGY));
+                        System.out.println("Allergene: " + allergens);
                         System.out.println("Fleisch: " + record.get(Meals.MEALS.MEAT));
                         System.out.println("---------");
                     });
