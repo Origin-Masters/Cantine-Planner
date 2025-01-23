@@ -17,6 +17,7 @@ public class MealTypeMapper {
         */
     }
 
+
     public static String getMealTypeName(int id) {
         return mealTypeMap.getOrDefault(id, "Unknown Meal Type");
     }
