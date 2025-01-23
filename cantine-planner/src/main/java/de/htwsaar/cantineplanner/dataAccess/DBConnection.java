@@ -1,6 +1,7 @@
 package de.htwsaar.cantineplanner.dataAccess;
 
 import de.htwsaar.cantineplanner.businessLogic.AllergenMapper;
+import de.htwsaar.cantineplanner.businessLogic.MealTypeMapper;
 import de.htwsaar.cantineplanner.codegen.tables.Review;
 import de.htwsaar.cantineplanner.codegen.tables.records.ReviewRecord;
 import org.jooq.DSLContext;
@@ -73,11 +74,12 @@ public class DBConnection {
                                         .map(AllergenMapper::getAllergenFullName)
                                         .collect(Collectors.joining(" ")))
                                 .orElse("None");
+
                         System.out.println("Gericht: " + record.get(Meals.MEALS.NAME));
                         System.out.println("Preis: " + record.get(Meals.MEALS.PRICE));
                         System.out.println("Kalorien: " + record.get(Meals.MEALS.CALORIES));
                         System.out.println("Allergene: " + allergens);
-                        System.out.println("Fleisch: " + record.get(Meals.MEALS.MEAT));
+                        System.out.println("Fleisch: " + MealTypeMapper.getMealTypeName(record.get(Meals.MEALS.MEAT)));
                         System.out.println("---------");
                     });
             logger.info("All meals displayed");

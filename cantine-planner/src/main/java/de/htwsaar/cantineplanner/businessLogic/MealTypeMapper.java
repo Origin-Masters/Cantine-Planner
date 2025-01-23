@@ -2,6 +2,7 @@ package de.htwsaar.cantineplanner.businessLogic;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public class MealTypeMapper {
 
@@ -18,7 +19,9 @@ public class MealTypeMapper {
     }
 
 
-    public static String getMealTypeName(int id) {
-        return mealTypeMap.getOrDefault(id, "Unknown Meal Type");
-    }
+public static String getMealTypeName(Integer id) {
+    return Optional.ofNullable(id)
+            .map(mealTypeMap::get)
+            .orElse("Unknown Meal Type");
+}
 }
