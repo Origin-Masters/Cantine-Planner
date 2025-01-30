@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.1" name="de.htwsaar.cantineplanner.dataAccess.DBConnectionTest" time="0.892" tests="10" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.1" name="de.htwsaar.cantineplanner.dataAccess.DBConnectionTest" time="0.88" tests="10" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="23"/>
     <property name="sun.cpu.isalist" value="amd64"/>
     <property name="sun.jnu.encoding" value="Cp1252"/>
-    <property name="java.class.path" value="C:\Users\stehl\OneDrive\Desktop\Cantine-Planner\cantine-planner\target\test-classes;C:\Users\stehl\OneDrive\Desktop\Cantine-Planner\cantine-planner\target\classes;C:\Users\stehl\.m2\repository\junit\junit\4.13.1\junit-4.13.1.jar;C:\Users\stehl\.m2\repository\org\hamcrest\hamcrest-core\1.3\hamcrest-core-1.3.jar;C:\Users\stehl\.m2\repository\org\mockito\mockito-core\4.9.0\mockito-core-4.9.0.jar;C:\Users\stehl\.m2\repository\net\bytebuddy\byte-buddy\1.12.16\byte-buddy-1.12.16.jar;C:\Users\stehl\.m2\repository\net\bytebuddy\byte-buddy-agent\1.12.16\byte-buddy-agent-1.12.16.jar;C:\Users\stehl\.m2\repository\org\objenesis\objenesis\3.3\objenesis-3.3.jar;C:\Users\stehl\.m2\repository\com\google\guava\guava\33.4.0-jre\guava-33.4.0-jre.jar;C:\Users\stehl\.m2\repository\com\google\guava\failureaccess\1.0.2\failureaccess-1.0.2.jar;C:\Users\stehl\.m2\repository\com\google\guava\listenablefuture\9999.0-empty-to-avoid-conflict-with-guava\listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar;C:\Users\stehl\.m2\repository\com\google\code\findbugs\jsr305\3.0.2\jsr305-3.0.2.jar;C:\Users\stehl\.m2\repository\org\checkerframework\checker-qual\3.43.0\checker-qual-3.43.0.jar;C:\Users\stehl\.m2\repository\com\google\errorprone\error_prone_annotations\2.36.0\error_prone_annotations-2.36.0.jar;C:\Users\stehl\.m2\repository\com\google\j2objc\j2objc-annotations\3.0.0\j2objc-annotations-3.0.0.jar;C:\Users\stehl\.m2\repository\org\jooq\jooq\3.19.18\jooq-3.19.18.jar;C:\Users\stehl\.m2\repository\io\r2dbc\r2dbc-spi\1.0.0.RELEASE\r2dbc-spi-1.0.0.RELEASE.jar;C:\Users\stehl\.m2\repository\org\reactivestreams\reactive-streams\1.0.3\reactive-streams-1.0.3.jar;C:\Users\stehl\.m2\repository\com\zaxxer\HikariCP\5.0.1\HikariCP-5.0.1.jar;C:\Users\stehl\.m2\repository\com\googlecode\lanterna\lanterna\3.1.2\lanterna-3.1.2.jar;C:\Users\stehl\.m2\repository\org\xerial\sqlite-jdbc\3.47.1.0\sqlite-jdbc-3.47.1.0.jar;C:\Users\stehl\.m2\repository\org\jooq\jooq-meta\3.19.18\jooq-meta-3.19.18.jar;C:\Users\stehl\.m2\repository\jakarta\xml\bind\jakarta.xml.bind-api\4.0.0\jakarta.xml.bind-api-4.0.0.jar;C:\Users\stehl\.m2\repository\jakarta\activation\jakarta.activation-api\2.1.0\jakarta.activation-api-2.1.0.jar;C:\Users\stehl\.m2\repository\org\jooq\jooq-codegen\3.19.18\jooq-codegen-3.19.18.jar;C:\Users\stehl\.m2\repository\org\slf4j\slf4j-api\2.0.9\slf4j-api-2.0.9.jar;C:\Users\stehl\.m2\repository\org\slf4j\slf4j-simple\2.0.9\slf4j-simple-2.0.9.jar;C:\Users\stehl\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.11.4\junit-jupiter-api-5.11.4.jar;C:\Users\stehl\.m2\repository\org\opentest4j\opentest4j\1.3.0\opentest4j-1.3.0.jar;C:\Users\stehl\.m2\repository\org\junit\platform\junit-platform-commons\1.11.4\junit-platform-commons-1.11.4.jar;C:\Users\stehl\.m2\repository\org\apiguardian\apiguardian-api\1.1.2\apiguardian-api-1.1.2.jar;C:\Users\stehl\.m2\repository\org\junit\jupiter\junit-jupiter-params\5.11.4\junit-jupiter-params-5.11.4.jar;"/>
+    <property name="java.class.path" value="C:\Users\stehl\OneDrive\Desktop\Cantine-Planner\cantine-planner\target\test-classes;C:\Users\stehl\OneDrive\Desktop\Cantine-Planner\cantine-planner\target\classes;C:\Users\stehl\.m2\repository\org\bouncycastle\bcprov-jdk18on\1.80\bcprov-jdk18on-1.80.jar;C:\Users\stehl\.m2\repository\org\bouncycastle\bcpkix-jdk15to18\1.80\bcpkix-jdk15to18-1.80.jar;C:\Users\stehl\.m2\repository\org\bouncycastle\bcprov-jdk15to18\1.80\bcprov-jdk15to18-1.80.jar;C:\Users\stehl\.m2\repository\org\bouncycastle\bcutil-jdk15to18\1.80\bcutil-jdk15to18-1.80.jar;C:\Users\stehl\.m2\repository\junit\junit\4.13.1\junit-4.13.1.jar;C:\Users\stehl\.m2\repository\org\hamcrest\hamcrest-core\1.3\hamcrest-core-1.3.jar;C:\Users\stehl\.m2\repository\org\mockito\mockito-core\4.9.0\mockito-core-4.9.0.jar;C:\Users\stehl\.m2\repository\net\bytebuddy\byte-buddy\1.12.16\byte-buddy-1.12.16.jar;C:\Users\stehl\.m2\repository\net\bytebuddy\byte-buddy-agent\1.12.16\byte-buddy-agent-1.12.16.jar;C:\Users\stehl\.m2\repository\org\objenesis\objenesis\3.3\objenesis-3.3.jar;C:\Users\stehl\.m2\repository\com\google\guava\guava\33.4.0-jre\guava-33.4.0-jre.jar;C:\Users\stehl\.m2\repository\com\google\guava\failureaccess\1.0.2\failureaccess-1.0.2.jar;C:\Users\stehl\.m2\repository\com\google\guava\listenablefuture\9999.0-empty-to-avoid-conflict-with-guava\listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar;C:\Users\stehl\.m2\repository\com\google\code\findbugs\jsr305\3.0.2\jsr305-3.0.2.jar;C:\Users\stehl\.m2\repository\org\checkerframework\checker-qual\3.43.0\checker-qual-3.43.0.jar;C:\Users\stehl\.m2\repository\com\google\errorprone\error_prone_annotations\2.36.0\error_prone_annotations-2.36.0.jar;C:\Users\stehl\.m2\repository\com\google\j2objc\j2objc-annotations\3.0.0\j2objc-annotations-3.0.0.jar;C:\Users\stehl\.m2\repository\org\jooq\jooq\3.19.18\jooq-3.19.18.jar;C:\Users\stehl\.m2\repository\io\r2dbc\r2dbc-spi\1.0.0.RELEASE\r2dbc-spi-1.0.0.RELEASE.jar;C:\Users\stehl\.m2\repository\org\reactivestreams\reactive-streams\1.0.3\reactive-streams-1.0.3.jar;C:\Users\stehl\.m2\repository\com\zaxxer\HikariCP\5.0.1\HikariCP-5.0.1.jar;C:\Users\stehl\.m2\repository\com\googlecode\lanterna\lanterna\3.1.2\lanterna-3.1.2.jar;C:\Users\stehl\.m2\repository\org\xerial\sqlite-jdbc\3.47.1.0\sqlite-jdbc-3.47.1.0.jar;C:\Users\stehl\.m2\repository\org\jooq\jooq-meta\3.19.18\jooq-meta-3.19.18.jar;C:\Users\stehl\.m2\repository\jakarta\xml\bind\jakarta.xml.bind-api\4.0.0\jakarta.xml.bind-api-4.0.0.jar;C:\Users\stehl\.m2\repository\jakarta\activation\jakarta.activation-api\2.1.0\jakarta.activation-api-2.1.0.jar;C:\Users\stehl\.m2\repository\org\jooq\jooq-codegen\3.19.18\jooq-codegen-3.19.18.jar;C:\Users\stehl\.m2\repository\org\slf4j\slf4j-api\2.0.9\slf4j-api-2.0.9.jar;C:\Users\stehl\.m2\repository\org\slf4j\slf4j-simple\2.0.9\slf4j-simple-2.0.9.jar;C:\Users\stehl\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.11.4\junit-jupiter-api-5.11.4.jar;C:\Users\stehl\.m2\repository\org\opentest4j\opentest4j\1.3.0\opentest4j-1.3.0.jar;C:\Users\stehl\.m2\repository\org\junit\platform\junit-platform-commons\1.11.4\junit-platform-commons-1.11.4.jar;C:\Users\stehl\.m2\repository\org\apiguardian\apiguardian-api\1.1.2\apiguardian-api-1.1.2.jar;C:\Users\stehl\.m2\repository\org\junit\jupiter\junit-jupiter-params\5.11.4\junit-jupiter-params-5.11.4.jar;"/>
     <property name="java.vm.vendor" value="Oracle Corporation"/>
     <property name="sun.arch.data.model" value="64"/>
     <property name="user.variant" value=""/>
@@ -15,9 +15,9 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="DE"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk-23\bin"/>
-    <property name="sun.java.command" value="C:\Users\stehl\AppData\Local\Temp\surefire17005435713299514697\surefirebooter-20250123151910747_3.jar C:\Users\stehl\AppData\Local\Temp\surefire17005435713299514697 2025-01-23T15-19-10_608-jvmRun1 surefire-20250123151910747_1tmp surefire_0-20250123151910747_2tmp"/>
+    <property name="sun.java.command" value="C:\Users\stehl\AppData\Local\Temp\surefire2318516339609680532\surefirebooter-20250130163434961_3.jar C:\Users\stehl\AppData\Local\Temp\surefire2318516339609680532 2025-01-30T16-34-34_835-jvmRun1 surefire-20250130163434961_1tmp surefire_0-20250130163434961_2tmp"/>
     <property name="jdk.debug" value="release"/>
-    <property name="surefire.test.class.path" value="C:\Users\stehl\OneDrive\Desktop\Cantine-Planner\cantine-planner\target\test-classes;C:\Users\stehl\OneDrive\Desktop\Cantine-Planner\cantine-planner\target\classes;C:\Users\stehl\.m2\repository\junit\junit\4.13.1\junit-4.13.1.jar;C:\Users\stehl\.m2\repository\org\hamcrest\hamcrest-core\1.3\hamcrest-core-1.3.jar;C:\Users\stehl\.m2\repository\org\mockito\mockito-core\4.9.0\mockito-core-4.9.0.jar;C:\Users\stehl\.m2\repository\net\bytebuddy\byte-buddy\1.12.16\byte-buddy-1.12.16.jar;C:\Users\stehl\.m2\repository\net\bytebuddy\byte-buddy-agent\1.12.16\byte-buddy-agent-1.12.16.jar;C:\Users\stehl\.m2\repository\org\objenesis\objenesis\3.3\objenesis-3.3.jar;C:\Users\stehl\.m2\repository\com\google\guava\guava\33.4.0-jre\guava-33.4.0-jre.jar;C:\Users\stehl\.m2\repository\com\google\guava\failureaccess\1.0.2\failureaccess-1.0.2.jar;C:\Users\stehl\.m2\repository\com\google\guava\listenablefuture\9999.0-empty-to-avoid-conflict-with-guava\listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar;C:\Users\stehl\.m2\repository\com\google\code\findbugs\jsr305\3.0.2\jsr305-3.0.2.jar;C:\Users\stehl\.m2\repository\org\checkerframework\checker-qual\3.43.0\checker-qual-3.43.0.jar;C:\Users\stehl\.m2\repository\com\google\errorprone\error_prone_annotations\2.36.0\error_prone_annotations-2.36.0.jar;C:\Users\stehl\.m2\repository\com\google\j2objc\j2objc-annotations\3.0.0\j2objc-annotations-3.0.0.jar;C:\Users\stehl\.m2\repository\org\jooq\jooq\3.19.18\jooq-3.19.18.jar;C:\Users\stehl\.m2\repository\io\r2dbc\r2dbc-spi\1.0.0.RELEASE\r2dbc-spi-1.0.0.RELEASE.jar;C:\Users\stehl\.m2\repository\org\reactivestreams\reactive-streams\1.0.3\reactive-streams-1.0.3.jar;C:\Users\stehl\.m2\repository\com\zaxxer\HikariCP\5.0.1\HikariCP-5.0.1.jar;C:\Users\stehl\.m2\repository\com\googlecode\lanterna\lanterna\3.1.2\lanterna-3.1.2.jar;C:\Users\stehl\.m2\repository\org\xerial\sqlite-jdbc\3.47.1.0\sqlite-jdbc-3.47.1.0.jar;C:\Users\stehl\.m2\repository\org\jooq\jooq-meta\3.19.18\jooq-meta-3.19.18.jar;C:\Users\stehl\.m2\repository\jakarta\xml\bind\jakarta.xml.bind-api\4.0.0\jakarta.xml.bind-api-4.0.0.jar;C:\Users\stehl\.m2\repository\jakarta\activation\jakarta.activation-api\2.1.0\jakarta.activation-api-2.1.0.jar;C:\Users\stehl\.m2\repository\org\jooq\jooq-codegen\3.19.18\jooq-codegen-3.19.18.jar;C:\Users\stehl\.m2\repository\org\slf4j\slf4j-api\2.0.9\slf4j-api-2.0.9.jar;C:\Users\stehl\.m2\repository\org\slf4j\slf4j-simple\2.0.9\slf4j-simple-2.0.9.jar;C:\Users\stehl\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.11.4\junit-jupiter-api-5.11.4.jar;C:\Users\stehl\.m2\repository\org\opentest4j\opentest4j\1.3.0\opentest4j-1.3.0.jar;C:\Users\stehl\.m2\repository\org\junit\platform\junit-platform-commons\1.11.4\junit-platform-commons-1.11.4.jar;C:\Users\stehl\.m2\repository\org\apiguardian\apiguardian-api\1.1.2\apiguardian-api-1.1.2.jar;C:\Users\stehl\.m2\repository\org\junit\jupiter\junit-jupiter-params\5.11.4\junit-jupiter-params-5.11.4.jar;"/>
+    <property name="surefire.test.class.path" value="C:\Users\stehl\OneDrive\Desktop\Cantine-Planner\cantine-planner\target\test-classes;C:\Users\stehl\OneDrive\Desktop\Cantine-Planner\cantine-planner\target\classes;C:\Users\stehl\.m2\repository\org\bouncycastle\bcprov-jdk18on\1.80\bcprov-jdk18on-1.80.jar;C:\Users\stehl\.m2\repository\org\bouncycastle\bcpkix-jdk15to18\1.80\bcpkix-jdk15to18-1.80.jar;C:\Users\stehl\.m2\repository\org\bouncycastle\bcprov-jdk15to18\1.80\bcprov-jdk15to18-1.80.jar;C:\Users\stehl\.m2\repository\org\bouncycastle\bcutil-jdk15to18\1.80\bcutil-jdk15to18-1.80.jar;C:\Users\stehl\.m2\repository\junit\junit\4.13.1\junit-4.13.1.jar;C:\Users\stehl\.m2\repository\org\hamcrest\hamcrest-core\1.3\hamcrest-core-1.3.jar;C:\Users\stehl\.m2\repository\org\mockito\mockito-core\4.9.0\mockito-core-4.9.0.jar;C:\Users\stehl\.m2\repository\net\bytebuddy\byte-buddy\1.12.16\byte-buddy-1.12.16.jar;C:\Users\stehl\.m2\repository\net\bytebuddy\byte-buddy-agent\1.12.16\byte-buddy-agent-1.12.16.jar;C:\Users\stehl\.m2\repository\org\objenesis\objenesis\3.3\objenesis-3.3.jar;C:\Users\stehl\.m2\repository\com\google\guava\guava\33.4.0-jre\guava-33.4.0-jre.jar;C:\Users\stehl\.m2\repository\com\google\guava\failureaccess\1.0.2\failureaccess-1.0.2.jar;C:\Users\stehl\.m2\repository\com\google\guava\listenablefuture\9999.0-empty-to-avoid-conflict-with-guava\listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar;C:\Users\stehl\.m2\repository\com\google\code\findbugs\jsr305\3.0.2\jsr305-3.0.2.jar;C:\Users\stehl\.m2\repository\org\checkerframework\checker-qual\3.43.0\checker-qual-3.43.0.jar;C:\Users\stehl\.m2\repository\com\google\errorprone\error_prone_annotations\2.36.0\error_prone_annotations-2.36.0.jar;C:\Users\stehl\.m2\repository\com\google\j2objc\j2objc-annotations\3.0.0\j2objc-annotations-3.0.0.jar;C:\Users\stehl\.m2\repository\org\jooq\jooq\3.19.18\jooq-3.19.18.jar;C:\Users\stehl\.m2\repository\io\r2dbc\r2dbc-spi\1.0.0.RELEASE\r2dbc-spi-1.0.0.RELEASE.jar;C:\Users\stehl\.m2\repository\org\reactivestreams\reactive-streams\1.0.3\reactive-streams-1.0.3.jar;C:\Users\stehl\.m2\repository\com\zaxxer\HikariCP\5.0.1\HikariCP-5.0.1.jar;C:\Users\stehl\.m2\repository\com\googlecode\lanterna\lanterna\3.1.2\lanterna-3.1.2.jar;C:\Users\stehl\.m2\repository\org\xerial\sqlite-jdbc\3.47.1.0\sqlite-jdbc-3.47.1.0.jar;C:\Users\stehl\.m2\repository\org\jooq\jooq-meta\3.19.18\jooq-meta-3.19.18.jar;C:\Users\stehl\.m2\repository\jakarta\xml\bind\jakarta.xml.bind-api\4.0.0\jakarta.xml.bind-api-4.0.0.jar;C:\Users\stehl\.m2\repository\jakarta\activation\jakarta.activation-api\2.1.0\jakarta.activation-api-2.1.0.jar;C:\Users\stehl\.m2\repository\org\jooq\jooq-codegen\3.19.18\jooq-codegen-3.19.18.jar;C:\Users\stehl\.m2\repository\org\slf4j\slf4j-api\2.0.9\slf4j-api-2.0.9.jar;C:\Users\stehl\.m2\repository\org\slf4j\slf4j-simple\2.0.9\slf4j-simple-2.0.9.jar;C:\Users\stehl\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.11.4\junit-jupiter-api-5.11.4.jar;C:\Users\stehl\.m2\repository\org\opentest4j\opentest4j\1.3.0\opentest4j-1.3.0.jar;C:\Users\stehl\.m2\repository\org\junit\platform\junit-platform-commons\1.11.4\junit-platform-commons-1.11.4.jar;C:\Users\stehl\.m2\repository\org\apiguardian\apiguardian-api\1.1.2\apiguardian-api-1.1.2.jar;C:\Users\stehl\.m2\repository\org\junit\jupiter\junit-jupiter-params\5.11.4\junit-jupiter-params-5.11.4.jar;"/>
     <property name="sun.cpu.endian" value="little"/>
     <property name="user.home" value="C:\Users\stehl"/>
     <property name="user.language" value="de"/>
@@ -30,7 +30,7 @@
     <property name="line.separator" value="&#10;"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
-    <property name="surefire.real.class.path" value="C:\Users\stehl\AppData\Local\Temp\surefire17005435713299514697\surefirebooter-20250123151910747_3.jar"/>
+    <property name="surefire.real.class.path" value="C:\Users\stehl\AppData\Local\Temp\surefire2318516339609680532\surefirebooter-20250130163434961_3.jar"/>
     <property name="user.script" value=""/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="23.0.1+11-39"/>
@@ -59,72 +59,69 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="67.0"/>
   </properties>
-  <testcase name="testAllMeals" classname="de.htwsaar.cantineplanner.dataAccess.DBConnectionTest" time="0.769">
+  <testcase name="testAllMeals" classname="de.htwsaar.cantineplanner.dataAccess.DBConnectionTest" time="0.755">
     <system-out><![CDATA[Gericht: Caesar Salad
 Preis: 3.99
 Kalorien: 200
-Allergene : null
-Fleisch: null
+Allergene: None
+Fleisch: Unknown Meal Type
 ---------
 Gericht: Chicken Curry
 Preis: 6.99
 Kalorien: 550
-Allergene : null
-Fleisch: null
+Allergene: None
+Fleisch: Unknown Meal Type
 ---------
 Gericht: Vegetable Stir Fry
 Preis: 4.99
 Kalorien: 300
-Allergene : null
-Fleisch: null
+Allergene: None
+Fleisch: Unknown Meal Type
 ---------
 Gericht: Beef Burger
 Preis: 7.49
 Kalorien: 650
-Allergene : null
-Fleisch: null
+Allergene: None
+Fleisch: Unknown Meal Type
 ---------
 Gericht: Pasta Carbonara
 Preis: 8.99
 Kalorien: 850
-Allergene : G,M,E
-Fleisch: 0
+Allergene: Gluten , Milch , Eier
+Fleisch: Meat
 ---------
 Gericht: Vegane Buddha Bowl
 Preis: 10.5
 Kalorien: 600
-Allergene : S,T
-Fleisch: 2
+Allergene: Soja , Sesam
+Fleisch: Vegan
 ---------
 Gericht: Hähnchen-Curry
 Preis: 12.75
 Kalorien: 900
-Allergene : G,M
-Fleisch: 0
+Allergene: Gluten , Milch
+Fleisch: Meat
 ---------
 Gericht: Nussige Quinoa Bowl
 Preis: 9.3
 Kalorien: 750
-Allergene : N,G,S
-Fleisch: 1
+Allergene: Nüsse , Gluten , Soja
+Fleisch: Vegetarian
 ---------
 Gericht: Lachsfilet mit Gemüse
 Preis: 14.2
 Kalorien: 700
-Allergene : F
-Fleisch: 0
+Allergene: Fisch
+Fleisch: Meat
 ---------
 Gericht: Test Meal
 Preis: 10.0
 Kalorien: 500
-Allergene : None
-Fleisch: null
+Allergene: Nüsse o n e
+Fleisch: Unknown Meal Type
 ---------
 ]]></system-out>
-    <system-err><![CDATA[[main] INFO com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
-[main] INFO com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection org.sqlite.jdbc4.JDBC4Connection@34b9f960
-[main] INFO com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
-[main] INFO org.jooq.Constants - 
+    <system-err><![CDATA[[main] INFO org.jooq.Constants - 
                                       
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
@@ -146,18 +143,17 @@ Fleisch: null
                                       
 [main] INFO org.jooq.Constants - 
 
-jOOQ tip of the day: If you're using the code generator, you can profit from jOOQ's very useful implicit join syntax: https://blog.jooq.org/type-safe-implicit-join-through-path-navigation-in-jooq-3-11/
+jOOQ tip of the day: The code generator produces Javadoc from table or column comments, but you can override those directly in the code generator: https://www.jooq.org/doc/latest/manual/code-generation/codegen-advanced/codegen-config-database/codegen-database-comments/
 
 [main] INFO org.jooq.impl.DefaultExecuteContext.logVersionSupport - Version                  : Database version is supported by dialect SQLITE: 3.47.1
+[main] INFO de.htwsaar.cantineplanner.dataAccess.DBConnection - All meals displayed
 ]]></system-err>
   </testcase>
-  <testcase name="testReviewByMealId" classname="de.htwsaar.cantineplanner.dataAccess.DBConnectionTest" time="0.027">
+  <testcase name="testReviewByMealId" classname="de.htwsaar.cantineplanner.dataAccess.DBConnectionTest" time="0.025">
     <system-out><![CDATA[Rating iD :4
 Meal ID : 1
 ]]></system-out>
-    <system-err><![CDATA[[main] INFO com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Starting...
-[main] INFO com.zaxxer.hikari.pool.HikariPool - HikariPool-2 - Added connection org.sqlite.jdbc4.JDBC4Connection@1fc0053e
-[main] INFO com.zaxxer.hikari.HikariDataSource - HikariPool-2 - Start completed.
+    <system-err><![CDATA[[main] ERROR de.htwsaar.cantineplanner.dataAccess.DBConnection - Error searching for review by meal ID
 java.lang.IllegalArgumentException: Field "meals"."Name" is not contained in row type (
   "review"."rating_id",
   "review"."meal_id",
@@ -167,9 +163,9 @@ java.lang.IllegalArgumentException: Field "meals"."Name" is not contained in row
 )
 	at org.jooq.impl.Tools.indexFail(Tools.java:2233)
 	at org.jooq.impl.AbstractRecord.get(AbstractRecord.java:336)
-	at de.htwsaar.cantineplanner.dataAccess.DBConnection.lambda$reviewByMealiD$5(DBConnection.java:198)
+	at de.htwsaar.cantineplanner.dataAccess.DBConnection.lambda$reviewByMealiD$9(DBConnection.java:237)
 	at java.base/java.lang.Iterable.forEach(Iterable.java:75)
-	at de.htwsaar.cantineplanner.dataAccess.DBConnection.reviewByMealiD(DBConnection.java:194)
+	at de.htwsaar.cantineplanner.dataAccess.DBConnection.reviewByMealiD(DBConnection.java:234)
 	at de.htwsaar.cantineplanner.dataAccess.DBConnectionTest.lambda$testReviewByMealId$6(DBConnectionTest.java:62)
 	at org.junit.jupiter.api.AssertDoesNotThrow.assertDoesNotThrow(AssertDoesNotThrow.java:49)
 	at org.junit.jupiter.api.AssertDoesNotThrow.assertDoesNotThrow(AssertDoesNotThrow.java:36)
@@ -246,65 +242,50 @@ java.lang.IllegalArgumentException: Field "meals"."Name" is not contained in row
 	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
 ]]></system-err>
   </testcase>
-  <testcase name="testAddMeal" classname="de.htwsaar.cantineplanner.dataAccess.DBConnectionTest" time="0.032">
-    <system-err><![CDATA[[main] INFO com.zaxxer.hikari.HikariDataSource - HikariPool-3 - Starting...
-[main] INFO com.zaxxer.hikari.pool.HikariPool - HikariPool-3 - Added connection org.sqlite.jdbc4.JDBC4Connection@2fd1731c
-[main] INFO com.zaxxer.hikari.HikariDataSource - HikariPool-3 - Start completed.
-[main] INFO de.htwsaar.cantineplanner.dataAccess.DBConnection - Meal added: Test Meal, Allergy: None
+  <testcase name="testAddMeal" classname="de.htwsaar.cantineplanner.dataAccess.DBConnectionTest" time="0.031">
+    <system-err><![CDATA[[main] INFO de.htwsaar.cantineplanner.dataAccess.DBConnection - Meal added: Test Meal, Allergy: None
 ]]></system-err>
   </testcase>
-  <testcase name="testSearchMeal" classname="de.htwsaar.cantineplanner.dataAccess.DBConnectionTest" time="0.004">
+  <testcase name="testSearchMeal" classname="de.htwsaar.cantineplanner.dataAccess.DBConnectionTest" time="0.006">
     <system-out><![CDATA[Gericht: Test Meal
 Preis: 10.0
 Kalorien: 500
+Allergene: Nüsse o n e
 ---------
 Gericht: Test Meal
 Preis: 10.0
 Kalorien: 500
+Allergene: Nüsse o n e
 ---------
 ]]></system-out>
-    <system-err><![CDATA[[main] INFO com.zaxxer.hikari.HikariDataSource - HikariPool-4 - Starting...
-[main] INFO com.zaxxer.hikari.pool.HikariPool - HikariPool-4 - Added connection org.sqlite.jdbc4.JDBC4Connection@3af4e0bf
-[main] INFO com.zaxxer.hikari.HikariDataSource - HikariPool-4 - Start completed.
+    <system-err><![CDATA[[main] INFO de.htwsaar.cantineplanner.dataAccess.DBConnection - Meal searched: Test Meal
 ]]></system-err>
   </testcase>
-  <testcase name="testReviewsByMealName" classname="de.htwsaar.cantineplanner.dataAccess.DBConnectionTest" time="0.019">
-    <system-err><![CDATA[[main] INFO com.zaxxer.hikari.HikariDataSource - HikariPool-5 - Starting...
-[main] INFO com.zaxxer.hikari.pool.HikariPool - HikariPool-5 - Added connection org.sqlite.jdbc4.JDBC4Connection@5aceec94
-[main] INFO com.zaxxer.hikari.HikariDataSource - HikariPool-5 - Start completed.
+  <testcase name="testReviewsByMealName" classname="de.htwsaar.cantineplanner.dataAccess.DBConnectionTest" time="0.018">
+    <system-err><![CDATA[[main] INFO de.htwsaar.cantineplanner.dataAccess.DBConnection - Reviews searched by meal name: Test Meal
 ]]></system-err>
   </testcase>
-  <testcase name="testDeleteReview" classname="de.htwsaar.cantineplanner.dataAccess.DBConnectionTest" time="0.0">
+  <testcase name="testDeleteReview" classname="de.htwsaar.cantineplanner.dataAccess.DBConnectionTest" time="0.01">
     <system-out><![CDATA[Review with ID 1 deleted
 ]]></system-out>
-    <system-err><![CDATA[[main] INFO com.zaxxer.hikari.HikariDataSource - HikariPool-6 - Starting...
-[main] INFO com.zaxxer.hikari.pool.HikariPool - HikariPool-6 - Added connection org.sqlite.jdbc4.JDBC4Connection@3277e499
-[main] INFO com.zaxxer.hikari.HikariDataSource - HikariPool-6 - Start completed.
+    <system-err><![CDATA[[main] INFO de.htwsaar.cantineplanner.dataAccess.DBConnection - Review deleted: 1
 ]]></system-err>
   </testcase>
-  <testcase name="testAddReview" classname="de.htwsaar.cantineplanner.dataAccess.DBConnectionTest" time="0.01">
+  <testcase name="testAddReview" classname="de.htwsaar.cantineplanner.dataAccess.DBConnectionTest" time="0.014">
     <system-out><![CDATA[Review added for meal with ID 1
 ]]></system-out>
-    <system-err><![CDATA[[main] INFO com.zaxxer.hikari.HikariDataSource - HikariPool-7 - Starting...
-[main] INFO com.zaxxer.hikari.pool.HikariPool - HikariPool-7 - Added connection org.sqlite.jdbc4.JDBC4Connection@fff25f1
-[main] INFO com.zaxxer.hikari.HikariDataSource - HikariPool-7 - Start completed.
+    <system-err><![CDATA[[main] INFO de.htwsaar.cantineplanner.dataAccess.DBConnection - Review added for meal with ID: 1
 ]]></system-err>
   </testcase>
-  <testcase name="testDeleteMeal" classname="de.htwsaar.cantineplanner.dataAccess.DBConnectionTest" time="0.0">
+  <testcase name="testDeleteMeal" classname="de.htwsaar.cantineplanner.dataAccess.DBConnectionTest" time="0.004">
     <system-out><![CDATA[Meal with ID 1 deleted
 ]]></system-out>
-    <system-err><![CDATA[[main] INFO com.zaxxer.hikari.HikariDataSource - HikariPool-8 - Starting...
-[main] INFO com.zaxxer.hikari.pool.HikariPool - HikariPool-8 - Added connection org.sqlite.jdbc4.JDBC4Connection@67af833b
-[main] INFO com.zaxxer.hikari.HikariDataSource - HikariPool-8 - Start completed.
+  </testcase>
+  <testcase name="testMealDetails" classname="de.htwsaar.cantineplanner.dataAccess.DBConnectionTest" time="0.004">
+    <system-err><![CDATA[[main] INFO de.htwsaar.cantineplanner.dataAccess.DBConnection - Meal details displayed: 1
 ]]></system-err>
   </testcase>
-  <testcase name="testMealDetails" classname="de.htwsaar.cantineplanner.dataAccess.DBConnectionTest" time="0.011">
-    <system-err><![CDATA[[main] INFO com.zaxxer.hikari.HikariDataSource - HikariPool-9 - Starting...
-[main] INFO com.zaxxer.hikari.pool.HikariPool - HikariPool-9 - Added connection org.sqlite.jdbc4.JDBC4Connection@3676ac27
-[main] INFO com.zaxxer.hikari.HikariDataSource - HikariPool-9 - Start completed.
-]]></system-err>
-  </testcase>
-  <testcase name="testAllReviews" classname="de.htwsaar.cantineplanner.dataAccess.DBConnectionTest" time="0.01">
+  <testcase name="testAllReviews" classname="de.htwsaar.cantineplanner.dataAccess.DBConnectionTest" time="0.009">
     <system-out><![CDATA[Rating iD :2
 Meal ID : 2
 Meal Name :Caesar Salad
@@ -410,9 +391,7 @@ Comment :
 Date created : 2025-01-23T14:14:39
 ---------
 ]]></system-out>
-    <system-err><![CDATA[[main] INFO com.zaxxer.hikari.HikariDataSource - HikariPool-10 - Starting...
-[main] INFO com.zaxxer.hikari.pool.HikariPool - HikariPool-10 - Added connection org.sqlite.jdbc4.JDBC4Connection@ecf9049
-[main] INFO com.zaxxer.hikari.HikariDataSource - HikariPool-10 - Start completed.
+    <system-err><![CDATA[[main] INFO de.htwsaar.cantineplanner.dataAccess.DBConnection - All reviews displayed
 ]]></system-err>
   </testcase>
 </testsuite>
