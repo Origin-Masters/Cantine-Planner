@@ -1,26 +1,67 @@
-# Compiled class file
-*.class
+########################################
+# 1) Operating System & IDE Files
+########################################
 
-# Log file
-*.log
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
 
-# idea Files
-*.idea
-# BlueJ files
-*.ctxt
+# Windows thumbnail cache files
+Thumbs.db
+ehthumbs.db
 
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
+# IDE / build tool directories
+.idea/
+*.iml
+*.ipr
+*.iws
+*.vscode/
+.gradle/
+.settings/
+.project
+.classpath
 
+########################################
+# 2) Maven & Java Build Output
+########################################
+
+# Ignore all JAR files by default
+*.jar
+
+# Ignore entire target folder
 cantine-planner/target/
 
-# Package Files #
-*.jar
-# But allow JARs in the release directory
+# But un-ignore ONLY the shaded JAR
+!cantine-planner/target/*-shaded.jar
+
+# Maven helper files
+dependency-reduced-pom.xml
+cantine-planner/dependency-reduced-pom.xml
+
+# Transient resource directories
+cantine-planner/META-INF/
+
+########################################
+# 3) Logs, Database, and Misc
+########################################
+
+*.log
+hs_err_pid*
+replay_pid*
+
+# If your database is just for local dev/testing,
+# consider ignoring it so it doesn't bloat the repo:
+#cantine-planner/database/*.db
+
+########################################
+# 4) Release Artifacts (if any)
+########################################
+
+# Allow jars in release/ if you have a manual release folder
 !cantine-planner/release/
 !cantine-planner/release/*.jar
 
-
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
-replay_pid*
+########################################
+# End of .gitignore
+########################################
