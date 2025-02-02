@@ -1,49 +1,81 @@
 package de.htwsaar.cantineplanner.tuiPresentationNew;
 
+import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.gui2.*;
+import com.googlecode.lanterna.TextColor;
+import com.googlecode.lanterna.SGR;
 import com.googlecode.lanterna.gui2.dialogs.MessageDialog;
 import com.googlecode.lanterna.gui2.dialogs.MessageDialogButton;
 
-public class LoginScreen {
-    private final MultiWindowTextGUI gui;
+import java.util.Arrays;
+
+public class LoginScreen extends AbstractScreen {
 
     public LoginScreen(MultiWindowTextGUI gui) {
-        this.gui = gui;
+        super(gui);
     }
 
+    @Override
     public void display() {
-        // Create a panel for login
-        Panel panel = new Panel();
-        panel.setLayoutManager(new LinearLayout(Direction.VERTICAL));
+        // Create the panel with a GridLayout
+        Panel panel = new Panel(new GridLayout(2));
+        GridLayout gridLayout = (GridLayout) panel.getLayoutManager();
+        gridLayout.setHorizontalSpacing(5);
+        gridLayout.setVerticalSpacing(3);
 
-        panel.addComponent(new Label("Please log in"));
-
-        panel.addComponent(new Label("Username:"));
+        // Username Label and TextBox
+        panel.addComponent(new Label("Username")
+                .setForegroundColor(new TextColor.RGB(29, 29, 29))
+                .addStyle(SGR.BOLD));
         TextBox username = new TextBox();
         panel.addComponent(username);
 
-        panel.addComponent(new Label("Password:"));
-        // Password field (masked with '*')
-        TextBox password = new TextBox().setMask('*');
+        // Password Label and TextBox
+        panel.addComponent(new Label("Password")
+                .setForegroundColor(new TextColor.RGB(29, 29, 29))
+                .addStyle(SGR.BOLD));
+        TextBox password = new TextBox()
+                .setMask('*') // Mask input with asterisks
+                .setSize(new TerminalSize(20, 1)); // Set size to 20 columns and 1 row
         panel.addComponent(password);
 
-        // Login button
-        panel.addComponent(new Button("Login", () -> {
-            // Example credential check
-            if ("user".equals(username.getText()) && "pass".equals(password.getText())) {
-                // On successful login, close the current window and navigate to the main menu
-                gui.getActiveWindow().close();
-                MainMenuScreen mainMenu = new MainMenuScreen(gui);
-                mainMenu.display();
-            } else {
-                // Show error message
-                MessageDialog.showMessageDialog(gui, "Error", "Invalid login credentials", MessageDialogButton.OK);
-            }
-        }));
+        // Add an empty space for layout purposes
+        panel.addComponent(new EmptySpace());
 
-        // Create a window and add the panel
+        // Login Button with logic for valid login or redirection to registration
+        Button loginButton = new Button("Login", () -> {
+            String user = username.getText();
+            String pass = password.getText();
+            // Dummy login check: only "admin" / "admin" is valid
+            if (user.equals("admin") && pass.equals("admin")) {
+                MessageDialog.showMessageDialog(gui, "Login Successful", "Welcome " + user, MessageDialogButton.OK);
+            } else {
+                // If login fails, ask the user if they want to register
+                MessageDialogButton response = MessageDialog.showMessageDialog(gui, "Login Failed",
+                        "Invalid credentials. Would you like to register a new account?",
+                        MessageDialogButton.Yes, MessageDialogButton.No);
+                if (response == MessageDialogButton.Yes) {
+                    // Redirect to the registration screen
+                    RegisterScreen registerScreen = new RegisterScreen(gui);
+                    registerScreen.display();
+                }
+            }
+        });
+        panel.addComponent(loginButton);
+
+        // Additionally, you can include a dedicated "Register" button.
+        Button registerButton = new Button("Register", () -> {
+            RegisterScreen registerScreen = new RegisterScreen(gui);
+            registerScreen.display();
+        });
+        panel.addComponent(registerButton);
+
+        // Create a window and set the panel as its content
         BasicWindow window = new BasicWindow("Login");
         window.setComponent(panel);
+        window.setHints(Arrays.asList(Window.Hint.CENTERED));
+
+        // Add the window to the GUI and wait for user interactions
         gui.addWindowAndWait(window);
     }
 }
