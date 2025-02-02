@@ -22,12 +22,15 @@ public class Controller {
         while (running) {
             switch (currentMenu) {
                 case 0:
-                    mainMenu();
+                    userMenue();
                     break;
                 case 1:
-                    mealMenue();
+                    mainMenu();
                     break;
                 case 2:
+                    mealMenue();
+                    break;
+                case 3:
                     reviewMenue();
                     break;
                 default:
@@ -36,14 +39,32 @@ public class Controller {
         }
     }
 
-    public void mainMenu() {
-        int choice = (int) tui.mainMenue();
+    public void userMenue() {
+        int choice = (int) tui.userMenue();
         switch (choice) {
             case 1:
                 currentMenu = 1;
                 break;
             case 2:
+                currentMenu = 1;
+                break;
+            case 3:
+                running = false;
+                System.out.println("Goodbye!");
+                break;
+            default:
+                System.out.println("Invalid Input");
+        }
+    }
+
+    public void mainMenu() {
+        int choice = (int) tui.mainMenue();
+        switch (choice) {
+            case 1:
                 currentMenu = 2;
+                break;
+            case 2:
+                currentMenu = 3;
                 break;
             case 3:
                 running = false;
@@ -81,7 +102,7 @@ public class Controller {
                 break;
                 // show main menu
             case 6:
-                currentMenu = 0;
+                currentMenu = 1;
                 break;
                 // quit programme
             case 7:
@@ -115,7 +136,7 @@ public class Controller {
                 dbConnection.mealDetails(tui.searchMealById());
                 break;
             case 7:
-                currentMenu = 0;
+                currentMenu = 1;
                 break;
             case 8:
                 running = false;

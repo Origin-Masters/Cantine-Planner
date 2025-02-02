@@ -26,6 +26,19 @@ public class TUI {
     }
 
     /**
+     * Method to display the user menu
+     *
+     * @return Number of the selected option
+     */
+    public Number userMenue() {
+        System.out.println("----User Menü----");
+        System.out.println("1. Login");
+        System.out.println("2. Register");
+        System.out.println("3. Beenden");
+        return programmHelper.promptNumber("");
+    }
+
+    /**
      * Method to display the main menu
      *
      * @return Number of the selected option
@@ -88,7 +101,7 @@ public class TUI {
         reviewRecord.setRating(programmHelper.promptNumber("Bewertung"));
         reviewRecord.setComment(programmHelper.promptString("Kommentar"));
 
-        return  reviewRecord;
+        return reviewRecord;
     }
 
     /**
