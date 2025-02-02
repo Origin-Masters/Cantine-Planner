@@ -15,9 +15,9 @@ public class App {
             Screen screen = new TerminalScreen(terminal);
             screen.startScreen();
 
-            WindowBasedTextGUI textGUI = new MultiWindowTextGUI(screen);
+            MultiWindowTextGUI textGUI = new MultiWindowTextGUI(screen);
 
-            LoginScreen loginScreen = new LoginScreen((MultiWindowTextGUI) textGUI);
+            LoginScreen loginScreen = new LoginScreen( textGUI);
             loginScreen.display();
 
             screen.stopScreen();
