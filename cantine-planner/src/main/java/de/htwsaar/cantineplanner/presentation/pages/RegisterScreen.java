@@ -1,4 +1,3 @@
-// src/main/java/de/htwsaar/cantineplanner/presentation/pages/RegisterScreen.java
 package de.htwsaar.cantineplanner.presentation.pages;
 
 import com.googlecode.lanterna.TerminalSize;
@@ -44,10 +43,13 @@ public class RegisterScreen extends AbstractScreen {
         TextBox email = new TextBox();
         panel.addComponent(email);
 
+        panel.addComponent(new EmptySpace(), GridLayout.createHorizontallyFilledLayoutData(2));
 
-        panel.addComponent(new EmptySpace());
-
-        Button registerButton = new Button("Register", () -> {
+        Panel buttonPanel = new Panel(new GridLayout(2));
+        buttonPanel.addComponent(new Button("Close", () -> {
+            gui.getActiveWindow().close();
+        }));
+        buttonPanel.addComponent(new Button("Register", () -> {
             String user = username.getText();
             String pass = password.getText();
             String mail = email.getText();
@@ -56,13 +58,9 @@ public class RegisterScreen extends AbstractScreen {
             } else {
                 showError("All fields are required");
             }
-        });
-        panel.addComponent(registerButton);
+        }));
 
-        Button closeButton = new Button("Close", () -> {
-            gui.getActiveWindow().close();
-        });
-        panel.addComponent(closeButton);
+        panel.addComponent(buttonPanel, GridLayout.createHorizontallyFilledLayoutData(2));
 
         BasicWindow window = new BasicWindow("Register");
         window.setComponent(panel);

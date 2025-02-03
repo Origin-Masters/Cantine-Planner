@@ -31,13 +31,28 @@ public class ScreenManager {
         RegisterScreen registerScreen = new RegisterScreen(gui, eventManager);
         registerScreen.display();
     }
+
     public void showErrorScreen(String message) {
         ErrorScreen errorScreen = new ErrorScreen(gui, message);
         errorScreen.display();
     }
+
     public void showSuccessScreen(String message) {
         SuccessScreen successScreen = new SuccessScreen(gui, message);
         successScreen.display();
     }
-    // Add methods to show other screens as needed
+
+    public void showMenuScreen(EventManager eventManager) {
+        MainMenueScreen  mainMenueScreen= new MainMenueScreen(gui, eventManager);
+        mainMenueScreen.display();
+    }
+
+    public void closeActiveWindow() {
+        if (gui.getActiveWindow() != null) {
+            gui.getActiveWindow().close();
+        }
+    }
+    public void closeTerminal() throws IOException {
+        gui.getScreen().stopScreen();
+    }
 }

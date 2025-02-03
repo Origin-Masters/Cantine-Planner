@@ -1,4 +1,3 @@
-// src/main/java/de/htwsaar/cantineplanner/presentation/pages/LoginScreen.java
 package de.htwsaar.cantineplanner.presentation.pages;
 
 import com.googlecode.lanterna.TerminalSize;
@@ -27,7 +26,7 @@ public class LoginScreen extends AbstractScreen {
         panel.addComponent(new Label("Username")
                 .setForegroundColor(new TextColor.RGB(29, 29, 29))
                 .addStyle(SGR.BOLD));
-        TextBox username = new TextBox();
+        TextBox username = new TextBox().setSize(new TerminalSize(30, 1));
         panel.addComponent(username);
 
         panel.addComponent(new Label("Password")
@@ -35,22 +34,30 @@ public class LoginScreen extends AbstractScreen {
                 .addStyle(SGR.BOLD));
         TextBox password = new TextBox()
                 .setMask('*')
-                .setSize(new TerminalSize(20, 1));
+                .setSize(new TerminalSize(30, 1));
         panel.addComponent(password);
 
         panel.addComponent(new EmptySpace());
 
-        Button loginButton = new Button("Login", () -> {
+        Panel buttonPanel = new Panel(new GridLayout(1));
+        buttonPanel.addComponent(new Button("Login", () -> {
             String user = username.getText();
             String pass = password.getText();
             eventManager.notify("login", new String[]{user, pass});
-        });
-        panel.addComponent(loginButton);
+        }).setPreferredSize(new TerminalSize(20, 3))
+                .setLayoutData(GridLayout.createLayoutData(GridLayout.Alignment.BEGINNING, GridLayout.Alignment.BEGINNING)));
 
-        Button registerButton = new Button("Register", () -> {
+        buttonPanel.addComponent(new Button("Registrieren", () -> {
             eventManager.notify("showRegisterScreen", null);
-        });
-        panel.addComponent(registerButton);
+        }).setPreferredSize(new TerminalSize(20, 3))
+                .setLayoutData(GridLayout.createLayoutData(GridLayout.Alignment.BEGINNING, GridLayout.Alignment.BEGINNING)));
+
+        buttonPanel.addComponent(new Button("Programm beenden", () -> {
+            eventManager.notify("exit", null);
+        }).setPreferredSize(new TerminalSize(20, 3))
+                .setLayoutData(GridLayout.createLayoutData(GridLayout.Alignment.CENTER, GridLayout.Alignment.CENTER)));
+
+        panel.addComponent(buttonPanel, GridLayout.createLayoutData(GridLayout.Alignment.CENTER, GridLayout.Alignment.CENTER, true, false, 1, 1));
 
         BasicWindow window = new BasicWindow("Login");
         window.setComponent(panel);
