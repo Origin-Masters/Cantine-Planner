@@ -1,19 +1,25 @@
+// src/main/java/de/htwsaar/cantineplanner/businessLogic/Controller.java
 package de.htwsaar.cantineplanner.businessLogic;
 
-import de.htwsaar.cantineplanner.dataAccess.DBConnection;
-import de.htwsaar.cantineplanner.presentation.TUI;
+import de.htwsaar.cantineplanner.presentation.ScreenManager;
+import de.htwsaar.cantineplanner.presentation.pages.RegisterScreen;
 
 public class Controller {
-    private TUI tui;
-    private DBConnection dbConnection;
+    private ScreenManager screenManager;
+    private CantineService cantineService;
+    private EventManager eventManager;
     private boolean running;
     private int currentMenu;
 
-
-    public Controller() {
-        this.tui = new TUI();
-        this.dbConnection = new DBConnection();
+    public Controller(ScreenManager screenManager) {
+        this.screenManager = screenManager;
+        this.cantineService = new CantineService();
+        this.eventManager = new EventManager();
         this.running = false;
+
+        eventManager.subscribe("login", this::handleLogin);
+        eventManager.subscribe("register", this::handleRegister);
+        eventManager.subscribe("showRegisterScreen", this::handleShowRegisterScreen);
     }
 
     public void start() {
@@ -22,16 +28,16 @@ public class Controller {
         while (running) {
             switch (currentMenu) {
                 case 0:
-                    userMenue();
+                    userMenu();
                     break;
                 case 1:
                     mainMenu();
                     break;
                 case 2:
-                    mealMenue();
+                    mealMenu();
                     break;
                 case 3:
-                    reviewMenue();
+                    reviewMenu();
                     break;
                 default:
                     System.out.println("Invalid Input");
@@ -39,112 +45,53 @@ public class Controller {
         }
     }
 
-    public void userMenue() {
-        int choice = (int) tui.userMenue();
-        switch (choice) {
-            case 1:
-                currentMenu = 1;
-                break;
-            case 2:
-                currentMenu = 1;
-                break;
-            case 3:
-                running = false;
-                System.out.println("Goodbye!");
-                break;
-            default:
-                System.out.println("Invalid Input");
+    private void handleLogin(Object data) {
+        String[] credentials = (String[]) data;
+        String username = credentials[0];
+        String password = credentials[1];
+        if (cantineService.validateUser(username, password)) {
+            screenManager.showSuccessScreen("Login successful!");
+            currentMenu = 1; // Go to main menu
+        } else {
+            screenManager.showErrorScreen("Username or password is incorrect retry!");
         }
+    }
+
+    private void handleRegister(Object data) {
+        if (data == null) {
+            screenManager.showErrorScreen("Data is null");
+            return;
+        }
+        String[] credentials = (String[]) data;
+        String username = credentials[0];
+        String password = credentials[1];
+        String email = credentials[2];
+        if (cantineService.registerUser(username, password,email)) {
+            screenManager.showSuccessScreen("Registration successful!");
+            currentMenu = 0; // Go back to login menu
+        } else {
+            screenManager.showErrorScreen("Registration failed");
+        }
+    }
+
+    private void handleShowRegisterScreen(Object data) {
+        screenManager.showRegisterScreen(eventManager);
+    }
+
+    public void userMenu() {
+        screenManager.showLoginScreen(eventManager);
     }
 
     public void mainMenu() {
-        int choice = (int) tui.mainMenue();
-        switch (choice) {
-            case 1:
-                currentMenu = 2;
-                break;
-            case 2:
-                currentMenu = 3;
-                break;
-            case 3:
-                running = false;
-                System.out.println("Goodbye!");
-                break;
-            default:
-                System.out.println("Invalid Input");
-        }
+        // screenManager.showMainMenu();
     }
 
-    public void reviewMenue(){
-        int choice = (int) tui.reviewMenue();
-        switch (choice) {
-                // show all Reviews
-            case 1:
-               dbConnection.allReviews();
-                break;
-                // add Review
-            case 2:
-
-                dbConnection.addReview(tui.createReview());
-                break;
-                // delete Review
-            case 3:
-
-                dbConnection.deleteReview(tui.searchReview());
-                break;
-                // Look for Review via meal iD
-            case 4:
-               dbConnection.reviewByMealiD(tui.searchMealById());
-                break;
-                // Show All Reviews per Meal Name
-            case 5:
-                dbConnection.reviewsByMealName(tui.searchMeal());
-                break;
-                // show main menu
-            case 6:
-                currentMenu = 1;
-                break;
-                // quit programme
-            case 7:
-                running = false;
-                System.out.println("Goodbye!");
-                break;
-            default:
-                System.out.println("Invalid Input");
-        }
+    public void mealMenu() {
+        // screenManager.showMealMenu();
     }
 
-    public void mealMenue() {
-        int choice = (int) tui.mealMenue();
-        switch (choice) {
-            case 1:
-                dbConnection.allMeals();
-                break;
-            case 2:
-                dbConnection.addMeal(tui.createMeal());
-                break;
-            case 3:
-                dbConnection.allAllergies();
-                break;
-            case 4:
-                dbConnection.deleteMeal(tui.deleteMeal());
-                break;
-            case 5:
-                dbConnection.searchMeal(tui.searchMeal());
-                break;
-            case 6:
-                dbConnection.mealDetails(tui.searchMealById());
-                break;
-            case 7:
-                currentMenu = 1;
-                break;
-            case 8:
-                running = false;
-                System.out.println("Goodbye!");
-                break;
-            default:
-                System.out.println("Invalid Input");
-        }
+    public void reviewMenu() {
+        // screenManager.showReviewMenu();
     }
 
     public int getCurrentMenu() {
@@ -154,5 +101,8 @@ public class Controller {
     public boolean isRunning() {
         return running;
     }
-}
 
+    public CantineService getCantineService() {
+        return cantineService;
+    }
+}

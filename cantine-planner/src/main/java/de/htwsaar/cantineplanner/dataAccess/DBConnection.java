@@ -1,8 +1,9 @@
 package de.htwsaar.cantineplanner.dataAccess;
-
+import de.htwsaar.cantineplanner.security.PasswordUtil;
 import de.htwsaar.cantineplanner.businessLogic.AllergenMapper;
 import de.htwsaar.cantineplanner.businessLogic.MealTypeMapper;
 import de.htwsaar.cantineplanner.codegen.tables.Review;
+import de.htwsaar.cantineplanner.codegen.tables.Users;
 import de.htwsaar.cantineplanner.codegen.tables.records.ReviewRecord;
 import org.jooq.DSLContext;
 import org.jooq.SQLDialect;
@@ -14,7 +15,6 @@ import org.slf4j.LoggerFactory;
 import java.util.Optional;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.stream.Collectors;
@@ -40,6 +40,36 @@ public class DBConnection {
         return DSL.using(connection, SQLDialect.SQLITE);
     }
 
+    public boolean validateUser(String username, String plainTextPassword) {
+        try (Connection connection = dataSource.getConnection()) {
+            DSLContext dsl = getDSLContext(connection);
+            String hashedPassword = dsl.select(Users.USERS.PASSWORD)
+                    .from(Users.USERS)
+                    .where(Users.USERS.USERNAME.eq(username))
+                    .fetchOne(Users.USERS.PASSWORD);
+
+            return hashedPassword != null && PasswordUtil.verifyPassword(plainTextPassword, hashedPassword);
+        } catch (SQLException e) {
+            logger.error("Error validating user", e);
+            return false;
+        }
+    }
+    public boolean registerUser(String username, String plainTextPassword, String email) {
+        try (Connection connection = dataSource.getConnection()) {
+            DSLContext dsl = getDSLContext(connection);
+            String hashedPassword = PasswordUtil.hashPassword(plainTextPassword);
+            dsl.insertInto(Users.USERS)
+                    .set(Users.USERS.USERNAME, username)
+                    .set(Users.USERS.PASSWORD, hashedPassword)
+                    .set(Users.USERS.EMAIL, email)
+                    .set(Users.USERS.ROLE, 0)
+                    .execute();
+            return true;
+        } catch (SQLException e) {
+            logger.error("Error registering user", e);
+            return false;
+        }
+    }
     /**
      * Method addMeal adds a meal for the database
      *

@@ -1,4 +1,4 @@
-package de.htwsaar.cantineplanner.tuiPresentationNew;
+package de.htwsaar.cantineplanner.presentation.pages;
 
 import com.googlecode.lanterna.gui2.MultiWindowTextGUI;
 
