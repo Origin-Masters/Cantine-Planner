@@ -8,6 +8,8 @@ import de.htwsaar.cantineplanner.businessLogic.EventManager;
 import de.htwsaar.cantineplanner.presentation.pages.*;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 public class ScreenManager {
     private MultiWindowTextGUI gui;
@@ -28,8 +30,21 @@ public class ScreenManager {
     }
 
     public void showMealMenuScreen(EventManager eventManager) {
-        MealMenuScreen mealMenuScreen = new MealMenuScreen(gui, eventManager);
-        mealMenuScreen.display();
+        List<MenuBuilder.MenuButton> mealMenuButtons = Arrays.asList(
+                new MenuBuilder.MenuButton("Alle Gerichte anzeigen", "showAllMeals"),
+                new MenuBuilder.MenuButton("Gericht hinzufügen", "addMeal"),
+                new MenuBuilder.MenuButton("Alle Allergien anzeigen", "showAllAllergies"),
+                new MenuBuilder.MenuButton("Gericht löschen", "deleteMeal"),
+                new MenuBuilder.MenuButton("Gericht nach Name suchen", "searchMealByName"),
+                new MenuBuilder.MenuButton("Gerichtdetails nach ID anzeigen", "showMealDetailsById"),
+                new MenuBuilder.MenuButton("Main Menü", "showMainMenu"),
+                new MenuBuilder.MenuButton("Programm beenden", "exit")
+        );
+
+        MenuBuilder mealMenu = new MenuBuilder(gui, eventManager)
+                .setTitle("Meal Menu")
+                .setButtons(mealMenuButtons);
+        mealMenu.display();
     }
 
     public void showRegisterScreen(EventManager eventManager) {
@@ -47,9 +62,17 @@ public class ScreenManager {
         successScreen.display();
     }
 
-    public void showMenuScreen(EventManager eventManager) {
-        MainMenueScreen  mainMenueScreen= new MainMenueScreen(gui, eventManager);
-        mainMenueScreen.display();
+    public void showMainMenuScreen(EventManager eventManager) {
+        List<MenuBuilder.MenuButton> mainMenuButtons = Arrays.asList(
+                new MenuBuilder.MenuButton("User Menu", "showUserMenu"),
+                new MenuBuilder.MenuButton("Meal Menu", "showMealMenu"),
+                new MenuBuilder.MenuButton("Review Menu", "showReviewMenu"),
+                new MenuBuilder.MenuButton("Exit", "exit")
+        );
+        MenuBuilder mainMenu = new MenuBuilder(gui, eventManager)
+                                            .setTitle("Main Menu")
+                                        .setButtons(mainMenuButtons);
+        mainMenu.display();
     }
 
     public void closeActiveWindow() {

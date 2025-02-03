@@ -130,7 +130,7 @@ public class Controller {
     }
 
     public void mainMenu() {
-        screenManager.showMenuScreen(eventManager);
+        screenManager.showMainMenuScreen(eventManager);
     }
 
     public void mealMenu() {
