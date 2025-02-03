@@ -2,6 +2,7 @@
 package de.htwsaar.cantineplanner.businessLogic;
 
 import de.htwsaar.cantineplanner.dataAccess.DBConnection;
+import de.htwsaar.cantineplanner.exceptions.UserAlreadyExistsException;
 
 public class CantineService {
     private DBConnection dbConnection;
@@ -14,9 +15,14 @@ public class CantineService {
         return dbConnection.validateUser(username, password);
     }
 
-   public boolean registerUser(String username, String password, String email) {
+   public boolean registerUser(String username, String password, String email) throws UserAlreadyExistsException {
         return dbConnection.registerUser(username, password, email);
     }
+
+    public int getUserId(String username) {
+        return dbConnection.getUserId(username);
+    }
+
 
     // Add other methods as needed
 }

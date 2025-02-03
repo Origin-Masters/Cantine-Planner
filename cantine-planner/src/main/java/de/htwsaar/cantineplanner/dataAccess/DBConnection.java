@@ -1,4 +1,5 @@
 package de.htwsaar.cantineplanner.dataAccess;
+import de.htwsaar.cantineplanner.exceptions.UserAlreadyExistsException;
 import de.htwsaar.cantineplanner.security.PasswordUtil;
 import de.htwsaar.cantineplanner.businessLogic.AllergenMapper;
 import de.htwsaar.cantineplanner.businessLogic.MealTypeMapper;
@@ -54,9 +55,31 @@ public class DBConnection {
             return false;
         }
     }
-    public boolean registerUser(String username, String plainTextPassword, String email) {
+    public int getUserId(String username) {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
+            return dsl.select(Users.USERS.USERID)
+                    .from(Users.USERS)
+                    .where(Users.USERS.USERNAME.eq(username))
+                    .fetchOne(Users.USERS.USERID);
+        } catch (SQLException e) {
+            logger.error("Error getting user ID", e);
+            return -1;
+        }
+    }
+    public boolean registerUser(String username, String plainTextPassword, String email) throws UserAlreadyExistsException {
+        try (Connection connection = dataSource.getConnection()) {
+            DSLContext dsl = getDSLContext(connection);
+            // Check if username already exists
+            boolean userExists = dsl.fetchExists(
+                    dsl.selectFrom(Users.USERS)
+                            .where(Users.USERS.USERNAME.eq(username))
+            );
+
+            if (userExists) {
+                throw new UserAlreadyExistsException("Username already exists please choose another one!");
+            }
+
             String hashedPassword = PasswordUtil.hashPassword(plainTextPassword);
             dsl.insertInto(Users.USERS)
                     .set(Users.USERS.USERNAME, username)
