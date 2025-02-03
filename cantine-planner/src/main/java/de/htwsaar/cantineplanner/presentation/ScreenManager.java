@@ -27,6 +27,11 @@ public class ScreenManager {
         loginScreen.display();
     }
 
+    public void showMealMenuScreen(EventManager eventManager) {
+        MealMenuScreen mealMenuScreen = new MealMenuScreen(gui, eventManager);
+        mealMenuScreen.display();
+    }
+
     public void showRegisterScreen(EventManager eventManager) {
         RegisterScreen registerScreen = new RegisterScreen(gui, eventManager);
         registerScreen.display();

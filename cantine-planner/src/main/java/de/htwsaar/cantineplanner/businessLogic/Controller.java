@@ -134,7 +134,7 @@ public class Controller {
     }
 
     public void mealMenu() {
-        // screenManager.showMealMenu();
+        screenManager.showMealMenuScreen(eventManager);
     }
 
     public void reviewMenu() {
