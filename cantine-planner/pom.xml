@@ -229,7 +229,7 @@
         </plugin>
 
 
-        <!-- Maven-Shade Plugin (Fat JAR / Uber Jar) -->
+        <!-- Maven-Shade Plugin (Fat JAR / Uber Jar ) -->
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-shade-plugin</artifactId>
