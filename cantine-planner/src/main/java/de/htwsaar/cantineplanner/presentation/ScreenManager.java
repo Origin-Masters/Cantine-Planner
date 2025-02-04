@@ -74,7 +74,50 @@ public class ScreenManager {
                                         .setButtons(mainMenuButtons);
         mainMenu.display();
     }
+    public void showAllergiesMenu(EventManager eventManager) {
+        List<MenuBuilder.MenuButton> allergiesMenuButtons = Arrays.asList(
+                new MenuBuilder.MenuButton("Alle Allergien anzeigen", "showAllAllergies"),
+                new MenuBuilder.MenuButton("Allergie hinzufügen", "addAllergy"),
+                new MenuBuilder.MenuButton("Allergie löschen", "deleteAllergy"),
+                new MenuBuilder.MenuButton("Allergie nach Name suchen", "searchAllergyByName"),
+                new MenuBuilder.MenuButton("Allergiedetails nach ID anzeigen", "showAllergyDetailsById"),
+                new MenuBuilder.MenuButton("Main Menü", "showMainMenu"),
+                new MenuBuilder.MenuButton("Programm beenden", "exit")
+        );
 
+        MenuBuilder allergiesMenu = new MenuBuilder(gui, eventManager)
+                .setTitle("Allergies Menu")
+                .setButtons(allergiesMenuButtons);
+        allergiesMenu.display();
+    }
+    public void showReviewsMenu(EventManager eventManager) {
+        List<MenuBuilder.MenuButton> reviewsMenuButtons = Arrays.asList(
+                new MenuBuilder.MenuButton("Alle Reviews anzeigen", "showAllReviews"),
+                new MenuBuilder.MenuButton("Review hinzufügen", "addReview"),
+                new MenuBuilder.MenuButton("Review löschen", "deleteReview"),
+                new MenuBuilder.MenuButton("Review nach ID suchen", "searchReviewById"),
+                new MenuBuilder.MenuButton("Reviewdetails nach ID anzeigen", "showReviewDetailsById"),
+                new MenuBuilder.MenuButton("Main Menü", "showMainMenu"),
+                new MenuBuilder.MenuButton("Programm beenden", "exit")
+        );
+
+        MenuBuilder reviewsMenu = new MenuBuilder(gui, eventManager)
+                .setTitle("Reviews Menu")
+                .setButtons(reviewsMenuButtons);
+        reviewsMenu.display();
+    }
+    public void showAllMeals(EventManager eventManager){
+        TableBuilder tableBuilder = new TableBuilder(gui, "Example Table")
+                .addColumn("Column 1")
+                .addColumn("Column 2")
+                .addColumn("Column 3");
+
+        tableBuilder.addRow(Arrays.asList("Row 1, Col 1", "Row 1, Col 2", "Row 1, Col 3"));
+        tableBuilder.addRow(Arrays.asList("Row 2, Col 1", "Row 2, Col 2", "Row 2, Col 3"));
+        tableBuilder.addRow(Arrays.asList("Row 3, Col 1", "Row 3, Col 2", "Row 3, Col 3"));
+
+        tableBuilder.display();
+    }
     public void closeActiveWindow() {
         if (gui.getActiveWindow() != null) {
             gui.getActiveWindow().close();

@@ -27,7 +27,7 @@ public class Controller {
         eventManager.subscribe("login", this::handleLogin);
         eventManager.subscribe("register", this::handleRegister);
         eventManager.subscribe("showRegisterScreen", this::handleShowRegisterScreen);
-        eventManager.subscribe("showMenu", (data) -> switchMenu(1));
+        eventManager.subscribe("showMainMenu", (data) -> switchMenu(1));
         eventManager.subscribe("showMealMenu", (data) -> switchMenu(2));
         eventManager.subscribe("showReviewMenu", (data) -> switchMenu(3));
         eventManager.subscribe("exit", (data) -> exitApplication());
@@ -138,7 +138,7 @@ public class Controller {
     }
 
     public void reviewMenu() {
-        // screenManager.showReviewMenu();
+        screenManager.showReviewsMenu(eventManager);
     }
 
     public int getCurrentMenu() {
