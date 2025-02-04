@@ -47,6 +47,22 @@ public class ScreenManager {
         mealMenu.display();
     }
 
+    public void showUserMenuScreen(EventManager eventManager) {
+        List<MenuBuilder.MenuButton> userMenuButtons = Arrays.asList(
+                new MenuBuilder.MenuButton("Benutzerdaten bearbeiten", "editUserData"),
+                new MenuBuilder.MenuButton("Allergien verwalten", "manageAllergies"),
+                new MenuBuilder.MenuButton("Bewertungen anzeigen", "showReviews"),
+                new MenuBuilder.MenuButton("Abmelden", "logout"),
+                new MenuBuilder.MenuButton("Main Menü", "showMainMenu"),
+                new MenuBuilder.MenuButton("Programm beenden", "exit")
+        );
+
+        MenuBuilder userMenu = new MenuBuilder(gui, eventManager)
+                .setTitle("User Menu")
+                .setButtons(userMenuButtons);
+        userMenu.display();
+    }
+
     public void showRegisterScreen(EventManager eventManager) {
         RegisterScreen registerScreen = new RegisterScreen(gui, eventManager);
         registerScreen.display();

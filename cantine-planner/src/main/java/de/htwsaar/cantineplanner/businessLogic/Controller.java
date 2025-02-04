@@ -19,6 +19,7 @@ public class Controller {
         this.screenManager = screenManager;
         this.cantineService = new CantineService();
         this.eventManager = new EventManager();
+        this.currentUserId = -1;
         this.running = false;
         subscribeToEvents();
     }
@@ -30,6 +31,11 @@ public class Controller {
         eventManager.subscribe("showMainMenu", (data) -> switchMenu(1));
         eventManager.subscribe("showMealMenu", (data) -> switchMenu(2));
         eventManager.subscribe("showReviewMenu", (data) -> switchMenu(3));
+        eventManager.subscribe("showUserMenu", (data) -> switchMenu(4));
+        eventManager.subscribe("logout", (data) -> {
+            switchMenu(0);
+            this.currentUserId = -1;
+        });
         eventManager.subscribe("exit", (data) -> exitApplication());
     }
 
@@ -39,7 +45,7 @@ public class Controller {
         while (running) {
             switch (currentMenu) {
                 case 0:
-                    userMenu();
+                    loginMenu();
                     break;
                 case 1:
                     mainMenu();
@@ -50,6 +56,9 @@ public class Controller {
                 case 3:
                     reviewMenu();
                     break;
+                    case 4:
+                        userMenu();
+                        break;
                 default:
                     System.out.println("Invalid Input");
             }
@@ -124,8 +133,10 @@ public class Controller {
         screenManager.closeActiveWindow();
         currentMenu = menu;
     }
-
     public void userMenu() {
+        screenManager.showUserMenuScreen(eventManager);
+    }
+    public void loginMenu() {
         screenManager.showLoginScreen(eventManager);
     }
 
