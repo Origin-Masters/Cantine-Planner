@@ -147,7 +147,7 @@ public class ScreenManager {
                     .orElse("None");
             tableBuilder.addRow(Arrays.asList(
                     meal.getName(),
-                    String.valueOf(meal.getPrice()),
+                    String.format("%.2f", meal.getPrice()),
                     String.valueOf(meal.getCalories()),
                     allergens,
                     MealTypeMapper.getMealTypeName(meal.getMeat())
