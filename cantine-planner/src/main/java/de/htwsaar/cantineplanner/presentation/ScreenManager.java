@@ -129,6 +129,7 @@ public class ScreenManager {
 
     public void showAllMeals(EventManager eventManager, List<MealsRecord> meals) {
         TableBuilder tableBuilder = new TableBuilder(gui, "All Meals")
+                .addColumn("ID")
                 .addColumn("Name")
                 .addColumn("Price")
                 .addColumn("Calories")
@@ -142,6 +143,7 @@ public class ScreenManager {
                             .collect(Collectors.joining(" ")))
                     .orElse("None");
             tableBuilder.addRow(Arrays.asList(
+                    String.valueOf(meal.getMealId()),
                     meal.getName(),
                     String.format("%.2f", meal.getPrice()),
                     String.valueOf(meal.getCalories()),
@@ -152,21 +154,31 @@ public class ScreenManager {
 
         tableBuilder.display();
     }
+
     public void showInputScreenReg(EventManager eventManager, String title, String event) {
         InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager,title);
         List<String> labels = Arrays.asList("Username", "Password", "Email");
         inputScreenBuilder.display(labels, event);
     }
-    public void showAllAllergies(EventManager eventManager, List<String> allergies) {
+
+    public void showAllAllergies(EventManager eventManager, List<MealsRecord> meals) {
         TableBuilder tableBuilder = new TableBuilder(gui, "All Allergies")
+                .addColumn("Meal Name")
                 .addColumn("Allergy");
 
+        for (MealsRecord meal : meals) {
+            String allergens = Optional.ofNullable(meal.getAllergy())
+                    .map(allergyField -> Arrays.stream(allergyField.split(""))
+                            .map(AllergenMapper::getAllergenFullName)
+                            .collect(Collectors.joining(" ")))
+                    .orElse("None");
+            tableBuilder.addRow(Arrays.asList(
+                    meal.getName(),
+                    allergens
+            ));
+        }
 
-       for(String allergy : allergies) {
-           tableBuilder.addRow(Arrays.asList(allergy));
-       }
-
-         tableBuilder.display();
+        tableBuilder.display();
     }
 
     public void closeActiveWindow() {
