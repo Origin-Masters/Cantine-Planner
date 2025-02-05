@@ -30,6 +30,9 @@ public class CantineService {
         return dbConnection.getAllMeals();
     }
 
+    public List<String> getAllAllergies() {
+        return dbConnection.getAllAllergies();
+    }
 
     // Add other methods as needed
 }

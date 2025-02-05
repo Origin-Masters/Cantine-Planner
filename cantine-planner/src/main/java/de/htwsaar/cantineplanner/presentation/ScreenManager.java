@@ -157,6 +157,18 @@ public class ScreenManager {
         tableBuilder.display();
     }
 
+    public void showAllAllergies(EventManager eventManager, List<String> allergies) {
+        TableBuilder tableBuilder = new TableBuilder(gui, "All Allergies")
+                .addColumn("Allergy");
+
+
+       for(String allergy : allergies) {
+           tableBuilder.addRow(Arrays.asList(allergy));
+       }
+
+         tableBuilder.display();
+    }
+
     public void closeActiveWindow() {
         if (gui.getActiveWindow() != null) {
             gui.getActiveWindow().close();

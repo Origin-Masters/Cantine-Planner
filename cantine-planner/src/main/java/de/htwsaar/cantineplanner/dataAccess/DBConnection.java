@@ -157,10 +157,11 @@ public class DBConnection {
     /**
      * Method allAllergies displays all allergies in the database
      */
-    public void getAllAllergies() {
+    public List<String> getAllAllergies() {
+        List<String> allergiesList = new ArrayList<>();
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
-            dsl.select(Meals.MEALS.NAME, Meals.MEALS.ALLERGY)
+            dsl.select(Meals.MEALS.ALLERGY)
                     .from(Meals.MEALS)
                     .fetch()
                     .forEach(record -> {
@@ -169,14 +170,13 @@ public class DBConnection {
                                         .map(AllergenMapper::getAllergenFullName)
                                         .collect(Collectors.joining(" ")))
                                 .orElse("None");
-                        System.out.println("Gericht: " + record.get(Meals.MEALS.NAME));
-                        System.out.println("Allergie: " + allergens);
-                        System.out.println("---------");
+                        allergiesList.add(allergens);
                     });
             logger.info("All allergies displayed");
         } catch (SQLException e) {
             logger.error("Error displaying allergies", e);
         }
+        return allergiesList;
     }
 
     /**

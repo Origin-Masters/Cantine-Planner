@@ -33,6 +33,7 @@ public class Controller {
         eventManager.subscribe("showReviewMenu", (data) -> switchMenu(3));
         eventManager.subscribe("showUserMenu", (data) -> switchMenu(4));
         eventManager.subscribe("showAllMeals", (data) -> screenManager.showAllMeals(eventManager, cantineService.getAllMeals()));
+        eventManager.subscribe("showAllAllergies", (data) -> screenManager.showAllAllergies(eventManager, cantineService.getAllAllergies()));
         eventManager.subscribe("logout", (data) -> {
             switchMenu(0);
             this.currentUserId = -1;
