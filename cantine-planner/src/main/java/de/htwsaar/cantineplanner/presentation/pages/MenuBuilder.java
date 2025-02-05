@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class MenuBuilder {
+public class  MenuBuilder {
     private MultiWindowTextGUI gui;
     private EventManager eventManager;
     private String title;

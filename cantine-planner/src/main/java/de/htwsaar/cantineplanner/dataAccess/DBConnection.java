@@ -1,4 +1,5 @@
 package de.htwsaar.cantineplanner.dataAccess;
+
 import de.htwsaar.cantineplanner.exceptions.UserAlreadyExistsException;
 import de.htwsaar.cantineplanner.security.PasswordUtil;
 import de.htwsaar.cantineplanner.businessLogic.AllergenMapper;
@@ -13,12 +14,15 @@ import de.htwsaar.cantineplanner.codegen.tables.records.MealsRecord;
 import de.htwsaar.cantineplanner.codegen.tables.Meals;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import java.util.Optional;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.stream.Collectors;
+import java.util.List;
+import java.util.ArrayList;
 
 public class DBConnection {
     private static final Logger logger = LoggerFactory.getLogger(DBConnection.class);
@@ -55,6 +59,7 @@ public class DBConnection {
             return false;
         }
     }
+
     public int getUserId(String username) {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
@@ -67,6 +72,7 @@ public class DBConnection {
             return -1;
         }
     }
+
     public boolean registerUser(String username, String plainTextPassword, String email) throws UserAlreadyExistsException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
@@ -93,6 +99,7 @@ public class DBConnection {
             return false;
         }
     }
+
     /**
      * Method addMeal adds a meal for the database
      *
@@ -116,7 +123,10 @@ public class DBConnection {
     /**
      * Method allMeals displays all meals in the database
      */
-    public void allMeals() {
+
+
+    public List<MealsRecord> getAllMeals() {
+        List<MealsRecord> mealsList = new ArrayList<>();
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
             dsl.selectFrom(Meals.MEALS)
@@ -134,17 +144,20 @@ public class DBConnection {
                         System.out.println("Allergene: " + allergens);
                         System.out.println("Fleisch: " + MealTypeMapper.getMealTypeName(record.get(Meals.MEALS.MEAT)));
                         System.out.println("---------");
+
+                        mealsList.add(record);
                     });
             logger.info("All meals displayed");
         } catch (SQLException e) {
             logger.error("Error displaying meals", e);
         }
+        return mealsList;
     }
 
     /**
      * Method allAllergies displays all allergies in the database
      */
-    public void allAllergies() {
+    public void getAllAllergies() {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
             dsl.select(Meals.MEALS.NAME, Meals.MEALS.ALLERGY)

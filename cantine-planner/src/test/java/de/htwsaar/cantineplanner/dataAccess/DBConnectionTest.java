@@ -29,8 +29,8 @@ public class DBConnectionTest {
     }
 
     @Test
-    public void testAllMeals() {
-        assertDoesNotThrow(() -> dbConnection.allMeals());
+    public void testGetAllMeals() {
+        assertDoesNotThrow(() -> dbConnection.getAllMeals());
     }
 
     @Test

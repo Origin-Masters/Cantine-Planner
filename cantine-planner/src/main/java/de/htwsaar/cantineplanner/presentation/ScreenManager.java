@@ -4,12 +4,18 @@ package de.htwsaar.cantineplanner.presentation;
 import com.googlecode.lanterna.gui2.MultiWindowTextGUI;
 import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
+import de.htwsaar.cantineplanner.businessLogic.AllergenMapper;
 import de.htwsaar.cantineplanner.businessLogic.EventManager;
+import de.htwsaar.cantineplanner.businessLogic.MealTypeMapper;
+import de.htwsaar.cantineplanner.codegen.tables.records.MealsRecord;
+import de.htwsaar.cantineplanner.dataAccess.DBConnection;
 import de.htwsaar.cantineplanner.presentation.pages.*;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class ScreenManager {
     private MultiWindowTextGUI gui;
@@ -86,10 +92,11 @@ public class ScreenManager {
                 new MenuBuilder.MenuButton("Exit", "exit")
         );
         MenuBuilder mainMenu = new MenuBuilder(gui, eventManager)
-                                            .setTitle("Main Menu")
-                                        .setButtons(mainMenuButtons);
+                .setTitle("Main Menu")
+                .setButtons(mainMenuButtons);
         mainMenu.display();
     }
+
     public void showAllergiesMenu(EventManager eventManager) {
         List<MenuBuilder.MenuButton> allergiesMenuButtons = Arrays.asList(
                 new MenuBuilder.MenuButton("Alle Allergien anzeigen", "showAllAllergies"),
@@ -106,6 +113,7 @@ public class ScreenManager {
                 .setButtons(allergiesMenuButtons);
         allergiesMenu.display();
     }
+
     public void showReviewsMenu(EventManager eventManager) {
         List<MenuBuilder.MenuButton> reviewsMenuButtons = Arrays.asList(
                 new MenuBuilder.MenuButton("Alle Reviews anzeigen", "showAllReviews"),
@@ -122,23 +130,39 @@ public class ScreenManager {
                 .setButtons(reviewsMenuButtons);
         reviewsMenu.display();
     }
-    public void showAllMeals(EventManager eventManager){
-        TableBuilder tableBuilder = new TableBuilder(gui, "Example Table")
-                .addColumn("Column 1")
-                .addColumn("Column 2")
-                .addColumn("Column 3");
 
-        tableBuilder.addRow(Arrays.asList("Row 1, Col 1", "Row 1, Col 2", "Row 1, Col 3"));
-        tableBuilder.addRow(Arrays.asList("Row 2, Col 1", "Row 2, Col 2", "Row 2, Col 3"));
-        tableBuilder.addRow(Arrays.asList("Row 3, Col 1", "Row 3, Col 2", "Row 3, Col 3"));
+    public void showAllMeals(EventManager eventManager, List<MealsRecord> meals) {
+        TableBuilder tableBuilder = new TableBuilder(gui, "All Meals")
+                .addColumn("Name")
+                .addColumn("Price")
+                .addColumn("Calories")
+                .addColumn("Allergens")
+                .addColumn("Meat");
+
+        for (MealsRecord meal : meals) {
+            String allergens = Optional.ofNullable(meal.getAllergy())
+                    .map(allergyField -> Arrays.stream(allergyField.split(""))
+                            .map(AllergenMapper::getAllergenFullName)
+                            .collect(Collectors.joining(" ")))
+                    .orElse("None");
+            tableBuilder.addRow(Arrays.asList(
+                    meal.getName(),
+                    String.valueOf(meal.getPrice()),
+                    String.valueOf(meal.getCalories()),
+                    allergens,
+                    MealTypeMapper.getMealTypeName(meal.getMeat())
+            ));
+        }
 
         tableBuilder.display();
     }
+
     public void closeActiveWindow() {
         if (gui.getActiveWindow() != null) {
             gui.getActiveWindow().close();
         }
     }
+
     public void closeTerminal() throws IOException {
         gui.getScreen().stopScreen();
     }
