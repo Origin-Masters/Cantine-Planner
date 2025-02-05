@@ -2,7 +2,6 @@ package de.htwsaar.cantineplanner.presentation.pages;
 
 import com.googlecode.lanterna.gui2.*;
 import com.googlecode.lanterna.gui2.table.Table;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -33,11 +32,11 @@ public class TableBuilder {
     public void display() {
         Panel panel = new Panel(new GridLayout(1));
         Table<String> table = new Table<>(columns.toArray(new String[0]));
+        table.setVisibleRows(20);
 
         for (List<String> row : rows) {
             table.getTableModel().addRow(row.toArray(new String[0]));
         }
-
         panel.addComponent(table);
 
         Button closeButton = new Button("Close", () -> {
