@@ -69,11 +69,6 @@ public class ScreenManager {
         userMenu.display();
     }
 
-    public void showRegisterScreen(EventManager eventManager) {
-        RegisterScreen registerScreen = new RegisterScreen(gui, eventManager);
-        registerScreen.display();
-    }
-
     public void showErrorScreen(String message) {
         ErrorScreen errorScreen = new ErrorScreen(gui, message);
         errorScreen.display();
@@ -156,7 +151,11 @@ public class ScreenManager {
 
         tableBuilder.display();
     }
-
+    public void showInputScreenReg(EventManager eventManager, String title, String event) {
+        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager,title);
+        List<String> labels = Arrays.asList("Username", "Password", "Email");
+        inputScreenBuilder.display(labels, event);
+    }
     public void showAllAllergies(EventManager eventManager, List<String> allergies) {
         TableBuilder tableBuilder = new TableBuilder(gui, "All Allergies")
                 .addColumn("Allergy");

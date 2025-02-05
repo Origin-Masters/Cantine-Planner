@@ -128,7 +128,7 @@ public class Controller {
         return false;
     }
     private void handleShowRegisterScreen(Object data) {
-        screenManager.showRegisterScreen(eventManager);
+        screenManager.showInputScreenReg(eventManager, "Register", "register");
     }
 
     private void switchMenu(int menu) {

@@ -55,7 +55,6 @@ public class  MenuBuilder {
                     .setPreferredSize(new TerminalSize(35, 3))
                     .setLayoutData(GridLayout.createLayoutData(GridLayout.Alignment.CENTER, GridLayout.Alignment.CENTER)));
         }
-
         BasicWindow window = new BasicWindow(title);
         window.setComponent(panel);
         window.setHints(Arrays.asList(Window.Hint.CENTERED));
