@@ -1,18 +1,18 @@
-// src/main/java/de/htwsaar/cantineplanner/presentation/pages/SuccessScreen.java
 package de.htwsaar.cantineplanner.presentation.pages;
 
 import com.googlecode.lanterna.gui2.*;
 import com.googlecode.lanterna.TextColor;
-import com.googlecode.lanterna.SGR;
 
 import java.util.Arrays;
 
-public class SuccessScreen extends AbstractScreen {
-    private String successMessage;
+public class NotificationScreenBuilder extends AbstractScreen {
+    private String notificationMessage;
+    private TextColor textColor;
 
-    public SuccessScreen(MultiWindowTextGUI gui, String successMessage) {
+    public NotificationScreenBuilder(MultiWindowTextGUI gui, String notificationMessage, TextColor textColor) {
         super(gui);
-        this.successMessage = successMessage;
+        this.notificationMessage = notificationMessage;
+        this.textColor = textColor;
     }
 
     @Override
@@ -23,15 +23,15 @@ public class SuccessScreen extends AbstractScreen {
         gridLayout.setVerticalSpacing(3);
         gridLayout.setTopMarginSize(3);
 
-        panel.addComponent(new Label(successMessage)
-                .setForegroundColor(new TextColor.RGB(0, 255, 0)));
+        panel.addComponent(new Label(notificationMessage)
+                .setForegroundColor(textColor));
 
         Button closeButton = new Button("Close", () -> {
             gui.getActiveWindow().close();
         });
         panel.addComponent(closeButton);
 
-        BasicWindow window = new BasicWindow("Success");
+        BasicWindow window = new BasicWindow("Notification");
         window.setComponent(panel);
         window.setHints(Arrays.asList(Window.Hint.CENTERED));
 

@@ -1,6 +1,7 @@
 // src/main/java/de/htwsaar/cantineplanner/presentation/ScreenManager.java
 package de.htwsaar.cantineplanner.presentation;
 
+import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.gui2.MultiWindowTextGUI;
 import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
@@ -70,12 +71,12 @@ public class ScreenManager {
     }
 
     public void showErrorScreen(String message) {
-        ErrorScreen errorScreen = new ErrorScreen(gui, message);
+        NotificationScreenBuilder errorScreen = new NotificationScreenBuilder(gui, message, new TextColor.RGB(255, 0, 0));
         errorScreen.display();
     }
 
     public void showSuccessScreen(String message) {
-        SuccessScreen successScreen = new SuccessScreen(gui, message);
+        NotificationScreenBuilder successScreen = new NotificationScreenBuilder(gui, message, new TextColor.RGB(0, 255, 0));
         successScreen.display();
     }
 
