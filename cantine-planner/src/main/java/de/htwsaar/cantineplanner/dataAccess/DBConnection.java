@@ -123,8 +123,6 @@ public class DBConnection {
     /**
      * Method allMeals displays all meals in the database
      */
-
-
     public List<MealsRecord> getAllMeals() {
         List<MealsRecord> mealsList = new ArrayList<>();
         try (Connection connection = dataSource.getConnection()) {
@@ -137,13 +135,6 @@ public class DBConnection {
                                         .map(AllergenMapper::getAllergenFullName)
                                         .collect(Collectors.joining(" ")))
                                 .orElse("None");
-
-                        System.out.println("Gericht: " + record.get(Meals.MEALS.NAME));
-                        System.out.println("Preis: " + record.get(Meals.MEALS.PRICE));
-                        System.out.println("Kalorien: " + record.get(Meals.MEALS.CALORIES));
-                        System.out.println("Allergene: " + allergens);
-                        System.out.println("Fleisch: " + MealTypeMapper.getMealTypeName(record.get(Meals.MEALS.MEAT)));
-                        System.out.println("---------");
 
                         mealsList.add(record);
                     });
