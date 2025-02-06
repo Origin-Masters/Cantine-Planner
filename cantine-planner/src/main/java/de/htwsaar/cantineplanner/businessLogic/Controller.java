@@ -5,6 +5,7 @@ import de.htwsaar.cantineplanner.exceptions.UserAlreadyExistsException;
 import de.htwsaar.cantineplanner.presentation.ScreenManager;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Objects;
 
 public class Controller {
@@ -17,14 +18,16 @@ public class Controller {
 
     public Controller(ScreenManager screenManager) {
         this.screenManager = screenManager;
-        this.cantineService = new CantineService();
         this.eventManager = new EventManager();
+        this.cantineService = new CantineService(eventManager);
         this.currentUserId = -1;
         this.running = false;
         subscribeToEvents();
     }
 
     private void subscribeToEvents() {
+        eventManager.subscribe("success", (data) -> screenManager.showSuccessScreen((String) data));
+        eventManager.subscribe("error", (data) -> screenManager.showErrorScreen((String) data));
         eventManager.subscribe("login", this::handleLogin);
         eventManager.subscribe("register", this::handleRegister);
         eventManager.subscribe("showRegisterScreen", this::handleShowRegisterScreen);
@@ -32,8 +35,20 @@ public class Controller {
         eventManager.subscribe("showMealMenu", (data) -> switchMenu(2));
         eventManager.subscribe("showReviewMenu", (data) -> switchMenu(3));
         eventManager.subscribe("showUserMenu", (data) -> switchMenu(4));
-        eventManager.subscribe("showAllMeals", (data) -> screenManager.showAllMeals(eventManager, cantineService.getAllMeals()));
-        eventManager.subscribe("showAllAllergies", (data) -> screenManager.showAllAllergies(eventManager, cantineService.getAllAllergies()));
+        eventManager.subscribe("showAllMeals", (data) -> {
+            try {
+                screenManager.showAllMeals(eventManager, cantineService.getAllMeals());
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        eventManager.subscribe("showAllAllergies", (data) -> {
+            try {
+                screenManager.showAllAllergies(eventManager, cantineService.getAllAllergies());
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        });
         eventManager.subscribe("logout", (data) -> {
             switchMenu(0);
             this.currentUserId = -1;
@@ -41,7 +56,13 @@ public class Controller {
         eventManager.subscribe("exit", (data) -> exitApplication());
 
         // Review events
-        eventManager.subscribe("showAllReviews", (data) -> screenManager.getAllReviews(eventManager, cantineService.getAllReviews()));
+        eventManager.subscribe("showAllReviews", (data) -> {
+            try {
+                screenManager.getAllReviews(eventManager, cantineService.getAllReviews());
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     public void start() {
@@ -79,7 +100,7 @@ public class Controller {
         }
     }
 
-    private void handleLogin(Object data) {
+    private void handleLogin(Object data)  {
         String[] credentials = (String[]) data;
         String username = credentials[0];
         String password = credentials[1];

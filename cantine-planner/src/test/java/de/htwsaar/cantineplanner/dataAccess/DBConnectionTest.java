@@ -53,7 +53,7 @@ public class DBConnectionTest {
 
     @Test
     public void testAllReviews() {
-        assertDoesNotThrow(() -> dbConnection.allReviews());
+        assertDoesNotThrow(() -> dbConnection.getAllReviews());
     }
 
     @Test
