@@ -1,4 +1,3 @@
-// src/main/java/de/htwsaar/cantineplanner/presentation/ScreenManager.java
 package de.htwsaar.cantineplanner.presentation;
 
 import com.googlecode.lanterna.TextColor;
@@ -9,7 +8,7 @@ import de.htwsaar.cantineplanner.businessLogic.AllergenMapper;
 import de.htwsaar.cantineplanner.businessLogic.EventManager;
 import de.htwsaar.cantineplanner.businessLogic.MealTypeMapper;
 import de.htwsaar.cantineplanner.codegen.tables.records.MealsRecord;
-import de.htwsaar.cantineplanner.dataAccess.DBConnection;
+import de.htwsaar.cantineplanner.codegen.tables.records.ReviewRecord;
 import de.htwsaar.cantineplanner.presentation.pages.*;
 
 import java.io.IOException;
@@ -79,7 +78,17 @@ public class ScreenManager {
         NotificationScreenBuilder successScreen = new NotificationScreenBuilder(gui, message, new TextColor.RGB(0, 255, 0));
         successScreen.display();
     }
+    public void getAllReviews(EventManager eventManager, List<ReviewRecord> reviews) {
+        TableBuilder tableBuilder = new TableBuilder(gui, "All Reviews")
+                .addColumn("ID")
+                .addColumn("Rating")
+                .addColumn("Comment")
+                .addColumn("Meal ID")
+                .addColumn("User ID");
 
+          //TODO Add all reviews to the table
+        tableBuilder.display();
+    }
     public void showMainMenuScreen(EventManager eventManager) {
         List<MenuBuilder.MenuButton> mainMenuButtons = Arrays.asList(
                 new MenuBuilder.MenuButton("User Menu", "showUserMenu"),

@@ -39,6 +39,9 @@ public class Controller {
             this.currentUserId = -1;
         });
         eventManager.subscribe("exit", (data) -> exitApplication());
+
+        // Review events
+        eventManager.subscribe("showAllReviews", (data) -> screenManager.getAllReviews(eventManager, cantineService.getAllReviews()));
     }
 
     public void start() {

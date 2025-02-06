@@ -243,28 +243,19 @@ public class DBConnection {
     /**
      * Method allReviews displays all reviews in the database
      */
-    public void allReviews() {
-
+    public List<ReviewRecord> getAllReviews() {
+        List<ReviewRecord> reviewsList = new ArrayList<>();
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
-            dsl.select()  //hi from Herr Bohr
-                    .from(Review.REVIEW)
-                    .join(Meals.MEALS)
-                    .on(Review.REVIEW.MEAL_ID.eq(Meals.MEALS.MEAL_ID))
+            dsl.selectFrom(Review.REVIEW)
                     .fetch()
-                    .forEach(record -> {
-                        System.out.println("Rating iD :" + record.get(Review.REVIEW.RATING_ID));
-                        System.out.println("Meal ID : " + record.get(Review.REVIEW.MEAL_ID));
-                        System.out.println("Meal Name :" + record.get(Meals.MEALS.NAME));
-                        System.out.println("Allergy : " + record.get(Meals.MEALS.ALLERGY));
-                        System.out.println("Rating : " + record.get(Review.REVIEW.RATING));
-                        System.out.println("Comment : " + record.get(Review.REVIEW.COMMENT));
-                        System.out.println("Date created : " + record.get(Review.REVIEW.CREATED_AT));
-                        System.out.println("---------");
-                    });
+                    .forEach(record -> reviewsList.add(record.into(ReviewRecord.class)));
+
             logger.info("All reviews displayed");
+            return reviewsList;
         } catch (RuntimeException | SQLException e) {
             logger.error("Error displaying all reviews", e);
+            return null;
         }
     }
 

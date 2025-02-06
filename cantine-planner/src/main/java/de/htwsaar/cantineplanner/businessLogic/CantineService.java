@@ -2,6 +2,7 @@
 package de.htwsaar.cantineplanner.businessLogic;
 
 import de.htwsaar.cantineplanner.codegen.tables.records.MealsRecord;
+import de.htwsaar.cantineplanner.codegen.tables.records.ReviewRecord;
 import de.htwsaar.cantineplanner.dataAccess.DBConnection;
 import de.htwsaar.cantineplanner.exceptions.UserAlreadyExistsException;
 
@@ -32,6 +33,10 @@ public class CantineService {
 
     public List<MealsRecord> getAllAllergies() {
         return dbConnection.getAllAllergies();
+    }
+
+    public List<ReviewRecord> getAllReviews() {
+        return dbConnection.getAllReviews();
     }
 
     // Add other methods as needed
