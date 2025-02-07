@@ -1,6 +1,7 @@
 // src/main/java/de/htwsaar/cantineplanner/businessLogic/Controller.java
 package de.htwsaar.cantineplanner.businessLogic;
 
+import de.htwsaar.cantineplanner.codegen.tables.records.MealsRecord;
 import de.htwsaar.cantineplanner.exceptions.UserAlreadyExistsException;
 import de.htwsaar.cantineplanner.presentation.ScreenManager;
 
@@ -63,6 +64,7 @@ public class Controller {
                 throw new RuntimeException(e);
             }
         });
+        eventManager.subscribe("addMeal",this::handleAddMeal);
     }
 
     public void start() {
@@ -130,16 +132,12 @@ public class Controller {
             return;
         }
 
-        try {
-            if (cantineService.registerUser(username, password, email)) {
-                screenManager.closeActiveWindow();
-                screenManager.showSuccessScreen("Registration successful!");
-                switchMenu(0);
-            } else {
-                screenManager.showErrorScreen("Registration failed");
-            }
-        } catch (UserAlreadyExistsException e) {
-            screenManager.showErrorScreen(e.getMessage());
+        if (cantineService.registerUser(username, password, email)) {
+            screenManager.closeActiveWindow();
+            screenManager.showSuccessScreen("Registration successful!");
+            switchMenu(0);
+        } else {
+            screenManager.showErrorScreen("Registration failed");
         }
     }
 
@@ -192,5 +190,24 @@ public class Controller {
 
     public int getCurrentUserId() {
         return currentUserId;
+    }
+
+    private void handleAddMeal(Object data) {
+        String[] mealData = (String[]) data;
+        String mealName = mealData[0];
+        float price = Float.parseFloat(mealData[1]);
+        int calories = Integer.parseInt(mealData[2]);
+        String allergy = mealData[3];
+        MealsRecord meal = new MealsRecord();
+        meal.setName(mealName);
+        meal.setPrice(price);
+        meal.setCalories(calories);
+        meal.setAllergy(allergy);
+        try {
+            cantineService.addMeal(meal);
+            screenManager.showSuccessScreen("Meal added successfully!");
+        } catch (Exception e) {
+            screenManager.showErrorScreen("Error while adding meal: " + e.getMessage());
+        }
     }
 }

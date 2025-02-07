@@ -3,6 +3,7 @@ package de.htwsaar.cantineplanner.businessLogic;
 
 import de.htwsaar.cantineplanner.codegen.tables.records.MealsRecord;
 import de.htwsaar.cantineplanner.codegen.tables.records.ReviewRecord;
+import de.htwsaar.cantineplanner.codegen.tables.records.UsersRecord;
 import de.htwsaar.cantineplanner.dataAccess.DBConnection;
 import de.htwsaar.cantineplanner.exceptions.UserAlreadyExistsException;
 
@@ -12,16 +13,17 @@ import java.util.List;
 public class CantineService {
     private DBConnection dbConnection;
 
-    public CantineService(EventManager ) {
-        this.dbConnection = new DBConnection(this.eventManager);
+    public CantineService(EventManager eventManager) {
+        this.dbConnection = new DBConnection(eventManager);
     }
 
-    public boolean validateUser(String username, String password) throws SQLException {
+    public boolean validateUser(String username, String password) {
         return dbConnection.validateUser(username, password);
     }
 
    public boolean registerUser(String username, String password, String email) {
-        return dbConnection.registerUser(username, password, email);
+        UsersRecord usersRecord = dbConnection.registerUser(username, password, email);
+        return usersRecord != null;
     }
 
     public int getUserId(String username) {
@@ -38,6 +40,10 @@ public class CantineService {
 
     public List<ReviewRecord> getAllReviews() throws SQLException {
         return dbConnection.getAllReviews();
+    }
+
+    public MealsRecord addMeal(MealsRecord meal) {
+        return dbConnection.addMeal(meal);
     }
 
     // Add other methods as needed

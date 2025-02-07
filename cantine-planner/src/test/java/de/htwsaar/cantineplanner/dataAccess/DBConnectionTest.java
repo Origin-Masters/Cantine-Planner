@@ -2,6 +2,7 @@ package de.htwsaar.cantineplanner.dataAccess;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import de.htwsaar.cantineplanner.businessLogic.EventManager;
 import de.htwsaar.cantineplanner.codegen.tables.records.MealsRecord;
 import de.htwsaar.cantineplanner.codegen.tables.records.ReviewRecord;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,7 +15,8 @@ public class DBConnectionTest {
 
     @BeforeEach
     public void setUp() {
-        dbConnection = new DBConnection();
+        EventManager eventManager = new EventManager();
+        dbConnection = new DBConnection(eventManager);
     }
 
     @Test
@@ -81,6 +83,7 @@ public class DBConnectionTest {
         review.setRating(5);
         review.setComment("Great!");
 
-        assertDoesNotThrow(() -> dbConnection.addReview(review));
+        EventManager eventManager = new EventManager();
+        assertDoesNotThrow(() -> dbConnection.addReview(review,eventManager));
     }
 }

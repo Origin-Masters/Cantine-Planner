@@ -47,7 +47,7 @@ public class ScreenManager {
                 new MenuBuilder.MenuButton("Programm beenden", "exit")
         );
 
-        MenuBuilder mealMenu = new MenuBuilder(gui, eventManager)
+        MenuBuilder mealMenu = new MenuBuilder(gui, eventManager, this)
                 .setTitle("Meal Menu")
                 .setButtons(mealMenuButtons);
         mealMenu.display();
@@ -63,7 +63,7 @@ public class ScreenManager {
                 new MenuBuilder.MenuButton("Programm beenden", "exit")
         );
 
-        MenuBuilder userMenu = new MenuBuilder(gui, eventManager)
+        MenuBuilder userMenu = new MenuBuilder(gui, eventManager, this)
                 .setTitle("User Menu")
                 .setButtons(userMenuButtons);
         userMenu.display();
@@ -96,7 +96,7 @@ public class ScreenManager {
                 new MenuBuilder.MenuButton("Review Menu", "showReviewMenu"),
                 new MenuBuilder.MenuButton("Exit", "exit")
         );
-        MenuBuilder mainMenu = new MenuBuilder(gui, eventManager)
+        MenuBuilder mainMenu = new MenuBuilder(gui, eventManager, this)
                 .setTitle("Main Menu")
                 .setButtons(mainMenuButtons);
         mainMenu.display();
@@ -113,7 +113,7 @@ public class ScreenManager {
                 new MenuBuilder.MenuButton("Programm beenden", "exit")
         );
 
-        MenuBuilder allergiesMenu = new MenuBuilder(gui, eventManager)
+        MenuBuilder allergiesMenu = new MenuBuilder(gui, eventManager, this)
                 .setTitle("Allergies Menu")
                 .setButtons(allergiesMenuButtons);
         allergiesMenu.display();
@@ -130,7 +130,7 @@ public class ScreenManager {
                 new MenuBuilder.MenuButton("Programm beenden", "exit")
         );
 
-        MenuBuilder reviewsMenu = new MenuBuilder(gui, eventManager)
+        MenuBuilder reviewsMenu = new MenuBuilder(gui, eventManager, this)
                 .setTitle("Reviews Menu")
                 .setButtons(reviewsMenuButtons);
         reviewsMenu.display();
@@ -188,6 +188,12 @@ public class ScreenManager {
         }
 
         tableBuilder.display();
+    }
+
+    public void showAddMealScreen(EventManager eventManager) {
+        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Add Meal");
+        List<String> labels = Arrays.asList("Name", "Price", "Calories", "Allergy");
+        inputScreenBuilder.display(labels, "addMeal");
     }
 
     public void closeActiveWindow() {
