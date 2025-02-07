@@ -17,9 +17,10 @@ public class Controller {
     private int currentMenu;
     private int currentUserId;
 
-    public Controller(ScreenManager screenManager) {
-        this.screenManager = screenManager;
+    public Controller() {
+
         this.eventManager = new EventManager();
+        this.screenManager = new ScreenManager(eventManager);
         this.cantineService = new CantineService(eventManager);
         this.currentUserId = -1;
         this.running = false;
@@ -36,35 +37,29 @@ public class Controller {
         eventManager.subscribe("showMealMenu", (data) -> switchMenu(2));
         eventManager.subscribe("showReviewMenu", (data) -> switchMenu(3));
         eventManager.subscribe("showUserMenu", (data) -> switchMenu(4));
+
         eventManager.subscribe("showAllMeals", (data) -> {
-            try {
-                screenManager.showAllMeals(eventManager, cantineService.getAllMeals());
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
+                screenManager.showAllMeals(cantineService.getAllMeals());
         });
+
         eventManager.subscribe("showAllAllergies", (data) -> {
-            try {
-                screenManager.showAllAllergies(eventManager, cantineService.getAllAllergies());
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
+                screenManager.showAllAllergies(cantineService.getAllAllergies());
         });
+
         eventManager.subscribe("logout", (data) -> {
-            switchMenu(0);
-            this.currentUserId = -1;
+                switchMenu(0);
+                this.currentUserId = -1;
         });
+
         eventManager.subscribe("exit", (data) -> exitApplication());
 
         // Review events
         eventManager.subscribe("showAllReviews", (data) -> {
-            try {
-                screenManager.getAllReviews(eventManager, cantineService.getAllReviews());
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
+                screenManager.getAllReviews(cantineService.getAllReviews());
         });
+
         eventManager.subscribe("addMeal",this::handleAddMeal);
+
     }
 
     public void start() {
@@ -94,12 +89,10 @@ public class Controller {
     }
 
     private void exitApplication() {
-        try {
+
             screenManager.closeTerminal();
             running = false;
-        } catch (IOException e) {
-            screenManager.showErrorScreen("Error while closing terminal");
-        }
+
     }
 
     private void handleLogin(Object data)  {
@@ -150,7 +143,7 @@ public class Controller {
         return false;
     }
     private void handleShowRegisterScreen(Object data) {
-        screenManager.showInputScreenReg(eventManager, "Register", "register");
+        screenManager.showInputScreenReg( "Register", "register");
     }
 
     private void switchMenu(int menu) {
@@ -158,22 +151,22 @@ public class Controller {
         currentMenu = menu;
     }
     public void userMenu() {
-        screenManager.showUserMenuScreen(eventManager);
+        screenManager.showUserMenuScreen();
     }
     public void loginMenu() {
-        screenManager.showLoginScreen(eventManager);
+        screenManager.showLoginScreen();
     }
 
     public void mainMenu() {
-        screenManager.showMainMenuScreen(eventManager);
+        screenManager.showMainMenuScreen();
     }
 
     public void mealMenu() {
-        screenManager.showMealMenuScreen(eventManager);
+        screenManager.showMealMenuScreen();
     }
 
     public void reviewMenu() {
-        screenManager.showReviewsMenu(eventManager);
+        screenManager.showReviewsMenu();
     }
 
     public int getCurrentMenu() {

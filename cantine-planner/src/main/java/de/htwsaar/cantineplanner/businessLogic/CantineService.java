@@ -30,15 +30,15 @@ public class CantineService {
         return dbConnection.getUserId(username);
     }
 
-    public List<MealsRecord> getAllMeals() throws SQLException {
+    public List<MealsRecord> getAllMeals() {
         return dbConnection.getAllMeals();
     }
 
-    public List<MealsRecord> getAllAllergies() throws SQLException {
+    public List<MealsRecord> getAllAllergies(){
         return dbConnection.getAllAllergies();
     }
 
-    public List<ReviewRecord> getAllReviews() throws SQLException {
+    public List<ReviewRecord> getAllReviews(){
         return dbConnection.getAllReviews();
     }
 

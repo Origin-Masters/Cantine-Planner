@@ -5,8 +5,8 @@ import de.htwsaar.cantineplanner.businessLogic.Controller;
 
 public class App {
     public static void main(String[] args) {
-        ScreenManager screenManager = new ScreenManager();
-        Controller controller = new Controller(screenManager);
+
+        Controller controller = new Controller();
         controller.start();
     }
 }

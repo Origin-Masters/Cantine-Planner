@@ -60,7 +60,7 @@ public class  MenuBuilder {
                 if (button.getEvent().equals("addMeal")) {
                     String[] mealData = {"Sample Meal", "10.0", "500", "None"}; // Sample data
                     eventManager.notify(button.getEvent(), mealData);
-                    screenManager.showAddMealScreen(eventManager);
+                    screenManager.showAddMealScreen();
                 } else {
                     eventManager.notify(button.getEvent(), null);
                 }

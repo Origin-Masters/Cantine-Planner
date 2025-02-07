@@ -19,23 +19,25 @@ import java.util.stream.Collectors;
 
 public class ScreenManager {
     private MultiWindowTextGUI gui;
+    private EventManager eventManager;
 
-    public ScreenManager() {
+    public ScreenManager(EventManager eventManager) {
+        this.eventManager = eventManager;
         try {
             Screen screen = new DefaultTerminalFactory().createScreen();
             screen.startScreen();
             this.gui = new MultiWindowTextGUI(screen);
         } catch (IOException e) {
-            e.printStackTrace();
+            eventManager.notify("error", "Error starting terminal");
         }
     }
 
-    public void showLoginScreen(EventManager eventManager) {
+    public void showLoginScreen() {
         LoginScreen loginScreen = new LoginScreen(gui, eventManager);
         loginScreen.display();
     }
 
-    public void showMealMenuScreen(EventManager eventManager) {
+    public void showMealMenuScreen() {
         List<MenuBuilder.MenuButton> mealMenuButtons = Arrays.asList(
                 new MenuBuilder.MenuButton("Alle Gerichte anzeigen", "showAllMeals"),
                 new MenuBuilder.MenuButton("Gericht hinzufügen", "addMeal"),
@@ -53,7 +55,7 @@ public class ScreenManager {
         mealMenu.display();
     }
 
-    public void showUserMenuScreen(EventManager eventManager) {
+    public void showUserMenuScreen() {
         List<MenuBuilder.MenuButton> userMenuButtons = Arrays.asList(
                 new MenuBuilder.MenuButton("Benutzerdaten bearbeiten", "editUserData"),
                 new MenuBuilder.MenuButton("Allergien verwalten", "manageAllergies"),
@@ -78,18 +80,34 @@ public class ScreenManager {
         NotificationScreenBuilder successScreen = new NotificationScreenBuilder(gui, message, new TextColor.RGB(0, 255, 0));
         successScreen.display();
     }
-    public void getAllReviews(EventManager eventManager, List<ReviewRecord> reviews) {
+
+    public void getAllReviews( List<ReviewRecord> reviews) {
         TableBuilder tableBuilder = new TableBuilder(gui, "All Reviews")
+                // add columns to the table
                 .addColumn("ID")
                 .addColumn("Rating")
                 .addColumn("Comment")
                 .addColumn("Meal ID")
-                .addColumn("User ID");
+                .addColumn("User ID")
+                .addColumn("Date");
 
-          //TODO Add all reviews to the table
+        //TODO: Add all reviews to the table
+
+        //fetch all rows from the db
+        for (ReviewRecord review : reviews) {
+            tableBuilder.addRow(Arrays.asList(
+                    String.valueOf(review.getRatingId()),
+                    String.valueOf(review.getRating()),
+                    review.getComment(),
+                    String.valueOf(review.getMealId()),
+                    review.getCreatedAt().toString()
+            ));
+        }
+        // display the table
         tableBuilder.display();
     }
-    public void showMainMenuScreen(EventManager eventManager) {
+
+    public void showMainMenuScreen() {
         List<MenuBuilder.MenuButton> mainMenuButtons = Arrays.asList(
                 new MenuBuilder.MenuButton("User Menu", "showUserMenu"),
                 new MenuBuilder.MenuButton("Meal Menu", "showMealMenu"),
@@ -102,7 +120,7 @@ public class ScreenManager {
         mainMenu.display();
     }
 
-    public void showAllergiesMenu(EventManager eventManager) {
+    public void showAllergiesMenu() {
         List<MenuBuilder.MenuButton> allergiesMenuButtons = Arrays.asList(
                 new MenuBuilder.MenuButton("Alle Allergien anzeigen", "showAllAllergies"),
                 new MenuBuilder.MenuButton("Allergie hinzufügen", "addAllergy"),
@@ -119,7 +137,7 @@ public class ScreenManager {
         allergiesMenu.display();
     }
 
-    public void showReviewsMenu(EventManager eventManager) {
+    public void showReviewsMenu() {
         List<MenuBuilder.MenuButton> reviewsMenuButtons = Arrays.asList(
                 new MenuBuilder.MenuButton("Alle Reviews anzeigen", "showAllReviews"),
                 new MenuBuilder.MenuButton("Review hinzufügen", "addReview"),
@@ -136,7 +154,7 @@ public class ScreenManager {
         reviewsMenu.display();
     }
 
-    public void showAllMeals(EventManager eventManager, List<MealsRecord> meals) {
+    public void showAllMeals(List<MealsRecord> meals) {
         TableBuilder tableBuilder = new TableBuilder(gui, "All Meals")
                 .addColumn("ID")
                 .addColumn("Name")
@@ -164,13 +182,13 @@ public class ScreenManager {
         tableBuilder.display();
     }
 
-    public void showInputScreenReg(EventManager eventManager, String title, String event) {
-        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager,title);
+    public void showInputScreenReg(String title, String event) {
+        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, title);
         List<String> labels = Arrays.asList("Username", "Password", "Email");
         inputScreenBuilder.display(labels, event);
     }
 
-    public void showAllAllergies(EventManager eventManager, List<MealsRecord> meals) {
+    public void showAllAllergies(List<MealsRecord> meals) {
         TableBuilder tableBuilder = new TableBuilder(gui, "All Allergies")
                 .addColumn("Meal Name")
                 .addColumn("Allergy");
@@ -190,7 +208,7 @@ public class ScreenManager {
         tableBuilder.display();
     }
 
-    public void showAddMealScreen(EventManager eventManager) {
+    public void showAddMealScreen() {
         InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Add Meal");
         List<String> labels = Arrays.asList("Name", "Price", "Calories", "Allergy");
         inputScreenBuilder.display(labels, "addMeal");
@@ -202,7 +220,12 @@ public class ScreenManager {
         }
     }
 
-    public void closeTerminal() throws IOException {
-        gui.getScreen().stopScreen();
+    public void closeTerminal() {
+        try {
+            gui.getScreen().stopScreen();
+        } catch (IOException e) {
+            eventManager.notify("error", "Error closing terminal");
+
+        }
     }
 }
