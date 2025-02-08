@@ -90,7 +90,6 @@ public class ScreenManager {
                 .addColumn("Rating")
                 .addColumn("Comment")
                 .addColumn("Meal ID")
-                .addColumn("User ID")
                 .addColumn("Date");
 
         //TODO: Add all reviews to the table
