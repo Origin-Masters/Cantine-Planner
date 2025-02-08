@@ -46,5 +46,20 @@ public class CantineService {
         return dbConnection.addMeal(meal);
     }
 
+    public void deleteMeal(int mealId) {
+        dbConnection.deleteMeal(mealId);
+    }
+
+    public MealsRecord getMealById(int mealId) {
+        List<MealsRecord> meals = dbConnection.mealDetails(mealId);
+        return meals.isEmpty() ? null : meals.get(0);
+    }
+
+    public MealsRecord getMealByName(String name) {
+        List<MealsRecord> meals = dbConnection.searchMeal(name);
+        return meals.isEmpty() ? null : meals.get(0);
+    }
+
+
     // Add other methods as needed
 }

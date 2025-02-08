@@ -56,13 +56,23 @@ public class  MenuBuilder {
 
         for (MenuButton button : buttons) {
             panel.addComponent(new Button(button.getLabel(), () -> {
-                debugButtonClick(button.getLabel(), button.getEvent());
-                if (button.getEvent().equals("addMeal")) {
-                    String[] mealData = {"Sample Meal", "10.0", "500", "None"}; // Sample data
-                    eventManager.notify(button.getEvent(), mealData);
-                    screenManager.showAddMealScreen();
-                } else {
-                    eventManager.notify(button.getEvent(), null);
+                debugButtonClick(button.getLabel(), button.getEvent());// Debugging
+                switch (button.getEvent()) {
+                    case "addMeal":
+                        screenManager.showAddMealScreen();
+                        break;
+                    case "deleteMeal":
+                        screenManager.showInputScreen("Delete Meal", "deleteMeal", Arrays.asList("Meal ID"));
+                        break;
+                    case "showMealById":
+                        screenManager.showInputScreen("Enter Meal ID", "showMealById", Arrays.asList("Meal ID"));
+                        break;
+                    case "showMealByName":
+                        screenManager.showInputScreen("Enter Meal Name", "showMealByName", Arrays.asList("Meal Name"));
+                        break;
+                    default:
+                        eventManager.notify(button.getEvent(), null);
+                        break;
                 }
             })
                     .setPreferredSize(new TerminalSize(35, 3))
@@ -98,7 +108,6 @@ public class  MenuBuilder {
         }
     }
 
-    // MenuBuilder.java
     private void debugButtonClick(String buttonLabel, String event) {
         System.out.println("Button clicked: " + buttonLabel);
         System.out.println("Event triggered: " + event);

@@ -72,16 +72,18 @@ public class ScreenManager {
     }
 
     public void showErrorScreen(String message) {
-        NotificationScreenBuilder errorScreen = new NotificationScreenBuilder(gui, message, new TextColor.RGB(255, 0, 0));
+        NotificationScreenBuilder errorScreen = new NotificationScreenBuilder(gui, message,
+                new TextColor.RGB(255, 0, 0));
         errorScreen.display();
     }
 
     public void showSuccessScreen(String message) {
-        NotificationScreenBuilder successScreen = new NotificationScreenBuilder(gui, message, new TextColor.RGB(0, 255, 0));
+        NotificationScreenBuilder successScreen = new NotificationScreenBuilder(gui, message,
+                new TextColor.RGB(0, 255, 0));
         successScreen.display();
     }
 
-    public void getAllReviews( List<ReviewRecord> reviews) {
+    public void getAllReviews(List<ReviewRecord> reviews) {
         TableBuilder tableBuilder = new TableBuilder(gui, "All Reviews")
                 // add columns to the table
                 .addColumn("ID")
@@ -182,6 +184,33 @@ public class ScreenManager {
         tableBuilder.display();
     }
 
+    public void showMealDetails(MealsRecord meal) {
+        TableBuilder tableBuilder = new TableBuilder(gui, "Meal Details")
+                .addColumn("ID")
+                .addColumn("Name")
+                .addColumn("Price")
+                .addColumn("Calories")
+                .addColumn("Allergens")
+                .addColumn("Meat");
+
+        String allergens = Optional.ofNullable(meal.getAllergy())
+                .map(allergyField -> Arrays.stream(allergyField.split(""))
+                        .map(AllergenMapper::getAllergenFullName)
+                        .collect(Collectors.joining(" ")))
+                .orElse("None");
+
+        tableBuilder.addRow(Arrays.asList(
+                String.valueOf(meal.getMealId()),
+                meal.getName(),
+                String.format("%.2f", meal.getPrice()),
+                String.valueOf(meal.getCalories()),
+                allergens,
+                MealTypeMapper.getMealTypeName(meal.getMeat())
+        ));
+
+        tableBuilder.display();
+    }
+
     public void showInputScreenReg(String title, String event) {
         InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, title);
         List<String> labels = Arrays.asList("Username", "Password", "Email");
@@ -210,14 +239,21 @@ public class ScreenManager {
 
     public void showAddMealScreen() {
         InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Add Meal");
-        List<String> labels = Arrays.asList("Name", "Price", "Calories", "Allergy");
+        List<String> labels = Arrays.asList("Name", "Price", "Calories", "Allergy", "Meat");
         inputScreenBuilder.display(labels, "addMeal");
     }
+
+
 
     public void closeActiveWindow() {
         if (gui.getActiveWindow() != null) {
             gui.getActiveWindow().close();
         }
+    }
+
+    public void showInputScreen(String title, String event, List<String> labels) {
+        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, title);
+        inputScreenBuilder.display(labels, event);
     }
 
     public void closeTerminal() {

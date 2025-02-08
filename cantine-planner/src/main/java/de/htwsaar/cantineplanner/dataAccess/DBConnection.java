@@ -230,7 +230,7 @@ public class DBConnection {
                     .where(Meals.MEALS.MEAL_ID.eq(mealId))
                     .execute();
 
-
+            eventManager.notify("success", "Meal deleted successfully !");
 
         } catch (SQLException e) {
             eventManager.notify("error", "Error deleting meal !");

@@ -7,6 +7,7 @@ import de.htwsaar.cantineplanner.presentation.ScreenManager;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Objects;
 
 public class Controller {
@@ -59,6 +60,9 @@ public class Controller {
         });
 
         eventManager.subscribe("addMeal",this::handleAddMeal);
+        eventManager.subscribe("deleteMeal",this::handleDeleteMeal);
+        eventManager.subscribe("showMealById",this::handleShowMealById);
+        eventManager.subscribe("showMealByName",this::handleShowMealByName);
 
     }
 
@@ -191,16 +195,66 @@ public class Controller {
         float price = Float.parseFloat(mealData[1]);
         int calories = Integer.parseInt(mealData[2]);
         String allergy = mealData[3];
+        int meat = Integer.parseInt(mealData[4]);
+
         MealsRecord meal = new MealsRecord();
         meal.setName(mealName);
         meal.setPrice(price);
         meal.setCalories(calories);
         meal.setAllergy(allergy);
+        meal.setMeat(meat);
         try {
             cantineService.addMeal(meal);
             screenManager.showSuccessScreen("Meal added successfully!");
         } catch (Exception e) {
             screenManager.showErrorScreen("Error while adding meal: " + e.getMessage());
+        }
+    }
+
+    private void handleDeleteMeal(Object data) {
+        try {
+            String[] dataArray = (String[]) data;
+            int mealId = Integer.parseInt(dataArray[0]);
+
+            cantineService.deleteMeal(mealId);
+            screenManager.showSuccessScreen("Meal deleted successfully!");
+        } catch (NumberFormatException e) {
+            screenManager.showErrorScreen("Invalid meal ID format: " + e.getMessage());
+        } catch (Exception e) {
+            screenManager.showErrorScreen("Error while deleting meal: " + e.getMessage());
+        }
+    }
+
+
+    private void handleShowMealById(Object data) {
+        try {
+            String[] dataArray = (String[]) data;
+            int mealId = Integer.parseInt(dataArray[0]);
+            MealsRecord meal = cantineService.getMealById(mealId);
+            if (meal != null) {
+                screenManager.showMealDetails(meal);
+            } else {
+                screenManager.showErrorScreen("Meal not found!");
+            }
+        } catch (NumberFormatException e) {
+            screenManager.showErrorScreen("Invalid meal ID format: " + e.getMessage());
+        } catch (Exception e) {
+            screenManager.showErrorScreen("Error while fetching meal: " + e.getMessage());
+        }
+    }
+
+    private void handleShowMealByName(Object data) {
+        try {
+            String[] dataArray = (String[]) data;
+            String mealName = dataArray[0];
+            MealsRecord meal = cantineService.getMealByName(mealName);
+            if (meal != null) {
+                screenManager.showMealDetails(meal);
+            } else {
+                screenManager.showErrorScreen("Meal not found!");
+            }
+        } catch (Exception e) {
+            screenManager.showErrorScreen("Error while fetching meal: " + e.getMessage());
         }
     }
 }
