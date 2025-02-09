@@ -6,7 +6,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class TableBuilder {
+public class
+
+TableBuilder {
     private final MultiWindowTextGUI gui;
     private final String title;
     private final List<String> columns;

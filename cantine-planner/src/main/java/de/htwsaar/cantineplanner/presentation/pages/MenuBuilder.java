@@ -64,11 +64,11 @@ public class  MenuBuilder {
                     case "deleteMeal":
                         screenManager.showInputScreen("Delete Meal", "deleteMeal", Arrays.asList("Meal ID"));
                         break;
-                    case "showMealById":
-                        screenManager.showInputScreen("Enter Meal ID", "showMealById", Arrays.asList("Meal ID"));
+                    case "showMealDetailsById":
+                        screenManager.showInputScreen("Enter Meal ID", "showMealDetailsById", Arrays.asList("Meal ID"));
                         break;
-                    case "showMealByName":
-                        screenManager.showInputScreen("Enter Meal Name", "showMealByName", Arrays.asList("Meal Name"));
+                    case "searchMealByName":
+                        screenManager.showInputScreen("Enter Meal Name", "searchMealByName", Arrays.asList("Meal Name"));
                         break;
                     default:
                         eventManager.notify(button.getEvent(), null);

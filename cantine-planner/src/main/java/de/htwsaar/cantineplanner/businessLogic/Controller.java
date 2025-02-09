@@ -40,29 +40,29 @@ public class Controller {
         eventManager.subscribe("showUserMenu", (data) -> switchMenu(4));
 
         eventManager.subscribe("showAllMeals", (data) -> {
-                screenManager.showAllMeals(cantineService.getAllMeals());
+            screenManager.showAllMeals(cantineService.getAllMeals());
         });
 
         eventManager.subscribe("showAllAllergies", (data) -> {
-                screenManager.showAllAllergies(cantineService.getAllAllergies());
+            screenManager.showAllAllergies(cantineService.getAllAllergies());
         });
 
         eventManager.subscribe("logout", (data) -> {
-                switchMenu(0);
-                this.currentUserId = -1;
+            switchMenu(0);
+            this.currentUserId = -1;
         });
 
         eventManager.subscribe("exit", (data) -> exitApplication());
 
         // Review events
         eventManager.subscribe("showAllReviews", (data) -> {
-                screenManager.getAllReviews(cantineService.getAllReviews());
+            screenManager.getAllReviews(cantineService.getAllReviews());
         });
 
-        eventManager.subscribe("addMeal",this::handleAddMeal);
-        eventManager.subscribe("deleteMeal",this::handleDeleteMeal);
-        eventManager.subscribe("showMealById",this::handleShowMealById);
-        eventManager.subscribe("showMealByName",this::handleShowMealByName);
+        eventManager.subscribe("addMeal", this::handleAddMeal);
+        eventManager.subscribe("deleteMeal", this::handleDeleteMeal);
+        eventManager.subscribe("showMealDetailsById", this::handleShowMealById);
+        eventManager.subscribe("searchMealByName", this::handleShowMealByName);
 
     }
 
@@ -83,9 +83,9 @@ public class Controller {
                 case 3:
                     reviewMenu();
                     break;
-                    case 4:
-                        userMenu();
-                        break;
+                case 4:
+                    userMenu();
+                    break;
                 default:
                     System.out.println("Invalid Input");
             }
@@ -94,12 +94,12 @@ public class Controller {
 
     private void exitApplication() {
 
-            screenManager.closeTerminal();
-            running = false;
+        screenManager.closeTerminal();
+        running = false;
 
     }
 
-    private void handleLogin(Object data)  {
+    private void handleLogin(Object data) {
         String[] credentials = (String[]) data;
         String username = credentials[0];
         String password = credentials[1];
@@ -146,17 +146,20 @@ public class Controller {
         }
         return false;
     }
+
     private void handleShowRegisterScreen(Object data) {
-        screenManager.showInputScreenReg( "Register", "register");
+        screenManager.showInputScreenReg("Register", "register");
     }
 
     private void switchMenu(int menu) {
         screenManager.closeActiveWindow();
         currentMenu = menu;
     }
+
     public void userMenu() {
         screenManager.showUserMenuScreen();
     }
+
     public void loginMenu() {
         screenManager.showLoginScreen();
     }

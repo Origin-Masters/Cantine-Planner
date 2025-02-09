@@ -243,7 +243,6 @@ public class ScreenManager {
     }
 
 
-
     public void closeActiveWindow() {
         if (gui.getActiveWindow() != null) {
             gui.getActiveWindow().close();
