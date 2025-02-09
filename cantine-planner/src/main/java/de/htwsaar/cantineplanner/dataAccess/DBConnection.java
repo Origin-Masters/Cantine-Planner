@@ -310,6 +310,7 @@ public class DBConnection {
                     .set(Review.REVIEW.MEAL_ID, givenReview.getMealId())
                     .set(Review.REVIEW.RATING, givenReview.getRating())
                     .set(Review.REVIEW.COMMENT, givenReview.getComment())
+                    .set(Review.REVIEW.USERID, givenReview.getUserid())
                     .execute();
             return true;
         }

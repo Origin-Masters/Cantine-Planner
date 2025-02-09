@@ -89,14 +89,16 @@ public class ScreenManager {
                 .addColumn("Rating")
                 .addColumn("Comment")
                 .addColumn("Meal ID")
-                .addColumn("Date");
+                .addColumn("Date")
+                .addColumn("UserID");
         for (ReviewRecord review : reviews) {
             tableBuilder.addRow(Arrays.asList(
                     String.valueOf(review.getRatingId()),
                     String.valueOf(review.getRating()),
                     review.getComment(),
                     String.valueOf(review.getMealId()),
-                    review.getCreatedAt().toString()
+                    review.getCreatedAt().toString(),
+                    String.valueOf(review.getUserid())
             ));
         }
         tableBuilder.display();
