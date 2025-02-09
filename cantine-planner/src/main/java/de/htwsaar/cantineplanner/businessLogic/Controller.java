@@ -254,7 +254,7 @@ public class Controller {
             if (meal != null) {
                 screenManager.showMealDetails(meal);
             } else {
-                screenManager.showErrorScreen("Meal not found!");
+                screenManager.showErrorScreen("Meal " + mealName + "not found!");
             }
         } catch (Exception e) {
             screenManager.showErrorScreen("Error while fetching meal: " + e.getMessage());

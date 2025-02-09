@@ -159,6 +159,7 @@ public class DBConnection {
                     .set(Meals.MEALS.PRICE, meal.getPrice())
                     .set(Meals.MEALS.CALORIES, meal.getCalories())
                     .set(Meals.MEALS.ALLERGY, meal.getAllergy())
+                    .set(Meals.MEALS.MEAT, meal.getMeat())
                     .execute();
 
 
@@ -249,7 +250,7 @@ public class DBConnection {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
 
-            dsl.selectFrom(Meals.MEALS)
+            mealsList = dsl.selectFrom(Meals.MEALS)
                     .where(Meals.MEALS.NAME.eq(name))
                     .fetchInto(MealsRecord.class);
         } catch (SQLException e) {
