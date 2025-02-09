@@ -135,9 +135,9 @@ public class ScreenManager {
     public void showReviewsMenu() {
         List<MenuBuilder.MenuButton> reviewsMenuButtons = Arrays.asList(
                 new MenuBuilder.MenuButton("Alle Reviews anzeigen", "showAllReviews"),
-                new MenuBuilder.MenuButton("Review hinzufügen", "addReview"),
-                new MenuBuilder.MenuButton("Review löschen", "deleteReview"),
-                new MenuBuilder.MenuButton("Review nach ID suchen", "searchReviewById"),
+                new MenuBuilder.MenuButton("Review hinzufügen", "showAddReview"),
+                new MenuBuilder.MenuButton("Review löschen", "showDeleteReview"),
+                new MenuBuilder.MenuButton("Review von einem bestimmten Gericht", "showSearchReviewsByMealId"),
                 new MenuBuilder.MenuButton("Reviewdetails nach ID anzeigen", "showReviewDetailsById"),
                 new MenuBuilder.MenuButton("Main Menü", "showMainMenu"),
                 new MenuBuilder.MenuButton("Programm beenden", "exit")
@@ -229,7 +229,11 @@ public class ScreenManager {
 
         tableBuilder.display();
     }
-
+    public void showAddReviewScreen() {
+        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Add Review");
+        List<String> labels = Arrays.asList("Rating", "Comment", "Meal ID");
+        inputScreenBuilder.display(labels, "addReview");
+    }
     public void showAddMealScreen() {
         InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Add Meal");
         List<String> labels = Arrays.asList("Name", "Price", "Calories", "Allergy", "Meat");
@@ -239,6 +243,11 @@ public class ScreenManager {
         InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Delete Meal");
         List<String> labels = Arrays.asList("ID");
         inputScreenBuilder.display(labels, "deleteMeal");
+    }
+    public void showDeleteReviewScreen() {
+        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Delete Review");
+        List<String> labels = Arrays.asList("ID");
+        inputScreenBuilder.display(labels, "deleteReview");
     }
     public void showMealDetailsById() {
         InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Show by ID Meal");
@@ -271,5 +280,11 @@ public class ScreenManager {
             eventManager.notify("error", "Error closing terminal");
 
         }
+    }
+
+    public void showSearchReviewsByMealId() {
+        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Search Reviews by Meal ID");
+        List<String> labels = Arrays.asList("Meal ID");
+        inputScreenBuilder.display(labels, "searchReviewsByMealId");
     }
 }

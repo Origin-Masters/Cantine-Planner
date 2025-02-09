@@ -16,7 +16,7 @@ public class DBConnectionTest {
     @BeforeEach
     public void setUp() {
         EventManager eventManager = new EventManager();
-        dbConnection = new DBConnection(eventManager);
+        dbConnection = new DBConnection();
     }
 
     @Test

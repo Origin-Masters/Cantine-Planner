@@ -12,6 +12,7 @@ import de.htwsaar.cantineplanner.exceptions.*;
 import de.htwsaar.cantineplanner.security.PasswordUtil;
 import org.jooq.DSLContext;
 import org.jooq.SQLDialect;
+import org.jooq.conf.Settings;
 import org.jooq.impl.DSL;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -37,7 +38,7 @@ public class DBConnection {
      * @return DSLContext
      */
     private DSLContext getDSLContext(Connection connection) {
-        return DSL.using(connection, SQLDialect.SQLITE);
+        return DSL.using(connection, SQLDialect.MYSQL);
     }
 
     /**
@@ -228,7 +229,7 @@ public class DBConnection {
      *
      * @param giveniD of type int of the meal to be searched
      */
-    public List<ReviewRecord> reviewByMealiD(int giveniD) throws SQLException {
+    public List<ReviewRecord> reviewsByMealiD(int giveniD) throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
             return dsl.select()

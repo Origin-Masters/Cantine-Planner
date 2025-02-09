@@ -7,6 +7,7 @@ import de.htwsaar.cantineplanner.codegen.tables.records.UsersRecord;
 import de.htwsaar.cantineplanner.dataAccess.DBConnection;
 import de.htwsaar.cantineplanner.exceptions.MealAlreadyExistsException;
 import de.htwsaar.cantineplanner.exceptions.MealDoesntExistException;
+import de.htwsaar.cantineplanner.exceptions.ReviewiDDoesntExistException;
 import de.htwsaar.cantineplanner.exceptions.UserAlreadyExistsException;
 
 import java.sql.SQLException;
@@ -47,6 +48,10 @@ public class CantineService {
     public MealsRecord addMeal(MealsRecord meal) throws SQLException, MealAlreadyExistsException {
         return dbConnection.addMeal(meal);
     }
+    public void deleteReview(int reviewId) throws SQLException, ReviewiDDoesntExistException {
+        dbConnection.deleteReview(reviewId);
+    }
+
 
     public void deleteMeal(int mealId) throws SQLException , MealDoesntExistException {
         dbConnection.deleteMeal(mealId);
@@ -62,6 +67,13 @@ public class CantineService {
         return meals.isEmpty() ? null : meals.get(0);
     }
 
+    public void addReview(ReviewRecord review) throws SQLException {
+        dbConnection.addReview(review);
+    }
+
+    public List<ReviewRecord> searchReviewsByMealId(int mealId) throws SQLException {
+        return dbConnection.reviewsByMealiD(mealId);
+    }
 
     // Add other methods as needed
 }
