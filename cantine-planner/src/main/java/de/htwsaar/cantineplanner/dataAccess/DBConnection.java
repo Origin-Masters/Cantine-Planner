@@ -225,6 +225,18 @@ public class DBConnection {
     }
 
     /**
+     * Method getAllReviews displays all reviews in the database
+     */
+    public List<ReviewRecord> getAllReviewsByUser(int userId) throws SQLException{
+        try (Connection connection = dataSource.getConnection()) {
+            DSLContext dsl = getDSLContext(connection);
+            return dsl.selectFrom(Review.REVIEW)
+                    .where(Review.REVIEW.USERID.eq(userId))
+                    .fetchInto(ReviewRecord.class);
+        }
+    }
+
+    /**
      * Method reviewByMealiD searches for a review by meal ID
      *
      * @param giveniD of type int of the meal to be searched

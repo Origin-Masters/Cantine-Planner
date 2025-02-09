@@ -73,6 +73,9 @@ public class Controller {
         eventManager.subscribe("showAllReviews", this::handleShowAllReviews);
         eventManager.subscribe("showSearchReviewsByMealId", (data) -> screenManager.showSearchReviewsByMealId());
         eventManager.subscribe("searchReviewsByMealId", this::handleSearchReviewsByMealId);
+
+        // User-bezogene Events
+        eventManager.subscribe("showReviewsByUser", this::handleShowReviewsByUser);
     }
 
     // Hauptschleife
@@ -280,14 +283,15 @@ public class Controller {
     private void handleAddReview(Object data) {
         try {
             String[] reviewData = (String[]) data;
-            int mealId = Integer.parseInt(reviewData[0]);
-            int rating = Integer.parseInt(reviewData[1]);
-            String comment = reviewData[2];
+            int mealId = Integer.parseInt(reviewData[2]);
+            int rating = Integer.parseInt(reviewData[0]);
+            String comment = reviewData[1];
 
             ReviewRecord review = new ReviewRecord();
             review.setMealId(mealId);
             review.setRating(rating);
             review.setComment(comment);
+            review.setUserid(currentUserId);
             cantineService.addReview(review);
             screenManager.closeActiveWindow();
             screenManager.showSuccessScreen("Review added successfully!");
@@ -333,6 +337,17 @@ public class Controller {
             screenManager.showErrorScreen("Invalid meal ID format!");
         } catch (SQLException e) {
             screenManager.showErrorScreen("There was an error while searching for the Reviews please try again!");
+        }
+    }
+
+
+    // User-Handler
+    private void handleShowReviewsByUser(Object data) {
+        try {
+            List<ReviewRecord> reviews = cantineService.getAllReviewsByUser(currentUserId);
+            screenManager.showAllReviews(reviews);
+        } catch (SQLException e) {
+            screenManager.showErrorScreen("There was an error while fetching all reviews please try again!");
         }
     }
 }

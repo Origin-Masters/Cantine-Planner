@@ -75,5 +75,9 @@ public class CantineService {
         return dbConnection.reviewsByMealiD(mealId);
     }
 
+    public List<ReviewRecord> getAllReviewsByUser(int currentUserId) throws SQLException {
+        return dbConnection.getAllReviewsByUser(currentUserId);
+    }
+
     // Add other methods as needed
 }

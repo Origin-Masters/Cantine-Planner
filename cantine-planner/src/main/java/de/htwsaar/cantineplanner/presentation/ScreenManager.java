@@ -59,7 +59,7 @@ public class ScreenManager {
         List<MenuBuilder.MenuButton> userMenuButtons = Arrays.asList(
                 new MenuBuilder.MenuButton("Benutzerdaten bearbeiten", "editUserData"),
                 new MenuBuilder.MenuButton("Allergien verwalten", "manageAllergies"),
-                new MenuBuilder.MenuButton("Bewertungen anzeigen", "showReviews"),
+                new MenuBuilder.MenuButton("Bewertungen anzeigen", "showReviewsByUser"),
                 new MenuBuilder.MenuButton("Abmelden", "logout"),
                 new MenuBuilder.MenuButton("Main Menü", "showMainMenu"),
                 new MenuBuilder.MenuButton("Programm beenden", "exit")
