@@ -319,7 +319,7 @@ public class Controller {
             List<ReviewRecord> reviews = cantineService.getAllReviews();
             screenManager.showAllReviews(reviews);
         } catch (SQLException e) {
-            screenManager.showErrorScreen("Error while fetching all reviews: " + e.getMessage());
+            screenManager.showErrorScreen("There was an error while showing all Reviews please try again!");
         }
     }
 
@@ -332,7 +332,7 @@ public class Controller {
         } catch (NumberFormatException e) {
             screenManager.showErrorScreen("Invalid meal ID format!");
         } catch (SQLException e) {
-            screenManager.showErrorScreen("Error while fetching reviews by meal ID: " + e.getMessage());
+            screenManager.showErrorScreen("There was an error while searching for the Reviews please try again!");
         }
     }
 }
