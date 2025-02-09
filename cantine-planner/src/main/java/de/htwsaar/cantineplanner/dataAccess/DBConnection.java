@@ -13,28 +13,21 @@ import de.htwsaar.cantineplanner.security.PasswordUtil;
 import org.jooq.DSLContext;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+
+
 
 public class DBConnection {
-    private static final Logger logger = LoggerFactory.getLogger(DBConnection.class);
     private final HikariCPDataSource dataSource;
-    private final EventManager eventManager;
 
     /**
      * Constructor for DBConnection creates a new HikariCPDataSource
      */
-    public DBConnection(EventManager eventManager) {
+    public DBConnection() {
         this.dataSource = new HikariCPDataSource();
-        this.eventManager = eventManager;
+
     }
 
     /**
@@ -54,8 +47,7 @@ public class DBConnection {
      * @param plainTextPassword of type String
      * @throws UserNotValidatedException if the user is not validated
      */
-
-    public boolean validateUser(String username, String plainTextPassword) {
+    public boolean validateUser(String username, String plainTextPassword) throws SQLException, UserNotValidatedException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
             String hashedPassword = dsl.select(Users.USERS.PASSWORD)
@@ -64,52 +56,38 @@ public class DBConnection {
                     .fetchOne(Users.USERS.PASSWORD);
 
             if (hashedPassword == null || !PasswordUtil.verifyPassword(plainTextPassword, hashedPassword)) {
-                eventManager.notify("error", "Invalid username or password !");
+                throw new UserNotValidatedException("Invalid username or password!");
             }
             return true;
-        } catch (SQLException e) {
-            eventManager.notify("error", "Something went wrong during the validation process ");
         }
-        return false;
     }
 
-    public int getUserId(String username) {
+    // DBConnection.java
+    public int getUserId(String username) throws SQLException, UserDoesntExistException, NullPointerException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
 
             if (!dsl.fetchExists(
                     dsl.selectFrom(Users.USERS)
                             .where(Users.USERS.USERNAME.eq(username)))) {
-                throw new UserDoesntExistException("The user with the given username doesnt exist !");
+                throw new UserDoesntExistException("The user with the given username doesn't exist!");
             }
-
 
             return dsl.select(Users.USERS.USERID)
                     .from(Users.USERS)
                     .where(Users.USERS.USERNAME.eq(username))
                     .fetchOne(Users.USERS.USERID);
-        } catch (NullPointerException | SQLException e) {
-
-            eventManager.notify("error", "Error retrieving  user ID !");
-
-            return -1;
         }
     }
 
-    public UsersRecord registerUser(String username, String plainTextPassword, String email) {
-
-        UsersRecord user = new UsersRecord();
-
+    public UsersRecord registerUser(String username, String plainTextPassword, String email) throws SQLException, UserAlreadyExistsException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
 
-            // Check if username already exists
-            if (
-                    dsl.fetchExists(
-                            dsl.selectFrom(Users.USERS)
-                                    .where(Users.USERS.USERNAME.eq(username)))) {
-                throw new UserAlreadyExistsException("Username already exists please choose another one!"
-                );
+            if (dsl.fetchExists(
+                    dsl.selectFrom(Users.USERS)
+                            .where(Users.USERS.USERNAME.eq(username)))) {
+                throw new UserAlreadyExistsException("Username already exists, please choose another one!");
             }
 
             String hashedPassword = PasswordUtil.hashPassword(plainTextPassword);
@@ -120,18 +98,10 @@ public class DBConnection {
                     .set(Users.USERS.ROLE, 0)
                     .execute();
 
-            // retrieve user record
-            user = dsl.selectFrom(Users.USERS)
+            return dsl.selectFrom(Users.USERS)
                     .where(Users.USERS.USERNAME.eq(username))
                     .fetchOne();
-
-        } catch (SQLException e) {
-            eventManager.notify("error", "Error registering user");
-        } catch (UserAlreadyExistsException e) {
-            eventManager.notify("error", "Username already exists");
         }
-
-        return user;
     }
 
     /**
@@ -139,17 +109,12 @@ public class DBConnection {
      *
      * @param meal of type MealsRecord to be added
      */
-    public MealsRecord addMeal(MealsRecord meal) {
-
-        MealsRecord mealOutput = new MealsRecord();
+    public MealsRecord addMeal(MealsRecord meal) throws SQLException, MealAlreadyExistsException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
-
-            if (
-                    dsl.fetchExists(
+            if (dsl.fetchExists(
                             dsl.selectFrom(Meals.MEALS)
-                                    .where(Meals.MEALS.NAME.eq(meal.getName()))
-                    )
+                                    .where(Meals.MEALS.NAME.eq(meal.getName())))
             ) {
                 throw new MealAlreadyExistsException(" Meal Already exists !");
             }
@@ -162,52 +127,34 @@ public class DBConnection {
                     .set(Meals.MEALS.MEAT, meal.getMeat())
                     .execute();
 
-
-            mealOutput = dsl.selectFrom(Meals.MEALS)
+            return dsl.selectFrom(Meals.MEALS)
                     .where(Meals.MEALS.NAME.eq(meal.getName()))
                     .fetchOne();
 
-        } catch (SQLException e) {
-            eventManager.notify("error", "Error adding meal ! ");
-        } catch (MealAlreadyExistsException e) {
-            eventManager.notify("error", "Meal already exists ! ");
         }
 
-        return mealOutput;
     }
 
     /**
      * Method getAllMeals displays all meals in the database
      */
-    public List<MealsRecord> getAllMeals() {
-        List<MealsRecord> mealsList = new ArrayList<>();
+    public List<MealsRecord> getAllMeals() throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
-            dsl.selectFrom(Meals.MEALS)
-                    .fetch()
-                    .forEach(record -> mealsList.add(record.into(MealsRecord.class)));
-
-        } catch (SQLException e) {
-            eventManager.notify("error", "Error getting all meals");
+            return dsl.selectFrom(Meals.MEALS)
+                    .fetchInto(MealsRecord.class);
         }
-        return mealsList;
     }
 
     /**
      * Method getAllAllergies displays all allergies in the database
      */
-    public List<MealsRecord> getAllAllergies() {
-        List<MealsRecord> allergiesList = new ArrayList<>();
+    public List<MealsRecord> getAllAllergies() throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
-            dsl.selectFrom(Meals.MEALS)
-                    .fetch()
-                    .forEach(record -> allergiesList.add(record.into(MealsRecord.class)));
-
-        } catch (SQLException e) {
-            eventManager.notify("error", "Error getting all Allergies");
+            return dsl.selectFrom(Meals.MEALS)
+                    .fetchInto(MealsRecord.class);
         }
-        return allergiesList;
     }
 
     /**
@@ -215,28 +162,18 @@ public class DBConnection {
      *
      * @param mealId of type int of the meal to be deleted
      */
-    public void deleteMeal(int mealId) {
+    public void deleteMeal(int mealId) throws SQLException, MealDoesntExistException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
-
             if (!dsl.fetchExists(
                     dsl.selectFrom(Meals.MEALS)
-                            .where(Meals.MEALS.MEAL_ID.eq(mealId)))
-            ) {
-                throw new MealDoesntExistException(" The Meal with the given iD doesnt exist !");
+                            .where(Meals.MEALS.MEAL_ID.eq(mealId)))) {
+                throw new MealDoesntExistException("The meal with the given ID doesn't exist!");
             }
-
 
             dsl.deleteFrom(Meals.MEALS)
                     .where(Meals.MEALS.MEAL_ID.eq(mealId))
                     .execute();
-
-            eventManager.notify("success", "Meal deleted successfully !");
-
-        } catch (SQLException e) {
-            eventManager.notify("error", "Error deleting meal !");
-        } catch (MealDoesntExistException e) {
-            eventManager.notify("error", "Meal with the given iD doesnt exist !");
         }
     }
 
@@ -245,18 +182,14 @@ public class DBConnection {
      *
      * @param name of type String of the meal to be searched
      */
-    public List<MealsRecord> searchMeal(String name) {
-        List<MealsRecord> mealsList = new ArrayList<>();
+    public List<MealsRecord> searchMeal(String name) throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
 
-            mealsList = dsl.selectFrom(Meals.MEALS)
+            return dsl.selectFrom(Meals.MEALS)
                     .where(Meals.MEALS.NAME.eq(name))
                     .fetchInto(MealsRecord.class);
-        } catch (SQLException e) {
-            eventManager.notify("error", "Error searching meal");
         }
-        return mealsList;
     }
 
     /**
@@ -264,51 +197,30 @@ public class DBConnection {
      *
      * @param mealId of type int of the meal to be displayed
      */
-    public List<MealsRecord> mealDetails(int mealId) {
-        List<MealsRecord> mealsList = new ArrayList<>();
-
+    public List<MealsRecord> mealDetails(int mealId) throws SQLException , MealDoesntExistException {
         try (Connection connection = dataSource.getConnection()) {
-
             DSLContext dsl = getDSLContext(connection);
-
             if (!dsl.fetchExists(
                     dsl.selectFrom(Meals.MEALS)
                             .where(Meals.MEALS.MEAL_ID.eq(mealId)))
             ) {
                 throw new MealDoesntExistException("Meal with the given iD " + mealId + " doesnt exist !");
             }
-
-            mealsList = dsl.selectFrom(Meals.MEALS)
+            return dsl.selectFrom(Meals.MEALS)
                     .where(Meals.MEALS.MEAL_ID.eq(mealId))
                     .fetchInto(MealsRecord.class);
-
-
-        } catch (SQLException e) {
-            eventManager.notify("error", "Error getting meal details");
-        } catch (MealDoesntExistException e) {
-            eventManager.notify("error", "Meal with the given iD doesnt exist !");
         }
-
-        return mealsList;
     }
 
     /**
      * Method getAllReviews displays all reviews in the database
      */
-    public List<ReviewRecord> getAllReviews() {
-        List<ReviewRecord> reviewsList = new ArrayList<>();
-
+    public List<ReviewRecord> getAllReviews() throws SQLException{
         try (Connection connection = dataSource.getConnection()) {
-
             DSLContext dsl = getDSLContext(connection);
-            reviewsList = dsl.selectFrom(Review.REVIEW)
+            return dsl.selectFrom(Review.REVIEW)
                     .fetchInto(ReviewRecord.class);
-
-
-        } catch (SQLException e) {
-            eventManager.notify("error", "Error getting all reviews");
         }
-        return reviewsList;
     }
 
     /**
@@ -316,21 +228,14 @@ public class DBConnection {
      *
      * @param giveniD of type int of the meal to be searched
      */
-    public List<ReviewRecord> reviewByMealiD(int giveniD) {
-        List<ReviewRecord> reviewsList = new ArrayList<>();
-
+    public List<ReviewRecord> reviewByMealiD(int giveniD) throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
-
             DSLContext dsl = getDSLContext(connection);
-            reviewsList = dsl.select()
+            return dsl.select()
                     .from(Review.REVIEW)
                     .where(Review.REVIEW.MEAL_ID.eq(giveniD))
                     .fetchInto(ReviewRecord.class);
-
-        } catch (RuntimeException | SQLException e) {
-            eventManager.notify("error", "Error getting review by meal ID");
         }
-        return reviewsList;
     }
 
     /**
@@ -338,34 +243,22 @@ public class DBConnection {
      *
      * @param mealName of type String of the meal to be searched
      */
-    public List<ReviewRecord> reviewsByMealName(String mealName) throws SQLException {
-        List<ReviewRecord> reviewsList = new ArrayList<>();
-
+    public List<ReviewRecord> reviewsByMealName(String mealName) throws SQLException , MealDoesntExistException {
         try (Connection connection = dataSource.getConnection()) {
-
             DSLContext dsl = getDSLContext(connection);
-
             if (!dsl.fetchExists(
                     dsl.selectFrom(Meals.MEALS)
                             .where(Meals.MEALS.NAME.eq(mealName))
             )) {
                 throw new MealDoesntExistException("Meal with name" + mealName + " doesnt exist !");
             }
-
-
-            reviewsList = dsl.select()
+            return dsl.select()
                     .from(Review.REVIEW)
                     .join(Meals.MEALS)
                     .on(Review.REVIEW.MEAL_ID.eq(Meals.MEALS.MEAL_ID))
                     .where(Meals.MEALS.NAME.eq(mealName))
                     .fetchInto(ReviewRecord.class);
-        } catch (MealDoesntExistException e) {
-            eventManager.notify("error", "Meal with the given name doesnt exist !");
-        } catch (RuntimeException | SQLException e) {
-            eventManager.notify("error", "Error getting reviews by meal name");
         }
-
-        return reviewsList;
     }
 
 
@@ -374,12 +267,9 @@ public class DBConnection {
      *
      * @param ratingId of type int of the review to be deleted
      */
-    public void deleteReview(int ratingId) {
-
-
+    public void deleteReview(int ratingId) throws SQLException, ReviewiDDoesntExistException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
-
             // if hte review iD doesnt exist, we throw an exception
             if (!dsl.fetchExists(
                     dsl.selectFrom(Review.REVIEW)
@@ -387,16 +277,10 @@ public class DBConnection {
             ) {
                 throw new ReviewiDDoesntExistException("Review iD that was provided  does not exist ! ");
             }
-
             // deletion of the corresponding review iD
             dsl.deleteFrom(Review.REVIEW)
                     .where(Review.REVIEW.RATING_ID.eq(ratingId))
                     .execute();
-
-        } catch (ReviewiDDoesntExistException e) {
-            eventManager.notify("error", "Review iD provided  does not exist ! ");
-        } catch (SQLException e) {
-            eventManager.notify("error", "Error deleting review");
         }
 
     }
@@ -406,7 +290,7 @@ public class DBConnection {
      *
      * @param givenReview of type ReviewRecord to be added
      */
-    public boolean addReview(ReviewRecord givenReview, EventManager eventManager) {
+    public boolean addReview(ReviewRecord givenReview) throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
             dsl.insertInto(Review.REVIEW)
@@ -415,9 +299,6 @@ public class DBConnection {
                     .set(Review.REVIEW.COMMENT, givenReview.getComment())
                     .execute();
             return true;
-        } catch (SQLException e) {
-            eventManager.notify("error", "Error adding review: " + e.getMessage());
-            return false;
         }
     }
 

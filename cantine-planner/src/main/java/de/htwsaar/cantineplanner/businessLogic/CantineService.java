@@ -5,6 +5,8 @@ import de.htwsaar.cantineplanner.codegen.tables.records.MealsRecord;
 import de.htwsaar.cantineplanner.codegen.tables.records.ReviewRecord;
 import de.htwsaar.cantineplanner.codegen.tables.records.UsersRecord;
 import de.htwsaar.cantineplanner.dataAccess.DBConnection;
+import de.htwsaar.cantineplanner.exceptions.MealAlreadyExistsException;
+import de.htwsaar.cantineplanner.exceptions.MealDoesntExistException;
 import de.htwsaar.cantineplanner.exceptions.UserAlreadyExistsException;
 
 import java.sql.SQLException;
@@ -13,49 +15,49 @@ import java.util.List;
 public class CantineService {
     private DBConnection dbConnection;
 
-    public CantineService(EventManager eventManager) {
-        this.dbConnection = new DBConnection(eventManager);
+    public CantineService() {
+        this.dbConnection = new DBConnection();
     }
 
-    public boolean validateUser(String username, String password) {
+    public boolean validateUser(String username, String password) throws SQLException , UserAlreadyExistsException {
         return dbConnection.validateUser(username, password);
     }
 
-   public boolean registerUser(String username, String password, String email) {
+   public boolean registerUser(String username, String password, String email) throws SQLException, UserAlreadyExistsException {
         UsersRecord usersRecord = dbConnection.registerUser(username, password, email);
         return usersRecord != null;
     }
 
-    public int getUserId(String username) {
+    public int getUserId(String username) throws SQLException, UserAlreadyExistsException, NullPointerException {
         return dbConnection.getUserId(username);
     }
 
-    public List<MealsRecord> getAllMeals() {
+    public List<MealsRecord> getAllMeals() throws SQLException {
         return dbConnection.getAllMeals();
     }
 
-    public List<MealsRecord> getAllAllergies(){
+    public List<MealsRecord> getAllAllergies() throws SQLException {
         return dbConnection.getAllAllergies();
     }
 
-    public List<ReviewRecord> getAllReviews(){
+    public List<ReviewRecord> getAllReviews() throws SQLException {
         return dbConnection.getAllReviews();
     }
 
-    public MealsRecord addMeal(MealsRecord meal) {
+    public MealsRecord addMeal(MealsRecord meal) throws SQLException, MealAlreadyExistsException {
         return dbConnection.addMeal(meal);
     }
 
-    public void deleteMeal(int mealId) {
+    public void deleteMeal(int mealId) throws SQLException , MealDoesntExistException {
         dbConnection.deleteMeal(mealId);
     }
 
-    public MealsRecord getMealById(int mealId) {
+    public MealsRecord getMealById(int mealId) throws SQLException , MealDoesntExistException {
         List<MealsRecord> meals = dbConnection.mealDetails(mealId);
         return meals.isEmpty() ? null : meals.get(0);
     }
 
-    public MealsRecord getMealByName(String name) {
+    public MealsRecord getMealByName(String name) throws SQLException {
         List<MealsRecord> meals = dbConnection.searchMeal(name);
         return meals.isEmpty() ? null : meals.get(0);
     }

@@ -40,16 +40,16 @@ public class ScreenManager {
     public void showMealMenuScreen() {
         List<MenuBuilder.MenuButton> mealMenuButtons = Arrays.asList(
                 new MenuBuilder.MenuButton("Alle Gerichte anzeigen", "showAllMeals"),
-                new MenuBuilder.MenuButton("Gericht hinzufügen", "addMeal"),
+                new MenuBuilder.MenuButton("Gericht hinzufügen", "showAddMeal"),
                 new MenuBuilder.MenuButton("Alle Allergien anzeigen", "showAllAllergies"),
-                new MenuBuilder.MenuButton("Gericht löschen", "deleteMeal"),
-                new MenuBuilder.MenuButton("Gericht nach Name suchen", "searchMealByName"),
+                new MenuBuilder.MenuButton("Gericht löschen", "showDeleteMeal"),
+                new MenuBuilder.MenuButton("Gericht nach Name suchen", "showSearchMealByName"),
                 new MenuBuilder.MenuButton("Gerichtdetails nach ID anzeigen", "showMealDetailsById"),
                 new MenuBuilder.MenuButton("Main Menü", "showMainMenu"),
                 new MenuBuilder.MenuButton("Programm beenden", "exit")
         );
 
-        MenuBuilder mealMenu = new MenuBuilder(gui, eventManager, this)
+        MenuBuilder mealMenu = new MenuBuilder(gui, eventManager)
                 .setTitle("Meal Menu")
                 .setButtons(mealMenuButtons);
         mealMenu.display();
@@ -65,7 +65,7 @@ public class ScreenManager {
                 new MenuBuilder.MenuButton("Programm beenden", "exit")
         );
 
-        MenuBuilder userMenu = new MenuBuilder(gui, eventManager, this)
+        MenuBuilder userMenu = new MenuBuilder(gui, eventManager)
                 .setTitle("User Menu")
                 .setButtons(userMenuButtons);
         userMenu.display();
@@ -83,18 +83,13 @@ public class ScreenManager {
         successScreen.display();
     }
 
-    public void getAllReviews(List<ReviewRecord> reviews) {
+    public void showAllReviews(List<ReviewRecord> reviews) {
         TableBuilder tableBuilder = new TableBuilder(gui, "All Reviews")
-                // add columns to the table
                 .addColumn("ID")
                 .addColumn("Rating")
                 .addColumn("Comment")
                 .addColumn("Meal ID")
                 .addColumn("Date");
-
-        //TODO: Add all reviews to the table
-
-        //fetch all rows from the db
         for (ReviewRecord review : reviews) {
             tableBuilder.addRow(Arrays.asList(
                     String.valueOf(review.getRatingId()),
@@ -104,7 +99,6 @@ public class ScreenManager {
                     review.getCreatedAt().toString()
             ));
         }
-        // display the table
         tableBuilder.display();
     }
 
@@ -115,7 +109,7 @@ public class ScreenManager {
                 new MenuBuilder.MenuButton("Review Menu", "showReviewMenu"),
                 new MenuBuilder.MenuButton("Exit", "exit")
         );
-        MenuBuilder mainMenu = new MenuBuilder(gui, eventManager, this)
+        MenuBuilder mainMenu = new MenuBuilder(gui, eventManager)
                 .setTitle("Main Menu")
                 .setButtons(mainMenuButtons);
         mainMenu.display();
@@ -132,7 +126,7 @@ public class ScreenManager {
                 new MenuBuilder.MenuButton("Programm beenden", "exit")
         );
 
-        MenuBuilder allergiesMenu = new MenuBuilder(gui, eventManager, this)
+        MenuBuilder allergiesMenu = new MenuBuilder(gui, eventManager)
                 .setTitle("Allergies Menu")
                 .setButtons(allergiesMenuButtons);
         allergiesMenu.display();
@@ -149,7 +143,7 @@ public class ScreenManager {
                 new MenuBuilder.MenuButton("Programm beenden", "exit")
         );
 
-        MenuBuilder reviewsMenu = new MenuBuilder(gui, eventManager, this)
+        MenuBuilder reviewsMenu = new MenuBuilder(gui, eventManager)
                 .setTitle("Reviews Menu")
                 .setButtons(reviewsMenuButtons);
         reviewsMenu.display();
@@ -240,6 +234,22 @@ public class ScreenManager {
         InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Add Meal");
         List<String> labels = Arrays.asList("Name", "Price", "Calories", "Allergy", "Meat");
         inputScreenBuilder.display(labels, "addMeal");
+    }
+    public void showDeleteMealScreen() {
+        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Delete Meal");
+        List<String> labels = Arrays.asList("ID");
+        inputScreenBuilder.display(labels, "deleteMeal");
+    }
+    public void showMealDetailsById() {
+        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Show by ID Meal");
+        List<String> labels = Arrays.asList("ID");
+        inputScreenBuilder.display(labels, "mealDetailsById");
+    }
+
+    public void showSearchMealByName() {
+        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Show by Name Meal");
+        List<String> labels = Arrays.asList("Name");
+        inputScreenBuilder.display(labels, "searchMealByName");
     }
 
 

@@ -83,7 +83,6 @@ public class DBConnectionTest {
         review.setRating(5);
         review.setComment("Great!");
 
-        EventManager eventManager = new EventManager();
-        assertDoesNotThrow(() -> dbConnection.addReview(review,eventManager));
+        assertDoesNotThrow(() -> dbConnection.addReview(review));
     }
 }
