@@ -61,7 +61,7 @@ public class DBConnectionTest {
     @Test
     public void testReviewByMealId() {
         int mealId = 1;
-        assertDoesNotThrow(() -> dbConnection.reviewByMealiD(mealId));
+        assertDoesNotThrow(() -> dbConnection.reviewsByMealiD(mealId));
     }
 
     @Test
