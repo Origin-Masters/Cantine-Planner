@@ -16,8 +16,10 @@ import java.util.List;
 public class CantineService {
     private DBConnection dbConnection;
 
-    public CantineService() {
-        this.dbConnection = new DBConnection();
+
+
+    public CantineService(String propertiesFilePath) {
+        this.dbConnection = new DBConnection(propertiesFilePath);
     }
 
     public boolean validateUser(String username, String password) throws SQLException , UserAlreadyExistsException {

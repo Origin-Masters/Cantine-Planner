@@ -19,10 +19,14 @@ public class Controller {
     private int currentMenu;
     private int currentUserId;
 
+    String PATH_TO_PROPERTIES = "hikari.properties";
+
+
+
     public Controller() {
         this.eventManager = new EventManager();
         this.screenManager = new ScreenManager(eventManager);
-        this.cantineService = new CantineService();
+        this.cantineService = new CantineService(PATH_TO_PROPERTIES);
         this.currentUserId = -1;
         this.running = false;
         subscribeToEvents();

@@ -18,11 +18,12 @@ public class DBConnectionTest {
 
     private DBConnection dbConnection;
 
+    String PATH_TO_TEST_PROPERTIES = "hikari-test.properties";
 
     @BeforeEach
     public void setUp() {
         EventManager eventManager = new EventManager();
-        dbConnection = new DBConnection();
+        dbConnection = new DBConnection(PATH_TO_TEST_PROPERTIES);
     }
 
     @Test
@@ -202,7 +203,7 @@ public class DBConnectionTest {
         ReviewRecord review = new ReviewRecord();
         review.setMealId(1);
         review.setRating(5);
-        review.setComment("Great!");
+        review.setComment("Great Really Good ! Now in Test DB ! !");
 
         ReviewRecord review2 = new ReviewRecord();
         review2.setMealId(2);

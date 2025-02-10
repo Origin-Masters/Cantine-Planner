@@ -23,11 +23,13 @@ import java.util.List;
 public class DBConnection {
     private final HikariCPDataSource dataSource;
 
+
+
     /**
      * Constructor for DBConnection creates a new HikariCPDataSource
      */
-    public DBConnection() {
-        this.dataSource = new HikariCPDataSource();
+    public DBConnection(String propertiesPath) {
+        this.dataSource = new HikariCPDataSource(propertiesPath);
 
     }
 

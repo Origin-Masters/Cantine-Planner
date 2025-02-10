@@ -3,6 +3,8 @@ package de.htwsaar.cantineplanner.dataAccess;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
@@ -16,10 +18,10 @@ public class HikariCPDataSource {
     /**
      * Load the HikariCP configuration from hikari.properties and create the data source pool
      */
-    public HikariCPDataSource() {
-        try (InputStream input = getClass().getClassLoader().getResourceAsStream("hikari.properties")) {
+    public HikariCPDataSource(String propertiesFilePath) {
+        try (InputStream input = getClass().getClassLoader().getResourceAsStream(propertiesFilePath)) {
             if (input == null) {
-                throw new RuntimeException("Unable to find hikari.properties");
+                throw new RuntimeException("Unable to find " + propertiesFilePath + " in classpath.");
             }
 
             Properties properties = new Properties();
@@ -27,6 +29,7 @@ public class HikariCPDataSource {
 
             HikariConfig config = new HikariConfig(properties);
             this.dataSource = new HikariDataSource(config);
+
         } catch (IOException e) {
             throw new RuntimeException("Error loading HikariCP configuration", e);
         }
