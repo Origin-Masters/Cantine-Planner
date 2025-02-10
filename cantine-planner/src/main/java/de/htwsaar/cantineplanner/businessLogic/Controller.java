@@ -121,7 +121,7 @@ public class Controller {
     // --- Event-Handler ---
 
     // User-Handler
-    private void handleLogin(Object data) {
+    public void handleLogin(Object data) {
         String[] credentials = (String[]) data;
         String username = credentials[0];
         String password = credentials[1];
@@ -141,7 +141,7 @@ public class Controller {
         }
     }
 
-    private void handleRegister(Object data) {
+    public void handleRegister(Object data) {
         if (data == null) {
             screenManager.showErrorScreen("Data is null");
             return;
@@ -181,7 +181,7 @@ public class Controller {
     }
 
     // Meal-Handler
-    private void handleShowAllMeals(Object data) {
+    public void handleShowAllMeals(Object data) {
         try {
             List<MealsRecord> meals = cantineService.getAllMeals();
             screenManager.showAllMeals(meals);
@@ -199,7 +199,7 @@ public class Controller {
         }
     }
 
-    private void handleAddMeal(Object data) {
+    public void handleAddMeal(Object data) {
         try {
             String[] mealData = (String[]) data;
             String mealName = mealData[0];
@@ -277,7 +277,7 @@ public class Controller {
     }
 
     // Review-Handler
-    private void handleAddReview(Object data) {
+    public void handleAddReview(Object data) {
         try {
             String[] reviewData = (String[]) data;
             int mealId = Integer.parseInt(reviewData[2]);
