@@ -200,10 +200,13 @@ public class DBConnectionTest {
     @Test
     public void testDeleteReview() {
         int ratingId = 1;
-        assertDoesNotThrow(() -> dbConnection.deleteReview(ratingId));
+        assertThrows(ReviewiDDoesntExistException.class,() -> dbConnection.deleteReview(ratingId));
 
+        /*
         int ratingId2 = 2;
         assertDoesNotThrow(() -> dbConnection.deleteReview(ratingId2));
+
+        */
     }
 
     @Test

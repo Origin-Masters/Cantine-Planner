@@ -13,6 +13,7 @@ ehthumbs.db
 
 # IDE / build tool directories
 .idea/
+/cantine-planner/.idea/
 *.iml
 *.ipr
 *.iws
