@@ -71,6 +71,9 @@ public class Controller {
         eventManager.subscribe("showSearchReviewsByMealId", (data) -> screenManager.showSearchReviewsByMealId());
         eventManager.subscribe("searchReviewsByMealId", this::handleSearchReviewsByMealId);
 
+        eventManager.subscribe("showSearchReviewsByMealName", (data) -> screenManager.showSearchReviewsByMealName());
+        eventManager.subscribe("searchReviewsByMealName", this::handleSearchReviewsByMealName);
+
         // User-bezogene Events
         eventManager.subscribe("showReviewsByUser", this::handleShowReviewsByUser);
     }
@@ -332,6 +335,17 @@ public class Controller {
             screenManager.showAllReviews(reviews);
         } catch (NumberFormatException e) {
             screenManager.showErrorScreen("Invalid meal ID format!");
+        } catch (SQLException e) {
+            screenManager.showErrorScreen("There was an error while searching for the Reviews please try again!");
+        }
+    }
+
+    private void handleSearchReviewsByMealName(Object data) {
+        try {
+            String[] dataArray = (String[]) data;
+            String mealName = dataArray[0];
+            List<ReviewRecord> reviews = cantineService.searchReviewsByMealName(mealName);
+            screenManager.showAllReviews(reviews);
         } catch (SQLException e) {
             screenManager.showErrorScreen("There was an error while searching for the Reviews please try again!");
         }

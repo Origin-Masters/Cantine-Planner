@@ -139,7 +139,7 @@ public class ScreenManager {
                 new MenuBuilder.MenuButton("Alle Reviews anzeigen", "showAllReviews"),
                 new MenuBuilder.MenuButton("Review hinzufügen", "showAddReview"),
                 new MenuBuilder.MenuButton("Review löschen", "showDeleteReview"),
-                new MenuBuilder.MenuButton("Review von einem bestimmten Gericht", "showSearchReviewsByMealId"),
+                new MenuBuilder.MenuButton("Review von einem bestimmten Gericht", "showSearchReviewsByMealName"),
                 new MenuBuilder.MenuButton("Reviewdetails nach ID anzeigen", "showReviewDetailsById"),
                 new MenuBuilder.MenuButton("Main Menü", "showMainMenu"),
                 new MenuBuilder.MenuButton("Programm beenden", "exit")
@@ -289,4 +289,11 @@ public class ScreenManager {
         List<String> labels = Arrays.asList("Meal ID");
         inputScreenBuilder.display(labels, "searchReviewsByMealId");
     }
+
+    public void showSearchReviewsByMealName() {
+        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Search Reviews by Meal Name");
+        List<String> labels = Arrays.asList("Meal Name");
+        inputScreenBuilder.display(labels, "searchReviewsByMealName");
+    }
+
 }
