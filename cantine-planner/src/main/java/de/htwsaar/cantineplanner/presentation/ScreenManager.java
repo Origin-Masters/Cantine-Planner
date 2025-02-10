@@ -161,20 +161,28 @@ public class ScreenManager {
                 .addColumn("Meat");
 
         for (MealsRecord meal : meals) {
-            String allergens = Optional.ofNullable(meal.getAllergy())
-                    .map(allergyField -> Arrays.stream(allergyField.split(""))
+            // Verwende Optional, um Null- oder Leereinträge abzufangen
+            String allergenInfo = Optional.ofNullable(meal.getAllergy())
+                    .filter(allergy -> !allergy.isEmpty())
+                    .map(allergy -> Arrays.stream(allergy.split(""))
                             .map(AllergenMapper::getAllergenFullName)
                             .collect(Collectors.joining(" ")))
-                    .orElse("None");
+                    .orElse("keine Allergene");
+
+            // Ermittele den Fleisch-Typ (MealType)
+            String mealType = MealTypeMapper.getMealTypeName(meal.getMeat());
+
+            // Füge eine Zeile mit den benötigten Informationen hinzu
             tableBuilder.addRow(Arrays.asList(
                     String.valueOf(meal.getMealId()),
                     meal.getName(),
                     String.format("%.2f", meal.getPrice()),
                     String.valueOf(meal.getCalories()),
-                    allergens,
-                    MealTypeMapper.getMealTypeName(meal.getMeat())
+                    allergenInfo,
+                    mealType
             ));
         }
+
 
         tableBuilder.display();
     }
@@ -189,11 +197,13 @@ public class ScreenManager {
                 .addColumn("Meat");
 
         String allergens = Optional.ofNullable(meal.getAllergy())
-                .map(allergyField -> Arrays.stream(allergyField.split(""))
+                .filter(allergy -> !allergy.isEmpty()) // Prüfe auch auf leere Strings
+                .map(allergy -> Arrays.stream(allergy.split(""))
                         .map(AllergenMapper::getAllergenFullName)
                         .collect(Collectors.joining(" ")))
-                .orElse("None");
+                .orElse("keine Allergene");
 
+        // Füge die Zeile mit allen benötigten Informationen hinzu
         tableBuilder.addRow(Arrays.asList(
                 String.valueOf(meal.getMealId()),
                 meal.getName(),
@@ -219,10 +229,12 @@ public class ScreenManager {
 
         for (MealsRecord meal : meals) {
             String allergens = Optional.ofNullable(meal.getAllergy())
-                    .map(allergyField -> Arrays.stream(allergyField.split(""))
+                    .filter(allergy -> !allergy.isEmpty())
+                    .map(allergy -> Arrays.stream(allergy.split(""))
                             .map(AllergenMapper::getAllergenFullName)
                             .collect(Collectors.joining(" ")))
-                    .orElse("None");
+                    .orElse("keine Allergene");
+
             tableBuilder.addRow(Arrays.asList(
                     meal.getName(),
                     allergens
