@@ -87,6 +87,11 @@ public class Users extends TableImpl<UsersRecord> {
      */
     public final TableField<UsersRecord, Integer> FAV_MEAL = createField(DSL.name("fav_meal"), SQLDataType.INTEGER, this, "");
 
+    /**
+     * The column <code>users.dont_show_meal</code>.
+     */
+    public final TableField<UsersRecord, String> DONT_SHOW_MEAL = createField(DSL.name("dont_show_meal"), SQLDataType.CLOB.defaultValue(DSL.field(DSL.raw("''"), SQLDataType.CLOB)), this, "");
+
     private Users(Name alias, Table<UsersRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);
     }

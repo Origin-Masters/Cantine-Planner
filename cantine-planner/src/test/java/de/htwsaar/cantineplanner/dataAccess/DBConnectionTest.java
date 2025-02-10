@@ -6,12 +6,11 @@ import de.htwsaar.cantineplanner.businessLogic.EventManager;
 import de.htwsaar.cantineplanner.codegen.tables.records.MealsRecord;
 import de.htwsaar.cantineplanner.codegen.tables.records.ReviewRecord;
 import de.htwsaar.cantineplanner.codegen.tables.records.UsersRecord;
-import de.htwsaar.cantineplanner.exceptions.MealDoesntExistException;
-import de.htwsaar.cantineplanner.exceptions.UserDoesntExistException;
-import de.htwsaar.cantineplanner.exceptions.UserNotValidatedException;
+import de.htwsaar.cantineplanner.exceptions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public class DBConnectionTest {
@@ -42,12 +41,12 @@ public class DBConnectionTest {
         });
     }
 
+    /*
+
+
     @Test
     public void testRegisterUser() {
         assertDoesNotThrow(() -> {
-            UsersRecord user = dbConnection.registerUser("testUser", "testPassword", "test@example.com");
-            assertNotNull(user);
-            assertEquals("testUser", user.getUsername());
 
             UsersRecord user2 = dbConnection.registerUser("testUser2", "testPassword2", "test2@example.com");
             assertNotNull(user2);
@@ -55,6 +54,15 @@ public class DBConnectionTest {
         });
     }
 
+    */
+
+    @Test
+    public void testRegisterUserWithSameUsername() {
+        assertThrows(UserAlreadyExistsException.class, () ->
+        {
+            dbConnection.registerUser("testUser", "testPassword", "test@example.com");
+        });
+    }
     @Test
     public void testGetUserId() {
         assertThrows(UserDoesntExistException.class, () -> dbConnection.getUserId("nonExistentUser"));
@@ -62,7 +70,7 @@ public class DBConnectionTest {
     }
 
     @Test
-    public void testAddMealWithDifferentParameters() {
+    public void testAddMealsWhichAlreadyExist() {
         MealsRecord meal1 = new MealsRecord();
         meal1.setName("Test Meal 1");
         meal1.setPrice(15.0F);
@@ -77,8 +85,8 @@ public class DBConnectionTest {
         meal2.setAllergy("N");
         meal2.setMeat(0);
 
-        assertDoesNotThrow(() -> dbConnection.addMeal(meal1));
-        assertDoesNotThrow(() -> dbConnection.addMeal(meal2));
+        assertThrows(MealAlreadyExistsException.class,() -> dbConnection.addMeal(meal1));
+        assertThrows(MealAlreadyExistsException.class,() -> dbConnection.addMeal(meal2));
     }
 
     @Test

@@ -106,6 +106,21 @@ public class DBConnection {
                     .fetchOne();
         }
     }
+    public void deleteUser(int userId) throws SQLException, UserDoesntExistException {
+        try (Connection connection = dataSource.getConnection()) {
+            DSLContext dsl = getDSLContext(connection);
+
+            if (!dsl.fetchExists(
+                    dsl.selectFrom(Users.USERS)
+                            .where(Users.USERS.USERID.eq(userId)))) {
+                throw new UserDoesntExistException("The user with the given ID doesn't exist!");
+            }
+
+            dsl.deleteFrom(Users.USERS)
+                    .where(Users.USERS.USERID.eq(userId))
+                    .execute();
+        }
+    }
 
     /**
      * Method addMeal adds a meal for the database
@@ -176,6 +191,14 @@ public class DBConnection {
 
             dsl.deleteFrom(Meals.MEALS)
                     .where(Meals.MEALS.MEAL_ID.eq(mealId))
+                    .execute();
+        }
+    }
+    public void deleteMeal(String name) throws SQLException {
+        try (Connection connection = dataSource.getConnection()) {
+            DSLContext dsl = getDSLContext(connection);
+            dsl.deleteFrom(Meals.MEALS)
+                    .where(Meals.MEALS.NAME.eq(name))
                     .execute();
         }
     }
