@@ -2,10 +2,7 @@ package de.htwsaar.cantineplanner.businessLogic;
 
 import de.htwsaar.cantineplanner.codegen.tables.records.MealsRecord;
 import de.htwsaar.cantineplanner.codegen.tables.records.ReviewRecord;
-import de.htwsaar.cantineplanner.exceptions.MealAlreadyExistsException;
-import de.htwsaar.cantineplanner.exceptions.MealDoesntExistException;
-import de.htwsaar.cantineplanner.exceptions.ReviewiDDoesntExistException;
-import de.htwsaar.cantineplanner.exceptions.UserAlreadyExistsException;
+import de.htwsaar.cantineplanner.exceptions.*;
 import de.htwsaar.cantineplanner.presentation.ScreenManager;
 
 import java.sql.SQLException;
@@ -137,7 +134,7 @@ public class Controller {
             } else {
                 screenManager.showErrorScreen("Username or password is incorrect. Please retry!");
             }
-        } catch (UserAlreadyExistsException e) {
+        } catch (UserNotValidatedException | UserAlreadyExistsException e) {
             screenManager.showErrorScreen(e.getMessage());
         } catch (SQLException | NullPointerException e) {
             screenManager.showErrorScreen("There was an error while logging in please try again!");
