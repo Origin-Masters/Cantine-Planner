@@ -29,6 +29,8 @@ public class DBConnectionTest {
     public void testValidateUser() {
         assertThrows(UserNotValidatedException.class,
                 () -> dbConnection.validateUser("invalidUser", "invalidPassword"));
+        assertThrows(UserNotValidatedException.class,
+                () -> dbConnection.validateUser("invalidUser2", "invalidPassword2"));
     }
 
     @Test
@@ -45,24 +47,59 @@ public class DBConnectionTest {
             UsersRecord user = dbConnection.registerUser("testUser", "testPassword", "test@example.com");
             assertNotNull(user);
             assertEquals("testUser", user.getUsername());
+
+            UsersRecord user2 = dbConnection.registerUser("testUser2", "testPassword2", "test2@example.com");
+            assertNotNull(user2);
+            assertEquals("testUser2", user2.getUsername());
         });
     }
 
     @Test
     public void testGetUserId() {
         assertThrows(UserDoesntExistException.class, () -> dbConnection.getUserId("nonExistentUser"));
+        assertThrows(UserDoesntExistException.class, () -> dbConnection.getUserId("nonExistentUser2"));
     }
 
     @Test
-    public void testAddMeal() {
-        MealsRecord meal = new MealsRecord();
-        meal.setName("Test Meal");
-        meal.setPrice(10.0F);
-        meal.setCalories(500);
-        meal.setAllergy("None");
-        meal.setMeat(0);
+    public void testAddMealWithDifferentParameters() {
+        MealsRecord meal1 = new MealsRecord();
+        meal1.setName("Test Meal 1");
+        meal1.setPrice(15.0F);
+        meal1.setCalories(600);
+        meal1.setAllergy("None");
+        meal1.setMeat(1);
 
-        assertDoesNotThrow(() -> dbConnection.addMeal(meal));
+        MealsRecord meal2 = new MealsRecord();
+        meal2.setName("Test Meal 2");
+        meal2.setPrice(20.0F);
+        meal2.setCalories(700);
+        meal2.setAllergy("N");
+        meal2.setMeat(0);
+
+        assertDoesNotThrow(() -> dbConnection.addMeal(meal1));
+        assertDoesNotThrow(() -> dbConnection.addMeal(meal2));
+    }
+
+    @Test
+    public void testSearchMealWithDifferentParameters() {
+        assertDoesNotThrow(() -> {
+            List<MealsRecord> meals1 = dbConnection.searchMeal("Test Meal 1");
+            assertNotNull(meals1);
+
+            List<MealsRecord> meals2 = dbConnection.searchMeal("Test Meal 2");
+            assertNotNull(meals2);
+        });
+    }
+
+    @Test
+    public void testReviewsByMealIdWithDifferentParameters() {
+        assertDoesNotThrow(() -> {
+            List<ReviewRecord> reviews1 = dbConnection.reviewsByMealiD(1);
+            assertNotNull(reviews1);
+
+            List<ReviewRecord> reviews2 = dbConnection.reviewsByMealiD(2);
+            assertNotNull(reviews2);
+        });
     }
 
     @Test
@@ -77,6 +114,8 @@ public class DBConnectionTest {
     public void testDeleteMeal() {
         int mealId = 1;
         assertThrows(MealDoesntExistException.class, () -> dbConnection.deleteMeal(mealId));
+        int mealId2 = 2;
+        assertThrows(MealDoesntExistException.class, () -> dbConnection.deleteMeal(mealId2));
     }
 
     @Test
@@ -86,12 +125,20 @@ public class DBConnectionTest {
             List<MealsRecord> meals = dbConnection.searchMeal(mealName);
             assertNotNull(meals);
         });
+
+        String mealName2 = "Test Meal 2";
+        assertDoesNotThrow(() -> {
+            List<MealsRecord> meals = dbConnection.searchMeal(mealName2);
+            assertNotNull(meals);
+        });
     }
 
     @Test
     public void testMealDetails() {
         int mealId = 1;
         assertThrows(MealDoesntExistException.class, () -> dbConnection.mealDetails(mealId));
+        int mealId2 = 2;
+        assertThrows(MealDoesntExistException.class, () -> dbConnection.mealDetails(mealId2));
     }
 
     @Test
@@ -109,6 +156,12 @@ public class DBConnectionTest {
             List<ReviewRecord> reviews = dbConnection.getAllReviewsByUser(userId);
             assertNotNull(reviews);
         });
+
+        int userId2 = 2;
+        assertDoesNotThrow(() -> {
+            List<ReviewRecord> reviews = dbConnection.getAllReviewsByUser(userId2);
+            assertNotNull(reviews);
+        });
     }
 
     @Test
@@ -118,18 +171,30 @@ public class DBConnectionTest {
             List<ReviewRecord> reviews = dbConnection.reviewsByMealiD(mealId);
             assertNotNull(reviews);
         });
+
+        int mealId2 = 2;
+        assertDoesNotThrow(() -> {
+            List<ReviewRecord> reviews = dbConnection.reviewsByMealiD(mealId2);
+            assertNotNull(reviews);
+        });
     }
 
     @Test
     public void testReviewsByMealName() {
         String mealName = "Test Meal";
         assertDoesNotThrow(() -> dbConnection.reviewsByMealName(mealName));
+
+        String mealName2 = "Test Meal 2";
+        assertDoesNotThrow(() -> dbConnection.reviewsByMealName(mealName2));
     }
 
     @Test
     public void testDeleteReview() {
         int ratingId = 1;
         assertDoesNotThrow(() -> dbConnection.deleteReview(ratingId));
+
+        int ratingId2 = 2;
+        assertDoesNotThrow(() -> dbConnection.deleteReview(ratingId2));
     }
 
     @Test
@@ -139,6 +204,12 @@ public class DBConnectionTest {
         review.setRating(5);
         review.setComment("Great!");
 
+        ReviewRecord review2 = new ReviewRecord();
+        review2.setMealId(2);
+        review2.setRating(4);
+        review2.setComment("Good!");
+
         assertDoesNotThrow(() -> dbConnection.addReview(review));
+        assertDoesNotThrow(() -> dbConnection.addReview(review2));
     }
 }
