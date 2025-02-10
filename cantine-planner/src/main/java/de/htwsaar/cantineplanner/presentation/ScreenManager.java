@@ -110,13 +110,27 @@ public class ScreenManager {
                 new MenuBuilder.MenuButton("User Menu", "showUserMenu"),
                 new MenuBuilder.MenuButton("Meal Menu", "showMealMenu"),
                 new MenuBuilder.MenuButton("Review Menu", "showReviewMenu"),
-                new MenuBuilder.MenuButton("Weekly Plan", "showWeeklyPlan"),
+                new MenuBuilder.MenuButton("Weekly Menu", "showWeeklyMenu"),
                 new MenuBuilder.MenuButton("Exit", "exit")
         );
         MenuBuilder mainMenu = new MenuBuilder(gui, eventManager)
                 .setTitle("Main Menu")
                 .setButtons(mainMenuButtons);
         mainMenu.display();
+    }
+
+
+    public void showWeeklyMenuScreen(){
+        List<MenuBuilder.MenuButton> weeklyMenuButtons = Arrays.asList(
+                new MenuBuilder.MenuButton("Weekly Plan", "showWeeklyMenu"),
+                new MenuBuilder.MenuButton("Edit Weekly Plan", "editWeeklyPlan"),
+                new MenuBuilder.MenuButton("Show Random Meals", "showRandomMeals"),
+                new MenuBuilder.MenuButton("Main Menu", "showMainMenu")
+        );
+        MenuBuilder weeklyMenu = new MenuBuilder(gui, eventManager)
+                .setTitle("Weekly Menu")
+                .setButtons(weeklyMenuButtons);
+        weeklyMenu.display();
     }
 
     public void showAllergiesMenu() {

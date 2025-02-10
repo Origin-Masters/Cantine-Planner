@@ -37,6 +37,7 @@ public class Controller {
         eventManager.subscribe("showMealMenu", (data) -> switchMenu(2));
         eventManager.subscribe("showReviewMenu", (data) -> switchMenu(3));
         eventManager.subscribe("showUserMenu", (data) -> switchMenu(4));
+        eventManager.subscribe("showWeeklyMenu", (data) -> switchMenu(5));
         eventManager.subscribe("exit", (data) -> exitApplication());
         eventManager.subscribe("success", (data) -> screenManager.showSuccessScreen((String) data));
         eventManager.subscribe("error", (data) -> screenManager.showErrorScreen((String) data));
@@ -89,6 +90,7 @@ public class Controller {
                 case 2: mealMenu(); break;
                 case 3: reviewMenu(); break;
                 case 4: userMenu(); break;
+                case 5: weeklyMenu(); break;
                 default: System.out.println("Invalid Input");
             }
         }
@@ -113,6 +115,10 @@ public class Controller {
     }
     public void userMenu() {
         screenManager.showUserMenuScreen();
+    }
+
+    public void weeklyMenu() {
+        screenManager.showWeeklyMenuScreen();
     }
 
     // Beenden
