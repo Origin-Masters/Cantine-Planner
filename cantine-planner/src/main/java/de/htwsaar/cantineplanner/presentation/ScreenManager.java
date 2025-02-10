@@ -61,6 +61,7 @@ public class ScreenManager {
                 new MenuBuilder.MenuButton("Allergien verwalten", "manageAllergies"),
                 new MenuBuilder.MenuButton("Bewertungen anzeigen", "showReviewsByUser"),
                 new MenuBuilder.MenuButton("Abmelden", "logout"),
+                new MenuBuilder.MenuButton("Admin Menu", "showAdminMenu"),
                 new MenuBuilder.MenuButton("Main Menü", "showMainMenu"),
                 new MenuBuilder.MenuButton("Programm beenden", "exit")
         );
@@ -109,6 +110,7 @@ public class ScreenManager {
                 new MenuBuilder.MenuButton("User Menu", "showUserMenu"),
                 new MenuBuilder.MenuButton("Meal Menu", "showMealMenu"),
                 new MenuBuilder.MenuButton("Review Menu", "showReviewMenu"),
+                new MenuBuilder.MenuButton("Weekly Plan", "showWeeklyPlan"),
                 new MenuBuilder.MenuButton("Exit", "exit")
         );
         MenuBuilder mainMenu = new MenuBuilder(gui, eventManager)
