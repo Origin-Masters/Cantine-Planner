@@ -125,7 +125,8 @@ public class ScreenManager {
                 new MenuBuilder.MenuButton("Weekly Plan", "showWeeklyMenu"),
                 new MenuBuilder.MenuButton("Edit Weekly Plan", "editWeeklyPlan"),
                 new MenuBuilder.MenuButton("Show Random Meals", "showRandomMeals"),
-                new MenuBuilder.MenuButton("Main Menu", "showMainMenu")
+                new MenuBuilder.MenuButton("Main Menu", "showMainMenu"),
+                new MenuBuilder.MenuButton("Programm beenden", "exit")
         );
         MenuBuilder weeklyMenu = new MenuBuilder(gui, eventManager)
                 .setTitle("Weekly Menu")
