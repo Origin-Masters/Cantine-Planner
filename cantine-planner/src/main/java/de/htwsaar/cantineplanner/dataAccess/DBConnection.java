@@ -65,7 +65,6 @@ public class DBConnection {
         }
     }
 
-    // DBConnection.java
     public int getUserId(String username) throws SQLException, UserDoesntExistException, NullPointerException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
@@ -80,6 +79,23 @@ public class DBConnection {
                     .from(Users.USERS)
                     .where(Users.USERS.USERNAME.eq(username))
                     .fetchOne(Users.USERS.USERID);
+        }
+    }
+
+    public boolean isAdmin(int UserID) throws SQLException, UserDoesntExistException, NullPointerException {
+        try (Connection connection = dataSource.getConnection()) {
+            DSLContext dsl = getDSLContext(connection);
+
+            if (!dsl.fetchExists(
+                    dsl.selectFrom(Users.USERS)
+                            .where(Users.USERS.USERID.eq(UserID)))) {
+                throw new UserDoesntExistException("The user with the given username doesn't exist!");
+            }
+
+            return dsl.select(Users.USERS.ROLE)
+                    .from(Users.USERS)
+                    .where(Users.USERS.USERID.eq(UserID))
+                    .fetchOne(Users.USERS.ROLE) == 1;
         }
     }
 
@@ -106,7 +122,7 @@ public class DBConnection {
                     .fetchOne();
         }
     }
-    public void deleteUser(int userId) throws SQLException, UserDoesntExistException {
+    public void deleteUserById(int userId) throws SQLException, UserDoesntExistException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
 
@@ -118,6 +134,22 @@ public class DBConnection {
 
             dsl.deleteFrom(Users.USERS)
                     .where(Users.USERS.USERID.eq(userId))
+                    .execute();
+        }
+    }
+
+    public void deleteUserByName(String UserName) throws SQLException,UserDoesntExistException{
+        try (Connection connection = dataSource.getConnection()) {
+            DSLContext dsl = getDSLContext(connection);
+
+            if (!dsl.fetchExists(
+                    dsl.selectFrom(Users.USERS)
+                            .where(Users.USERS.USERNAME.eq(UserName)))) {
+                throw new UserDoesntExistException("The user with the given username doesn't exist!");
+            }
+
+            dsl.deleteFrom(Users.USERS)
+                    .where(Users.USERS.USERNAME.eq(UserName))
                     .execute();
         }
     }
