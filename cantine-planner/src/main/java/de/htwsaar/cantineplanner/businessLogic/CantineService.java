@@ -5,10 +5,7 @@ import de.htwsaar.cantineplanner.codegen.tables.records.MealsRecord;
 import de.htwsaar.cantineplanner.codegen.tables.records.ReviewRecord;
 import de.htwsaar.cantineplanner.codegen.tables.records.UsersRecord;
 import de.htwsaar.cantineplanner.dataAccess.DBConnection;
-import de.htwsaar.cantineplanner.exceptions.MealAlreadyExistsException;
-import de.htwsaar.cantineplanner.exceptions.MealDoesntExistException;
-import de.htwsaar.cantineplanner.exceptions.ReviewiDDoesntExistException;
-import de.htwsaar.cantineplanner.exceptions.UserAlreadyExistsException;
+import de.htwsaar.cantineplanner.exceptions.*;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -83,6 +80,10 @@ public class CantineService {
 
     public List<ReviewRecord> getAllReviewsByUser(int currentUserId) throws SQLException {
         return dbConnection.getAllReviewsByUser(currentUserId);
+    }
+
+    public boolean isAdmin(int currentUserId) throws SQLException, UserDoesntExistException, NullPointerException {
+        return dbConnection.isAdmin(currentUserId);
     }
 
     // Add other methods as needed

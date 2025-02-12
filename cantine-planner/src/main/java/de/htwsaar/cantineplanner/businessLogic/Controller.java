@@ -81,6 +81,7 @@ public class Controller {
 
         // User-bezogene Events
         eventManager.subscribe("showReviewsByUser", this::handleShowReviewsByUser);
+        eventManager.subscribe("showAdminMenu", this::handleShowAdminMenu);
     }
 
     // Hauptschleife
@@ -95,7 +96,8 @@ public class Controller {
                 case 3: reviewMenu(); break;
                 case 4: userMenu(); break;
                 case 5: weeklyMenu(); break;
-                default: System.out.println("Invalid Input");
+                case 6: adminMenu(); break;
+                default:
             }
         }
     }
@@ -123,6 +125,9 @@ public class Controller {
 
     public void weeklyMenu() {
         screenManager.showWeeklyMenuScreen();
+    }
+    public void adminMenu() {
+        screenManager.showAdminMenuScreen();
     }
 
     // Beenden
@@ -370,5 +375,18 @@ public class Controller {
         } catch (SQLException e) {
             screenManager.showErrorScreen("There was an error while fetching all reviews please try again!");
         }
+    }
+
+    private void handleShowAdminMenu(Object data) {
+        try {
+            if (cantineService.isAdmin(currentUserId)) {
+                switchMenu(6);
+            } else {
+                screenManager.showErrorScreen("You are not authorized to access this menu!");
+            }
+        } catch (SQLException| UserDoesntExistException | NullPointerException e) {
+            screenManager.showErrorScreen("There was an error while validating the user try again!");
+        }
+
     }
 }

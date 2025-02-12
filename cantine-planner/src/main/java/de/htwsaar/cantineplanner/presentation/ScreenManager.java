@@ -324,4 +324,26 @@ public class ScreenManager {
         inputScreenBuilder.display(labels, "searchReviewsByMealName");
     }
 
+    public void showAdminMenuScreen() {
+        List<MenuBuilder.MenuButton> adminMenuButtons = Arrays.asList(
+                new MenuBuilder.MenuButton("View Users", "showUserManagement"),
+                new MenuBuilder.MenuButton("Add User", "showAddUser"),
+                new MenuBuilder.MenuButton("Delete User", "showDeleteUser"),
+                new MenuBuilder.MenuButton("Update User Roles", "showUpdateUserRole"),
+                new MenuBuilder.MenuButton("View Meals", "showMealManagement"),
+                new MenuBuilder.MenuButton("Add Meal", "showAddMeal"),
+                new MenuBuilder.MenuButton("Delete Meal", "showDeleteMeal"),
+                new MenuBuilder.MenuButton("Edit Meal", "showEditMeal"),
+                new MenuBuilder.MenuButton("View Reviews", "showReviewManagement"),
+                new MenuBuilder.MenuButton("Delete Review", "showDeleteReview"),
+                new MenuBuilder.MenuButton("View Popular Meals", "showPopularMeals"),
+                new MenuBuilder.MenuButton("Main Menu", "showMainMenu"),
+                new MenuBuilder.MenuButton("Exit", "exit")
+        );
+
+        MenuBuilder adminMenu = new MenuBuilder(gui, eventManager)
+                .setTitle("Admin Menu")
+                .setButtons(adminMenuButtons);
+        adminMenu.display();
+    }
 }
