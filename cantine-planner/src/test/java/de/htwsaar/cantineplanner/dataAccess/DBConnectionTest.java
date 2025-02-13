@@ -41,28 +41,14 @@ public class DBConnectionTest {
         });
     }
 
-    /*
-
-
-    @Test
-    public void testRegisterUser() {
-        assertDoesNotThrow(() -> {
-
-            UsersRecord user2 = dbConnection.registerUser("testUser2", "testPassword2", "test2@example.com");
-            assertNotNull(user2);
-            assertEquals("testUser2", user2.getUsername());
-        });
-    }
-
-    */
 
     @Test
     public void testRegisterUserWithSameUsername() {
-        assertThrows(UserAlreadyExistsException.class, () ->
-        {
+        assertThrows(UserAlreadyExistsException.class, () -> {
             dbConnection.registerUser("testUser", "testPassword", "test@example.com");
         });
     }
+
     @Test
     public void testGetUserId() {
         assertThrows(UserDoesntExistException.class, () -> dbConnection.getUserId("nonExistentUser"));
@@ -85,8 +71,8 @@ public class DBConnectionTest {
         meal2.setAllergy("N");
         meal2.setMeat(0);
 
-        assertThrows(MealAlreadyExistsException.class,() -> dbConnection.addMeal(meal1));
-        assertThrows(MealAlreadyExistsException.class,() -> dbConnection.addMeal(meal2));
+        assertThrows(MealAlreadyExistsException.class, () -> dbConnection.addMeal(meal1));
+        assertThrows(MealAlreadyExistsException.class, () -> dbConnection.addMeal(meal2));
     }
 
     @Test
@@ -120,11 +106,29 @@ public class DBConnectionTest {
     }
 
     @Test
-    public void testDeleteMeal() {
-        int mealId = 1;
-        assertThrows(MealDoesntExistException.class, () -> dbConnection.deleteMeal(mealId));
-        int mealId2 = 2;
-        assertThrows(MealDoesntExistException.class, () -> dbConnection.deleteMeal(mealId2));
+    public void testDeleteMealById() throws SQLException {
+        MealsRecord meal3 = new MealsRecord();
+        meal3.setName("Test Meal 3");
+        meal3.setPrice(15.0F);
+        meal3.setCalories(600);
+        meal3.setAllergy("None");
+        meal3.setMeat(1);
+
+        MealsRecord meal4 = new MealsRecord();
+        meal4.setName("Test Meal 4");
+        meal4.setPrice(20.0F);
+        meal4.setCalories(700);
+        meal4.setAllergy("N");
+        meal4.setMeat(0);
+
+        assertDoesNotThrow(() -> dbConnection.addMeal(meal3));
+        assertDoesNotThrow(() -> dbConnection.addMeal(meal4));
+
+        int mealId3 = dbConnection.searchMeal("Test Meal 3").get(0).getMealId();
+        int mealId4 = dbConnection.searchMeal("Test Meal 4").get(0).getMealId();
+
+        assertDoesNotThrow(() -> dbConnection.deleteMealById(mealId3));
+        assertDoesNotThrow(() -> dbConnection.deleteMealById(mealId4));
     }
 
     @Test
@@ -198,15 +202,24 @@ public class DBConnectionTest {
     }
 
     @Test
-    public void testDeleteReview() {
-        int ratingId = 1;
-        assertThrows(ReviewiDDoesntExistException.class,() -> dbConnection.deleteReview(ratingId));
+    public void testDeleteReview() throws SQLException {
+        int nonExistentRatingId = 1000; // Assuming 1000 is a non-existent rating ID
+        assertThrows(ReviewiDDoesntExistException.class, () -> dbConnection.deleteReview(nonExistentRatingId));
 
-        /*
-        int ratingId2 = 2;
-        assertDoesNotThrow(() -> dbConnection.deleteReview(ratingId2));
+        // Add a review first
+        ReviewRecord review = new ReviewRecord();
+        review.setMealId(1);
+        review.setRating(5);
+        review.setComment("Test review");
+        review.setUserid(1);
 
-        */
+        assertDoesNotThrow(() -> dbConnection.addReview(review));
+
+        // Get the ratingId of the added review
+        int ratingId = dbConnection.getAllReviews().get(0).getRatingId();
+
+        // Now delete the review
+        assertDoesNotThrow(() -> dbConnection.deleteReview(ratingId));
     }
 
     @Test
@@ -224,19 +237,59 @@ public class DBConnectionTest {
         assertDoesNotThrow(() -> dbConnection.addReview(review));
         assertDoesNotThrow(() -> dbConnection.addReview(review2));
     }
-    
+
     @Test
     public void testIsAdmin() {
-        assertThrows(UserDoesntExistException.class, () -> dbConnection.isAdmin(9999)); // Assuming 9999 is a non-existent user ID
+        assertThrows(UserDoesntExistException.class,
+                () -> dbConnection.isAdmin(9999)); // Assuming 9999 is a non-existent user ID
 
         assertDoesNotThrow(() -> {
-            boolean isAdmin = dbConnection.isAdmin(1);
+            boolean isAdmin = dbConnection.isAdmin(9);
             assertFalse(isAdmin);
         });
 
         assertDoesNotThrow(() -> {
-            boolean isAdmin = dbConnection.isAdmin(7);
+            boolean isAdmin = dbConnection.isAdmin(16);
             assertFalse(isAdmin);
         });
     }
+
+    @Test
+    void deleteUserById() {
+        // Add a user first
+        assertDoesNotThrow(() -> {
+            UsersRecord user1 = dbConnection.registerUser("testUserToDelete1", "testPassword1",
+                    "testToDelete1@example.com");
+            assertNotNull(user1);
+            int userId1 = user1.getUserid();
+
+            UsersRecord user2 = dbConnection.registerUser("testUserToDelete2", "testPassword2",
+                    "testToDelete2@example.com");
+            assertNotNull(user2);
+            int userId2 = user2.getUserid();
+
+            // Now delete the user
+            assertDoesNotThrow(() -> dbConnection.deleteUserById(userId1));
+            assertDoesNotThrow(() -> dbConnection.deleteUserById(userId2));
+        });
+    }
+
+    @Test
+    void deleteUserByName() {
+        // Add a user first
+        assertDoesNotThrow(() -> {
+            UsersRecord user1 = dbConnection.registerUser("testUserToDeleteByName1", "testPassword1",
+                    "testToDeleteByName1@example.com");
+            assertNotNull(user1);   // Check if user is added successfully
+
+            UsersRecord user2 = dbConnection.registerUser("testUserToDeleteByName2", "testPassword2",
+                    "testToDeleteByName2@example.com");
+            assertNotNull(user2);   // Check if user is added successfully
+
+            // Now delete the user
+            assertDoesNotThrow(() -> dbConnection.deleteUserByName("testUserToDeleteByName1"));
+            assertDoesNotThrow(() -> dbConnection.deleteUserByName("testUserToDeleteByName2"));
+        });
+    }
 }
+

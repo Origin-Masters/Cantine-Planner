@@ -210,7 +210,7 @@ public class DBConnection {
      *
      * @param mealId of type int of the meal to be deleted
      */
-    public void deleteMeal(int mealId) throws SQLException, MealDoesntExistException {
+    public void deleteMealById(int mealId) throws SQLException, MealDoesntExistException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
             if (!dsl.fetchExists(
@@ -224,7 +224,7 @@ public class DBConnection {
                     .execute();
         }
     }
-    public void deleteMeal(String name) throws SQLException {
+    public void deleteMealByName(String name) throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
             dsl.deleteFrom(Meals.MEALS)

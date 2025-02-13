@@ -53,7 +53,7 @@ public class CantineService {
 
 
     public void deleteMeal(int mealId) throws SQLException , MealDoesntExistException {
-        dbConnection.deleteMeal(mealId);
+        dbConnection.deleteMealById(mealId);
     }
 
     public MealsRecord getMealById(int mealId) throws SQLException , MealDoesntExistException {
