@@ -11,6 +11,7 @@ import de.htwsaar.cantineplanner.codegen.tables.records.MealsRecord;
 import de.htwsaar.cantineplanner.codegen.tables.records.ReviewRecord;
 import de.htwsaar.cantineplanner.codegen.tables.records.UsersRecord;
 
+import org.jooq.ForeignKey;
 import org.jooq.TableField;
 import org.jooq.UniqueKey;
 import org.jooq.impl.DSL;
@@ -32,4 +33,10 @@ public class Keys {
     public static final UniqueKey<ReviewRecord> REVIEW__PK_REVIEW = Internal.createUniqueKey(Review.REVIEW, DSL.name("pk_review"), new TableField[] { Review.REVIEW.RATING_ID }, true);
     public static final UniqueKey<UsersRecord> USERS__PK_USERS = Internal.createUniqueKey(Users.USERS, DSL.name("pk_users"), new TableField[] { Users.USERS.USERID }, true);
     public static final UniqueKey<UsersRecord> USERS__UK_USERS_1_15067867 = Internal.createUniqueKey(Users.USERS, DSL.name("uk_users_1_15067867"), new TableField[] { Users.USERS.EMAIL }, true);
+
+    // -------------------------------------------------------------------------
+    // FOREIGN KEY definitions
+    // -------------------------------------------------------------------------
+
+    public static final ForeignKey<ReviewRecord, UsersRecord> REVIEW__FK_REVIEW_PK_USERS = Internal.createForeignKey(Review.REVIEW, DSL.name("fk_review_pk_users"), new TableField[] { Review.REVIEW.USERID }, Keys.USERS__PK_USERS, new TableField[] { Users.USERS.USERID }, true);
 }

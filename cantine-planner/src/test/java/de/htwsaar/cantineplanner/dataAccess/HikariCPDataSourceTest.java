@@ -14,10 +14,11 @@ import java.sql.Connection;
 
 public class HikariCPDataSourceTest {
     private HikariCPDataSource hikariCPDataSource;
+    String TEST_PROPERTIES = "hikari-test.properties";
 
     @Before
     public void setUp() {
-        hikariCPDataSource = new HikariCPDataSource();
+        hikariCPDataSource = new HikariCPDataSource(TEST_PROPERTIES);
     }
 
     @After

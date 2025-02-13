@@ -90,6 +90,20 @@ public class ReviewRecord extends UpdatableRecordImpl<ReviewRecord> {
         return (LocalDateTime) get(4);
     }
 
+    /**
+     * Setter for <code>review.userid</code>.
+     */
+    public void setUserid(Integer value) {
+        set(5, value);
+    }
+
+    /**
+     * Getter for <code>review.userid</code>.
+     */
+    public Integer getUserid() {
+        return (Integer) get(5);
+    }
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -113,7 +127,7 @@ public class ReviewRecord extends UpdatableRecordImpl<ReviewRecord> {
     /**
      * Create a detached, initialised ReviewRecord
      */
-    public ReviewRecord(Integer ratingId, Integer mealId, Integer rating, String comment, LocalDateTime createdAt) {
+    public ReviewRecord(Integer ratingId, Integer mealId, Integer rating, String comment, LocalDateTime createdAt, Integer userid) {
         super(Review.REVIEW);
 
         setRatingId(ratingId);
@@ -121,6 +135,7 @@ public class ReviewRecord extends UpdatableRecordImpl<ReviewRecord> {
         setRating(rating);
         setComment(comment);
         setCreatedAt(createdAt);
+        setUserid(userid);
         resetChangedOnNotNull();
     }
 }

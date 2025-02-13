@@ -6,17 +6,24 @@ package de.htwsaar.cantineplanner.codegen.tables;
 
 import de.htwsaar.cantineplanner.codegen.DefaultSchema;
 import de.htwsaar.cantineplanner.codegen.Keys;
+import de.htwsaar.cantineplanner.codegen.tables.Users.UsersPath;
 import de.htwsaar.cantineplanner.codegen.tables.records.ReviewRecord;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import org.jooq.Condition;
 import org.jooq.Field;
+import org.jooq.ForeignKey;
 import org.jooq.Identity;
+import org.jooq.InverseForeignKey;
 import org.jooq.Name;
+import org.jooq.Path;
 import org.jooq.PlainSQL;
 import org.jooq.QueryPart;
+import org.jooq.Record;
 import org.jooq.SQL;
 import org.jooq.Schema;
 import org.jooq.Select;
@@ -76,6 +83,11 @@ public class Review extends TableImpl<ReviewRecord> {
      */
     public final TableField<ReviewRecord, LocalDateTime> CREATED_AT = createField(DSL.name("created_at"), SQLDataType.LOCALDATETIME(0).defaultValue(DSL.field(DSL.raw("CURRENT_TIMESTAMP"), SQLDataType.LOCALDATETIME)), this, "");
 
+    /**
+     * The column <code>review.userid</code>.
+     */
+    public final TableField<ReviewRecord, Integer> USERID = createField(DSL.name("userid"), SQLDataType.INTEGER, this, "");
+
     private Review(Name alias, Table<ReviewRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);
     }
@@ -105,6 +117,39 @@ public class Review extends TableImpl<ReviewRecord> {
         this(DSL.name("review"), null);
     }
 
+    public <O extends Record> Review(Table<O> path, ForeignKey<O, ReviewRecord> childPath, InverseForeignKey<O, ReviewRecord> parentPath) {
+        super(path, childPath, parentPath, REVIEW);
+    }
+
+    /**
+     * A subtype implementing {@link Path} for simplified path-based joins.
+     */
+    public static class ReviewPath extends Review implements Path<ReviewRecord> {
+
+        private static final long serialVersionUID = 1L;
+        public <O extends Record> ReviewPath(Table<O> path, ForeignKey<O, ReviewRecord> childPath, InverseForeignKey<O, ReviewRecord> parentPath) {
+            super(path, childPath, parentPath);
+        }
+        private ReviewPath(Name alias, Table<ReviewRecord> aliased) {
+            super(alias, aliased);
+        }
+
+        @Override
+        public ReviewPath as(String alias) {
+            return new ReviewPath(DSL.name(alias), this);
+        }
+
+        @Override
+        public ReviewPath as(Name alias) {
+            return new ReviewPath(alias, this);
+        }
+
+        @Override
+        public ReviewPath as(Table<?> alias) {
+            return new ReviewPath(alias.getQualifiedName(), this);
+        }
+    }
+
     @Override
     public Schema getSchema() {
         return aliased() ? null : DefaultSchema.DEFAULT_SCHEMA;
@@ -118,6 +163,23 @@ public class Review extends TableImpl<ReviewRecord> {
     @Override
     public UniqueKey<ReviewRecord> getPrimaryKey() {
         return Keys.REVIEW__PK_REVIEW;
+    }
+
+    @Override
+    public List<ForeignKey<ReviewRecord, ?>> getReferences() {
+        return Arrays.asList(Keys.REVIEW__FK_REVIEW_PK_USERS);
+    }
+
+    private transient UsersPath _users;
+
+    /**
+     * Get the implicit join path to the <code>users</code> table.
+     */
+    public UsersPath users() {
+        if (_users == null)
+            _users = new UsersPath(this, Keys.REVIEW__FK_REVIEW_PK_USERS, null);
+
+        return _users;
     }
 
     @Override

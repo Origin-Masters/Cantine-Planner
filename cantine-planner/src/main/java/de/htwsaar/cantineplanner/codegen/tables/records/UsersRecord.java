@@ -102,6 +102,20 @@ public class UsersRecord extends UpdatableRecordImpl<UsersRecord> {
         return (Integer) get(5);
     }
 
+    /**
+     * Setter for <code>users.dont_show_meal</code>.
+     */
+    public void setDontShowMeal(String value) {
+        set(6, value);
+    }
+
+    /**
+     * Getter for <code>users.dont_show_meal</code>.
+     */
+    public String getDontShowMeal() {
+        return (String) get(6);
+    }
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -125,7 +139,7 @@ public class UsersRecord extends UpdatableRecordImpl<UsersRecord> {
     /**
      * Create a detached, initialised UsersRecord
      */
-    public UsersRecord(Integer userid, String username, String password, String email, Integer role, Integer favMeal) {
+    public UsersRecord(Integer userid, String username, String password, String email, Integer role, Integer favMeal, String dontShowMeal) {
         super(Users.USERS);
 
         setUserid(userid);
@@ -134,6 +148,7 @@ public class UsersRecord extends UpdatableRecordImpl<UsersRecord> {
         setEmail(email);
         setRole(role);
         setFavMeal(favMeal);
+        setDontShowMeal(dontShowMeal);
         resetChangedOnNotNull();
     }
 }
