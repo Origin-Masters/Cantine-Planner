@@ -224,4 +224,19 @@ public class DBConnectionTest {
         assertDoesNotThrow(() -> dbConnection.addReview(review));
         assertDoesNotThrow(() -> dbConnection.addReview(review2));
     }
+    
+    @Test
+    public void testIsAdmin() {
+        assertThrows(UserDoesntExistException.class, () -> dbConnection.isAdmin(9999)); // Assuming 9999 is a non-existent user ID
+
+        assertDoesNotThrow(() -> {
+            boolean isAdmin = dbConnection.isAdmin(1);
+            assertFalse(isAdmin);
+        });
+
+        assertDoesNotThrow(() -> {
+            boolean isAdmin = dbConnection.isAdmin(7);
+            assertFalse(isAdmin);
+        });
+    }
 }
