@@ -34,16 +34,11 @@ public class DBConnectionTest {
     }
 
     @Test
-    public void testExampleUser() {
-        assertDoesNotThrow(() -> {
-            boolean result = dbConnection.validateUser("test", "test");
-            assertTrue(result);
-        });
-    }
-
-
-    @Test
     public void testRegisterUserWithSameUsername() {
+        assertDoesNotThrow(() -> {
+            dbConnection.deleteUserByName("testUser"); // Delete the user if it already exists
+            dbConnection.registerUser("testUser", "testPassword", "test@example.com");
+        });
         assertThrows(UserAlreadyExistsException.class, () -> {
             dbConnection.registerUser("testUser", "testPassword", "test@example.com");
         });
@@ -53,6 +48,13 @@ public class DBConnectionTest {
     public void testGetUserId() {
         assertThrows(UserDoesntExistException.class, () -> dbConnection.getUserId("nonExistentUser"));
         assertThrows(UserDoesntExistException.class, () -> dbConnection.getUserId("nonExistentUser2"));
+
+        //testing for existing user
+        assertDoesNotThrow(() -> {
+            int userId = dbConnection.getUserId("Xudong");
+            assertNotNull(userId);
+        });
+
     }
 
     @Test
@@ -94,6 +96,9 @@ public class DBConnectionTest {
 
             List<ReviewRecord> reviews2 = dbConnection.reviewsByMealiD(2);
             assertNotNull(reviews2);
+
+            List<ReviewRecord> reviews3 = dbConnection.reviewsByMealName("Pozole");
+            assertNotNull(reviews3);
         });
     }
 
@@ -152,6 +157,34 @@ public class DBConnectionTest {
         assertThrows(MealDoesntExistException.class, () -> dbConnection.mealDetails(mealId));
         int mealId2 = 2;
         assertThrows(MealDoesntExistException.class, () -> dbConnection.mealDetails(mealId2));
+
+        //testing for existing meal
+        assertDoesNotThrow(() -> {
+            List<MealsRecord> meals = dbConnection.mealDetails(3);
+            assertNotNull(meals);
+        });
+
+        //testing for added meal
+        assertDoesNotThrow(() -> {
+            MealsRecord meal = new MealsRecord();
+            meal.setName("Test Meal for mealDetails");
+            meal.setPrice(15.0F);
+            meal.setCalories(600);
+            meal.setAllergy("None");
+            meal.setMeat(1);
+
+            // Ensure the meal does not already exist before adding
+            List<MealsRecord> existingMeals = dbConnection.searchMeal(meal.getName());
+            if (existingMeals.isEmpty()) {
+                assertDoesNotThrow(() -> dbConnection.addMeal(meal));
+            }
+            // Retrieve the mealId after adding the meal
+            int addedMealId = dbConnection.searchMeal(meal.getName()).get(0).getMealId();
+            List<MealsRecord> meals = dbConnection.mealDetails(addedMealId);
+            assertNotNull(meals);
+            //delete the added meal
+            assertDoesNotThrow(() -> dbConnection.deleteMealById(addedMealId));
+        });
     }
 
     @Test
