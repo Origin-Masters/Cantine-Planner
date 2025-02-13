@@ -1,7 +1,5 @@
 package de.htwsaar.cantineplanner.dataAccess;
 
-import de.htwsaar.cantineplanner.businessLogic.AllergenMapper;
-import de.htwsaar.cantineplanner.businessLogic.EventManager;
 import de.htwsaar.cantineplanner.codegen.tables.Meals;
 import de.htwsaar.cantineplanner.codegen.tables.Review;
 import de.htwsaar.cantineplanner.codegen.tables.Users;
@@ -12,8 +10,8 @@ import de.htwsaar.cantineplanner.exceptions.*;
 import de.htwsaar.cantineplanner.security.PasswordUtil;
 import org.jooq.DSLContext;
 import org.jooq.SQLDialect;
-import org.jooq.conf.Settings;
 import org.jooq.impl.DSL;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
