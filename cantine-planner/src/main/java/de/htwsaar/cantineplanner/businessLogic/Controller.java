@@ -82,8 +82,8 @@ public class Controller {
         // User-bezogene Events
         eventManager.subscribe("showReviewsByUser", this::handleShowReviewsByUser);
         eventManager.subscribe("showAdminMenu", this::handleShowAdminMenu);
+        eventManager.subscribe("showAllergenSettings", (data) -> screenManager.showAllergeneSettings());
     }
-
     // Hauptschleife
     public void start() {
         running = true;

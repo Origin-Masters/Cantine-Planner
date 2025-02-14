@@ -12,9 +12,8 @@ import de.htwsaar.cantineplanner.codegen.tables.records.ReviewRecord;
 import de.htwsaar.cantineplanner.presentation.pages.*;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public class ScreenManager {
@@ -58,7 +57,7 @@ public class ScreenManager {
     public void showUserMenuScreen() {
         List<MenuBuilder.MenuButton> userMenuButtons = Arrays.asList(
                 new MenuBuilder.MenuButton("Benutzerdaten bearbeiten", "editUserData"),
-                new MenuBuilder.MenuButton("Allergien verwalten", "manageAllergies"),
+                new MenuBuilder.MenuButton("Allergien verwalten", "showAllergenSettings"),
                 new MenuBuilder.MenuButton("Bewertungen anzeigen", "showReviewsByUser"),
                 new MenuBuilder.MenuButton("Abmelden", "logout"),
                 new MenuBuilder.MenuButton("Admin Menu", "showAdminMenu"),
@@ -323,6 +322,32 @@ public class ScreenManager {
         InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Search Reviews by Meal Name");
         List<String> labels = Arrays.asList("Meal Name");
         inputScreenBuilder.display(labels, "searchReviewsByMealName");
+    }
+
+    public void showAllergeneSettings(){
+        List<String> allergene = Arrays.asList(
+                "Glutenhaltiges Getreide",
+                "Krebstiere",
+                "Eier",
+                "Fisch",
+                "Erdnüsse",
+                "Soja",
+                "Milch",
+                "Schalenfrüchte (Nüsse)",
+                "Sellerie",
+                "Senf",
+                "Sesamsamen",
+                "Schwefeldioxid und Sulfite",
+                "Lupinen",
+                "Weichtiere"
+        );
+
+        // CheckboxBuilder erstellen
+        CheckboxScreenBuilder builder = new CheckboxScreenBuilder(gui, eventManager,"Allergene auswählen");
+
+
+        // Menü anzeigen
+        builder.display(allergene, "allergeneSettings");
     }
 
     public void showAdminMenuScreen() {
