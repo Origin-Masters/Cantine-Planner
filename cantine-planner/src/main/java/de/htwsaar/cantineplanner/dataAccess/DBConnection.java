@@ -371,4 +371,54 @@ public class DBConnection {
         }
     }
 
+    public List<MealsRecord> getWeeklyPlan() throws SQLException {
+        try (Connection connection = dataSource.getConnection()) {
+            DSLContext dsl = getDSLContext(connection);
+            return dsl.selectFrom(Meals.MEALS)
+                    .where(Meals.MEALS.DAY.isNotNull())
+                    .fetchInto(MealsRecord.class);
+
+        }
+    }
+
+    public void editWeeklyPlan(int mealId, String day) throws SQLException {
+        try (Connection connection = dataSource.getConnection()) {
+            DSLContext dsl = getDSLContext(connection);
+            dsl.update(Meals.MEALS)
+                    .set(Meals.MEALS.DAY, day)
+                    .where(Meals.MEALS.MEAL_ID.eq(mealId))
+                    .execute();
+        }
+    }
+
+    public void updateWeeklyPlan(String day, String mealName) throws SQLException {
+        if (day == null || day.length() != 3) {
+            throw new IllegalArgumentException("Day must be a three-character string.");
+        }
+        try (Connection connection = dataSource.getConnection()) {
+            DSLContext dsl = getDSLContext(connection);
+            int affectedRows = dsl.update(Meals.MEALS)
+                    .set(Meals.MEALS.DAY, day)
+                    .where(Meals.MEALS.NAME.eq(mealName))
+                    .execute();
+
+            if (affectedRows == 0) {
+                throw new SQLException("No rows were updated. Check if the meal name exists.");
+            }
+        }
+    }
+
+    public void updateMonday(String mon, String mealName) throws SQLException {
+        try (Connection connection = dataSource.getConnection()) {
+            DSLContext dsl = getDSLContext(connection);
+            int affectedRows = dsl.update(Meals.MEALS)
+                    .set(Meals.MEALS.DAY, mon)
+                    .where(Meals.MEALS.NAME.eq(mealName))
+                    .execute();
+
+            if (affectedRows == 0) {
+                throw new SQLException("No rows were updated. Check if the meal name exists.");
+            }
+        }
+    }
 }

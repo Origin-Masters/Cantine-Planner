@@ -86,5 +86,17 @@ public class CantineService {
         return dbConnection.isAdmin(currentUserId);
     }
 
+    public List<MealsRecord> getWeeklyPlan() throws SQLException {
+        return dbConnection.getWeeklyPlan();
+    }
+
+    public void editWeeklyPlan(int mealId, String day) throws SQLException {
+        dbConnection.editWeeklyPlan(mealId, day);
+    }
+
+    public void updateMonday(String mon, String mealName) throws SQLException {
+        dbConnection.updateMonday(mon, mealName);
+    }
+
     // Add other methods as needed
 }

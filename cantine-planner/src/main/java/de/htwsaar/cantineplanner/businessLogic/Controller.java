@@ -22,7 +22,6 @@ public class Controller {
     String PATH_TO_PROPERTIES = "hikari.properties";
 
 
-
     public Controller() {
         this.eventManager = new EventManager();
         this.screenManager = new ScreenManager(eventManager);
@@ -83,20 +82,47 @@ public class Controller {
         eventManager.subscribe("showReviewsByUser", this::handleShowReviewsByUser);
         eventManager.subscribe("showAdminMenu", this::handleShowAdminMenu);
         eventManager.subscribe("showAllergenSettings", (data) -> screenManager.showAllergeneSettings());
+
+        // Weekly Plan
+        eventManager.subscribe("showWeeklyPlan", this::handleShowWeeklyPlan);
+        eventManager.subscribe("editWeeklyPlan", this::handleShowEditWeeklyPlan);
+        eventManager.subscribe("editWeeklyPlanMonday", (data) -> screenManager.showEditWeeklyPlanMonday());
+        eventManager.subscribe("editWeeklyPlanMondaySubmit", this::handleEditWeeklyPlanMonday);
+        eventManager.subscribe("editWeeklyPlanTuesday", (data) -> screenManager.showEditWeeklyPlanTuesday());
+        eventManager.subscribe("editWeeklyPlanWednesday", (data) -> screenManager.showEditWeeklyPlanWednesday());
+        eventManager.subscribe("editWeeklyPlanThursday", (data) -> screenManager.showEditWeeklyPlanThursday());
+        eventManager.subscribe("editWeeklyPlanFriday", (data) -> screenManager.showEditWeeklyPlanFriday());
+
+
     }
+
     // Hauptschleife
     public void start() {
         running = true;
         currentMenu = 0;
         while (running) {
             switch (currentMenu) {
-                case 0: loginMenu(); break;
-                case 1: mainMenu(); break;
-                case 2: mealMenu(); break;
-                case 3: reviewMenu(); break;
-                case 4: userMenu(); break;
-                case 5: weeklyMenu(); break;
-                case 6: adminMenu(); break;
+                case 0:
+                    loginMenu();
+                    break;
+                case 1:
+                    mainMenu();
+                    break;
+                case 2:
+                    mealMenu();
+                    break;
+                case 3:
+                    reviewMenu();
+                    break;
+                case 4:
+                    userMenu();
+                    break;
+                case 5:
+                    weeklyMenu();
+                    break;
+                case 6:
+                    adminMenu();
+                    break;
                 default:
             }
         }
@@ -107,18 +133,23 @@ public class Controller {
         screenManager.closeActiveWindow();
         currentMenu = menu;
     }
+
     public void loginMenu() {
         screenManager.showLoginScreen();
     }
+
     public void mainMenu() {
         screenManager.showMainMenuScreen();
     }
+
     public void mealMenu() {
         screenManager.showMealMenuScreen();
     }
+
     public void reviewMenu() {
         screenManager.showReviewsMenu();
     }
+
     public void userMenu() {
         screenManager.showUserMenuScreen();
     }
@@ -126,6 +157,7 @@ public class Controller {
     public void weeklyMenu() {
         screenManager.showWeeklyMenuScreen();
     }
+
     public void adminMenu() {
         screenManager.showAdminMenuScreen();
     }
@@ -384,9 +416,57 @@ public class Controller {
             } else {
                 screenManager.showErrorScreen("You are not authorized to access this menu!");
             }
-        } catch (SQLException| UserDoesntExistException | NullPointerException e) {
+        } catch (SQLException | UserDoesntExistException | NullPointerException e) {
             screenManager.showErrorScreen("There was an error while validating the user try again!");
         }
 
+    }
+
+    // Weekly Plan
+    private void handleShowWeeklyPlan(Object data) {
+        try {
+            List<MealsRecord> weeklyPlan = cantineService.getWeeklyPlan();
+            screenManager.showWeeklyPlanScreen(weeklyPlan);
+        } catch (SQLException e) {
+            screenManager.showErrorScreen("There was an error while fetching the weekly plan, please try again!");
+        }
+    }
+
+    private void handleShowEditWeeklyPlan(Object data) {
+        screenManager.showEditWeeklyPlanScreen();
+    }
+
+
+    public void handleEditWeeklyPlanMonday(Object data) {
+        try {
+            String[] dataArray = (String[]) data;
+            String mealName = dataArray[0];
+            MealsRecord meal = cantineService.getMealByName(mealName);
+            if (meal != null) {
+                cantineService.updateMonday("Mon", meal.getName());
+                screenManager.showSuccessScreen("Weekly plan for Monday updated successfully!");
+            } else {
+                screenManager.showErrorScreen("Meal not found!");
+            }
+        } catch (SQLException e) {
+            screenManager.showErrorScreen("There was an error while updating the weekly plan, please try again!");
+        }
+    }
+
+
+    public void handleEditWeeklyPlanTuesday(Object data) {
+        // Handle adding meal for Tuesday
+    }
+
+    public void handleEditWeeklyPlanWednesday(Object data) {
+        // Handle adding meal for Wednesday
+    }
+
+    public void handleEditWeeklyPlanThursday(Object data) {
+        // Handle adding meal for Thursday
+    }
+
+    public void handleEditWeeklyPlanFriday(Object data) {
+        // Handle adding meal for Friday
     }
 }

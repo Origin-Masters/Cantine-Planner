@@ -10,6 +10,8 @@ import de.htwsaar.cantineplanner.businessLogic.MealTypeMapper;
 import de.htwsaar.cantineplanner.codegen.tables.records.MealsRecord;
 import de.htwsaar.cantineplanner.codegen.tables.records.ReviewRecord;
 import de.htwsaar.cantineplanner.presentation.pages.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.*;
@@ -17,6 +19,7 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public class ScreenManager {
+    private static final Logger log = LoggerFactory.getLogger(ScreenManager.class);
     private MultiWindowTextGUI gui;
     private EventManager eventManager;
 
@@ -119,9 +122,9 @@ public class ScreenManager {
     }
 
 
-    public void showWeeklyMenuScreen(){
+    public void showWeeklyMenuScreen() {
         List<MenuBuilder.MenuButton> weeklyMenuButtons = Arrays.asList(
-                new MenuBuilder.MenuButton("Weekly Plan", "showWeeklyMenu"),
+                new MenuBuilder.MenuButton("Weekly Plan", "showWeeklyPlan"),
                 new MenuBuilder.MenuButton("Edit Weekly Plan", "editWeeklyPlan"),
                 new MenuBuilder.MenuButton("Show Random Meals", "showRandomMeals"),
                 new MenuBuilder.MenuButton("Main Menu", "showMainMenu"),
@@ -259,26 +262,31 @@ public class ScreenManager {
 
         tableBuilder.display();
     }
+
     public void showAddReviewScreen() {
         InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Add Review");
         List<String> labels = Arrays.asList("Rating", "Comment", "Meal ID");
         inputScreenBuilder.display(labels, "addReview");
     }
+
     public void showAddMealScreen() {
         InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Add Meal");
         List<String> labels = Arrays.asList("Name", "Price", "Calories", "Allergy", "Meat");
         inputScreenBuilder.display(labels, "addMeal");
     }
+
     public void showDeleteMealScreen() {
         InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Delete Meal");
         List<String> labels = Arrays.asList("ID");
         inputScreenBuilder.display(labels, "deleteMeal");
     }
+
     public void showDeleteReviewScreen() {
         InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Delete Review");
         List<String> labels = Arrays.asList("ID");
         inputScreenBuilder.display(labels, "deleteReview");
     }
+
     public void showMealDetailsById() {
         InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Show by ID Meal");
         List<String> labels = Arrays.asList("ID");
@@ -319,12 +327,13 @@ public class ScreenManager {
     }
 
     public void showSearchReviewsByMealName() {
-        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Search Reviews by Meal Name");
+        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager,
+                "Search Reviews by Meal Name");
         List<String> labels = Arrays.asList("Meal Name");
         inputScreenBuilder.display(labels, "searchReviewsByMealName");
     }
 
-    public void showAllergeneSettings(){
+    public void showAllergeneSettings() {
         List<String> allergene = Arrays.asList(
                 "Glutenhaltiges Getreide",
                 "Krebstiere",
@@ -343,7 +352,7 @@ public class ScreenManager {
         );
 
         // CheckboxBuilder erstellen
-        CheckboxScreenBuilder builder = new CheckboxScreenBuilder(gui, eventManager,"Allergene auswählen");
+        CheckboxScreenBuilder builder = new CheckboxScreenBuilder(gui, eventManager, "Allergene auswählen");
 
 
         // Menü anzeigen
@@ -371,5 +380,84 @@ public class ScreenManager {
                 .setTitle("Admin Menu")
                 .setButtons(adminMenuButtons);
         adminMenu.display();
+    }
+
+    //Weekly Plan
+    public void showEditWeeklyPlanScreen() {
+        List<MenuBuilder.MenuButton> weeklyPlanButtons = Arrays.asList(
+                new MenuBuilder.MenuButton("Monday", "editWeeklyPlanMonday"),
+                new MenuBuilder.MenuButton("Tuesday", "editWeeklyPlanTuesday"),
+                new MenuBuilder.MenuButton("Wednesday", "editWeeklyPlanWednesday"),
+                new MenuBuilder.MenuButton("Thursday", "editWeeklyPlanThursday"),
+                new MenuBuilder.MenuButton("Friday", "editWeeklyPlanFriday"),
+                new MenuBuilder.MenuButton("Main Menu", "showMainMenu"),
+                new MenuBuilder.MenuButton("Exit", "exit")
+        );
+
+        MenuBuilder weeklyPlan = new MenuBuilder(gui, eventManager)
+                .setTitle("Edit Weekly Plan")
+                .setButtons(weeklyPlanButtons);
+        weeklyPlan.display();
+    }
+
+
+    public void showEditWeeklyPlanMonday() {
+        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Edit Monday");
+        List<String> labels = Arrays.asList("Meal Name");
+        inputScreenBuilder.display(labels, "editWeeklyPlanMondaySubmit");
+    }
+
+    public void showEditWeeklyPlanTuesday() {
+        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Edit Weekly Plan Tuesday");
+        List<String> labels = Arrays.asList("Meal Name", "Price", "Calories", "Allergens", "Meat");
+        inputScreenBuilder.display(labels, "editWeeklyPlanTuesday");
+    }
+
+    public void showEditWeeklyPlanWednesday() {
+        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Edit Weekly Plan Wednesday");
+        List<String> labels = Arrays.asList("Meal Name", "Price", "Calories", "Allergens", "Meat");
+        inputScreenBuilder.display(labels, "editWeeklyPlanWednesday");
+    }
+
+    public void showEditWeeklyPlanThursday() {
+        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Edit Weekly Plan Thursday");
+        List<String> labels = Arrays.asList( "Meal Name", "Price", "Calories", "Allergens", "Meat");
+        inputScreenBuilder.display(labels, "editWeeklyPlanThursday");
+    }
+
+    public void showEditWeeklyPlanFriday() {
+        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Edit Weekly Plan Friday");
+        List<String> labels = Arrays.asList( "Meal Name", "Price", "Calories", "Allergens", "Meat");
+        inputScreenBuilder.display(labels, "editWeeklyPlanFriday");
+    }
+
+    public void showWeeklyPlanScreen(List<MealsRecord> weeklyPlan) {
+        TableBuilder tableBuilder = new TableBuilder(gui, "Weekly Plan")
+                .addColumn("Day")
+                .addColumn("Meal Name")
+                .addColumn("Price")
+                .addColumn("Calories")
+                .addColumn("Allergens")
+                .addColumn("Meat");
+
+        for (MealsRecord meal : weeklyPlan) {
+            String allergens = Optional.ofNullable(meal.getAllergy())
+                    .filter(allergy -> !allergy.isEmpty())
+                    .map(allergy -> Arrays.stream(allergy.split(""))
+                            .map(AllergenMapper::getAllergenFullName)
+                            .collect(Collectors.joining(" ")))
+                    .orElse("keine Allergene");
+
+            tableBuilder.addRow(Arrays.asList(
+                    meal.getDay(),
+                    meal.getName(),
+                    String.format("%.2f", meal.getPrice()),
+                    String.valueOf(meal.getCalories()),
+                    allergens,
+                    MealTypeMapper.getMealTypeName(meal.getMeat())
+            ));
+        }
+
+        tableBuilder.display();
     }
 }
