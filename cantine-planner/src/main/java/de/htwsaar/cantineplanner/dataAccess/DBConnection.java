@@ -13,14 +13,13 @@ import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 
 
-
 public class DBConnection {
     private final HikariCPDataSource dataSource;
-
 
 
     /**
@@ -91,9 +90,9 @@ public class DBConnection {
             }
 
             return dsl.select(Users.USERS.ROLE)
-                    .from(Users.USERS)
-                    .where(Users.USERS.USERID.eq(UserID))
-                    .fetchOne(Users.USERS.ROLE) == 1;
+                           .from(Users.USERS)
+                           .where(Users.USERS.USERID.eq(UserID))
+                           .fetchOne(Users.USERS.ROLE) == 1;
         }
     }
 
@@ -120,6 +119,7 @@ public class DBConnection {
                     .fetchOne();
         }
     }
+
     public void deleteUserById(int userId) throws SQLException, UserDoesntExistException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
@@ -136,7 +136,7 @@ public class DBConnection {
         }
     }
 
-    public void deleteUserByName(String UserName) throws SQLException,UserDoesntExistException{
+    public void deleteUserByName(String UserName) throws SQLException, UserDoesntExistException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
 
@@ -161,8 +161,8 @@ public class DBConnection {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
             if (dsl.fetchExists(
-                            dsl.selectFrom(Meals.MEALS)
-                                    .where(Meals.MEALS.NAME.eq(meal.getName())))
+                    dsl.selectFrom(Meals.MEALS)
+                            .where(Meals.MEALS.NAME.eq(meal.getName())))
             ) {
                 throw new MealAlreadyExistsException(" Meal Already exists !");
             }
@@ -173,6 +173,7 @@ public class DBConnection {
                     .set(Meals.MEALS.CALORIES, meal.getCalories())
                     .set(Meals.MEALS.ALLERGY, meal.getAllergy())
                     .set(Meals.MEALS.MEAT, meal.getMeat())
+                    .set(Meals.MEALS.DAY, meal.getDay())
                     .execute();
 
             return dsl.selectFrom(Meals.MEALS)
@@ -224,6 +225,7 @@ public class DBConnection {
                     .execute();
         }
     }
+
     public void deleteMealByName(String name) throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
@@ -253,7 +255,7 @@ public class DBConnection {
      *
      * @param mealId of type int of the meal to be displayed
      */
-    public List<MealsRecord> mealDetails(int mealId) throws SQLException , MealDoesntExistException {
+    public List<MealsRecord> mealDetails(int mealId) throws SQLException, MealDoesntExistException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
             if (!dsl.fetchExists(
@@ -271,7 +273,7 @@ public class DBConnection {
     /**
      * Method getAllReviews displays all reviews in the database
      */
-    public List<ReviewRecord> getAllReviews() throws SQLException{
+    public List<ReviewRecord> getAllReviews() throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
             return dsl.selectFrom(Review.REVIEW)
@@ -282,7 +284,7 @@ public class DBConnection {
     /**
      * Method getAllReviews displays all reviews in the database
      */
-    public List<ReviewRecord> getAllReviewsByUser(int userId) throws SQLException{
+    public List<ReviewRecord> getAllReviewsByUser(int userId) throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
             return dsl.selectFrom(Review.REVIEW)
@@ -311,7 +313,7 @@ public class DBConnection {
      *
      * @param mealName of type String of the meal to be searched
      */
-    public List<ReviewRecord> reviewsByMealName(String mealName) throws SQLException , MealDoesntExistException {
+    public List<ReviewRecord> reviewsByMealName(String mealName) throws SQLException, MealDoesntExistException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
             if (!dsl.fetchExists(
@@ -381,44 +383,31 @@ public class DBConnection {
         }
     }
 
-    public void editWeeklyPlan(int mealId, String day) throws SQLException {
+    public void editWeeklyPlan(String mealName, String day) throws SQLException, MealDoesntExistException {
         try (Connection connection = dataSource.getConnection()) {
-            DSLContext dsl = getDSLContext(connection);
-            dsl.update(Meals.MEALS)
-                    .set(Meals.MEALS.DAY, day)
-                    .where(Meals.MEALS.MEAL_ID.eq(mealId))
-                    .execute();
-        }
-    }
-
-    public void updateWeeklyPlan(String day, String mealName) throws SQLException {
-        if (day == null || day.length() != 3) {
-            throw new IllegalArgumentException("Day must be a three-character string.");
-        }
-        try (Connection connection = dataSource.getConnection()) {
-            DSLContext dsl = getDSLContext(connection);
-            int affectedRows = dsl.update(Meals.MEALS)
-                    .set(Meals.MEALS.DAY, day)
-                    .where(Meals.MEALS.NAME.eq(mealName))
-                    .execute();
-
-            if (affectedRows == 0) {
-                throw new SQLException("No rows were updated. Check if the meal name exists.");
+            String sql = "UPDATE meals SET day = ? WHERE Name = ?";
+            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                statement.setString(1, day);
+                statement.setString(2, mealName);
+                int rowsAffected = statement.executeUpdate();
+                if (rowsAffected == 0) {
+                    throw new MealDoesntExistException("Meal does not exist");
+                }
             }
+        } catch (SQLException e) {
+            throw new SQLException("Error updating meal", e);
         }
     }
 
-    public void updateMonday(String mon, String mealName) throws SQLException {
+    public void resetWeeklyPlan() throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
-            DSLContext dsl = getDSLContext(connection);
-            int affectedRows = dsl.update(Meals.MEALS)
-                    .set(Meals.MEALS.DAY, mon)
-                    .where(Meals.MEALS.NAME.eq(mealName))
-                    .execute();
-
-            if (affectedRows == 0) {
-                throw new SQLException("No rows were updated. Check if the meal name exists.");
+            String sql = "UPDATE meals SET day = NULL";
+            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                statement.executeUpdate();
             }
+        } catch (SQLException e) {
+            throw new SQLException("Error updating meal", e);
         }
     }
+
 }

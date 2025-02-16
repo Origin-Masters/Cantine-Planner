@@ -390,6 +390,7 @@ public class ScreenManager {
                 new MenuBuilder.MenuButton("Wednesday", "editWeeklyPlanWednesday"),
                 new MenuBuilder.MenuButton("Thursday", "editWeeklyPlanThursday"),
                 new MenuBuilder.MenuButton("Friday", "editWeeklyPlanFriday"),
+                new MenuBuilder.MenuButton("Reset Weekly Plan", "resetWeeklyPlan"),
                 new MenuBuilder.MenuButton("Main Menu", "showMainMenu"),
                 new MenuBuilder.MenuButton("Exit", "exit")
         );
@@ -408,27 +409,27 @@ public class ScreenManager {
     }
 
     public void showEditWeeklyPlanTuesday() {
-        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Edit Weekly Plan Tuesday");
-        List<String> labels = Arrays.asList("Meal Name", "Price", "Calories", "Allergens", "Meat");
-        inputScreenBuilder.display(labels, "editWeeklyPlanTuesday");
+        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Edit Tuesday");
+        List<String> labels = Arrays.asList("Meal Name");
+        inputScreenBuilder.display(labels, "editWeeklyPlanTuesdaySubmit");
     }
 
     public void showEditWeeklyPlanWednesday() {
-        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Edit Weekly Plan Wednesday");
-        List<String> labels = Arrays.asList("Meal Name", "Price", "Calories", "Allergens", "Meat");
-        inputScreenBuilder.display(labels, "editWeeklyPlanWednesday");
+        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Edit Wednesday");
+        List<String> labels = Arrays.asList("Meal Name");
+        inputScreenBuilder.display(labels, "editWeeklyPlanWednesdaySubmit");
     }
 
     public void showEditWeeklyPlanThursday() {
-        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Edit Weekly Plan Thursday");
-        List<String> labels = Arrays.asList( "Meal Name", "Price", "Calories", "Allergens", "Meat");
-        inputScreenBuilder.display(labels, "editWeeklyPlanThursday");
+        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Edit Thursday");
+        List<String> labels = Arrays.asList("Meal Name");
+        inputScreenBuilder.display(labels, "editWeeklyPlanThursdaySubmit");
     }
 
     public void showEditWeeklyPlanFriday() {
-        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Edit Weekly Plan Friday");
-        List<String> labels = Arrays.asList( "Meal Name", "Price", "Calories", "Allergens", "Meat");
-        inputScreenBuilder.display(labels, "editWeeklyPlanFriday");
+        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Edit Friday");
+        List<String> labels = Arrays.asList("Meal Name");
+        inputScreenBuilder.display(labels, "editWeeklyPlanFridaySubmit");
     }
 
     public void showWeeklyPlanScreen(List<MealsRecord> weeklyPlan) {

@@ -6,6 +6,7 @@ import de.htwsaar.cantineplanner.exceptions.*;
 import de.htwsaar.cantineplanner.presentation.ScreenManager;
 
 import java.sql.SQLException;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
@@ -86,12 +87,17 @@ public class Controller {
         // Weekly Plan
         eventManager.subscribe("showWeeklyPlan", this::handleShowWeeklyPlan);
         eventManager.subscribe("editWeeklyPlan", this::handleShowEditWeeklyPlan);
+        eventManager.subscribe("resetWeeklyPlan", this::handleResetWeeklyPlan);
         eventManager.subscribe("editWeeklyPlanMonday", (data) -> screenManager.showEditWeeklyPlanMonday());
         eventManager.subscribe("editWeeklyPlanMondaySubmit", this::handleEditWeeklyPlanMonday);
         eventManager.subscribe("editWeeklyPlanTuesday", (data) -> screenManager.showEditWeeklyPlanTuesday());
+        eventManager.subscribe("editWeeklyPlanTuesdaySubmit", this::handleEditWeeklyPlanTuesday);
         eventManager.subscribe("editWeeklyPlanWednesday", (data) -> screenManager.showEditWeeklyPlanWednesday());
+        eventManager.subscribe("editWeeklyPlanWednesdaySubmit", this::handleEditWeeklyPlanWednesday);
         eventManager.subscribe("editWeeklyPlanThursday", (data) -> screenManager.showEditWeeklyPlanThursday());
+        eventManager.subscribe("editWeeklyPlanThursdaySubmit", this::handleEditWeeklyPlanThursday);
         eventManager.subscribe("editWeeklyPlanFriday", (data) -> screenManager.showEditWeeklyPlanFriday());
+        eventManager.subscribe("editWeeklyPlanFridaySubmit", this::handleEditWeeklyPlanFriday);
 
 
     }
@@ -426,6 +432,17 @@ public class Controller {
     private void handleShowWeeklyPlan(Object data) {
         try {
             List<MealsRecord> weeklyPlan = cantineService.getWeeklyPlan();
+            // Sort the weeklyPlan by the day field
+            weeklyPlan.sort(Comparator.comparing(meal -> {
+                switch (meal.getDay()) {
+                    case "Mon": return 1;
+                    case "Tue": return 2;
+                    case "Wed": return 3;
+                    case "Thu": return 4;
+                    case "Fri": return 5;
+                    default: return 6;
+                }
+            }));
             screenManager.showWeeklyPlanScreen(weeklyPlan);
         } catch (SQLException e) {
             screenManager.showErrorScreen("There was an error while fetching the weekly plan, please try again!");
@@ -436,37 +453,67 @@ public class Controller {
         screenManager.showEditWeeklyPlanScreen();
     }
 
-
-    public void handleEditWeeklyPlanMonday(Object data) {
+    private void handleResetWeeklyPlan(Object data) {
         try {
-            String[] dataArray = (String[]) data;
-            String mealName = dataArray[0];
-            MealsRecord meal = cantineService.getMealByName(mealName);
-            if (meal != null) {
-                cantineService.updateMonday("Mon", meal.getName());
-                screenManager.showSuccessScreen("Weekly plan for Monday updated successfully!");
-            } else {
-                screenManager.showErrorScreen("Meal not found!");
-            }
+            cantineService.resetWeeklyPlan();
+            screenManager.showSuccessScreen("Weekly plan has been reset!");
         } catch (SQLException e) {
-            screenManager.showErrorScreen("There was an error while updating the weekly plan, please try again!");
+            screenManager.showErrorScreen("There was an error while resetting the weekly plan, please try again!");
         }
     }
 
+    public void handleEditWeeklyPlanMonday(Object data) {
+        String[] mealData = (String[]) data;
+        String mealName = mealData[0];
+        try {
+            cantineService.editWeeklyPlan(mealName, "Mon");
+            screenManager.showSuccessScreen("Meal updated for Monday!");
+        } catch (SQLException | MealDoesntExistException e) {
+            screenManager.showErrorScreen("Error updating meal for Monday: " + e.getMessage());
+        }
+    }
 
     public void handleEditWeeklyPlanTuesday(Object data) {
-        // Handle adding meal for Tuesday
+        String[] mealData = (String[]) data;
+        String mealName = mealData[0];
+        try {
+            cantineService.editWeeklyPlan(mealName, "Tue");
+            screenManager.showSuccessScreen("Meal updated for Tuesday!");
+        } catch (SQLException | MealDoesntExistException e) {
+            screenManager.showErrorScreen("Error updating meal for Tuesday: " + e.getMessage());
+        }
     }
 
     public void handleEditWeeklyPlanWednesday(Object data) {
-        // Handle adding meal for Wednesday
+        String[] mealData = (String[]) data;
+        String mealName = mealData[0];
+        try {
+            cantineService.editWeeklyPlan(mealName, "Wed");
+            screenManager.showSuccessScreen("Meal updated for Wednesday!");
+        } catch (SQLException | MealDoesntExistException e) {
+            screenManager.showErrorScreen("Error updating meal for Wednesday: " + e.getMessage());
+        }
     }
 
     public void handleEditWeeklyPlanThursday(Object data) {
-        // Handle adding meal for Thursday
+        String[] mealData = (String[]) data;
+        String mealName = mealData[0];
+        try {
+            cantineService.editWeeklyPlan(mealName, "Thu");
+            screenManager.showSuccessScreen("Meal updated for Thursday!");
+        } catch (SQLException | MealDoesntExistException e) {
+            screenManager.showErrorScreen("Error updating meal for Thursday: " + e.getMessage());
+        }
     }
 
     public void handleEditWeeklyPlanFriday(Object data) {
-        // Handle adding meal for Friday
+        String[] mealData = (String[]) data;
+        String mealName = mealData[0];
+        try {
+            cantineService.editWeeklyPlan(mealName, "Fri");
+            screenManager.showSuccessScreen("Meal updated for Friday!");
+        } catch (SQLException | MealDoesntExistException e) {
+            screenManager.showErrorScreen("Error updating meal for Friday: " + e.getMessage());
+        }
     }
 }

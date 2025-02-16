@@ -65,6 +65,7 @@ public class DBConnectionTest {
         meal1.setCalories(600);
         meal1.setAllergy("None");
         meal1.setMeat(1);
+        meal1.setDay("Mon");
 
         MealsRecord meal2 = new MealsRecord();
         meal2.setName("Test Meal 2");
@@ -72,6 +73,7 @@ public class DBConnectionTest {
         meal2.setCalories(700);
         meal2.setAllergy("N");
         meal2.setMeat(0);
+        meal2.setDay("Tue");
 
         assertThrows(MealAlreadyExistsException.class, () -> dbConnection.addMeal(meal1));
         assertThrows(MealAlreadyExistsException.class, () -> dbConnection.addMeal(meal2));
@@ -323,6 +325,18 @@ public class DBConnectionTest {
             assertDoesNotThrow(() -> dbConnection.deleteUserByName("testUserToDeleteByName1"));
             assertDoesNotThrow(() -> dbConnection.deleteUserByName("testUserToDeleteByName2"));
         });
+    }
+
+    @Test
+    void getWeeklyPlan() {
+    }
+
+    @Test
+    void editWeeklyPlan() {
+    }
+
+    @Test
+    void resetWeeklyPlan() {
     }
 }
 

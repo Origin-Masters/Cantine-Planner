@@ -90,13 +90,12 @@ public class CantineService {
         return dbConnection.getWeeklyPlan();
     }
 
-    public void editWeeklyPlan(int mealId, String day) throws SQLException {
-        dbConnection.editWeeklyPlan(mealId, day);
+    public void editWeeklyPlan(String mealName, String day) throws SQLException, MealDoesntExistException {
+        dbConnection.editWeeklyPlan(mealName, day);
     }
 
-    public void updateMonday(String mon, String mealName) throws SQLException {
-        dbConnection.updateMonday(mon, mealName);
+    public  void resetWeeklyPlan() throws SQLException {
+        dbConnection.resetWeeklyPlan();
     }
-
     // Add other methods as needed
 }
