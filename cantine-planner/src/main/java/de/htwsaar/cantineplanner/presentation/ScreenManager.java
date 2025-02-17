@@ -15,13 +15,13 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.function.Consumer;
+
 import java.util.stream.Collectors;
 
 public class ScreenManager {
     private static final Logger log = LoggerFactory.getLogger(ScreenManager.class);
     private MultiWindowTextGUI gui;
-    private EventManager eventManager;
+    private final EventManager eventManager;
 
     public ScreenManager(EventManager eventManager) {
         this.eventManager = eventManager;
@@ -284,25 +284,25 @@ public class ScreenManager {
 
     public void showDeleteMealScreen() {
         InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Delete Meal");
-        List<String> labels = Arrays.asList("ID");
+        List<String> labels = List.of("ID");
         inputScreenBuilder.display(labels, "deleteMeal");
     }
 
     public void showDeleteReviewScreen() {
         InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Delete Review");
-        List<String> labels = Arrays.asList("ID");
+        List<String> labels = List.of("ID");
         inputScreenBuilder.display(labels, "deleteReview");
     }
 
     public void showMealDetailsById() {
         InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Show by ID Meal");
-        List<String> labels = Arrays.asList("ID");
+        List<String> labels = List.of("ID");
         inputScreenBuilder.display(labels, "mealDetailsById");
     }
 
     public void showSearchMealByName() {
         InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Show by Name Meal");
-        List<String> labels = Arrays.asList("Name");
+        List<String> labels = List.of("Name");
         inputScreenBuilder.display(labels, "searchMealByName");
     }
 
@@ -329,14 +329,14 @@ public class ScreenManager {
 
     public void showSearchReviewsByMealId() {
         InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Search Reviews by Meal ID");
-        List<String> labels = Arrays.asList("Meal ID");
+        List<String> labels = List.of("Meal ID");
         inputScreenBuilder.display(labels, "searchReviewsByMealId");
     }
 
     public void showSearchReviewsByMealName() {
         InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager,
                 "Search Reviews by Meal Name");
-        List<String> labels = Arrays.asList("Meal Name");
+        List<String> labels = List.of("Meal Name");
         inputScreenBuilder.display(labels, "searchReviewsByMealName");
     }
 
@@ -411,7 +411,7 @@ public class ScreenManager {
 
     public void showEditWeeklyPlanMonday() {
         InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Edit Monday");
-        List<String> labels = Arrays.asList("Meal Name");
+        List<String> labels = List.of("Meal Name");
         inputScreenBuilder.display(labels, "editWeeklyPlanMondaySubmit");
     }
 

@@ -63,6 +63,15 @@ public class DBConnection {
         }
     }
 
+    /**
+     * Method getUserId searches for a user by username and returns the userId
+     *
+     * @param username of type String
+     * @return userId of type int
+     * @throws SQLException             if an SQL exception occurs
+     * @throws UserDoesntExistException if the user doesn't exist
+     * @throws NullPointerException     if the user is null
+     */
     public int getUserId(String username) throws SQLException, UserDoesntExistException, NullPointerException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
@@ -80,6 +89,15 @@ public class DBConnection {
         }
     }
 
+    /**
+     * Method isAdmin checks if a user is an admin or not
+     *
+     * @param UserID
+     * @return boolean true if the user is an admin, false otherwise
+     * @throws SQLException             if an SQL exception occurs
+     * @throws UserDoesntExistException if the user doesn't exist
+     * @throws NullPointerException     if the user is null
+     */
     public boolean isAdmin(int UserID) throws SQLException, UserDoesntExistException, NullPointerException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
@@ -91,12 +109,22 @@ public class DBConnection {
             }
 
             return dsl.select(Users.USERS.ROLE)
-                           .from(Users.USERS)
-                           .where(Users.USERS.USERID.eq(UserID))
-                           .fetchOne(Users.USERS.ROLE) == 1;
+                    .from(Users.USERS)
+                    .where(Users.USERS.USERID.eq(UserID))
+                    .fetchOne(Users.USERS.ROLE) == 1;
         }
     }
 
+    /**
+     * Method registerUser registers a user in the database with the given username, password and email
+     *
+     * @param username          of type String
+     * @param plainTextPassword of type String
+     * @param email             of type String
+     * @return A UsersRecord of the registered user
+     * @throws SQLException               if an SQL exception occurs
+     * @throws UserAlreadyExistsException if the user already exists
+     */
     public UsersRecord registerUser(String username, String plainTextPassword, String email) throws SQLException, UserAlreadyExistsException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
@@ -121,6 +149,13 @@ public class DBConnection {
         }
     }
 
+    /**
+     * Method deleteUserById deletes a user from the database by userId
+     *
+     * @param userId of type int of the user to be deleted
+     * @throws SQLException             if an SQL exception occurs
+     * @throws UserDoesntExistException if the user doesn't exist
+     */
     public void deleteUserById(int userId) throws SQLException, UserDoesntExistException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
@@ -137,6 +172,13 @@ public class DBConnection {
         }
     }
 
+    /**
+     * Method deleteUserByName deletes a user from the database by username
+     *
+     * @param UserName of type String of the user to be deleted
+     * @throws SQLException             if an SQL exception occurs
+     * @throws UserDoesntExistException if the user doesn't exist
+     */
     public void deleteUserByName(String UserName) throws SQLException, UserDoesntExistException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
@@ -227,6 +269,11 @@ public class DBConnection {
         }
     }
 
+    /**
+     * Method deleteMealByName deletes a meal from the database by name
+     *
+     * @param name of type String of the meal to be deleted
+     */
     public void deleteMealByName(String name) throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
@@ -374,6 +421,12 @@ public class DBConnection {
         }
     }
 
+    /**
+     * Method getWeeklyPlan returns the weekly plan of meals
+     *
+     * @return List of MealsRecord
+     * @throws SQLException if an SQL exception occurs
+     */
     public List<MealsRecord> getWeeklyPlan() throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
@@ -383,7 +436,15 @@ public class DBConnection {
 
         }
     }
-    
+
+    /**
+     * Method editWeeklyPlan edits the weekly plan
+     *
+     * @param mealName of type String
+     * @param day      of type String
+     * @throws SQLException             if an SQL exception occurs
+     * @throws MealDoesntExistException if the meal doesn't exist
+     */
     public void editWeeklyPlan(String mealName, String day) throws SQLException, MealDoesntExistException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext create = DSL.using(connection, SQLDialect.SQLITE);
@@ -399,6 +460,11 @@ public class DBConnection {
         }
     }
 
+    /**
+     * Method resetWeeklyPlan resets the weekly plan
+     *
+     * @throws SQLException if an SQL exception occurs
+     */
     public void resetWeeklyPlan() throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
@@ -408,6 +474,15 @@ public class DBConnection {
         }
     }
 
+    /**
+     * Method editUserData edits the user data in the database
+     *
+     * @param username    of type String
+     * @param newPassword of type String
+     * @param newEmail    of type String
+     * @throws SQLException             if an SQL exception occurs
+     * @throws UserDoesntExistException if the user doesn't exist
+     */
     public void editUserData(String username, String newPassword, String newEmail) throws SQLException, UserDoesntExistException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
