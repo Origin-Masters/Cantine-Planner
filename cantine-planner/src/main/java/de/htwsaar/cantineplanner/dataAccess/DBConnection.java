@@ -383,67 +383,55 @@ public class DBConnection {
 
         }
     }
-
+    
     public void editWeeklyPlan(String mealName, String day) throws SQLException, MealDoesntExistException {
         try (Connection connection = dataSource.getConnection()) {
-            String sql = "UPDATE meals SET day = ? WHERE Name = ?";
-            try (PreparedStatement statement = connection.prepareStatement(sql)) {
-                statement.setString(1, day);
-                statement.setString(2, mealName);
-                int rowsAffected = statement.executeUpdate();
-                if (rowsAffected == 0) {
-                    throw new MealDoesntExistException("Meal does not exist");
-                }
+            DSLContext create = DSL.using(connection, SQLDialect.SQLITE);
+            int rowsAffected = create.update(DSL.table("meals"))
+                    .set(DSL.field("day"), day)
+                    .where(DSL.field("Name").eq(mealName))
+                    .execute();
+            if (rowsAffected == 0) {
+                throw new MealDoesntExistException("Meal does not exist");
             }
         } catch (SQLException e) {
-            throw new SQLException("Error updating meal", e);
+            throw new SQLException("Error updating weekly plan", e);
         }
     }
 
     public void resetWeeklyPlan() throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
-            String sql = "UPDATE meals SET day = NULL";
-            try (PreparedStatement statement = connection.prepareStatement(sql)) {
-                statement.executeUpdate();
-            }
-        } catch (SQLException e) {
-            throw new SQLException("Error updating meal", e);
+            DSLContext dsl = getDSLContext(connection);
+            dsl.update(DSL.table("meals"))
+                    .set(DSL.field("day"), (String) null)
+                    .execute();
         }
     }
 
     public void editUserData(String username, String newPassword, String newEmail) throws SQLException, UserDoesntExistException {
-        String updatePasswordSql = "UPDATE users SET password = ? WHERE username = ?";
-        String updateEmailSql = "UPDATE users SET email = ? WHERE username = ?";
-
         try (Connection connection = dataSource.getConnection()) {
+            DSLContext dsl = getDSLContext(connection);
+
             // Check if the user exists
-            String checkUserSql = "SELECT COUNT(*) FROM users WHERE username = ?";
-            try (PreparedStatement checkUserStmt = connection.prepareStatement(checkUserSql)) {
-                checkUserStmt.setString(1, username);
-                try (ResultSet rs = checkUserStmt.executeQuery()) {
-                    if (rs.next() && rs.getInt(1) == 0) {
-                        throw new UserDoesntExistException("The user with the given username doesn't exist!");
-                    }
-                }
+            if (!dsl.fetchExists(dsl.selectFrom(DSL.table("users")).where(DSL.field("username").eq(username)))) {
+                throw new UserDoesntExistException("The user with the given username doesn't exist!");
             }
 
             // Update the user's password if provided
             if (newPassword != null && !newPassword.isEmpty()) {
-                try (PreparedStatement updatePasswordStmt = connection.prepareStatement(updatePasswordSql)) {
-                    String hashedPassword = PasswordUtil.hashPassword(newPassword);
-                    updatePasswordStmt.setString(1, hashedPassword);
-                    updatePasswordStmt.setString(2, username);
-                    updatePasswordStmt.executeUpdate();
-                }
+                String hashedPassword = PasswordUtil.hashPassword(newPassword);
+                dsl.update(DSL.table("users"))
+                        .set(DSL.field("password"), hashedPassword)
+                        .where(DSL.field("username").eq(username))
+                        .execute();
             }
 
             // Update the user's email if provided
             if (newEmail != null && !newEmail.isEmpty()) {
-                try (PreparedStatement updateEmailStmt = connection.prepareStatement(updateEmailSql)) {
-                    updateEmailStmt.setString(1, newEmail);
-                    updateEmailStmt.setString(2, username);
-                    updateEmailStmt.executeUpdate();
-                }
+                dsl.update(DSL.table("users"))
+                        .set(DSL.field("email"), newEmail)
+                        .where(DSL.field("username").eq(username))
+                        .execute();
             }
         }
     }
