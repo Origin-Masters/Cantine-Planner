@@ -97,5 +97,9 @@ public class CantineService {
     public  void resetWeeklyPlan() throws SQLException {
         dbConnection.resetWeeklyPlan();
     }
+
+    public void editUserData(String username, String newPassword, String newEmail) throws SQLException, UserDoesntExistException {
+        dbConnection.editUserData(username, newPassword, newEmail);
+    }
     // Add other methods as needed
 }

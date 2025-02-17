@@ -59,7 +59,7 @@ public class ScreenManager {
 
     public void showUserMenuScreen() {
         List<MenuBuilder.MenuButton> userMenuButtons = Arrays.asList(
-                new MenuBuilder.MenuButton("Benutzerdaten bearbeiten", "editUserData"),
+                new MenuBuilder.MenuButton("Benutzerdaten bearbeiten", "showEditUserData"),
                 new MenuBuilder.MenuButton("Allergien verwalten", "showAllergenSettings"),
                 new MenuBuilder.MenuButton("Bewertungen anzeigen", "showReviewsByUser"),
                 new MenuBuilder.MenuButton("Abmelden", "logout"),
@@ -74,6 +74,12 @@ public class ScreenManager {
         userMenu.display();
     }
 
+    public void showEditUserDataScreen() {
+        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Edit User Data");
+        List<String> labels = Arrays.asList("Username", "Current Password", "New Password","New Email");
+        inputScreenBuilder.display(labels, "editUserData");
+    }
+
     public void showErrorScreen(String message) {
         NotificationScreenBuilder errorScreen = new NotificationScreenBuilder(gui, message,
                 new TextColor.RGB(255, 0, 0));
@@ -85,6 +91,7 @@ public class ScreenManager {
                 new TextColor.RGB(0, 255, 0));
         successScreen.display();
     }
+
 
     public void showAllReviews(List<ReviewRecord> reviews) {
         TableBuilder tableBuilder = new TableBuilder(gui, "All Reviews")
@@ -461,4 +468,5 @@ public class ScreenManager {
 
         tableBuilder.display();
     }
+
 }

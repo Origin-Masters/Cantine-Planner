@@ -54,6 +54,8 @@ public class Controller {
             switchMenu(0);
             this.currentUserId = -1;
         });
+        eventManager.subscribe("showEditUserData", (data) -> screenManager.showEditUserDataScreen());
+        eventManager.subscribe("editUserData", this::handleEditUserData);
 
         // Meal-bezogene Events
         eventManager.subscribe("showAllMeals", this::handleShowAllMeals);
@@ -234,6 +236,33 @@ public class Controller {
             }
         }
         return false;
+    }
+
+    private void handleEditUserData(Object data) {
+        if (data == null) {
+            screenManager.showErrorScreen("Data is null");
+            return;
+        }
+        String[] userData = (String[]) data;
+        if (userData.length < 4) {
+            screenManager.showErrorScreen("Incomplete user data");
+            return;
+        }
+        String username = userData[0];
+        String currentPassword = userData[1];
+        String newPassword = userData.length > 2 ? userData[2] : null;
+        String newEmail = userData.length > 3 ? userData[3] : null;
+        try {
+            if (cantineService.validateUser(username, currentPassword)) {
+                cantineService.editUserData(username, newPassword, newEmail);
+                screenManager.closeActiveWindow();
+                screenManager.showSuccessScreen("User data updated successfully!");
+            } else {
+                screenManager.showErrorScreen("Username or password is incorrect. Please retry!");
+            }
+        } catch (SQLException | UserDoesntExistException | UserAlreadyExistsException e) {
+            screenManager.showErrorScreen("There was an error while updating user data please try again!");
+        }
     }
 
     // Meal-Handler
@@ -467,6 +496,7 @@ public class Controller {
         String mealName = mealData[0];
         try {
             cantineService.editWeeklyPlan(mealName, "Mon");
+            screenManager.closeActiveWindow();
             screenManager.showSuccessScreen("Meal updated for Monday!");
         } catch (SQLException | MealDoesntExistException e) {
             screenManager.showErrorScreen("Error updating meal for Monday: " + e.getMessage());
@@ -478,6 +508,7 @@ public class Controller {
         String mealName = mealData[0];
         try {
             cantineService.editWeeklyPlan(mealName, "Tue");
+            screenManager.closeActiveWindow();
             screenManager.showSuccessScreen("Meal updated for Tuesday!");
         } catch (SQLException | MealDoesntExistException e) {
             screenManager.showErrorScreen("Error updating meal for Tuesday: " + e.getMessage());
@@ -489,6 +520,7 @@ public class Controller {
         String mealName = mealData[0];
         try {
             cantineService.editWeeklyPlan(mealName, "Wed");
+            screenManager.closeActiveWindow();
             screenManager.showSuccessScreen("Meal updated for Wednesday!");
         } catch (SQLException | MealDoesntExistException e) {
             screenManager.showErrorScreen("Error updating meal for Wednesday: " + e.getMessage());
@@ -500,6 +532,7 @@ public class Controller {
         String mealName = mealData[0];
         try {
             cantineService.editWeeklyPlan(mealName, "Thu");
+            screenManager.closeActiveWindow();
             screenManager.showSuccessScreen("Meal updated for Thursday!");
         } catch (SQLException | MealDoesntExistException e) {
             screenManager.showErrorScreen("Error updating meal for Thursday: " + e.getMessage());
@@ -511,6 +544,7 @@ public class Controller {
         String mealName = mealData[0];
         try {
             cantineService.editWeeklyPlan(mealName, "Fri");
+            screenManager.closeActiveWindow();
             screenManager.showSuccessScreen("Meal updated for Friday!");
         } catch (SQLException | MealDoesntExistException e) {
             screenManager.showErrorScreen("Error updating meal for Friday: " + e.getMessage());

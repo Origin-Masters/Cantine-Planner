@@ -14,6 +14,7 @@ import org.jooq.impl.DSL;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -410,4 +411,40 @@ public class DBConnection {
         }
     }
 
+    public void editUserData(String username, String newPassword, String newEmail) throws SQLException, UserDoesntExistException {
+        String updatePasswordSql = "UPDATE users SET password = ? WHERE username = ?";
+        String updateEmailSql = "UPDATE users SET email = ? WHERE username = ?";
+
+        try (Connection connection = dataSource.getConnection()) {
+            // Check if the user exists
+            String checkUserSql = "SELECT COUNT(*) FROM users WHERE username = ?";
+            try (PreparedStatement checkUserStmt = connection.prepareStatement(checkUserSql)) {
+                checkUserStmt.setString(1, username);
+                try (ResultSet rs = checkUserStmt.executeQuery()) {
+                    if (rs.next() && rs.getInt(1) == 0) {
+                        throw new UserDoesntExistException("The user with the given username doesn't exist!");
+                    }
+                }
+            }
+
+            // Update the user's password if provided
+            if (newPassword != null && !newPassword.isEmpty()) {
+                try (PreparedStatement updatePasswordStmt = connection.prepareStatement(updatePasswordSql)) {
+                    String hashedPassword = PasswordUtil.hashPassword(newPassword);
+                    updatePasswordStmt.setString(1, hashedPassword);
+                    updatePasswordStmt.setString(2, username);
+                    updatePasswordStmt.executeUpdate();
+                }
+            }
+
+            // Update the user's email if provided
+            if (newEmail != null && !newEmail.isEmpty()) {
+                try (PreparedStatement updateEmailStmt = connection.prepareStatement(updateEmailSql)) {
+                    updateEmailStmt.setString(1, newEmail);
+                    updateEmailStmt.setString(2, username);
+                    updateEmailStmt.executeUpdate();
+                }
+            }
+        }
+    }
 }
