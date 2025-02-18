@@ -57,12 +57,12 @@ public class CantineService {
     }
 
     public MealsRecord getMealById(int mealId) throws SQLException, MealiDNotFoundException {
-        List<MealsRecord> meals = dbConnection.mealDetails(mealId);
+        List<MealsRecord> meals = dbConnection.searchMealById(mealId);
         return meals.isEmpty() ? null : meals.get(0);
     }
 
     public MealsRecord getMealByName(String name) throws SQLException, MealDoesntExistException {
-        List<MealsRecord> meals = dbConnection.searchMeal(name);
+        List<MealsRecord> meals = dbConnection.searchMealByName(name);
         return meals.isEmpty() ? null : meals.get(0);
     }
 

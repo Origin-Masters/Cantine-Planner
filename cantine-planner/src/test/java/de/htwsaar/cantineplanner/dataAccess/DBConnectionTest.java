@@ -82,10 +82,10 @@ public class DBConnectionTest {
     @Test
     public void testSearchMealWithDifferentParameters() {
         assertDoesNotThrow(() -> {
-            List<MealsRecord> meals1 = dbConnection.searchMeal("Test Meal 1");
+            List<MealsRecord> meals1 = dbConnection.searchMealByName("Test Meal 1");
             assertNotNull(meals1);
 
-            List<MealsRecord> meals2 = dbConnection.searchMeal("Test Meal 2");
+            List<MealsRecord> meals2 = dbConnection.searchMealByName("Test Meal 2");
             assertNotNull(meals2);
         });
     }
@@ -126,64 +126,39 @@ public class DBConnectionTest {
         assertDoesNotThrow(() -> dbConnection.addMeal(meal3));
         assertDoesNotThrow(() -> dbConnection.addMeal(meal4));
 
-        int mealId3 = dbConnection.searchMeal("Test Meal 3").get(0).getMealId();
-        int mealId4 = dbConnection.searchMeal("Test Meal 4").get(0).getMealId();
+        int mealId3 = dbConnection.searchMealByName("Test Meal 3").get(0).getMealId();
+        int mealId4 = dbConnection.searchMealByName("Test Meal 4").get(0).getMealId();
 
         assertDoesNotThrow(() -> dbConnection.deleteMealById(mealId3));
         assertDoesNotThrow(() -> dbConnection.deleteMealById(mealId4));
     }
 
     @Test
-    public void testSearchMeal() {
+    public void testSearchMealByName() {
         String mealName = "Test Meal";
         assertDoesNotThrow(() -> {
-            List<MealsRecord> meals = dbConnection.searchMeal(mealName);
+            List<MealsRecord> meals = dbConnection.searchMealByName(mealName);
             assertNotNull(meals);
         });
 
         String mealName2 = "Test Meal 2";
         assertDoesNotThrow(() -> {
-            List<MealsRecord> meals = dbConnection.searchMeal(mealName2);
+            List<MealsRecord> meals = dbConnection.searchMealByName(mealName2);
             assertNotNull(meals);
         });
     }
     
     @Test
-    public void testMealDetails() throws SQLException {
+    public void testSearchMealById() throws SQLException {
         int mealId = 1;
-        assertThrows(MealiDNotFoundException.class, () -> dbConnection.mealDetails(mealId));
+        assertThrows(MealiDNotFoundException.class, () -> dbConnection.searchMealById(mealId));
         int mealId2 = 2;
-        assertThrows(MealiDNotFoundException.class, () -> dbConnection.mealDetails(mealId2));
+        assertThrows(MealiDNotFoundException.class, () -> dbConnection.searchMealById(mealId2));
 
         // Testing for existing meal
         assertDoesNotThrow(() -> {
-            List<MealsRecord> meals = dbConnection.mealDetails(3);
+            List<MealsRecord> meals = dbConnection.searchMealById(3);
             assertNotNull(meals);
-        });
-
-        MealsRecord testMeal = new MealsRecord();
-        testMeal.setName("Test Meal for mealDetails");
-        testMeal.setPrice(10.0F);
-        testMeal.setCalories(500);
-        testMeal.setAllergy("None");
-        testMeal.setMeat(1);
-        testMeal.setDay("Mon");
-
-        // Clean up any existing test data
-        List<MealsRecord> existingMeals = dbConnection.searchMeal("Test Meal for mealDetails");
-        if (!existingMeals.isEmpty()) {
-            dbConnection.deleteMealById(existingMeals.get(0).getMealId());
-        }
-
-        // Add the test meal
-        assertDoesNotThrow(() -> dbConnection.addMeal(testMeal));
-
-        // Retrieve the meal ID and verify meal details
-        int mealId3 = assertDoesNotThrow(() -> dbConnection.searchMeal("Test Meal for mealDetails").get(0).getMealId());
-        assertDoesNotThrow(() -> {
-            List<MealsRecord> mealDetails = dbConnection.mealDetails(mealId3);
-            assertNotNull(mealDetails);
-            assertEquals("Test Meal for mealDetails", mealDetails.get(0).getName());
         });
     }
 

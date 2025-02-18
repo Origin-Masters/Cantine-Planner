@@ -244,7 +244,7 @@ public class DBConnection {
      *
      * @param name of type String of the meal to be searched
      */
-    public List<MealsRecord> searchMeal(String name) throws SQLException, MealDoesntExistException {
+    public List<MealsRecord> searchMealByName(String name) throws SQLException, MealDoesntExistException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
             if (!dsl.fetchExists(dsl.selectFrom(Meals.MEALS).where(Meals.MEALS.NAME.eq(name)))) {
@@ -260,7 +260,7 @@ public class DBConnection {
      *
      * @param mealId of type int of the meal to be displayed
      */
-    public List<MealsRecord> mealDetails(int mealId) throws SQLException, MealiDNotFoundException {
+    public List<MealsRecord> searchMealById(int mealId) throws SQLException, MealiDNotFoundException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
             if (!dsl.fetchExists(dsl.selectFrom(Meals.MEALS).where(Meals.MEALS.MEAL_ID.eq(mealId)))) {
