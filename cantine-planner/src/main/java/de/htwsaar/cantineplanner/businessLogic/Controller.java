@@ -77,9 +77,6 @@ public class Controller {
         eventManager.subscribe("showDeleteReview", (data) -> screenManager.showDeleteReviewScreen());
         eventManager.subscribe("deleteReview", this::handleDeleteReview);
         eventManager.subscribe("showAllReviews", this::handleShowAllReviews);
-        eventManager.subscribe("showSearchReviewsByMealId", (data) -> screenManager.showSearchReviewsByMealId());
-        eventManager.subscribe("searchReviewsByMealId", this::handleSearchReviewsByMealId);
-
         eventManager.subscribe("showSearchReviewsByMealName", (data) -> screenManager.showSearchReviewsByMealName());
         eventManager.subscribe("searchReviewsByMealName", this::handleSearchReviewsByMealName);
 
@@ -195,7 +192,7 @@ public class Controller {
             }
         } catch (UserNotValidatedException e) {
             screenManager.showErrorScreen(e.getMessage());
-        } catch (SQLException | NullPointerException e) {
+        } catch (SQLException e) {
             screenManager.showErrorScreen("There was an error while logging in please try again!");
         }
     }
@@ -213,10 +210,7 @@ public class Controller {
             screenManager.showErrorScreen("Please fill in all fields!");
             return;
         }
-        if (!isValidEmail(email)) {
-            screenManager.showErrorScreen("Invalid email format!");
-            return;
-        }
+
         try {
             if (cantineService.registerUser(username, password, email)) {
                 screenManager.closeActiveWindow();
@@ -224,17 +218,13 @@ public class Controller {
                 switchMenu(0);
             }
 
-        } catch (UserAlreadyExistsException e) {
+        } catch (InvalidEmailTypeException | UserAlreadyExistsException e) {
             screenManager.showErrorScreen(e.getMessage());
         } catch (SQLException e) {
             screenManager.showErrorScreen("There was an error while registering please try again!");
         }
     }
 
-
-    private boolean isValidEmail(String email) {
-        return email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
-    }
 
     private void handleShowRegisterScreen(Object data) {
         screenManager.showInputScreenReg("Register", "register");
@@ -285,14 +275,13 @@ public class Controller {
             screenManager.showErrorScreen("New password is required!");
             return;
         }
-        if (newEmail != null && !newEmail.isEmpty() && !isValidEmail(newEmail)) {
-            screenManager.showErrorScreen("Invalid email format!");
-            return;
-        }
+
         try {
             cantineService.editUserData(currentUserId, newPassword, newEmail);
             screenManager.closeActiveWindow();
             screenManager.showSuccessScreen("Password and email updated successfully!");
+        } catch (InvalidEmailTypeException e) {
+            screenManager.showErrorScreen(e.getMessage());
         } catch (SQLException e) {
             screenManager.showErrorScreen("There was an error while updating password and email, please try again!");
         }
@@ -353,7 +342,7 @@ public class Controller {
             screenManager.showSuccessScreen("Meal deleted successfully!");
         } catch (NumberFormatException e) {
             screenManager.showErrorScreen("Invalid meal ID format!");
-        } catch (MealDoesntExistException e) {
+        } catch (MealiDNotFoundException e) {
             screenManager.showErrorScreen(e.getMessage());
         } catch (SQLException e) {
             screenManager.showErrorScreen("There was an error while deleting meal please try again!");
@@ -440,18 +429,6 @@ public class Controller {
         }
     }
 
-    private void handleSearchReviewsByMealId(Object data) {
-        try {
-            String[] dataArray = (String[]) data;
-            int mealId = Integer.parseInt(dataArray[0]);
-            List<ReviewRecord> reviews = cantineService.searchReviewsByMealId(mealId);
-            screenManager.showAllReviews(reviews);
-        } catch (NumberFormatException e) {
-            screenManager.showErrorScreen("Invalid meal ID format!");
-        } catch (SQLException e) {
-            screenManager.showErrorScreen("There was an error while searching for the Reviews please try again!");
-        }
-    }
 
     private void handleSearchReviewsByMealName(Object data) {
         try {
@@ -459,6 +436,8 @@ public class Controller {
             String mealName = dataArray[0];
             List<ReviewRecord> reviews = cantineService.searchReviewsByMealName(mealName);
             screenManager.showAllReviews(reviews);
+        } catch (MealDoesntExistException e) {
+            screenManager.showErrorScreen(e.getMessage());
         } catch (SQLException e) {
             screenManager.showErrorScreen("There was an error while searching for the Reviews please try again!");
         }
@@ -470,6 +449,8 @@ public class Controller {
         try {
             List<ReviewRecord> reviews = cantineService.getAllReviewsByUser(currentUserId);
             screenManager.showAllReviews(reviews);
+        } catch (UseriDDoesntExcistException e) {
+            screenManager.showErrorScreen(e.getMessage());
         } catch (SQLException e) {
             screenManager.showErrorScreen("There was an error while fetching all reviews please try again!");
         }
@@ -482,7 +463,7 @@ public class Controller {
             } else {
                 screenManager.showErrorScreen("You are not authorized to access this menu!");
             }
-        } catch (SQLException | UserDoesntExistException | NullPointerException e) {
+        } catch (SQLException | UserDoesntExistException e) {
             screenManager.showErrorScreen("There was an error while validating the user try again!");
         }
 

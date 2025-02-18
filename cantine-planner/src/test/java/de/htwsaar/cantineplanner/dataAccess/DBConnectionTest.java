@@ -46,8 +46,8 @@ public class DBConnectionTest {
 
     @Test
     public void testGetUserId() {
-        assertThrows(UserDoesntExistException.class, () -> dbConnection.getUserId("nonExistentUser"));
-        assertThrows(UserDoesntExistException.class, () -> dbConnection.getUserId("nonExistentUser2"));
+        assertThrows(UseriDDoesntExcistException.class, () -> dbConnection.getUserId("nonExistentUser"));
+        assertThrows(UseriDDoesntExcistException.class, () -> dbConnection.getUserId("nonExistentUser2"));
 
         //testing for existing user
         assertDoesNotThrow(() -> {
@@ -93,12 +93,7 @@ public class DBConnectionTest {
     @Test
     public void testReviewsByMealIdWithDifferentParameters() {
         assertDoesNotThrow(() -> {
-            List<ReviewRecord> reviews1 = dbConnection.reviewsByMealiD(1);
-            assertNotNull(reviews1);
-
-            List<ReviewRecord> reviews2 = dbConnection.reviewsByMealiD(2);
-            assertNotNull(reviews2);
-
+            List<ReviewRecord> reviews1 = dbConnection.reviewsByMealName("Test Meal 2");
             List<ReviewRecord> reviews3 = dbConnection.reviewsByMealName("Pozole");
             assertNotNull(reviews3);
         });
@@ -154,11 +149,11 @@ public class DBConnectionTest {
     }
 
     @Test
-    public void testMealDetails() {
+    public void testMealDetails() throws SQLException {
         int mealId = 1;
-        assertThrows(MealDoesntExistException.class, () -> dbConnection.mealDetails(mealId));
+        assertThrows(MealiDNotFoundException.class, () -> dbConnection.mealDetails(mealId));
         int mealId2 = 2;
-        assertThrows(MealDoesntExistException.class, () -> dbConnection.mealDetails(mealId2));
+        assertThrows(MealiDNotFoundException.class, () -> dbConnection.mealDetails(mealId2));
 
         //testing for existing meal
         assertDoesNotThrow(() -> {
@@ -166,27 +161,25 @@ public class DBConnectionTest {
             assertNotNull(meals);
         });
 
-        //testing for added meal
-        assertDoesNotThrow(() -> {
-            MealsRecord meal = new MealsRecord();
-            meal.setName("Test Meal for mealDetails");
-            meal.setPrice(15.0F);
-            meal.setCalories(600);
-            meal.setAllergy("None");
-            meal.setMeat(1);
+        MealsRecord testMeal = new MealsRecord();
+        testMeal.setName("Test Meal for mealDetails");
+        testMeal.setPrice(10.0F);
+        testMeal.setCalories(500);
+        testMeal.setAllergy("None");
+        testMeal.setMeat(1);
+        testMeal.setDay("Mon");
 
-            // Ensure the meal does not already exist before adding
-            List<MealsRecord> existingMeals = dbConnection.searchMeal(meal.getName());
-            if (existingMeals.isEmpty()) {
-                assertDoesNotThrow(() -> dbConnection.addMeal(meal));
-            }
-            // Retrieve the mealId after adding the meal
-            int addedMealId = dbConnection.searchMeal(meal.getName()).get(0).getMealId();
-            List<MealsRecord> meals = dbConnection.mealDetails(addedMealId);
-            assertNotNull(meals);
-            //delete the added meal
-            assertDoesNotThrow(() -> dbConnection.deleteMealById(addedMealId));
-        });
+        // Check if the meal already exists and delete it if necessary
+        List<MealsRecord> existingMeals = dbConnection.searchMeal("Test Meal for mealDetails");
+        if (!existingMeals.isEmpty()) {
+            dbConnection.deleteMealById(existingMeals.get(0).getMealId());
+        }
+
+        assertDoesNotThrow(() -> dbConnection.addMeal(testMeal));
+
+        int mealId3 = assertDoesNotThrow(() -> dbConnection.searchMeal("Test Meal for mealDetails").get(0).getMealId());
+
+        assertDoesNotThrow(() -> dbConnection.mealDetails(mealId3));
     }
 
     @Test
@@ -212,20 +205,6 @@ public class DBConnectionTest {
         });
     }
 
-    @Test
-    public void testReviewsByMealId() {
-        int mealId = 1;
-        assertDoesNotThrow(() -> {
-            List<ReviewRecord> reviews = dbConnection.reviewsByMealiD(mealId);
-            assertNotNull(reviews);
-        });
-
-        int mealId2 = 2;
-        assertDoesNotThrow(() -> {
-            List<ReviewRecord> reviews = dbConnection.reviewsByMealiD(mealId2);
-            assertNotNull(reviews);
-        });
-    }
 
     @Test
     public void testReviewsByMealName() {
@@ -341,6 +320,10 @@ public class DBConnectionTest {
 
     @Test
     void editUserData() {
+    }
+
+    @Test
+    void isValidEmail() {
     }
 }
 

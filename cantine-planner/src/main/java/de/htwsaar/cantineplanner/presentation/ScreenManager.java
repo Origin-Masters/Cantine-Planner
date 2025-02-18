@@ -41,12 +41,12 @@ public class ScreenManager {
 
     public void showMealMenuScreen() {
         List<MenuBuilder.MenuButton> mealMenuButtons = Arrays.asList(
-                new MenuBuilder.MenuButton("Alle Gerichte anzeigen", "showAllMeals"),
+                new MenuBuilder.MenuButton("Alle Gerichte", "showAllMeals"),
                 new MenuBuilder.MenuButton("Gericht hinzufügen", "showAddMeal"),
-                new MenuBuilder.MenuButton("Alle Allergien anzeigen", "showAllAllergies"),
+                new MenuBuilder.MenuButton("Alle Allergien", "showAllAllergies"),
                 new MenuBuilder.MenuButton("Gericht löschen", "showDeleteMeal"),
                 new MenuBuilder.MenuButton("Gericht nach Name suchen", "showSearchMealByName"),
-                new MenuBuilder.MenuButton("Gerichtdetails nach ID anzeigen", "showMealDetailsById"),
+                new MenuBuilder.MenuButton("Gericht nach ID suchen", "showMealDetailsById"),
                 new MenuBuilder.MenuButton("Main Menü", "showMainMenu"),
                 new MenuBuilder.MenuButton("Programm beenden", "exit")
         );
@@ -82,7 +82,7 @@ public class ScreenManager {
 
     public void showEditNewUserDataScreen() {
         InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Edit New User Data");
-        List<String> labels = Arrays.asList("New Password","New Email");
+        List<String> labels = Arrays.asList("New Password", "New Email");
         inputScreenBuilder.display(labels, "editNewUserData");
     }
 
@@ -139,7 +139,6 @@ public class ScreenManager {
         List<MenuBuilder.MenuButton> weeklyMenuButtons = Arrays.asList(
                 new MenuBuilder.MenuButton("Weekly Plan", "showWeeklyPlan"),
                 new MenuBuilder.MenuButton("Edit Weekly Plan", "editWeeklyPlan"),
-                new MenuBuilder.MenuButton("Show Random Meals", "showRandomMeals"),
                 new MenuBuilder.MenuButton("Main Menu", "showMainMenu"),
                 new MenuBuilder.MenuButton("Programm beenden", "exit")
         );
@@ -151,11 +150,11 @@ public class ScreenManager {
 
     public void showAllergiesMenu() {
         List<MenuBuilder.MenuButton> allergiesMenuButtons = Arrays.asList(
-                new MenuBuilder.MenuButton("Alle Allergien anzeigen", "showAllAllergies"),
+                new MenuBuilder.MenuButton("Alle Allergien", "showAllAllergies"),
                 new MenuBuilder.MenuButton("Allergie hinzufügen", "addAllergy"),
                 new MenuBuilder.MenuButton("Allergie löschen", "deleteAllergy"),
                 new MenuBuilder.MenuButton("Allergie nach Name suchen", "searchAllergyByName"),
-                new MenuBuilder.MenuButton("Allergiedetails nach ID anzeigen", "showAllergyDetailsById"),
+                new MenuBuilder.MenuButton("Allergie nach ID suchen", "showAllergyDetailsById"),
                 new MenuBuilder.MenuButton("Main Menü", "showMainMenu"),
                 new MenuBuilder.MenuButton("Programm beenden", "exit")
         );
@@ -168,11 +167,10 @@ public class ScreenManager {
 
     public void showReviewsMenu() {
         List<MenuBuilder.MenuButton> reviewsMenuButtons = Arrays.asList(
-                new MenuBuilder.MenuButton("Alle Reviews anzeigen", "showAllReviews"),
+                new MenuBuilder.MenuButton("Alle Reviews", "showAllReviews"),
                 new MenuBuilder.MenuButton("Review hinzufügen", "showAddReview"),
                 new MenuBuilder.MenuButton("Review löschen", "showDeleteReview"),
-                new MenuBuilder.MenuButton("Review von einem bestimmten Gericht", "showSearchReviewsByMealName"),
-                new MenuBuilder.MenuButton("Reviewdetails nach ID anzeigen", "showReviewDetailsById"),
+                new MenuBuilder.MenuButton("Gericht Reviews", "showSearchReviewsByMealName"),
                 new MenuBuilder.MenuButton("Main Menü", "showMainMenu"),
                 new MenuBuilder.MenuButton("Programm beenden", "exit")
         );
@@ -255,7 +253,7 @@ public class ScreenManager {
     }
 
     public void showAllAllergies(List<MealsRecord> meals) {
-        TableBuilder tableBuilder = new TableBuilder(gui, "All Allergies")
+        TableBuilder tableBuilder = new TableBuilder(gui, "Allergien in Gerichten")
                 .addColumn("Meal Name")
                 .addColumn("Allergy");
 
@@ -301,13 +299,13 @@ public class ScreenManager {
     }
 
     public void showMealDetailsById() {
-        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Show by ID Meal");
+        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Search Meal by ID");
         List<String> labels = List.of("ID");
         inputScreenBuilder.display(labels, "mealDetailsById");
     }
 
     public void showSearchMealByName() {
-        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Show by Name Meal");
+        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Search Meal by Name");
         List<String> labels = List.of("Name");
         inputScreenBuilder.display(labels, "searchMealByName");
     }
@@ -319,11 +317,6 @@ public class ScreenManager {
         }
     }
 
-    public void showInputScreen(String title, String event, List<String> labels) {
-        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, title);
-        inputScreenBuilder.display(labels, event);
-    }
-
     public void closeTerminal() {
         try {
             gui.getScreen().stopScreen();
@@ -331,12 +324,6 @@ public class ScreenManager {
             eventManager.notify("error", "Error closing terminal");
 
         }
-    }
-
-    public void showSearchReviewsByMealId() {
-        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Search Reviews by Meal ID");
-        List<String> labels = List.of("Meal ID");
-        inputScreenBuilder.display(labels, "searchReviewsByMealId");
     }
 
     public void showSearchReviewsByMealName() {

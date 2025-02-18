@@ -13,8 +13,6 @@ import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -51,10 +49,8 @@ public class DBConnection {
     public boolean validateUser(String username, String plainTextPassword) throws SQLException, UserNotValidatedException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
-            String hashedPassword = dsl.select(Users.USERS.PASSWORD)
-                    .from(Users.USERS)
-                    .where(Users.USERS.USERNAME.eq(username))
-                    .fetchOne(Users.USERS.PASSWORD);
+            String hashedPassword = dsl.select(Users.USERS.PASSWORD).from(Users.USERS).where(
+                    Users.USERS.USERNAME.eq(username)).fetchOne(Users.USERS.PASSWORD);
 
             if (hashedPassword == null || !PasswordUtil.verifyPassword(plainTextPassword, hashedPassword)) {
                 throw new UserNotValidatedException("Invalid username or password!");
@@ -72,20 +68,16 @@ public class DBConnection {
      * @throws UserDoesntExistException if the user doesn't exist
      * @throws NullPointerException     if the user is null
      */
-    public int getUserId(String username) throws SQLException, NullPointerException {
+    public int getUserId(String username) throws SQLException, UseriDDoesntExcistException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
 
-            if (!dsl.fetchExists(
-                    dsl.selectFrom(Users.USERS)
-                            .where(Users.USERS.USERNAME.eq(username)))) {
-                throw new UserDoesntExistException("The user with the given username doesn't exist!");
+            if (!dsl.fetchExists(dsl.selectFrom(Users.USERS).where(Users.USERS.USERNAME.eq(username)))) {
+                throw new UseriDDoesntExcistException("The user with the given username doesn't exist!");
             }
 
-            return dsl.select(Users.USERS.USERID)
-                    .from(Users.USERS)
-                    .where(Users.USERS.USERNAME.eq(username))
-                    .fetchOne(Users.USERS.USERID);
+            return dsl.select(Users.USERS.USERID).from(Users.USERS).where(Users.USERS.USERNAME.eq(username)).fetchOne(
+                    Users.USERS.USERID);
         }
     }
 
@@ -98,20 +90,16 @@ public class DBConnection {
      * @throws UserDoesntExistException if the user doesn't exist
      * @throws NullPointerException     if the user is null
      */
-    public boolean isAdmin(int UserID) throws SQLException, UserDoesntExistException, NullPointerException {
+    public boolean isAdmin(int UserID) throws SQLException, UserDoesntExistException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
 
-            if (!dsl.fetchExists(
-                    dsl.selectFrom(Users.USERS)
-                            .where(Users.USERS.USERID.eq(UserID)))) {
+            if (!dsl.fetchExists(dsl.selectFrom(Users.USERS).where(Users.USERS.USERID.eq(UserID)))) {
                 throw new UserDoesntExistException("The user with the given username doesn't exist!");
             }
 
-            return dsl.select(Users.USERS.ROLE)
-                    .from(Users.USERS)
-                    .where(Users.USERS.USERID.eq(UserID))
-                    .fetchOne(Users.USERS.ROLE) == 1;
+            return dsl.select(Users.USERS.ROLE).from(Users.USERS).where(Users.USERS.USERID.eq(UserID)).fetchOne(
+                    Users.USERS.ROLE) == 1;
         }
     }
 
@@ -125,28 +113,33 @@ public class DBConnection {
      * @throws SQLException               if an SQL exception occurs
      * @throws UserAlreadyExistsException if the user already exists
      */
-    public UsersRecord registerUser(String username, String plainTextPassword, String email) throws SQLException, UserAlreadyExistsException {
+    public UsersRecord registerUser(String username, String plainTextPassword, String email) throws SQLException, UserAlreadyExistsException, InvalidEmailTypeException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
 
-            if (dsl.fetchExists(
-                    dsl.selectFrom(Users.USERS)
-                            .where(Users.USERS.USERNAME.eq(username)))) {
+            if (dsl.fetchExists(dsl.selectFrom(Users.USERS).where(Users.USERS.USERNAME.eq(username)))) {
                 throw new UserAlreadyExistsException("Username already exists, please choose another one!");
             }
 
+            if (email != null && !isValidEmail(email)) {
+                throw new InvalidEmailTypeException("Invalid email type!");
+            }
             String hashedPassword = PasswordUtil.hashPassword(plainTextPassword);
-            dsl.insertInto(Users.USERS)
-                    .set(Users.USERS.USERNAME, username)
-                    .set(Users.USERS.PASSWORD, hashedPassword)
-                    .set(Users.USERS.EMAIL, email)
-                    .set(Users.USERS.ROLE, 0)
-                    .execute();
+            dsl.insertInto(Users.USERS).set(Users.USERS.USERNAME, username).set(Users.USERS.PASSWORD,
+                    hashedPassword).set(Users.USERS.EMAIL, email).set(Users.USERS.ROLE, 0).execute();
 
-            return dsl.selectFrom(Users.USERS)
-                    .where(Users.USERS.USERNAME.eq(username))
-                    .fetchOne();
+            return dsl.selectFrom(Users.USERS).where(Users.USERS.USERNAME.eq(username)).fetchOne();
         }
+    }
+
+    /**
+     * Method isValidEmail checks if the email is valid
+     *
+     * @param email of type String
+     * @return boolean true if the email is valid, false otherwise
+     */
+    public boolean isValidEmail(String email) {
+        return email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
     }
 
     /**
@@ -160,15 +153,11 @@ public class DBConnection {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
 
-            if (!dsl.fetchExists(
-                    dsl.selectFrom(Users.USERS)
-                            .where(Users.USERS.USERID.eq(userId)))) {
+            if (!dsl.fetchExists(dsl.selectFrom(Users.USERS).where(Users.USERS.USERID.eq(userId)))) {
                 throw new UserDoesntExistException("The user with the given ID doesn't exist!");
             }
 
-            dsl.deleteFrom(Users.USERS)
-                    .where(Users.USERS.USERID.eq(userId))
-                    .execute();
+            dsl.deleteFrom(Users.USERS).where(Users.USERS.USERID.eq(userId)).execute();
         }
     }
 
@@ -183,15 +172,11 @@ public class DBConnection {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
 
-            if (!dsl.fetchExists(
-                    dsl.selectFrom(Users.USERS)
-                            .where(Users.USERS.USERNAME.eq(UserName)))) {
+            if (!dsl.fetchExists(dsl.selectFrom(Users.USERS).where(Users.USERS.USERNAME.eq(UserName)))) {
                 throw new UserDoesntExistException("The user with the given username doesn't exist!");
             }
 
-            dsl.deleteFrom(Users.USERS)
-                    .where(Users.USERS.USERNAME.eq(UserName))
-                    .execute();
+            dsl.deleteFrom(Users.USERS).where(Users.USERS.USERNAME.eq(UserName)).execute();
         }
     }
 
@@ -203,25 +188,16 @@ public class DBConnection {
     public MealsRecord addMeal(MealsRecord meal) throws SQLException, MealAlreadyExistsException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
-            if (dsl.fetchExists(
-                    dsl.selectFrom(Meals.MEALS)
-                            .where(Meals.MEALS.NAME.eq(meal.getName())))
-            ) {
+            if (dsl.fetchExists(dsl.selectFrom(Meals.MEALS).where(Meals.MEALS.NAME.eq(meal.getName())))) {
                 throw new MealAlreadyExistsException(" Meal Already exists !");
             }
 
-            dsl.insertInto(Meals.MEALS)
-                    .set(Meals.MEALS.NAME, meal.getName())
-                    .set(Meals.MEALS.PRICE, meal.getPrice())
-                    .set(Meals.MEALS.CALORIES, meal.getCalories())
-                    .set(Meals.MEALS.ALLERGY, meal.getAllergy())
-                    .set(Meals.MEALS.MEAT, meal.getMeat())
-                    .set(Meals.MEALS.DAY, meal.getDay())
-                    .execute();
+            dsl.insertInto(Meals.MEALS).set(Meals.MEALS.NAME, meal.getName()).set(Meals.MEALS.PRICE,
+                    meal.getPrice()).set(Meals.MEALS.CALORIES, meal.getCalories()).set(Meals.MEALS.ALLERGY,
+                    meal.getAllergy()).set(Meals.MEALS.MEAT, meal.getMeat()).set(Meals.MEALS.DAY,
+                    meal.getDay()).execute();
 
-            return dsl.selectFrom(Meals.MEALS)
-                    .where(Meals.MEALS.NAME.eq(meal.getName()))
-                    .fetchOne();
+            return dsl.selectFrom(Meals.MEALS).where(Meals.MEALS.NAME.eq(meal.getName())).fetchOne();
 
         }
 
@@ -233,8 +209,7 @@ public class DBConnection {
     public List<MealsRecord> getAllMeals() throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
-            return dsl.selectFrom(Meals.MEALS)
-                    .fetchInto(MealsRecord.class);
+            return dsl.selectFrom(Meals.MEALS).fetchInto(MealsRecord.class);
         }
     }
 
@@ -244,8 +219,7 @@ public class DBConnection {
     public List<MealsRecord> getAllAllergies() throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
-            return dsl.selectFrom(Meals.MEALS)
-                    .fetchInto(MealsRecord.class);
+            return dsl.selectFrom(Meals.MEALS).fetchInto(MealsRecord.class);
         }
     }
 
@@ -254,32 +228,14 @@ public class DBConnection {
      *
      * @param mealId of type int of the meal to be deleted
      */
-    public void deleteMealById(int mealId) throws SQLException, MealDoesntExistException {
+    public void deleteMealById(int mealId) throws SQLException, MealiDNotFoundException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
-            if (!dsl.fetchExists(
-                    dsl.selectFrom(Meals.MEALS)
-                            .where(Meals.MEALS.MEAL_ID.eq(mealId)))) {
-                throw new MealDoesntExistException("The meal with the given ID doesn't exist!");
+            if (!dsl.fetchExists(dsl.selectFrom(Meals.MEALS).where(Meals.MEALS.MEAL_ID.eq(mealId)))) {
+                throw new MealiDNotFoundException("The meal with the given ID doesn't exist!");
             }
 
-            dsl.deleteFrom(Meals.MEALS)
-                    .where(Meals.MEALS.MEAL_ID.eq(mealId))
-                    .execute();
-        }
-    }
-
-    /**
-     * Method deleteMealByName deletes a meal from the database by name
-     *
-     * @param name of type String of the meal to be deleted
-     */
-    public void deleteMealByName(String name) throws SQLException {
-        try (Connection connection = dataSource.getConnection()) {
-            DSLContext dsl = getDSLContext(connection);
-            dsl.deleteFrom(Meals.MEALS)
-                    .where(Meals.MEALS.NAME.eq(name))
-                    .execute();
+            dsl.deleteFrom(Meals.MEALS).where(Meals.MEALS.MEAL_ID.eq(mealId)).execute();
         }
     }
 
@@ -291,16 +247,11 @@ public class DBConnection {
     public List<MealsRecord> searchMeal(String name) throws SQLException, MealDoesntExistException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
-            if (!dsl.fetchExists(
-                    dsl.selectFrom(Meals.MEALS)
-                            .where(Meals.MEALS.NAME.eq(name))
-            )) {
+            if (!dsl.fetchExists(dsl.selectFrom(Meals.MEALS).where(Meals.MEALS.NAME.eq(name)))) {
                 throw new MealDoesntExistException("Meal with name " + name + " doesnt exist !");
             }
 
-            return dsl.selectFrom(Meals.MEALS)
-                    .where(Meals.MEALS.NAME.eq(name))
-                    .fetchInto(MealsRecord.class);
+            return dsl.selectFrom(Meals.MEALS).where(Meals.MEALS.NAME.eq(name)).fetchInto(MealsRecord.class);
         }
     }
 
@@ -309,18 +260,13 @@ public class DBConnection {
      *
      * @param mealId of type int of the meal to be displayed
      */
-    public List<MealsRecord> mealDetails(int mealId) throws SQLException, MealDoesntExistException {
+    public List<MealsRecord> mealDetails(int mealId) throws SQLException, MealiDNotFoundException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
-            if (!dsl.fetchExists(
-                    dsl.selectFrom(Meals.MEALS)
-                            .where(Meals.MEALS.MEAL_ID.eq(mealId)))
-            ) {
-                throw new MealDoesntExistException("Meal with the given iD " + mealId + " doesnt exist !");
+            if (!dsl.fetchExists(dsl.selectFrom(Meals.MEALS).where(Meals.MEALS.MEAL_ID.eq(mealId)))) {
+                throw new MealiDNotFoundException("Meal with the given iD " + mealId + " doesnt exist !");
             }
-            return dsl.selectFrom(Meals.MEALS)
-                    .where(Meals.MEALS.MEAL_ID.eq(mealId))
-                    .fetchInto(MealsRecord.class);
+            return dsl.selectFrom(Meals.MEALS).where(Meals.MEALS.MEAL_ID.eq(mealId)).fetchInto(MealsRecord.class);
         }
     }
 
@@ -330,8 +276,7 @@ public class DBConnection {
     public List<ReviewRecord> getAllReviews() throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
-            return dsl.selectFrom(Review.REVIEW)
-                    .fetchInto(ReviewRecord.class);
+            return dsl.selectFrom(Review.REVIEW).fetchInto(ReviewRecord.class);
         }
     }
 
@@ -341,26 +286,10 @@ public class DBConnection {
     public List<ReviewRecord> getAllReviewsByUser(int userId) throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
-            return dsl.selectFrom(Review.REVIEW)
-                    .where(Review.REVIEW.USERID.eq(userId))
-                    .fetchInto(ReviewRecord.class);
+            return dsl.selectFrom(Review.REVIEW).where(Review.REVIEW.USERID.eq(userId)).fetchInto(ReviewRecord.class);
         }
     }
 
-    /**
-     * Method reviewByMealiD searches for a review by meal ID
-     *
-     * @param giveniD of type int of the meal to be searched
-     */
-    public List<ReviewRecord> reviewsByMealiD(int giveniD) throws SQLException {
-        try (Connection connection = dataSource.getConnection()) {
-            DSLContext dsl = getDSLContext(connection);
-            return dsl.select()
-                    .from(Review.REVIEW)
-                    .where(Review.REVIEW.MEAL_ID.eq(giveniD))
-                    .fetchInto(ReviewRecord.class);
-        }
-    }
 
     /**
      * Method reviewsByMealName searches for reviews by meal name
@@ -370,18 +299,12 @@ public class DBConnection {
     public List<ReviewRecord> reviewsByMealName(String mealName) throws SQLException, MealDoesntExistException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
-            if (!dsl.fetchExists(
-                    dsl.selectFrom(Meals.MEALS)
-                            .where(Meals.MEALS.NAME.eq(mealName))
-            )) {
+            if (!dsl.fetchExists(dsl.selectFrom(Meals.MEALS).where(Meals.MEALS.NAME.eq(mealName)))) {
                 throw new MealDoesntExistException("Meal with name" + mealName + " doesnt exist !");
             }
-            return dsl.select()
-                    .from(Review.REVIEW)
-                    .join(Meals.MEALS)
-                    .on(Review.REVIEW.MEAL_ID.eq(Meals.MEALS.MEAL_ID))
-                    .where(Meals.MEALS.NAME.eq(mealName))
-                    .fetchInto(ReviewRecord.class);
+            return dsl.select().from(Review.REVIEW).join(Meals.MEALS).on(
+                    Review.REVIEW.MEAL_ID.eq(Meals.MEALS.MEAL_ID)).where(Meals.MEALS.NAME.eq(mealName)).fetchInto(
+                    ReviewRecord.class);
         }
     }
 
@@ -395,16 +318,11 @@ public class DBConnection {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
             // if hte review iD doesnt exist, we throw an exception
-            if (!dsl.fetchExists(
-                    dsl.selectFrom(Review.REVIEW)
-                            .where(Review.REVIEW.RATING_ID.eq(ratingId)))
-            ) {
+            if (!dsl.fetchExists(dsl.selectFrom(Review.REVIEW).where(Review.REVIEW.RATING_ID.eq(ratingId)))) {
                 throw new ReviewiDDoesntExistException("Review iD that was provided  does not exist ! ");
             }
             // deletion of the corresponding review iD
-            dsl.deleteFrom(Review.REVIEW)
-                    .where(Review.REVIEW.RATING_ID.eq(ratingId))
-                    .execute();
+            dsl.deleteFrom(Review.REVIEW).where(Review.REVIEW.RATING_ID.eq(ratingId)).execute();
         }
 
     }
@@ -417,12 +335,9 @@ public class DBConnection {
     public boolean addReview(ReviewRecord givenReview) throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
-            dsl.insertInto(Review.REVIEW)
-                    .set(Review.REVIEW.MEAL_ID, givenReview.getMealId())
-                    .set(Review.REVIEW.RATING, givenReview.getRating())
-                    .set(Review.REVIEW.COMMENT, givenReview.getComment())
-                    .set(Review.REVIEW.USERID, givenReview.getUserid())
-                    .execute();
+            dsl.insertInto(Review.REVIEW).set(Review.REVIEW.MEAL_ID, givenReview.getMealId()).set(Review.REVIEW.RATING,
+                    givenReview.getRating()).set(Review.REVIEW.COMMENT, givenReview.getComment()).set(
+                    Review.REVIEW.USERID, givenReview.getUserid()).execute();
             return true;
         }
     }
@@ -436,9 +351,7 @@ public class DBConnection {
     public List<MealsRecord> getWeeklyPlan() throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
-            return dsl.selectFrom(Meals.MEALS)
-                    .where(Meals.MEALS.DAY.isNotNull())
-                    .fetchInto(MealsRecord.class);
+            return dsl.selectFrom(Meals.MEALS).where(Meals.MEALS.DAY.isNotNull()).fetchInto(MealsRecord.class);
 
         }
     }
@@ -454,10 +367,8 @@ public class DBConnection {
     public void editWeeklyPlan(String mealName, String day) throws SQLException, MealDoesntExistException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext create = DSL.using(connection, SQLDialect.SQLITE);
-            int rowsAffected = create.update(DSL.table("meals"))
-                    .set(DSL.field("day"), day)
-                    .where(DSL.field("Name").eq(mealName))
-                    .execute();
+            int rowsAffected = create.update(DSL.table("meals")).set(DSL.field("day"), day).where(
+                    DSL.field("Name").eq(mealName)).execute();
             if (rowsAffected == 0) {
                 throw new MealDoesntExistException("Meal does not exist");
             }
@@ -474,9 +385,7 @@ public class DBConnection {
     public void resetWeeklyPlan() throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
-            dsl.update(DSL.table("meals"))
-                    .set(DSL.field("day"), (String) null)
-                    .execute();
+            dsl.update(DSL.table("meals")).set(DSL.field("day"), (String) null).execute();
         }
     }
 
@@ -484,35 +393,30 @@ public class DBConnection {
      * Method editUserData edits the user data in the database
      *
      * @param currentUserId of type int
-     * @param newPassword of type String
-     * @param newEmail    of type String
+     * @param newPassword   of type String
+     * @param newEmail      of type String
      * @throws SQLException             if an SQL exception occurs
      * @throws UserDoesntExistException if the user doesn't exist
      */
-    public void editUserData(int currentUserId, String newPassword, String newEmail) throws SQLException {
+    public void editUserData(int currentUserId, String newPassword, String newEmail) throws SQLException, InvalidEmailTypeException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
 
-            // Check if the user exists
-            if (!dsl.fetchExists(dsl.selectFrom(DSL.table("users")).where(DSL.field("userid").eq(currentUserId)))) {
-                throw new UserDoesntExistException("The user with the given username doesn't exist!");
+            if (newEmail != null && !isValidEmail(newEmail)) {
+                throw new InvalidEmailTypeException("Invalid email type!");
             }
 
             // Update the user's password if provided
             if (newPassword != null && !newPassword.isEmpty()) {
                 String hashedPassword = PasswordUtil.hashPassword(newPassword);
-                dsl.update(DSL.table("users"))
-                        .set(DSL.field("password"), hashedPassword)
-                        .where(DSL.field("userid").eq(currentUserId))
-                        .execute();
+                dsl.update(DSL.table("users")).set(DSL.field("password"), hashedPassword).where(
+                        DSL.field("userid").eq(currentUserId)).execute();
             }
 
             // Update the user's email if provided
             if (newEmail != null && !newEmail.isEmpty()) {
-                dsl.update(DSL.table("users"))
-                        .set(DSL.field("email"), newEmail)
-                        .where(DSL.field("userid").eq(currentUserId))
-                        .execute();
+                dsl.update(DSL.table("users")).set(DSL.field("email"), newEmail).where(
+                        DSL.field("userid").eq(currentUserId)).execute();
             }
         }
     }
