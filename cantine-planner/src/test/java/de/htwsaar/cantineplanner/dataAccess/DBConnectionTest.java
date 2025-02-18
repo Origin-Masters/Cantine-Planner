@@ -147,7 +147,7 @@ public class DBConnectionTest {
             assertNotNull(meals);
         });
     }
-
+    
     @Test
     public void testMealDetails() throws SQLException {
         int mealId = 1;
@@ -155,7 +155,7 @@ public class DBConnectionTest {
         int mealId2 = 2;
         assertThrows(MealiDNotFoundException.class, () -> dbConnection.mealDetails(mealId2));
 
-        //testing for existing meal
+        // Testing for existing meal
         assertDoesNotThrow(() -> {
             List<MealsRecord> meals = dbConnection.mealDetails(3);
             assertNotNull(meals);
@@ -169,17 +169,22 @@ public class DBConnectionTest {
         testMeal.setMeat(1);
         testMeal.setDay("Mon");
 
-        // Check if the meal already exists and delete it if necessary
+        // Clean up any existing test data
         List<MealsRecord> existingMeals = dbConnection.searchMeal("Test Meal for mealDetails");
         if (!existingMeals.isEmpty()) {
             dbConnection.deleteMealById(existingMeals.get(0).getMealId());
         }
 
+        // Add the test meal
         assertDoesNotThrow(() -> dbConnection.addMeal(testMeal));
 
+        // Retrieve the meal ID and verify meal details
         int mealId3 = assertDoesNotThrow(() -> dbConnection.searchMeal("Test Meal for mealDetails").get(0).getMealId());
-
-        assertDoesNotThrow(() -> dbConnection.mealDetails(mealId3));
+        assertDoesNotThrow(() -> {
+            List<MealsRecord> mealDetails = dbConnection.mealDetails(mealId3);
+            assertNotNull(mealDetails);
+            assertEquals("Test Meal for mealDetails", mealDetails.get(0).getName());
+        });
     }
 
     @Test
