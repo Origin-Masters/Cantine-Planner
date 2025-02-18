@@ -338,5 +338,9 @@ public class DBConnectionTest {
     @Test
     void resetWeeklyPlan() {
     }
+
+    @Test
+    void editUserData() {
+    }
 }
 

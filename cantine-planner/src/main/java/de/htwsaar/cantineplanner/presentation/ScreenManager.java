@@ -76,8 +76,14 @@ public class ScreenManager {
 
     public void showEditUserDataScreen() {
         InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Edit User Data");
-        List<String> labels = Arrays.asList("Username", "Current Password", "New Password","New Email");
+        List<String> labels = Arrays.asList("Username", "Current Password");
         inputScreenBuilder.display(labels, "editUserData");
+    }
+
+    public void showEditNewUserDataScreen() {
+        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Edit New User Data");
+        List<String> labels = Arrays.asList("New Password","New Email");
+        inputScreenBuilder.display(labels, "editNewUserData");
     }
 
     public void showErrorScreen(String message) {

@@ -19,7 +19,7 @@ public class CantineService {
         this.dbConnection = new DBConnection(propertiesFilePath);
     }
 
-    public boolean validateUser(String username, String password) throws SQLException , UserAlreadyExistsException {
+    public boolean validateUser(String username, String password) throws SQLException {
         return dbConnection.validateUser(username, password);
     }
 
@@ -28,7 +28,7 @@ public class CantineService {
         return usersRecord != null;
     }
 
-    public int getUserId(String username) throws SQLException, UserAlreadyExistsException, NullPointerException {
+    public int getUserId(String username) throws SQLException, NullPointerException {
         return dbConnection.getUserId(username);
     }
 
@@ -98,8 +98,8 @@ public class CantineService {
         dbConnection.resetWeeklyPlan();
     }
 
-    public void editUserData(String username, String newPassword, String newEmail) throws SQLException, UserDoesntExistException {
-        dbConnection.editUserData(username, newPassword, newEmail);
+    public void editUserData(int currentUserId, String newPassword, String newEmail) throws SQLException {
+        dbConnection.editUserData(currentUserId, newPassword, newEmail);
     }
     // Add other methods as needed
 }

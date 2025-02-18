@@ -56,6 +56,8 @@ public class Controller {
         });
         eventManager.subscribe("showEditUserData", (data) -> screenManager.showEditUserDataScreen());
         eventManager.subscribe("editUserData", this::handleEditUserData);
+        eventManager.subscribe("showEditNewUserData", (data) -> screenManager.showEditNewUserDataScreen());
+        eventManager.subscribe("editNewUserData", this::handleInputNewUserData);
 
         // Meal-bezogene Events
         eventManager.subscribe("showAllMeals", this::handleShowAllMeals);
@@ -103,6 +105,7 @@ public class Controller {
 
 
     }
+
 
     // Hauptschleife
     public void start() {
@@ -189,10 +192,8 @@ public class Controller {
                 screenManager.closeActiveWindow();
                 screenManager.showSuccessScreen("Login successful!");
                 switchMenu(1);
-            } else {
-                screenManager.showErrorScreen("Username or password is incorrect. Please retry!");
             }
-        } catch (UserNotValidatedException | UserAlreadyExistsException e) {
+        } catch (UserNotValidatedException e) {
             screenManager.showErrorScreen(e.getMessage());
         } catch (SQLException | NullPointerException e) {
             screenManager.showErrorScreen("There was an error while logging in please try again!");
@@ -212,17 +213,27 @@ public class Controller {
             screenManager.showErrorScreen("Please fill in all fields!");
             return;
         }
+        if (!isValidEmail(email)) {
+            screenManager.showErrorScreen("Invalid email format!");
+            return;
+        }
         try {
             if (cantineService.registerUser(username, password, email)) {
                 screenManager.closeActiveWindow();
                 screenManager.showSuccessScreen("Registration successful!");
                 switchMenu(0);
-            } else {
-                screenManager.showErrorScreen("Registration failed");
             }
-        } catch (SQLException | UserAlreadyExistsException e) {
+
+        } catch (UserAlreadyExistsException e) {
+            screenManager.showErrorScreen(e.getMessage());
+        } catch (SQLException e) {
             screenManager.showErrorScreen("There was an error while registering please try again!");
         }
+    }
+
+
+    private boolean isValidEmail(String email) {
+        return email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
     }
 
     private void handleShowRegisterScreen(Object data) {
@@ -244,24 +255,46 @@ public class Controller {
             return;
         }
         String[] userData = (String[]) data;
-        if (userData.length < 4) {
-            screenManager.showErrorScreen("Incomplete user data");
-            return;
-        }
         String username = userData[0];
         String currentPassword = userData[1];
-        String newPassword = userData.length > 2 ? userData[2] : null;
-        String newEmail = userData.length > 3 ? userData[3] : null;
+
         try {
             if (cantineService.validateUser(username, currentPassword)) {
-                cantineService.editUserData(username, newPassword, newEmail);
+                currentUserId = cantineService.getUserId(username);
                 screenManager.closeActiveWindow();
-                screenManager.showSuccessScreen("User data updated successfully!");
-            } else {
-                screenManager.showErrorScreen("Username or password is incorrect. Please retry!");
+                screenManager.showEditNewUserDataScreen();
             }
-        } catch (SQLException | UserDoesntExistException | UserAlreadyExistsException e) {
-            screenManager.showErrorScreen("There was an error while updating user data please try again!");
+
+        } catch (UserNotValidatedException e) {
+            screenManager.showErrorScreen(e.getMessage());
+        } catch (SQLException e) {
+            screenManager.showErrorScreen("There was an error while validating user data, please try again!");
+        }
+    }
+
+    private void handleInputNewUserData(Object data) {
+        if (data == null) {
+            screenManager.showErrorScreen("Data is null");
+            return;
+        }
+        String[] userData = (String[]) data;
+        String newPassword = userData[0];
+        String newEmail = userData[1];
+
+        if (isAnyFieldEmpty(newPassword)) {
+            screenManager.showErrorScreen("New password is required!");
+            return;
+        }
+        if (newEmail != null && !newEmail.isEmpty() && !isValidEmail(newEmail)) {
+            screenManager.showErrorScreen("Invalid email format!");
+            return;
+        }
+        try {
+            cantineService.editUserData(currentUserId, newPassword, newEmail);
+            screenManager.closeActiveWindow();
+            screenManager.showSuccessScreen("Password and email updated successfully!");
+        } catch (SQLException e) {
+            screenManager.showErrorScreen("There was an error while updating password and email, please try again!");
         }
     }
 
@@ -334,8 +367,6 @@ public class Controller {
             MealsRecord meal = cantineService.getMealById(mealId);
             if (meal != null) {
                 screenManager.showMealDetails(meal);
-            } else {
-                screenManager.showErrorScreen("Meal not found!");
             }
         } catch (NumberFormatException e) {
             screenManager.showErrorScreen("Invalid meal ID format!");
@@ -353,9 +384,9 @@ public class Controller {
             MealsRecord meal = cantineService.getMealByName(mealName);
             if (meal != null) {
                 screenManager.showMealDetails(meal);
-            } else {
-                screenManager.showErrorScreen("Meal " + mealName + " not found!");
             }
+        } catch (MealDoesntExistException e) {
+            screenManager.showErrorScreen(e.getMessage());
         } catch (SQLException e) {
             screenManager.showErrorScreen("There was an error while fetching meal please try again!");
         }
@@ -464,12 +495,18 @@ public class Controller {
             // Sort the weeklyPlan by the day field
             weeklyPlan.sort(Comparator.comparing(meal -> {
                 switch (meal.getDay()) {
-                    case "Mon": return 1;
-                    case "Tue": return 2;
-                    case "Wed": return 3;
-                    case "Thu": return 4;
-                    case "Fri": return 5;
-                    default: return 6;
+                    case "Mon":
+                        return 1;
+                    case "Tue":
+                        return 2;
+                    case "Wed":
+                        return 3;
+                    case "Thu":
+                        return 4;
+                    case "Fri":
+                        return 5;
+                    default:
+                        return 6;
                 }
             }));
             screenManager.showWeeklyPlanScreen(weeklyPlan);

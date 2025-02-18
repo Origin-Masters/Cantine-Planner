@@ -72,7 +72,7 @@ public class DBConnection {
      * @throws UserDoesntExistException if the user doesn't exist
      * @throws NullPointerException     if the user is null
      */
-    public int getUserId(String username) throws SQLException, UserDoesntExistException, NullPointerException {
+    public int getUserId(String username) throws SQLException, NullPointerException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
 
@@ -288,9 +288,15 @@ public class DBConnection {
      *
      * @param name of type String of the meal to be searched
      */
-    public List<MealsRecord> searchMeal(String name) throws SQLException {
+    public List<MealsRecord> searchMeal(String name) throws SQLException, MealDoesntExistException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
+            if (!dsl.fetchExists(
+                    dsl.selectFrom(Meals.MEALS)
+                            .where(Meals.MEALS.NAME.eq(name))
+            )) {
+                throw new MealDoesntExistException("Meal with name " + name + " doesnt exist !");
+            }
 
             return dsl.selectFrom(Meals.MEALS)
                     .where(Meals.MEALS.NAME.eq(name))
@@ -477,18 +483,18 @@ public class DBConnection {
     /**
      * Method editUserData edits the user data in the database
      *
-     * @param username    of type String
+     * @param currentUserId of type int
      * @param newPassword of type String
      * @param newEmail    of type String
      * @throws SQLException             if an SQL exception occurs
      * @throws UserDoesntExistException if the user doesn't exist
      */
-    public void editUserData(String username, String newPassword, String newEmail) throws SQLException, UserDoesntExistException {
+    public void editUserData(int currentUserId, String newPassword, String newEmail) throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
 
             // Check if the user exists
-            if (!dsl.fetchExists(dsl.selectFrom(DSL.table("users")).where(DSL.field("username").eq(username)))) {
+            if (!dsl.fetchExists(dsl.selectFrom(DSL.table("users")).where(DSL.field("userid").eq(currentUserId)))) {
                 throw new UserDoesntExistException("The user with the given username doesn't exist!");
             }
 
@@ -497,7 +503,7 @@ public class DBConnection {
                 String hashedPassword = PasswordUtil.hashPassword(newPassword);
                 dsl.update(DSL.table("users"))
                         .set(DSL.field("password"), hashedPassword)
-                        .where(DSL.field("username").eq(username))
+                        .where(DSL.field("userid").eq(currentUserId))
                         .execute();
             }
 
@@ -505,7 +511,7 @@ public class DBConnection {
             if (newEmail != null && !newEmail.isEmpty()) {
                 dsl.update(DSL.table("users"))
                         .set(DSL.field("email"), newEmail)
-                        .where(DSL.field("username").eq(username))
+                        .where(DSL.field("userid").eq(currentUserId))
                         .execute();
             }
         }
