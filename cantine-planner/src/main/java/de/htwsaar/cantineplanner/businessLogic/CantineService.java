@@ -51,6 +51,9 @@ public class CantineService {
         dbConnection.deleteReview(reviewId);
     }
 
+    public void setAllergeneSettings(int userId, String allergene) throws SQLException, UserDoesntExistException {
+        dbConnection.setAllergeneSettings(userId, allergene);
+    }
 
     public void deleteMeal(int mealId) throws SQLException, MealiDNotFoundException {
         dbConnection.deleteMealById(mealId);

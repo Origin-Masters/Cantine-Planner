@@ -36,12 +36,28 @@ public class DBConnection {
      * @return DSLContext
      */
     private DSLContext getDSLContext(Connection connection) {
-        return DSL.using(connection, SQLDialect.MYSQL);
+        return DSL.using(connection, SQLDialect.SQLITE);
     }
-
     /**
-     * Method validateUser validates a user
-     *
+     * Method setAllergyForUser sets allergies for a user by userId
+     * @param userId of type int
+     * @param allergies of type String
+     * @return boolean true if the allergies are set, false otherwise
+     * @throws SQLException if an SQL exception occurs
+     */
+    public boolean setAllergeneSettings(int userId, String allergies) throws SQLException {
+        String cleanAllergies = allergies.replace("[", "").replace("]", "");
+        try (Connection connection = dataSource.getConnection()) {
+            DSLContext dsl = getDSLContext(connection);
+            dsl.update(Users.USERS)
+                    .set(Users.USERS.DONT_SHOW_MEAL, cleanAllergies)
+                    .where(Users.USERS.USERID.eq(userId))
+                    .execute();
+            return true;
+        }
+    }
+    /**
+     * Method validateUser validates a user by username and password
      * @param username          of type String
      * @param plainTextPassword of type String
      * @throws UserNotValidatedException if the user is not validated

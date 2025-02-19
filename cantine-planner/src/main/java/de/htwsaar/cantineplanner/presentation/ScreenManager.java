@@ -335,25 +335,25 @@ public class ScreenManager {
 
     public void showAllergeneSettings() {
         List<String> allergene = Arrays.asList(
-                "Glutenhaltiges Getreide",
-                "Krebstiere",
-                "Eier",
-                "Fisch",
-                "Erdnüsse",
-                "Soja",
-                "Milch",
-                "Schalenfrüchte (Nüsse)",
-                "Sellerie",
-                "Senf",
-                "Sesamsamen",
-                "Schwefeldioxid und Sulfite",
-                "Lupinen",
-                "Weichtiere"
+                "F", // Fisch
+                "N", // Nüsse
+                "G", // Gluten
+                "M", // Milch
+                "E", // Eier
+                "S", // Soja
+                "C", // Sellerie
+                "U", // Senf
+                "T", // Sesam
+                "L", // Lupinen
+                "P", // Erdnüsse
+                "I", // Sulfite
+                "K", // Krebstiere
+                "W", // Weichtiere
+                "H"  // Schalenfrüchte
         );
 
         // CheckboxBuilder erstellen
         CheckboxScreenBuilder builder = new CheckboxScreenBuilder(gui, eventManager, "Allergene auswählen");
-
 
         // Menü anzeigen
         builder.display(allergene, "allergeneSettings");

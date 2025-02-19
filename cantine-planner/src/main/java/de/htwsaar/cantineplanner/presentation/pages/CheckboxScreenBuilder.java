@@ -55,7 +55,8 @@ public class CheckboxScreenBuilder {
                     selectedValues.add(checkBox.getLabel());
                 }
             }
-            eventManager.notify(event, selectedValues.toArray(new String[0]));
+            String result = String.join(",", selectedValues);
+            eventManager.notify(event, new String[]{result});
         }));
 
         panel.addComponent(buttonPanel);

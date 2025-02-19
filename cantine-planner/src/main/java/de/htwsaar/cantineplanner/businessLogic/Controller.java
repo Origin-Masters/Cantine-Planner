@@ -6,6 +6,7 @@ import de.htwsaar.cantineplanner.exceptions.*;
 import de.htwsaar.cantineplanner.presentation.ScreenManager;
 
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
@@ -84,7 +85,7 @@ public class Controller {
         eventManager.subscribe("showReviewsByUser", this::handleShowReviewsByUser);
         eventManager.subscribe("showAdminMenu", this::handleShowAdminMenu);
         eventManager.subscribe("showAllergenSettings", (data) -> screenManager.showAllergeneSettings());
-
+        eventManager.subscribe("allergeneSettings", this::handleAllergeneSettings);
         // Weekly Plan
         eventManager.subscribe("showWeeklyPlan", this::handleShowWeeklyPlan);
         eventManager.subscribe("editWeeklyPlan", this::handleShowEditWeeklyPlan);
@@ -455,7 +456,15 @@ public class Controller {
             screenManager.showErrorScreen("There was an error while fetching all reviews please try again!");
         }
     }
-
+    private void handleAllergeneSettings(Object data){
+        try {
+            cantineService.setAllergeneSettings(currentUserId, Arrays.toString((String[]) data));
+            screenManager.closeActiveWindow();
+            screenManager.showSuccessScreen("Allergene settings updated successfully!");
+        } catch (SQLException e) {
+            screenManager.showErrorScreen("There was an error while setting the allergene settings, please try again!");
+        }
+    }
     private void handleShowAdminMenu(Object data) {
         try {
             if (cantineService.isAdmin(currentUserId)) {
