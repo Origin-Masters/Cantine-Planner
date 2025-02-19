@@ -1,3 +1,5 @@
+![Version](https://img.shields.io/badge/version-1.0--SNAPSHOT-blue)
+![Build Status](https://github.com/Origin-Masters/Cantine-Planner/actions/workflows/maven.yml/badge.svg?branch=development)
 
 [Cantine Planner GitHub](https://github.com/Origin-Masters/Cantine-Planner)
 # Cantine Planner - Projekt in Programmierung 3
