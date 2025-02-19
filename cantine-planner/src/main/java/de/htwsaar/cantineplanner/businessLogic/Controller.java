@@ -14,9 +14,9 @@ import java.util.Objects;
 public class Controller {
 
     // Abhängigkeiten und Statusvariablen
-    private ScreenManager screenManager;
-    private CantineService cantineService;
-    private EventManager eventManager;
+    private final ScreenManager screenManager;
+    private final CantineService cantineService;
+    private final EventManager eventManager;
     private boolean running;
     private int currentMenu;
     private int currentUserId;

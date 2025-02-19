@@ -41,14 +41,14 @@ public class ScreenManager {
 
     public void showMealMenuScreen() {
         List<MenuBuilder.MenuButton> mealMenuButtons = Arrays.asList(
-                new MenuBuilder.MenuButton("Alle Gerichte", "showAllMeals"),
-                new MenuBuilder.MenuButton("Gericht hinzufügen", "showAddMeal"),
-                new MenuBuilder.MenuButton("Alle Allergien", "showAllAllergies"),
-                new MenuBuilder.MenuButton("Gericht löschen", "showDeleteMeal"),
-                new MenuBuilder.MenuButton("Gericht nach Name suchen", "showSearchMealByName"),
-                new MenuBuilder.MenuButton("Gericht nach ID suchen", "showMealDetailsById"),
-                new MenuBuilder.MenuButton("Main Menü", "showMainMenu"),
-                new MenuBuilder.MenuButton("Programm beenden", "exit")
+                new MenuBuilder.MenuButton("All Meal", "showAllMeals"),
+                new MenuBuilder.MenuButton("Add Meal", "showAddMeal"),
+                new MenuBuilder.MenuButton("All Allergies", "showAllAllergies"),
+                new MenuBuilder.MenuButton("Delete Meal", "showDeleteMeal"),
+                new MenuBuilder.MenuButton("Search Meal by Name", "showSearchMealByName"),
+                new MenuBuilder.MenuButton("Search Meal by ID", "showMealDetailsById"),
+                new MenuBuilder.MenuButton("Main Menu", "showMainMenu"),
+                new MenuBuilder.MenuButton("Exit", "exit")
         );
 
         MenuBuilder mealMenu = new MenuBuilder(gui, eventManager)
@@ -59,13 +59,13 @@ public class ScreenManager {
 
     public void showUserMenuScreen() {
         List<MenuBuilder.MenuButton> userMenuButtons = Arrays.asList(
-                new MenuBuilder.MenuButton("Benutzerdaten bearbeiten", "showEditUserData"),
-                new MenuBuilder.MenuButton("Allergien verwalten", "showAllergenSettings"),
-                new MenuBuilder.MenuButton("Bewertungen anzeigen", "showReviewsByUser"),
-                new MenuBuilder.MenuButton("Abmelden", "logout"),
+                new MenuBuilder.MenuButton("Edit User Data", "showEditUserData"),
+                new MenuBuilder.MenuButton("Manage Allergies", "showAllergenSettings"),
+                new MenuBuilder.MenuButton("Show Reviews", "showReviewsByUser"),
+                new MenuBuilder.MenuButton("Logout", "logout"),
                 new MenuBuilder.MenuButton("Admin Menu", "showAdminMenu"),
-                new MenuBuilder.MenuButton("Main Menü", "showMainMenu"),
-                new MenuBuilder.MenuButton("Programm beenden", "exit")
+                new MenuBuilder.MenuButton("Main Menu", "showMainMenu"),
+                new MenuBuilder.MenuButton("Exit", "exit")
         );
 
         MenuBuilder userMenu = new MenuBuilder(gui, eventManager)
@@ -150,13 +150,13 @@ public class ScreenManager {
 
     public void showAllergiesMenu() {
         List<MenuBuilder.MenuButton> allergiesMenuButtons = Arrays.asList(
-                new MenuBuilder.MenuButton("Alle Allergien", "showAllAllergies"),
-                new MenuBuilder.MenuButton("Allergie hinzufügen", "addAllergy"),
-                new MenuBuilder.MenuButton("Allergie löschen", "deleteAllergy"),
-                new MenuBuilder.MenuButton("Allergie nach Name suchen", "searchAllergyByName"),
-                new MenuBuilder.MenuButton("Allergie nach ID suchen", "showAllergyDetailsById"),
-                new MenuBuilder.MenuButton("Main Menü", "showMainMenu"),
-                new MenuBuilder.MenuButton("Programm beenden", "exit")
+                new MenuBuilder.MenuButton("All Allergies", "showAllAllergies"),
+                new MenuBuilder.MenuButton("Add Allergy", "addAllergy"),
+                new MenuBuilder.MenuButton("Delete Allergy", "deleteAllergy"),
+                new MenuBuilder.MenuButton("Search Allergy by Meal Name", "searchAllergyByName"),
+                new MenuBuilder.MenuButton("Search Allergy by Meal ID", "showAllergyDetailsById"),
+                new MenuBuilder.MenuButton("Main Menu", "showMainMenu"),
+                new MenuBuilder.MenuButton("Exit", "exit")
         );
 
         MenuBuilder allergiesMenu = new MenuBuilder(gui, eventManager)
@@ -167,12 +167,12 @@ public class ScreenManager {
 
     public void showReviewsMenu() {
         List<MenuBuilder.MenuButton> reviewsMenuButtons = Arrays.asList(
-                new MenuBuilder.MenuButton("Alle Reviews", "showAllReviews"),
-                new MenuBuilder.MenuButton("Review hinzufügen", "showAddReview"),
-                new MenuBuilder.MenuButton("Review löschen", "showDeleteReview"),
-                new MenuBuilder.MenuButton("Gericht Reviews", "showSearchReviewsByMealName"),
-                new MenuBuilder.MenuButton("Main Menü", "showMainMenu"),
-                new MenuBuilder.MenuButton("Programm beenden", "exit")
+                new MenuBuilder.MenuButton("All Reviews", "showAllReviews"),
+                new MenuBuilder.MenuButton("Add Reviews", "showAddReview"),
+                new MenuBuilder.MenuButton("Delete Review", "showDeleteReview"),
+                new MenuBuilder.MenuButton("Search Reviews by Meal Name", "showSearchReviewsByMealName"),
+                new MenuBuilder.MenuButton("Main Menu", "showMainMenu"),
+                new MenuBuilder.MenuButton("Exit", "exit")
         );
 
         MenuBuilder reviewsMenu = new MenuBuilder(gui, eventManager)
@@ -197,7 +197,7 @@ public class ScreenManager {
                     .map(allergy -> Arrays.stream(allergy.split(""))
                             .map(AllergenMapper::getAllergenFullName)
                             .collect(Collectors.joining(" ")))
-                    .orElse("keine Allergene");
+                    .orElse("No Allergies");
 
             // Ermittele den Fleisch-Typ (MealType)
             String mealType = MealTypeMapper.getMealTypeName(meal.getMeat());
@@ -231,7 +231,7 @@ public class ScreenManager {
                 .map(allergy -> Arrays.stream(allergy.split(""))
                         .map(AllergenMapper::getAllergenFullName)
                         .collect(Collectors.joining(" ")))
-                .orElse("keine Allergene");
+                .orElse("No Allergies");
 
         // Füge die Zeile mit allen benötigten Informationen hinzu
         tableBuilder.addRow(Arrays.asList(
@@ -253,7 +253,7 @@ public class ScreenManager {
     }
 
     public void showAllAllergies(List<MealsRecord> meals) {
-        TableBuilder tableBuilder = new TableBuilder(gui, "Allergien in Gerichten")
+        TableBuilder tableBuilder = new TableBuilder(gui, "Allergies in Meals")
                 .addColumn("Meal Name")
                 .addColumn("Allergy");
 
@@ -263,7 +263,7 @@ public class ScreenManager {
                     .map(allergy -> Arrays.stream(allergy.split(""))
                             .map(AllergenMapper::getAllergenFullName)
                             .collect(Collectors.joining(" ")))
-                    .orElse("keine Allergene");
+                    .orElse("No Allergies");
 
             tableBuilder.addRow(Arrays.asList(
                     meal.getName(),
@@ -335,25 +335,25 @@ public class ScreenManager {
 
     public void showAllergeneSettings() {
         List<String> allergene = Arrays.asList(
-                "F", // Fisch
-                "N", // Nüsse
-                "G", // Gluten
-                "M", // Milch
-                "E", // Eier
-                "S", // Soja
-                "C", // Sellerie
-                "U", // Senf
-                "T", // Sesam
-                "L", // Lupinen
-                "P", // Erdnüsse
-                "I", // Sulfite
-                "K", // Krebstiere
-                "W", // Weichtiere
-                "H"  // Schalenfrüchte
+                "Gluten-containing cereals",
+                "Crustaceans",
+                "Eggs",
+                "Fish",
+                "Peanuts",
+                "Soy",
+                "Milk",
+                "Nuts",
+                "Celery",
+                "Mustard",
+                "Sesame seeds",
+                "Sulfur dioxide and sulfites",
+                "Lupins",
+                "Molluscs"
         );
 
         // CheckboxBuilder erstellen
-        CheckboxScreenBuilder builder = new CheckboxScreenBuilder(gui, eventManager, "Allergene auswählen");
+        CheckboxScreenBuilder builder = new CheckboxScreenBuilder(gui, eventManager, "Select Allergens");
+
 
         // Menü anzeigen
         builder.display(allergene, "allergeneSettings");
@@ -447,7 +447,7 @@ public class ScreenManager {
                     .map(allergy -> Arrays.stream(allergy.split(""))
                             .map(AllergenMapper::getAllergenFullName)
                             .collect(Collectors.joining(" ")))
-                    .orElse("keine Allergene");
+                    .orElse("No Allergies");
 
             tableBuilder.addRow(Arrays.asList(
                     meal.getDay(),

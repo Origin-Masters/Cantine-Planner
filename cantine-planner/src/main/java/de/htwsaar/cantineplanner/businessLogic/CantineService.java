@@ -27,7 +27,7 @@ public class CantineService {
         return usersRecord != null;
     }
 
-    public int getUserId(String username) throws SQLException, UseriDDoesntExcistException {
+    public int getUserId(String username) throws SQLException, UserDoesntExistException {
         return dbConnection.getUserId(username);
     }
 
@@ -81,7 +81,7 @@ public class CantineService {
         return dbConnection.getAllReviewsByUser(currentUserId);
     }
 
-    public boolean isAdmin(int currentUserId) throws SQLException, UserDoesntExistException {
+    public boolean isAdmin(int currentUserId) throws SQLException, UseriDDoesntExcistException {
         return dbConnection.isAdmin(currentUserId);
     }
 

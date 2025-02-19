@@ -47,12 +47,12 @@ public class LoginScreen extends AbstractScreen {
         }).setPreferredSize(new TerminalSize(20, 3))
                 .setLayoutData(GridLayout.createLayoutData(GridLayout.Alignment.BEGINNING, GridLayout.Alignment.BEGINNING)));
 
-        buttonPanel.addComponent(new Button("Registrieren", () -> {
+        buttonPanel.addComponent(new Button("Register", () -> {
             eventManager.notify("showRegisterScreen", null);
         }).setPreferredSize(new TerminalSize(20, 3))
                 .setLayoutData(GridLayout.createLayoutData(GridLayout.Alignment.BEGINNING, GridLayout.Alignment.BEGINNING)));
 
-        buttonPanel.addComponent(new Button("Programm beenden", () -> {
+        buttonPanel.addComponent(new Button("Exit", () -> {
             eventManager.notify("exit", null);
         }).setPreferredSize(new TerminalSize(20, 3))
                 .setLayoutData(GridLayout.createLayoutData(GridLayout.Alignment.CENTER, GridLayout.Alignment.CENTER)));

@@ -82,14 +82,13 @@ public class DBConnection {
      * @return userId of type int
      * @throws SQLException             if an SQL exception occurs
      * @throws UserDoesntExistException if the user doesn't exist
-     * @throws NullPointerException     if the user is null
      */
-    public int getUserId(String username) throws SQLException, UseriDDoesntExcistException {
+    public int getUserId(String username) throws SQLException, UserDoesntExistException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
 
             if (!dsl.fetchExists(dsl.selectFrom(Users.USERS).where(Users.USERS.USERNAME.eq(username)))) {
-                throw new UseriDDoesntExcistException("The user with the given username doesn't exist!");
+                throw new UserDoesntExistException("The user with the given username doesn't exist!");
             }
 
             return dsl.select(Users.USERS.USERID).from(Users.USERS).where(Users.USERS.USERNAME.eq(username)).fetchOne(
@@ -100,18 +99,16 @@ public class DBConnection {
     /**
      * Method isAdmin checks if a user is an admin or not
      *
-     * @param UserID
      * @return boolean true if the user is an admin, false otherwise
      * @throws SQLException             if an SQL exception occurs
      * @throws UserDoesntExistException if the user doesn't exist
-     * @throws NullPointerException     if the user is null
      */
-    public boolean isAdmin(int UserID) throws SQLException, UserDoesntExistException {
+    public boolean isAdmin(int UserID) throws SQLException, UseriDDoesntExcistException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
 
             if (!dsl.fetchExists(dsl.selectFrom(Users.USERS).where(Users.USERS.USERID.eq(UserID)))) {
-                throw new UserDoesntExistException("The user with the given username doesn't exist!");
+                throw new UseriDDoesntExcistException("The user with the given username doesn't exist!");
             }
 
             return dsl.select(Users.USERS.ROLE).from(Users.USERS).where(Users.USERS.USERID.eq(UserID)).fetchOne(

@@ -46,7 +46,7 @@ public class DBConnectionTest {
 
     @Test
     public void testGetUserId() {
-        assertThrows(UseriDDoesntExcistException.class, () -> dbConnection.getUserId("nonExistentUser"));
+        assertThrows(UserDoesntExistException.class, () -> dbConnection.getUserId("nonExistentUser"));
         assertThrows(UseriDDoesntExcistException.class, () -> dbConnection.getUserId("nonExistentUser2"));
 
         //testing for existing user
@@ -304,6 +304,10 @@ public class DBConnectionTest {
 
     @Test
     void isValidEmail() {
+    }
+
+    @Test
+    void isAdmin() {
     }
 }
 

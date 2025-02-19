@@ -39,10 +39,6 @@ public class InputScreenBuilder {
         gridLayout.setHorizontalSpacing(5);
         gridLayout.setVerticalSpacing(2);
 
-        panel.addComponent(new Label(title)
-                .setForegroundColor(TextColor.ANSI.BLACK_BRIGHT)
-                .addStyle(SGR.BOLD), GridLayout.createHorizontallyFilledLayoutData(2));
-
         // Add labeled TextBoxes for each label in the list
         for (String label : labels) {
             addLabeledTextBox(panel, label);
