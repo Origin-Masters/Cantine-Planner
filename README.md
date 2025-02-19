@@ -33,11 +33,11 @@ Durch unseren ***Copy-On-First-Run*** (Programmatischen) Ansatz wird ein Datenba
 ## 4. CI / CD
 Mittels GitHub workflows haben wir Continous Integration sowie Conitinous Deployment integriert.
 Der Workflow `maven.yml` baut das Maven Projekt und führt Tests mit jedem *Push* aus.
-Der Workflow `release.yml` baut das Maven Projekt, führt Tests aus.
+Der Workflow `release.yml` baut das Maven Projekt und führt ebenfalls Tests mit jedem *Push* aus.
 Nach dem die Tests ausgeführt wurden, wird das Tag `submission`sowie das dazugehöroge GitHub release erstellt.
 ## 5. Tests
-Wir haben mittels JUNIT 5.11.4 Tests implementiert, diese können innerhalb src/test angeschaut und  mittels `maven test `innerhalb des Terminals ausgeführt werden.
-## 6. Projektstruktur
+Wir haben mittels JUNIT 5.11.4 Tests implementiert, diese können innerhalb src/test angeschaut und  mittels `mvn test`innerhalb des Terminals ausgeführt werden.
+## 6. Projektstruktur 
 ```
 ├── META-INF
 ├── database
