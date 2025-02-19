@@ -43,34 +43,26 @@ public class ScreenManager {
         List<MenuBuilder.MenuButton> mealMenuButtons = Arrays.asList(
                 new MenuBuilder.MenuButton("All Meal", "showAllMeals"),
                 new MenuBuilder.MenuButton("Add Meal", "showAddMeal"),
-                new MenuBuilder.MenuButton("All Allergies", "showAllAllergies"),
+                new MenuBuilder.MenuButton("Allergies in Meals", "showAllAllergies"),
                 new MenuBuilder.MenuButton("Delete Meal", "showDeleteMeal"),
                 new MenuBuilder.MenuButton("Search Meal by Name", "showSearchMealByName"),
                 new MenuBuilder.MenuButton("Search Meal by ID", "showMealDetailsById"),
-                new MenuBuilder.MenuButton("Main Menu", "showMainMenu"),
-                new MenuBuilder.MenuButton("Exit", "exit")
-        );
+                new MenuBuilder.MenuButton("Main Menu", "showMainMenu"), new MenuBuilder.MenuButton("Exit", "exit"));
 
-        MenuBuilder mealMenu = new MenuBuilder(gui, eventManager)
-                .setTitle("Meal Menu")
-                .setButtons(mealMenuButtons);
+        MenuBuilder mealMenu = new MenuBuilder(gui, eventManager).setTitle("Meal Menu").setButtons(mealMenuButtons);
         mealMenu.display();
     }
 
     public void showUserMenuScreen() {
         List<MenuBuilder.MenuButton> userMenuButtons = Arrays.asList(
-                new MenuBuilder.MenuButton("Edit User Data", "showEditUserData"),
-                new MenuBuilder.MenuButton("Manage Allergies", "showAllergenSettings"),
-                new MenuBuilder.MenuButton("Show Reviews", "showReviewsByUser"),
+                new MenuBuilder.MenuButton("Edit My Data", "showEditUserData"),
+                new MenuBuilder.MenuButton("Set My Allergy", "showAllergenSettings"),
+                new MenuBuilder.MenuButton("My Reviews", "showReviewsByUser"),
                 new MenuBuilder.MenuButton("Logout", "logout"),
                 new MenuBuilder.MenuButton("Admin Menu", "showAdminMenu"),
-                new MenuBuilder.MenuButton("Main Menu", "showMainMenu"),
-                new MenuBuilder.MenuButton("Exit", "exit")
-        );
+                new MenuBuilder.MenuButton("Main Menu", "showMainMenu"), new MenuBuilder.MenuButton("Exit", "exit"));
 
-        MenuBuilder userMenu = new MenuBuilder(gui, eventManager)
-                .setTitle("User Menu")
-                .setButtons(userMenuButtons);
+        MenuBuilder userMenu = new MenuBuilder(gui, eventManager).setTitle("User Menu").setButtons(userMenuButtons);
         userMenu.display();
     }
 
@@ -100,22 +92,12 @@ public class ScreenManager {
 
 
     public void showAllReviews(List<ReviewRecord> reviews) {
-        TableBuilder tableBuilder = new TableBuilder(gui, "All Reviews")
-                .addColumn("ID")
-                .addColumn("Rating")
-                .addColumn("Comment")
-                .addColumn("Meal ID")
-                .addColumn("Date")
-                .addColumn("UserID");
+        TableBuilder tableBuilder = new TableBuilder(gui, "All Reviews").addColumn("ID").addColumn("Rating").addColumn(
+                "Comment").addColumn("Meal ID").addColumn("Date").addColumn("UserID");
         for (ReviewRecord review : reviews) {
-            tableBuilder.addRow(Arrays.asList(
-                    String.valueOf(review.getRatingId()),
-                    String.valueOf(review.getRating()),
-                    review.getComment(),
-                    String.valueOf(review.getMealId()),
-                    review.getCreatedAt().toString(),
-                    String.valueOf(review.getUserid())
-            ));
+            tableBuilder.addRow(Arrays.asList(String.valueOf(review.getRatingId()), String.valueOf(review.getRating()),
+                    review.getComment(), String.valueOf(review.getMealId()), review.getCreatedAt().toString(),
+                    String.valueOf(review.getUserid())));
         }
         tableBuilder.display();
     }
@@ -126,11 +108,8 @@ public class ScreenManager {
                 new MenuBuilder.MenuButton("Meal Menu", "showMealMenu"),
                 new MenuBuilder.MenuButton("Review Menu", "showReviewMenu"),
                 new MenuBuilder.MenuButton("Weekly Menu", "showWeeklyMenu"),
-                new MenuBuilder.MenuButton("Exit", "exit")
-        );
-        MenuBuilder mainMenu = new MenuBuilder(gui, eventManager)
-                .setTitle("Main Menu")
-                .setButtons(mainMenuButtons);
+                new MenuBuilder.MenuButton("Exit", "exit"));
+        MenuBuilder mainMenu = new MenuBuilder(gui, eventManager).setTitle("Main Menu").setButtons(mainMenuButtons);
         mainMenu.display();
     }
 
@@ -140,11 +119,9 @@ public class ScreenManager {
                 new MenuBuilder.MenuButton("Weekly Plan", "showWeeklyPlan"),
                 new MenuBuilder.MenuButton("Edit Weekly Plan", "editWeeklyPlan"),
                 new MenuBuilder.MenuButton("Main Menu", "showMainMenu"),
-                new MenuBuilder.MenuButton("Programm beenden", "exit")
-        );
-        MenuBuilder weeklyMenu = new MenuBuilder(gui, eventManager)
-                .setTitle("Weekly Menu")
-                .setButtons(weeklyMenuButtons);
+                new MenuBuilder.MenuButton("Programm beenden", "exit"));
+        MenuBuilder weeklyMenu = new MenuBuilder(gui, eventManager).setTitle("Weekly Menu").setButtons(
+                weeklyMenuButtons);
         weeklyMenu.display();
     }
 
@@ -155,13 +132,10 @@ public class ScreenManager {
                 new MenuBuilder.MenuButton("Delete Allergy", "deleteAllergy"),
                 new MenuBuilder.MenuButton("Search Allergy by Meal Name", "searchAllergyByName"),
                 new MenuBuilder.MenuButton("Search Allergy by Meal ID", "showAllergyDetailsById"),
-                new MenuBuilder.MenuButton("Main Menu", "showMainMenu"),
-                new MenuBuilder.MenuButton("Exit", "exit")
-        );
+                new MenuBuilder.MenuButton("Main Menu", "showMainMenu"), new MenuBuilder.MenuButton("Exit", "exit"));
 
-        MenuBuilder allergiesMenu = new MenuBuilder(gui, eventManager)
-                .setTitle("Allergies Menu")
-                .setButtons(allergiesMenuButtons);
+        MenuBuilder allergiesMenu = new MenuBuilder(gui, eventManager).setTitle("Allergies Menu").setButtons(
+                allergiesMenuButtons);
         allergiesMenu.display();
     }
 
@@ -170,47 +144,31 @@ public class ScreenManager {
                 new MenuBuilder.MenuButton("All Reviews", "showAllReviews"),
                 new MenuBuilder.MenuButton("Add Reviews", "showAddReview"),
                 new MenuBuilder.MenuButton("Delete Review", "showDeleteReview"),
-                new MenuBuilder.MenuButton("Search Reviews by Meal Name", "showSearchReviewsByMealName"),
-                new MenuBuilder.MenuButton("Main Menu", "showMainMenu"),
-                new MenuBuilder.MenuButton("Exit", "exit")
-        );
+                new MenuBuilder.MenuButton("Search Reviews", "showSearchReviewsByMealName"),
+                new MenuBuilder.MenuButton("Main Menu", "showMainMenu"), new MenuBuilder.MenuButton("Exit", "exit"));
 
-        MenuBuilder reviewsMenu = new MenuBuilder(gui, eventManager)
-                .setTitle("Reviews Menu")
-                .setButtons(reviewsMenuButtons);
+        MenuBuilder reviewsMenu = new MenuBuilder(gui, eventManager).setTitle("Reviews Menu").setButtons(
+                reviewsMenuButtons);
         reviewsMenu.display();
     }
 
     public void showAllMeals(List<MealsRecord> meals) {
-        TableBuilder tableBuilder = new TableBuilder(gui, "All Meals")
-                .addColumn("ID")
-                .addColumn("Name")
-                .addColumn("Price")
-                .addColumn("Calories")
-                .addColumn("Allergens")
-                .addColumn("Meat");
+        TableBuilder tableBuilder = new TableBuilder(gui, "All Meals").addColumn("ID").addColumn("Name").addColumn(
+                "Price").addColumn("Calories").addColumn("Allergens").addColumn("Meat");
 
         for (MealsRecord meal : meals) {
             // Verwende Optional, um Null- oder Leereinträge abzufangen
-            String allergenInfo = Optional.ofNullable(meal.getAllergy())
-                    .filter(allergy -> !allergy.isEmpty())
-                    .map(allergy -> Arrays.stream(allergy.split(""))
-                            .map(AllergenMapper::getAllergenFullName)
-                            .collect(Collectors.joining(" ")))
-                    .orElse("No Allergies");
+            String allergenInfo = Optional.ofNullable(meal.getAllergy()).filter(allergy -> !allergy.isEmpty()).map(
+                    allergy -> Arrays.stream(allergy.split("")).map(AllergenMapper::getAllergenFullName).collect(
+                            Collectors.joining(" "))).orElse("No Allergies");
 
             // Ermittele den Fleisch-Typ (MealType)
             String mealType = MealTypeMapper.getMealTypeName(meal.getMeat());
 
             // Füge eine Zeile mit den benötigten Informationen hinzu
-            tableBuilder.addRow(Arrays.asList(
-                    String.valueOf(meal.getMealId()),
-                    meal.getName(),
-                    String.format("%.2f", meal.getPrice()),
-                    String.valueOf(meal.getCalories()),
-                    allergenInfo,
-                    mealType
-            ));
+            tableBuilder.addRow(Arrays.asList(String.valueOf(meal.getMealId()), meal.getName(),
+                    String.format("%.2f", meal.getPrice()), String.valueOf(meal.getCalories()), allergenInfo,
+                    mealType));
         }
 
 
@@ -218,30 +176,18 @@ public class ScreenManager {
     }
 
     public void showMealDetails(MealsRecord meal) {
-        TableBuilder tableBuilder = new TableBuilder(gui, "Meal Details")
-                .addColumn("ID")
-                .addColumn("Name")
-                .addColumn("Price")
-                .addColumn("Calories")
-                .addColumn("Allergens")
-                .addColumn("Meat");
+        TableBuilder tableBuilder = new TableBuilder(gui, "Meal Details").addColumn("ID").addColumn("Name").addColumn(
+                "Price").addColumn("Calories").addColumn("Allergens").addColumn("Meat");
 
-        String allergens = Optional.ofNullable(meal.getAllergy())
-                .filter(allergy -> !allergy.isEmpty()) // Prüfe auch auf leere Strings
-                .map(allergy -> Arrays.stream(allergy.split(""))
-                        .map(AllergenMapper::getAllergenFullName)
-                        .collect(Collectors.joining(" ")))
-                .orElse("No Allergies");
+        String allergens = Optional.ofNullable(meal.getAllergy()).filter(
+                        allergy -> !allergy.isEmpty()) // Prüfe auch auf leere Strings
+                .map(allergy -> Arrays.stream(allergy.split("")).map(AllergenMapper::getAllergenFullName).collect(
+                        Collectors.joining(" "))).orElse("No Allergies");
 
         // Füge die Zeile mit allen benötigten Informationen hinzu
-        tableBuilder.addRow(Arrays.asList(
-                String.valueOf(meal.getMealId()),
-                meal.getName(),
-                String.format("%.2f", meal.getPrice()),
-                String.valueOf(meal.getCalories()),
-                allergens,
-                MealTypeMapper.getMealTypeName(meal.getMeat())
-        ));
+        tableBuilder.addRow(
+                Arrays.asList(String.valueOf(meal.getMealId()), meal.getName(), String.format("%.2f", meal.getPrice()),
+                        String.valueOf(meal.getCalories()), allergens, MealTypeMapper.getMealTypeName(meal.getMeat())));
 
         tableBuilder.display();
     }
@@ -253,47 +199,40 @@ public class ScreenManager {
     }
 
     public void showAllAllergies(List<MealsRecord> meals) {
-        TableBuilder tableBuilder = new TableBuilder(gui, "Allergies in Meals")
-                .addColumn("Meal Name")
-                .addColumn("Allergy");
+        TableBuilder tableBuilder = new TableBuilder(gui, "Allergies in Meals").addColumn("Meal Name").addColumn(
+                "Allergy");
 
         for (MealsRecord meal : meals) {
-            String allergens = Optional.ofNullable(meal.getAllergy())
-                    .filter(allergy -> !allergy.isEmpty())
-                    .map(allergy -> Arrays.stream(allergy.split(""))
-                            .map(AllergenMapper::getAllergenFullName)
-                            .collect(Collectors.joining(" ")))
-                    .orElse("No Allergies");
+            String allergens = Optional.ofNullable(meal.getAllergy()).filter(allergy -> !allergy.isEmpty()).map(
+                    allergy -> Arrays.stream(allergy.split("")).map(AllergenMapper::getAllergenFullName).collect(
+                            Collectors.joining(" "))).orElse("No Allergies");
 
-            tableBuilder.addRow(Arrays.asList(
-                    meal.getName(),
-                    allergens
-            ));
+            tableBuilder.addRow(Arrays.asList(meal.getName(), allergens));
         }
 
         tableBuilder.display();
     }
 
     public void showAddReviewScreen() {
-        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Add Review");
+        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Add New Review");
         List<String> labels = Arrays.asList("Rating", "Comment", "Meal ID");
         inputScreenBuilder.display(labels, "addReview");
     }
 
     public void showAddMealScreen() {
-        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Add Meal");
+        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Add New Meal");
         List<String> labels = Arrays.asList("Name", "Price", "Calories", "Allergy", "Meat");
         inputScreenBuilder.display(labels, "addMeal");
     }
 
     public void showDeleteMealScreen() {
-        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Delete Meal");
+        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Delete Meal by Meal ID");
         List<String> labels = List.of("ID");
         inputScreenBuilder.display(labels, "deleteMeal");
     }
 
     public void showDeleteReviewScreen() {
-        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Delete Review");
+        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Delete Review by Rating ID");
         List<String> labels = List.of("ID");
         inputScreenBuilder.display(labels, "deleteReview");
     }
@@ -334,22 +273,9 @@ public class ScreenManager {
     }
 
     public void showAllergeneSettings() {
-        List<String> allergene = Arrays.asList(
-                "Gluten-containing cereals",
-                "Crustaceans",
-                "Eggs",
-                "Fish",
-                "Peanuts",
-                "Soy",
-                "Milk",
-                "Nuts",
-                "Celery",
-                "Mustard",
-                "Sesame seeds",
-                "Sulfur dioxide and sulfites",
-                "Lupins",
-                "Molluscs"
-        );
+        List<String> allergene = Arrays.asList("Gluten-containing cereals", "Crustaceans", "Eggs", "Fish", "Peanuts",
+                "Soy", "Milk", "Nuts", "Celery", "Mustard", "Sesame seeds", "Sulfur dioxide and sulfites", "Lupins",
+                "Molluscs");
 
         // CheckboxBuilder erstellen
         CheckboxScreenBuilder builder = new CheckboxScreenBuilder(gui, eventManager, "Select Allergens");
@@ -372,13 +298,9 @@ public class ScreenManager {
                 new MenuBuilder.MenuButton("View Reviews", "showReviewManagement"),
                 new MenuBuilder.MenuButton("Delete Review", "showDeleteReview"),
                 new MenuBuilder.MenuButton("View Popular Meals", "showPopularMeals"),
-                new MenuBuilder.MenuButton("Main Menu", "showMainMenu"),
-                new MenuBuilder.MenuButton("Exit", "exit")
-        );
+                new MenuBuilder.MenuButton("Main Menu", "showMainMenu"), new MenuBuilder.MenuButton("Exit", "exit"));
 
-        MenuBuilder adminMenu = new MenuBuilder(gui, eventManager)
-                .setTitle("Admin Menu")
-                .setButtons(adminMenuButtons);
+        MenuBuilder adminMenu = new MenuBuilder(gui, eventManager).setTitle("Admin Menu").setButtons(adminMenuButtons);
         adminMenu.display();
     }
 
@@ -391,13 +313,10 @@ public class ScreenManager {
                 new MenuBuilder.MenuButton("Thursday", "editWeeklyPlanThursday"),
                 new MenuBuilder.MenuButton("Friday", "editWeeklyPlanFriday"),
                 new MenuBuilder.MenuButton("Reset Weekly Plan", "resetWeeklyPlan"),
-                new MenuBuilder.MenuButton("Main Menu", "showMainMenu"),
-                new MenuBuilder.MenuButton("Exit", "exit")
-        );
+                new MenuBuilder.MenuButton("Main Menu", "showMainMenu"), new MenuBuilder.MenuButton("Exit", "exit"));
 
-        MenuBuilder weeklyPlan = new MenuBuilder(gui, eventManager)
-                .setTitle("Edit Weekly Plan")
-                .setButtons(weeklyPlanButtons);
+        MenuBuilder weeklyPlan = new MenuBuilder(gui, eventManager).setTitle("Edit Weekly Plan").setButtons(
+                weeklyPlanButtons);
         weeklyPlan.display();
     }
 
@@ -433,30 +352,16 @@ public class ScreenManager {
     }
 
     public void showWeeklyPlanScreen(List<MealsRecord> weeklyPlan) {
-        TableBuilder tableBuilder = new TableBuilder(gui, "Weekly Plan")
-                .addColumn("Day")
-                .addColumn("Meal Name")
-                .addColumn("Price")
-                .addColumn("Calories")
-                .addColumn("Allergens")
-                .addColumn("Meat");
+        TableBuilder tableBuilder = new TableBuilder(gui, "Weekly Plan").addColumn("Day").addColumn(
+                "Meal Name").addColumn("Price").addColumn("Calories").addColumn("Allergens").addColumn("Meat");
 
         for (MealsRecord meal : weeklyPlan) {
-            String allergens = Optional.ofNullable(meal.getAllergy())
-                    .filter(allergy -> !allergy.isEmpty())
-                    .map(allergy -> Arrays.stream(allergy.split(""))
-                            .map(AllergenMapper::getAllergenFullName)
-                            .collect(Collectors.joining(" ")))
-                    .orElse("No Allergies");
+            String allergens = Optional.ofNullable(meal.getAllergy()).filter(allergy -> !allergy.isEmpty()).map(
+                    allergy -> Arrays.stream(allergy.split("")).map(AllergenMapper::getAllergenFullName).collect(
+                            Collectors.joining(" "))).orElse("No Allergies");
 
-            tableBuilder.addRow(Arrays.asList(
-                    meal.getDay(),
-                    meal.getName(),
-                    String.format("%.2f", meal.getPrice()),
-                    String.valueOf(meal.getCalories()),
-                    allergens,
-                    MealTypeMapper.getMealTypeName(meal.getMeat())
-            ));
+            tableBuilder.addRow(Arrays.asList(meal.getDay(), meal.getName(), String.format("%.2f", meal.getPrice()),
+                    String.valueOf(meal.getCalories()), allergens, MealTypeMapper.getMealTypeName(meal.getMeat())));
         }
 
         tableBuilder.display();

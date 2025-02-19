@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class CantineService {
-    private DBConnection dbConnection;
+    private final DBConnection dbConnection;
 
 
     public CantineService(String propertiesFilePath) {

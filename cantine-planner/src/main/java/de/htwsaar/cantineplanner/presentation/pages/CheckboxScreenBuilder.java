@@ -10,10 +10,10 @@ import java.util.Arrays;
 import java.util.List;
 
 public class CheckboxScreenBuilder {
-    private MultiWindowTextGUI gui;
-    private EventManager eventManager;
-    private String title;
-    private List<CheckBox> checkBoxes;
+    private final MultiWindowTextGUI gui;
+    private final EventManager eventManager;
+    private final String title;
+    private final List<CheckBox> checkBoxes;
 
     public CheckboxScreenBuilder(MultiWindowTextGUI gui, EventManager eventManager, String title) {
         this.gui = gui;
@@ -35,10 +35,6 @@ public class CheckboxScreenBuilder {
         GridLayout gridLayout = (GridLayout) panel.getLayoutManager();
         gridLayout.setHorizontalSpacing(5);
         gridLayout.setVerticalSpacing(2);
-
-        panel.addComponent(new Label(title)
-                .setForegroundColor(TextColor.ANSI.BLACK_BRIGHT)
-                .addStyle(SGR.BOLD));
 
         // Labeled CheckBoxes hinzufügen
         for (String label : labels) {
