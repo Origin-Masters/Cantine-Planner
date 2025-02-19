@@ -21,6 +21,9 @@ public class CantineService {
     public boolean validateUser(String username, String password) throws SQLException, UserNotValidatedException {
         return dbConnection.validateUser(username, password);
     }
+    public boolean validateUser(int userID, String password) throws SQLException, UserNotValidatedException {
+        return dbConnection.validateUser(userID, password);
+    }
 
     public boolean registerUser(String username, String password, String email) throws SQLException, UserAlreadyExistsException, InvalidEmailTypeException {
         UsersRecord usersRecord = dbConnection.registerUser(username, password, email);

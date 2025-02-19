@@ -55,10 +55,7 @@ public class Controller {
             switchMenu(0);
             this.currentUserId = -1;
         });
-        eventManager.subscribe("showEditUserData", (data) -> screenManager.showEditUserDataScreen());
-        eventManager.subscribe("editUserData", this::handleEditUserData);
-        eventManager.subscribe("showEditNewUserData", (data) -> screenManager.showEditNewUserDataScreen());
-        eventManager.subscribe("editNewUserData", this::handleInputNewUserData);
+
 
         // Meal-bezogene Events
         eventManager.subscribe("showAllMeals", this::handleShowAllMeals);
@@ -82,6 +79,10 @@ public class Controller {
         eventManager.subscribe("searchReviewsByMealName", this::handleSearchReviewsByMealName);
 
         // User-bezogene Events
+        eventManager.subscribe("showEditUserData", (data) -> screenManager.showEditUserDataScreen());
+        eventManager.subscribe("editUserData", this::handleEditUserData);
+        eventManager.subscribe("showEditNewUserData", (data) -> screenManager.showEditNewUserDataScreen());
+        eventManager.subscribe("editNewUserData", this::handleInputNewUserData);
         eventManager.subscribe("showReviewsByUser", this::handleShowReviewsByUser);
         eventManager.subscribe("showAdminMenu", this::handleShowAdminMenu);
         eventManager.subscribe("showAllergenSettings", (data) -> screenManager.showAllergeneSettings());
@@ -246,13 +247,12 @@ public class Controller {
             return;
         }
         String[] userData = (String[]) data;
-        String username = userData[0];
-        String currentPassword = userData[1];
+        String currentPassword = userData[0];
 
         try {
-            if (cantineService.validateUser(username, currentPassword)) {
-                currentUserId = cantineService.getUserId(username);
+            if (cantineService.validateUser(currentUserId, currentPassword)) {
                 screenManager.closeActiveWindow();
+                screenManager.showSuccessScreen("User validated!");
                 screenManager.showEditNewUserDataScreen();
             }
 

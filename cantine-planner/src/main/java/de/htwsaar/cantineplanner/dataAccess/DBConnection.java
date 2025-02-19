@@ -74,6 +74,24 @@ public class DBConnection {
             return true;
         }
     }
+    /**
+     * Method validateUser validates a user by username and password
+     * @param userID          of type Int
+     * @param plainTextPassword of type String
+     * @throws UserNotValidatedException if the user is not validated
+     */
+    public boolean validateUser(int userID, String plainTextPassword) throws SQLException, UserNotValidatedException {
+        try (Connection connection = dataSource.getConnection()) {
+            DSLContext dsl = getDSLContext(connection);
+            String hashedPassword = dsl.select(Users.USERS.PASSWORD).from(Users.USERS).where(
+                    Users.USERS.USERID.eq(userID)).fetchOne(Users.USERS.PASSWORD);
+
+            if (hashedPassword == null || !PasswordUtil.verifyPassword(plainTextPassword, hashedPassword)) {
+                throw new UserNotValidatedException("Invalid password!");
+            }
+            return true;
+        }
+    }
 
     /**
      * Method getUserId searches for a user by username and returns the userId
