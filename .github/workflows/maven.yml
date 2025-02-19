@@ -10,7 +10,7 @@ on:
       - main
       - development
 
-  workflow_dispatch: # Trigger für manuelle Workflow-Starts
+  workflow_dispatch:                                  # Trigger for manual workflow execution
     inputs:
       message:
         description: 'A custom message to trigger this workflow'
@@ -20,7 +20,7 @@ on:
       version:
         description: 'Specify Java version'
         required: true
-        default: '17'
+        default: '21'
 
 jobs:
   build:
@@ -29,7 +29,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest] # Test on Linux, Windows, and macOS
-        java: [17, 21]                                    # Test with Java 17 and 21
+        java: [21]                                        # Test with Java 21
 
     steps:
     # Step 1: Check out the code
@@ -47,15 +47,15 @@ jobs:
     # Step 3: Build and test with Maven
     - name: Build and Test with Maven
       run: mvn clean install
-      working-directory: ./cantine-planner  # Pfad zum Verzeichnis mit der pom.xml
+      working-directory: ./cantine-planner  # Path to POM.XML
 
       # Step 4: Run Maven Tests
     - name: Run Maven Tests
       run: mvn clean verify -DdisplayName=true -B
-      working-directory: ./cantine-planner # Path to pom.xml
+      working-directory: ./cantine-planner # Path to POM.XML
       continue-on-error: true
 
-    - name: Print Maven Test Results
+    - name: Print Maven Test Results       # change working directory as cantine-planer is inside Cantine-Planner
       run: |
         echo "Maven Test Results:"
         cat ./cantine-planner/target/surefire-reports/*.txt
