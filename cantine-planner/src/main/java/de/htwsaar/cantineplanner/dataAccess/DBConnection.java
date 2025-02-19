@@ -46,11 +46,11 @@ public class DBConnection {
      * @throws SQLException if an SQL exception occurs
      */
     public boolean setAllergeneSettings(int userId, String allergies) throws SQLException {
-        String cleanAllergies = allergies.replace("[", "").replace("]", "");
+      //  String cleanAllergies = allergies.replace("[", "").replace("]", "");
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
             dsl.update(Users.USERS)
-                    .set(Users.USERS.DONT_SHOW_MEAL, cleanAllergies)
+                    .set(Users.USERS.DONT_SHOW_MEAL, allergies)
                     .where(Users.USERS.USERID.eq(userId))
                     .execute();
             return true;

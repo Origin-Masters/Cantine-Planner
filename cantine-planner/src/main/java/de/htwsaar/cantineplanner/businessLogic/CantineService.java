@@ -52,7 +52,20 @@ public class CantineService {
     }
 
     public void setAllergeneSettings(int userId, String allergene) throws SQLException, UserDoesntExistException {
-        dbConnection.setAllergeneSettings(userId, allergene);
+        allergene = allergene.replaceAll("^\\[|\\]$", "");
+        String[] allergeneArray = allergene.split(",");
+        StringBuilder abbrAllergene = new StringBuilder();
+        for (String allergen : allergeneArray) {
+            String trimmedAllergen = allergen.trim();
+            String abbr = AllergenMapper.getAllergenCode(trimmedAllergen);
+            if (abbr != null) {
+                if (abbrAllergene.length() > 0) {
+                    abbrAllergene.append(",");
+                }
+                abbrAllergene.append(abbr); // Append the abbreviation
+            }
+        }
+        dbConnection.setAllergeneSettings(userId, abbrAllergene.toString());
     }
 
     public void deleteMeal(int mealId) throws SQLException, MealiDNotFoundException {

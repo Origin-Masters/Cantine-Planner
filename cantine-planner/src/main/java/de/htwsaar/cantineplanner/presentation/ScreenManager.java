@@ -273,9 +273,22 @@ public class ScreenManager {
     }
 
     public void showAllergeneSettings() {
-        List<String> allergene = Arrays.asList("Gluten-containing cereals", "Crustaceans", "Eggs", "Fish", "Peanuts",
-                "Soy", "Milk", "Nuts", "Celery", "Mustard", "Sesame seeds", "Sulfur dioxide and sulfites", "Lupins",
-                "Molluscs");
+        List<String> allergene = Arrays.asList(
+                "Gluten-containing cereals",
+                "Crustaceans",
+                "Eggs",
+                "Fish",
+                "Peanuts",
+                "Soy",
+                "Milk",
+                "Nuts",
+                "Celery",
+                "Mustard",
+                "Sesame seeds",
+                "Sulfur dioxide and sulfites",
+                "Lupins",
+                "Molluscs"
+        );
 
         // CheckboxBuilder erstellen
         CheckboxScreenBuilder builder = new CheckboxScreenBuilder(gui, eventManager, "Select Allergens");
