@@ -255,7 +255,6 @@ public class Controller {
                 screenManager.showSuccessScreen("User validated!");
                 screenManager.showEditNewUserDataScreen();
             }
-
         } catch (UserNotValidatedException e) {
             screenManager.showErrorScreen(e.getMessage());
         } catch (SQLException e) {

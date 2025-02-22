@@ -38,15 +38,17 @@ public class DBConnection {
     private DSLContext getDSLContext(Connection connection) {
         return DSL.using(connection, SQLDialect.SQLITE);
     }
+
     /**
      * Method setAllergyForUser sets allergies for a user by userId
-     * @param userId of type int
+     *
+     * @param userId    of type int
      * @param allergies of type String
      * @return boolean true if the allergies are set, false otherwise
      * @throws SQLException if an SQL exception occurs
      */
     public boolean setAllergeneSettings(int userId, String allergies) throws SQLException {
-      //  String cleanAllergies = allergies.replace("[", "").replace("]", "");
+        //  String cleanAllergies = allergies.replace("[", "").replace("]", "");
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
             dsl.update(Users.USERS)
@@ -56,8 +58,10 @@ public class DBConnection {
             return true;
         }
     }
+
     /**
      * Method validateUser validates a user by username and password
+     *
      * @param username          of type String
      * @param plainTextPassword of type String
      * @throws UserNotValidatedException if the user is not validated
@@ -74,9 +78,11 @@ public class DBConnection {
             return true;
         }
     }
+
     /**
      * Method validateUser validates a user by username and password
-     * @param userID          of type Int
+     *
+     * @param userID            of type Int
      * @param plainTextPassword of type String
      * @throws UserNotValidatedException if the user is not validated
      */
@@ -111,6 +117,26 @@ public class DBConnection {
 
             return dsl.select(Users.USERS.USERID).from(Users.USERS).where(Users.USERS.USERNAME.eq(username)).fetchOne(
                     Users.USERS.USERID);
+        }
+    }
+
+    /**
+     * Retrieves a user record by user ID from the database.
+     *
+     * @param userId the ID of the user to retrieve
+     * @return the UsersRecord of the user with the given ID
+     * @throws SQLException             if a database access error occurs
+     * @throws UserDoesntExistException if the user with the given ID doesn't exist
+     */
+    public UsersRecord getUserById(int userId) throws SQLException, UserDoesntExistException {
+        try (Connection connection = dataSource.getConnection()) {
+            DSLContext dsl = getDSLContext(connection);
+
+            if (!dsl.fetchExists(dsl.selectFrom(Users.USERS).where(Users.USERS.USERID.eq(userId)))) {
+                throw new UserDoesntExistException("The user with the given UserId doesn't exist!");
+            }
+
+            return dsl.selectFrom(Users.USERS).where(Users.USERS.USERID.eq(userId)).fetchOne();
         }
     }
 

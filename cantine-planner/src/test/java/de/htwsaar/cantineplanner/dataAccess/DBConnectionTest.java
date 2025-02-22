@@ -7,6 +7,7 @@ import de.htwsaar.cantineplanner.codegen.tables.records.MealsRecord;
 import de.htwsaar.cantineplanner.codegen.tables.records.ReviewRecord;
 import de.htwsaar.cantineplanner.codegen.tables.records.UsersRecord;
 import de.htwsaar.cantineplanner.exceptions.*;
+import de.htwsaar.cantineplanner.security.PasswordUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -115,6 +116,7 @@ public class DBConnectionTest {
         meal3.setCalories(600);
         meal3.setAllergy("None");
         meal3.setMeat(1);
+        meal3.setDay("Mon");
 
         MealsRecord meal4 = new MealsRecord();
         meal4.setName("Test Meal 4");
@@ -122,6 +124,7 @@ public class DBConnectionTest {
         meal4.setCalories(700);
         meal4.setAllergy("N");
         meal4.setMeat(0);
+        meal4.setDay("Tue");
 
         assertDoesNotThrow(() -> dbConnection.addMeal(meal3));
         assertDoesNotThrow(() -> dbConnection.addMeal(meal4));
@@ -147,7 +150,7 @@ public class DBConnectionTest {
             assertNotNull(meals);
         });
     }
-    
+
     @Test
     public void testSearchMealById() throws SQLException {
         int mealId = 1;
@@ -249,7 +252,7 @@ public class DBConnectionTest {
     }
 
     @Test
-    void deleteUserById() {
+    void testDeleteUserById() {
         // Add a user first
         assertDoesNotThrow(() -> {
             UsersRecord user1 = dbConnection.registerUser("testUserToDelete1", "testPassword1",
@@ -269,7 +272,7 @@ public class DBConnectionTest {
     }
 
     @Test
-    void deleteUserByName() {
+    void testDeleteUserByName() {
         // Add a user first
         assertDoesNotThrow(() -> {
             UsersRecord user1 = dbConnection.registerUser("testUserToDeleteByName1", "testPassword1",
@@ -287,24 +290,68 @@ public class DBConnectionTest {
     }
 
     @Test
-    void getWeeklyPlan() {
+    void testGetWeeklyPlan() throws SQLException {
+        MealsRecord meal1 = new MealsRecord();
+        meal1.setName("Test Meal for Weekly Plan 1");
+        meal1.setPrice(15.0F);
+        meal1.setCalories(600);
+        meal1.setAllergy("None");
+        meal1.setMeat(1);
+        meal1.setDay("Mon");
+
+        assertDoesNotThrow(() -> dbConnection.addMeal(meal1));
+
+        assertDoesNotThrow(() -> {
+            List<MealsRecord> weeklyPlan = dbConnection.getWeeklyPlan();
+            assertNotNull(weeklyPlan);
+            assertFalse(weeklyPlan.isEmpty(), "Weekly plan should not be empty");
+
+            // Check if each meal has a name and a day
+            for (MealsRecord meal : weeklyPlan) {
+                assertNotNull(meal.getName(), "Meal name should not be null");
+                assertNotNull(meal.getDay(), "Meal day should not be null");
+            }
+        });
+
+        int mealId = dbConnection.searchMealByName("Test Meal for Weekly Plan 1").get(0).getMealId();
+        assertDoesNotThrow(() -> dbConnection.deleteMealById(mealId));
     }
 
     @Test
-    void editWeeklyPlan() {
+    void testEditWeeklyPlan() {
+        String mealName = "Test Meal 1";
+        String day = "Mon";
+        assertDoesNotThrow(() -> dbConnection.editWeeklyPlan(mealName, day));
     }
 
     @Test
-    void resetWeeklyPlan() {
+    void testResetWeeklyPlan() {
+        assertDoesNotThrow(() -> dbConnection.resetWeeklyPlan());
     }
 
     @Test
-    void editUserData() {
+    void testEditUserData() {
+        int userId = 8;
+        String newPassword = "newPassword";
+        String newEmail = "newEmail@example.com";
+
+        assertDoesNotThrow(() -> {
+            dbConnection.editUserData(userId, newPassword, newEmail);
+            UsersRecord user = dbConnection.getUserById(userId);
+            assertTrue(PasswordUtil.verifyPassword(newPassword, user.getPassword()), "Password does not match!");
+            assertEquals(newEmail, user.getEmail());
+        });
     }
 
+
     @Test
-    void isValidEmail() {
+    void testIsValidEmail() {
+        assertTrue(dbConnection.isValidEmail("valid.email@example.com"));
+        assertFalse(dbConnection.isValidEmail("invalid-email"));
+        assertFalse(dbConnection.isValidEmail("invalid@.com"));
+        assertFalse(dbConnection.isValidEmail("invalid@com"));
     }
+
 
 }
 
