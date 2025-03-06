@@ -47,7 +47,7 @@ public class ScreenManager {
                 new MenuBuilder.MenuButton("Delete Meal", "showDeleteMeal"),
                 new MenuBuilder.MenuButton("Search Meal by Name", "showSearchMealByName"),
                 new MenuBuilder.MenuButton("Search Meal by ID", "showMealDetailsById"),
-                new MenuBuilder.MenuButton("Main Menu", "showMainMenu"), new MenuBuilder.MenuButton("Exit", "exit"));
+                new MenuBuilder.MenuButton("Main Menu", "showMainMenu"));
 
         MenuBuilder mealMenu = new MenuBuilder(gui, eventManager).setTitle("Meal Menu").setButtons(mealMenuButtons);
         mealMenu.display();
@@ -58,9 +58,8 @@ public class ScreenManager {
                 new MenuBuilder.MenuButton("Edit My Data", "showEditUserData"),
                 new MenuBuilder.MenuButton("Set My Allergy", "showAllergenSettings"),
                 new MenuBuilder.MenuButton("My Reviews", "showReviewsByUser"),
-                new MenuBuilder.MenuButton("Logout", "logout"),
                 new MenuBuilder.MenuButton("Admin Menu", "showAdminMenu"),
-                new MenuBuilder.MenuButton("Main Menu", "showMainMenu"), new MenuBuilder.MenuButton("Exit", "exit"));
+                new MenuBuilder.MenuButton("Main Menu", "showMainMenu"));
 
         MenuBuilder userMenu = new MenuBuilder(gui, eventManager).setTitle("User Menu").setButtons(userMenuButtons);
         userMenu.display();
@@ -108,6 +107,7 @@ public class ScreenManager {
                 new MenuBuilder.MenuButton("Meal Menu", "showMealMenu"),
                 new MenuBuilder.MenuButton("Review Menu", "showReviewMenu"),
                 new MenuBuilder.MenuButton("Weekly Menu", "showWeeklyMenu"),
+                new MenuBuilder.MenuButton("Logout", "logout"),
                 new MenuBuilder.MenuButton("Exit", "exit"));
         MenuBuilder mainMenu = new MenuBuilder(gui, eventManager).setTitle("Main Menu").setButtons(mainMenuButtons);
         mainMenu.display();
@@ -118,8 +118,7 @@ public class ScreenManager {
         List<MenuBuilder.MenuButton> weeklyMenuButtons = Arrays.asList(
                 new MenuBuilder.MenuButton("Weekly Plan", "showWeeklyPlan"),
                 new MenuBuilder.MenuButton("Edit Weekly Plan", "editWeeklyPlan"),
-                new MenuBuilder.MenuButton("Main Menu", "showMainMenu"),
-                new MenuBuilder.MenuButton("Programm beenden", "exit"));
+                new MenuBuilder.MenuButton("Main Menu", "showMainMenu"));
         MenuBuilder weeklyMenu = new MenuBuilder(gui, eventManager).setTitle("Weekly Menu").setButtons(
                 weeklyMenuButtons);
         weeklyMenu.display();
@@ -132,7 +131,7 @@ public class ScreenManager {
                 new MenuBuilder.MenuButton("Delete Allergy", "deleteAllergy"),
                 new MenuBuilder.MenuButton("Search Allergy by Meal Name", "searchAllergyByName"),
                 new MenuBuilder.MenuButton("Search Allergy by Meal ID", "showAllergyDetailsById"),
-                new MenuBuilder.MenuButton("Main Menu", "showMainMenu"), new MenuBuilder.MenuButton("Exit", "exit"));
+                new MenuBuilder.MenuButton("Main Menu", "showMainMenu"));
 
         MenuBuilder allergiesMenu = new MenuBuilder(gui, eventManager).setTitle("Allergies Menu").setButtons(
                 allergiesMenuButtons);
@@ -145,7 +144,7 @@ public class ScreenManager {
                 new MenuBuilder.MenuButton("Add Reviews", "showAddReview"),
                 new MenuBuilder.MenuButton("Delete Review", "showDeleteReview"),
                 new MenuBuilder.MenuButton("Search Reviews", "showSearchReviewsByMealName"),
-                new MenuBuilder.MenuButton("Main Menu", "showMainMenu"), new MenuBuilder.MenuButton("Exit", "exit"));
+                new MenuBuilder.MenuButton("Main Menu", "showMainMenu"));
 
         MenuBuilder reviewsMenu = new MenuBuilder(gui, eventManager).setTitle("Reviews Menu").setButtons(
                 reviewsMenuButtons);
@@ -311,7 +310,7 @@ public class ScreenManager {
                 new MenuBuilder.MenuButton("View Reviews", "showReviewManagement"),
                 new MenuBuilder.MenuButton("Delete Review", "showDeleteReview"),
                 new MenuBuilder.MenuButton("View Popular Meals", "showPopularMeals"),
-                new MenuBuilder.MenuButton("Main Menu", "showMainMenu"), new MenuBuilder.MenuButton("Exit", "exit"));
+                new MenuBuilder.MenuButton("Main Menu", "showMainMenu"));
 
         MenuBuilder adminMenu = new MenuBuilder(gui, eventManager).setTitle("Admin Menu").setButtons(adminMenuButtons);
         adminMenu.display();
@@ -326,7 +325,7 @@ public class ScreenManager {
                 new MenuBuilder.MenuButton("Thursday", "editWeeklyPlanThursday"),
                 new MenuBuilder.MenuButton("Friday", "editWeeklyPlanFriday"),
                 new MenuBuilder.MenuButton("Reset Weekly Plan", "resetWeeklyPlan"),
-                new MenuBuilder.MenuButton("Main Menu", "showMainMenu"), new MenuBuilder.MenuButton("Exit", "exit"));
+                new MenuBuilder.MenuButton("Main Menu", "showMainMenu"));
 
         MenuBuilder weeklyPlan = new MenuBuilder(gui, eventManager).setTitle("Edit Weekly Plan").setButtons(
                 weeklyPlanButtons);
