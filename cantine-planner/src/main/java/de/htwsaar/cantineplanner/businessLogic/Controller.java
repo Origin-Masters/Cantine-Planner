@@ -153,8 +153,12 @@ public class Controller {
         screenManager.showMainMenuScreen();
     }
 
-    public void mealMenu() {
-        screenManager.showMealMenuScreen();
+    public void mealMenu()  {
+        try{
+            screenManager.showMealMenuScreen(cantineService.isAdmin(currentUserId));
+        } catch (SQLException | UserDoesntExistException e) {
+            screenManager.showErrorScreen("There was an error while validating the user try again!");
+        }
     }
 
     public void reviewMenu() {
@@ -162,7 +166,11 @@ public class Controller {
     }
 
     public void userMenu() {
-        screenManager.showUserMenuScreen();
+        try{
+            screenManager.showUserMenuScreen(cantineService.isAdmin(currentUserId));
+        } catch (SQLException | UserDoesntExistException e) {
+            screenManager.showErrorScreen("There was an error while validating the user try again!");
+        }
     }
 
     public void weeklyMenu() {

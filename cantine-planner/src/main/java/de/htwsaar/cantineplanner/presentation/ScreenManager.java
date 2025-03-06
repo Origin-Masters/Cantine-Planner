@@ -39,27 +39,40 @@ public class ScreenManager {
         loginScreen.display();
     }
 
-    public void showMealMenuScreen() {
-        List<MenuBuilder.MenuButton> mealMenuButtons = Arrays.asList(
-                new MenuBuilder.MenuButton("All Meal", "showAllMeals"),
-                new MenuBuilder.MenuButton("Add Meal", "showAddMeal"),
-                new MenuBuilder.MenuButton("Allergies in Meals", "showAllAllergies"),
-                new MenuBuilder.MenuButton("Delete Meal", "showDeleteMeal"),
-                new MenuBuilder.MenuButton("Search Meal by Name", "showSearchMealByName"),
-                new MenuBuilder.MenuButton("Search Meal by ID", "showMealDetailsById"),
-                new MenuBuilder.MenuButton("Main Menu", "showMainMenu"));
+    public void showMealMenuScreen(boolean isAdmin) {
+        List<MenuBuilder.MenuButton> mealMenuButtons = new ArrayList<>(
+                Arrays.asList(new MenuBuilder.MenuButton("All Meal", "showAllMeals"),
+                        new MenuBuilder.MenuButton("Allergies in Meals", "showAllAllergies"),
+                        new MenuBuilder.MenuButton("Search Meal by Name", "showSearchMealByName"),
+                        new MenuBuilder.MenuButton("Search Meal by ID", "showMealDetailsById")));
+
+        if (isAdmin) {
+            mealMenuButtons.add(new MenuBuilder.MenuButton("Add Meal", "addMeal"));
+            mealMenuButtons.add(new MenuBuilder.MenuButton("Edit Meal", "showEditMeal"));
+            mealMenuButtons.add(new MenuBuilder.MenuButton("Delete Meal", "deleteMeal"));
+        }
+
+        mealMenuButtons.add(new MenuBuilder.MenuButton("Main Menu", "showMainMenu"));
 
         MenuBuilder mealMenu = new MenuBuilder(gui, eventManager).setTitle("Meal Menu").setButtons(mealMenuButtons);
         mealMenu.display();
     }
 
-    public void showUserMenuScreen() {
-        List<MenuBuilder.MenuButton> userMenuButtons = Arrays.asList(
-                new MenuBuilder.MenuButton("Edit My Data", "showEditUserData"),
-                new MenuBuilder.MenuButton("Set My Allergy", "showAllergenSettings"),
-                new MenuBuilder.MenuButton("My Reviews", "showReviewsByUser"),
-                new MenuBuilder.MenuButton("Admin Menu", "showAdminMenu"),
-                new MenuBuilder.MenuButton("Main Menu", "showMainMenu"));
+    public void showUserMenuScreen(boolean isAdmin) {
+        List<MenuBuilder.MenuButton> userMenuButtons = new ArrayList<>(
+                Arrays.asList(new MenuBuilder.MenuButton("All Users", "showAllUsers"),
+                        new MenuBuilder.MenuButton("Edit My Data", "showEditUserData"),
+                        new MenuBuilder.MenuButton("Set My Allergy", "showAllergenSettings"),
+                        new MenuBuilder.MenuButton("My Reviews", "showReviewsByUser")));
+
+        if (isAdmin) {
+            userMenuButtons.add(new MenuBuilder.MenuButton("View Users", "showUserManagement"));
+            userMenuButtons.add(new MenuBuilder.MenuButton("Add User", "showAddUser"));
+            userMenuButtons.add(new MenuBuilder.MenuButton("Delete User", "showDeleteUser"));
+            userMenuButtons.add(new MenuBuilder.MenuButton("Update User Roles", "showUpdateUserRole"));
+        }
+
+        userMenuButtons.add(new MenuBuilder.MenuButton("Main Menu", "showMainMenu"));
 
         MenuBuilder userMenu = new MenuBuilder(gui, eventManager).setTitle("User Menu").setButtons(userMenuButtons);
         userMenu.display();
@@ -107,8 +120,7 @@ public class ScreenManager {
                 new MenuBuilder.MenuButton("Meal Menu", "showMealMenu"),
                 new MenuBuilder.MenuButton("Review Menu", "showReviewMenu"),
                 new MenuBuilder.MenuButton("Weekly Menu", "showWeeklyMenu"),
-                new MenuBuilder.MenuButton("Logout", "logout"),
-                new MenuBuilder.MenuButton("Exit", "exit"));
+                new MenuBuilder.MenuButton("Logout", "logout"), new MenuBuilder.MenuButton("Exit", "exit"));
         MenuBuilder mainMenu = new MenuBuilder(gui, eventManager).setTitle("Main Menu").setButtons(mainMenuButtons);
         mainMenu.display();
     }
@@ -272,22 +284,9 @@ public class ScreenManager {
     }
 
     public void showAllergeneSettings() {
-        List<String> allergene = Arrays.asList(
-                "Gluten-containing cereals",
-                "Crustaceans",
-                "Eggs",
-                "Fish",
-                "Peanuts",
-                "Soy",
-                "Milk",
-                "Nuts",
-                "Celery",
-                "Mustard",
-                "Sesame seeds",
-                "Sulfur dioxide and sulfites",
-                "Lupins",
-                "Molluscs"
-        );
+        List<String> allergene = Arrays.asList("Gluten-containing cereals", "Crustaceans", "Eggs", "Fish", "Peanuts",
+                "Soy", "Milk", "Nuts", "Celery", "Mustard", "Sesame seeds", "Sulfur dioxide and sulfites", "Lupins",
+                "Molluscs");
 
         // CheckboxBuilder erstellen
         CheckboxScreenBuilder builder = new CheckboxScreenBuilder(gui, eventManager, "Select Allergens");
