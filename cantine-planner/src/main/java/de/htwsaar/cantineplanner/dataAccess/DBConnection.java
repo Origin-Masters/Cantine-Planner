@@ -10,6 +10,8 @@ import de.htwsaar.cantineplanner.exceptions.*;
 import de.htwsaar.cantineplanner.security.PasswordUtil;
 import org.jooq.DSLContext;
 import org.jooq.SQLDialect;
+import org.jooq.UpdateSetFirstStep;
+import org.jooq.UpdateSetMoreStep;
 import org.jooq.impl.DSL;
 
 import java.sql.Connection;
@@ -121,6 +123,16 @@ public class DBConnection {
     }
 
     /**
+     * Method getAllUsers retrieves all users from the database
+     * @return List of UsersRecord
+     */
+    public List<UsersRecord> getAllUser() throws SQLException {
+        try (Connection connection = dataSource.getConnection()) {
+            DSLContext dsl = getDSLContext(connection);
+            return dsl.selectFrom(Users.USERS).fetchInto(UsersRecord.class);
+        }
+    }
+    /**
      * Retrieves a user record by user ID from the database.
      *
      * @param userId the ID of the user to retrieve
@@ -140,6 +152,68 @@ public class DBConnection {
         }
     }
 
+    /**
+     * Method updateUserRole updates the role of a user by userId
+     * @param userId
+     * @param role
+     * @throws SQLException
+     * @throws UserDoesntExistException
+     */
+    public void updateUserRole(int userId, int role) throws SQLException, UserDoesntExistException {
+        try (Connection connection = dataSource.getConnection()) {
+            DSLContext dsl = getDSLContext(connection);
+
+            if (!dsl.fetchExists(dsl.selectFrom(Users.USERS).where(Users.USERS.USERID.eq(userId)))) {
+                throw new UserDoesntExistException("The user with the given UserId doesn't exist!");
+            }
+
+            dsl.update(Users.USERS).set(Users.USERS.ROLE, role).where(Users.USERS.USERID.eq(userId)).execute();
+        }
+    }
+
+    public void editMeal(MealsRecord meal) throws SQLException, MealDoesntExistException {
+        try (Connection connection = dataSource.getConnection()) {
+            DSLContext dsl = getDSLContext(connection);
+
+            if (!dsl.fetchExists(dsl.selectFrom(Meals.MEALS).where(Meals.MEALS.MEAL_ID.eq(meal.getMealId())))) {
+                throw new MealDoesntExistException("The meal with the given ID doesn't exist!");
+            }
+
+            UpdateSetFirstStep<MealsRecord> updateQuery = dsl.update(Meals.MEALS);
+            UpdateSetMoreStep<MealsRecord> setSteps = null;
+
+            if (meal.getName() != null) {
+                setSteps = (setSteps == null)
+                        ? updateQuery.set(Meals.MEALS.NAME, meal.getName())
+                        : setSteps.set(Meals.MEALS.NAME, meal.getName());
+            }
+            if (meal.getPrice() != null) {
+                setSteps = (setSteps == null)
+                        ? updateQuery.set(Meals.MEALS.PRICE, meal.getPrice())
+                        : setSteps.set(Meals.MEALS.PRICE, meal.getPrice());
+            }
+            if (meal.getCalories() != null) {
+                setSteps = (setSteps == null)
+                        ? updateQuery.set(Meals.MEALS.CALORIES, meal.getCalories())
+                        : setSteps.set(Meals.MEALS.CALORIES, meal.getCalories());
+            }
+            if (meal.getAllergy() != null) {
+                setSteps = (setSteps == null)
+                        ? updateQuery.set(Meals.MEALS.ALLERGY, meal.getAllergy())
+                        : setSteps.set(Meals.MEALS.ALLERGY, meal.getAllergy());
+            }
+            if (meal.getMeat() != null) {
+                setSteps = (setSteps == null)
+                        ? updateQuery.set(Meals.MEALS.MEAT, meal.getMeat())
+                        : setSteps.set(Meals.MEALS.MEAT, meal.getMeat());
+            }
+
+            if (setSteps != null) {
+                setSteps.where(Meals.MEALS.MEAL_ID.eq(meal.getMealId()))
+                        .execute();
+            }
+        }
+    }
     /**
      * Method isAdmin checks if a user is an admin or not
      *

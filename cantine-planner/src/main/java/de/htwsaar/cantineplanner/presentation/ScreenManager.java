@@ -9,6 +9,7 @@ import de.htwsaar.cantineplanner.businessLogic.EventManager;
 import de.htwsaar.cantineplanner.businessLogic.MealTypeMapper;
 import de.htwsaar.cantineplanner.codegen.tables.records.MealsRecord;
 import de.htwsaar.cantineplanner.codegen.tables.records.ReviewRecord;
+import de.htwsaar.cantineplanner.codegen.tables.records.UsersRecord;
 import de.htwsaar.cantineplanner.presentation.pages.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,9 +48,9 @@ public class ScreenManager {
                         new MenuBuilder.MenuButton("Search Meal by ID", "showMealDetailsById")));
 
         if (isAdmin) {
-            mealMenuButtons.add(new MenuBuilder.MenuButton("Add Meal", "addMeal"));
+            mealMenuButtons.add(new MenuBuilder.MenuButton("Add Meal", "showAddMeal"));
             mealMenuButtons.add(new MenuBuilder.MenuButton("Edit Meal", "showEditMeal"));
-            mealMenuButtons.add(new MenuBuilder.MenuButton("Delete Meal", "deleteMeal"));
+            mealMenuButtons.add(new MenuBuilder.MenuButton("Delete Meal", "showDeleteMeal"));
         }
 
         mealMenuButtons.add(new MenuBuilder.MenuButton("Main Menu", "showMainMenu"));
@@ -60,14 +61,14 @@ public class ScreenManager {
 
     public void showUserMenuScreen(boolean isAdmin) {
         List<MenuBuilder.MenuButton> userMenuButtons = new ArrayList<>(
-                Arrays.asList(new MenuBuilder.MenuButton("All Users", "showAllUsers"),
+                Arrays.asList(
                         new MenuBuilder.MenuButton("Edit My Data", "showEditUserData"),
                         new MenuBuilder.MenuButton("Set My Allergy", "showAllergenSettings"),
                         new MenuBuilder.MenuButton("My Reviews", "showReviewsByUser")));
 
         if (isAdmin) {
-            userMenuButtons.add(new MenuBuilder.MenuButton("View Users", "showUserManagement"));
-            userMenuButtons.add(new MenuBuilder.MenuButton("Add User", "showAddUser"));
+            userMenuButtons.add(new MenuBuilder.MenuButton("All Users", "showAllUsers"));
+            userMenuButtons.add(new MenuBuilder.MenuButton("Add User", "showRegisterScreen"));
             userMenuButtons.add(new MenuBuilder.MenuButton("Delete User", "showDeleteUser"));
             userMenuButtons.add(new MenuBuilder.MenuButton("Update User Roles", "showUpdateUserRole"));
         }
@@ -77,7 +78,16 @@ public class ScreenManager {
         MenuBuilder userMenu = new MenuBuilder(gui, eventManager).setTitle("User Menu").setButtons(userMenuButtons);
         userMenu.display();
     }
-
+    public void showEditMealScreen(){
+        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Edit Meal by Meal ID");
+        List<String> labels = List.of("ID", "Name", "Price", "Calories", "Allergy", "Meat");
+        inputScreenBuilder.display(labels, "editMeal");
+    }
+    public void showUpdateUserRoleScreen(){
+        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Update User Role");
+        List<String> labels = List.of("User ID", "Role");
+        inputScreenBuilder.display(labels, "updateUserRole");
+    }
     public void showEditUserDataScreen() {
         InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Edit User Data");
         List<String> labels = Arrays.asList("Current Password");
@@ -136,19 +146,6 @@ public class ScreenManager {
         weeklyMenu.display();
     }
 
-    public void showAllergiesMenu() {
-        List<MenuBuilder.MenuButton> allergiesMenuButtons = Arrays.asList(
-                new MenuBuilder.MenuButton("All Allergies", "showAllAllergies"),
-                new MenuBuilder.MenuButton("Add Allergy", "addAllergy"),
-                new MenuBuilder.MenuButton("Delete Allergy", "deleteAllergy"),
-                new MenuBuilder.MenuButton("Search Allergy by Meal Name", "searchAllergyByName"),
-                new MenuBuilder.MenuButton("Search Allergy by Meal ID", "showAllergyDetailsById"),
-                new MenuBuilder.MenuButton("Main Menu", "showMainMenu"));
-
-        MenuBuilder allergiesMenu = new MenuBuilder(gui, eventManager).setTitle("Allergies Menu").setButtons(
-                allergiesMenuButtons);
-        allergiesMenu.display();
-    }
 
     public void showReviewsMenu() {
         List<MenuBuilder.MenuButton> reviewsMenuButtons = Arrays.asList(
@@ -295,7 +292,11 @@ public class ScreenManager {
         // Menü anzeigen
         builder.display(allergene, "allergeneSettings");
     }
-
+    public void showDeleteUserScreen(){
+        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Delete User by User ID");
+        List<String> labels = List.of("ID");
+        inputScreenBuilder.display(labels, "deleteUser");
+    }
     public void showAdminMenuScreen() {
         List<MenuBuilder.MenuButton> adminMenuButtons = Arrays.asList(
                 new MenuBuilder.MenuButton("View Users", "showUserManagement"),
@@ -332,6 +333,24 @@ public class ScreenManager {
     }
 
 
+    public void showAllUser(List<UsersRecord> users) {
+        TableBuilder tableBuilder = new TableBuilder(gui, "All Users")
+                .addColumn("ID")
+                .addColumn("Username")
+                .addColumn("Email")
+                .addColumn("Role");
+
+        for (UsersRecord user : users) {
+            tableBuilder.addRow(Arrays.asList(
+                    String.valueOf(user.getUserid()),
+                    user.getUsername(),
+                    user.getEmail(),
+                    String.valueOf(user.getRole())
+            ));
+        }
+
+        tableBuilder.display();
+    }
     public void showEditWeeklyPlanMonday() {
         InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Edit Monday");
         List<String> labels = List.of("Meal Name");

@@ -2,6 +2,7 @@ package de.htwsaar.cantineplanner.businessLogic;
 
 import de.htwsaar.cantineplanner.codegen.tables.records.MealsRecord;
 import de.htwsaar.cantineplanner.codegen.tables.records.ReviewRecord;
+import de.htwsaar.cantineplanner.codegen.tables.records.UsersRecord;
 import de.htwsaar.cantineplanner.dbUtils.DataBaseUtil;
 import de.htwsaar.cantineplanner.exceptions.*;
 import de.htwsaar.cantineplanner.presentation.ScreenManager;
@@ -69,6 +70,8 @@ public class Controller {
         eventManager.subscribe("mealDetailsById", this::handleShowMealById);
         eventManager.subscribe("showSearchMealByName", (data) -> screenManager.showSearchMealByName());
         eventManager.subscribe("searchMealByName", this::handleShowMealByName);
+        eventManager.subscribe("showEditMeal", (data) -> screenManager.showEditMealScreen());
+        eventManager.subscribe("editMeal", this::handleEditMeal);
 
         // Review-bezogene Events
         eventManager.subscribe("showAddReview", (data) -> screenManager.showAddReviewScreen());
@@ -88,6 +91,11 @@ public class Controller {
         eventManager.subscribe("showAdminMenu", this::handleShowAdminMenu);
         eventManager.subscribe("showAllergenSettings", (data) -> screenManager.showAllergeneSettings());
         eventManager.subscribe("allergeneSettings", this::handleAllergeneSettings);
+        eventManager.subscribe("showAllUsers", this::handleAllUser);
+        eventManager.subscribe("showDeleteUser", (data) -> screenManager.showDeleteUserScreen());
+        eventManager.subscribe("deleteUser", this::handleDeleteUser);
+        eventManager.subscribe("showUpdateUserRole", (data) -> screenManager.showUpdateUserRoleScreen());
+        eventManager.subscribe("updateUserRole", this::handleUpdateUserRole);
         // Weekly Plan
         eventManager.subscribe("showWeeklyPlan", this::handleShowWeeklyPlan);
         eventManager.subscribe("editWeeklyPlan", this::handleShowEditWeeklyPlan);
@@ -297,6 +305,48 @@ public class Controller {
     }
 
     // Meal-Handler
+    public void handleEditMeal(Object data) {
+        try {
+            String[] mealData = (String[]) data;
+
+            // Check if at least the meal ID is provided
+            if (mealData.length < 1 || mealData[0].isEmpty()) {
+                screenManager.showErrorScreen("Meal ID is required!");
+                return;
+            }
+
+            int mealId = Integer.parseInt(mealData[0]);
+            MealsRecord meal = new MealsRecord();
+            meal.setMealId(mealId);
+
+            // If a value exists and is not empty, set it
+            if (mealData.length > 1 && !mealData[1].isEmpty()) {
+                meal.setName(mealData[1]);
+            }
+            if (mealData.length > 2 && !mealData[2].isEmpty()) {
+                meal.setPrice(Float.parseFloat(mealData[2]));
+            }
+            if (mealData.length > 3 && !mealData[3].isEmpty()) {
+                meal.setCalories(Integer.parseInt(mealData[3]));
+            }
+            if (mealData.length > 4 && !mealData[4].isEmpty()) {
+                meal.setAllergy(mealData[4]);
+            }
+            if (mealData.length > 5 && !mealData[5].isEmpty()) {
+                meal.setMeat(Integer.parseInt(mealData[5]));
+            }
+
+            cantineService.editMeal(meal);
+            screenManager.closeActiveWindow();
+            screenManager.showSuccessScreen("Meal updated successfully!");
+        } catch (NumberFormatException e) {
+            screenManager.showErrorScreen("Invalid input format!");
+        } catch (MealDoesntExistException e){
+            screenManager.showErrorScreen(e.getMessage());
+        } catch (SQLException e) {
+            screenManager.showErrorScreen("There was an error while updating meal please try again!");
+        }
+    }
     public void handleShowAllMeals(Object data) {
         try {
             List<MealsRecord> meals = cantineService.getAllMeals();
@@ -454,6 +504,20 @@ public class Controller {
 
 
     // User-Handler
+    private void handleUpdateUserRole(Object data) {
+        try {
+            String[] dataArray = (String[]) data;
+            int userId = Integer.parseInt(dataArray[0]);
+            int role = Integer.parseInt(dataArray[1]);
+            cantineService.updateUserRole(userId, role);
+            screenManager.closeActiveWindow();
+            screenManager.showSuccessScreen("User role updated successfully!");
+        } catch (NumberFormatException e) {
+            screenManager.showErrorScreen("Invalid user ID or role format!");
+        } catch (SQLException e) {
+            screenManager.showErrorScreen("There was an error while updating user role please try again!");
+        }
+    }
     private void handleShowReviewsByUser(Object data) {
         try {
             List<ReviewRecord> reviews = cantineService.getAllReviewsByUser(currentUserId);
@@ -485,7 +549,29 @@ public class Controller {
         }
 
     }
-
+    private void handleAllUser(Object data) {
+        try{
+            List<UsersRecord> users = cantineService.getAllUser();
+            screenManager.showAllUser(users);
+        } catch (SQLException e) {
+            screenManager.showErrorScreen("There was an error while fetching all users please try again!");
+        }
+    }
+    private void handleDeleteUser(Object data) {
+        try {
+            String[] dataArray = (String[]) data;
+            int userId = Integer.parseInt(dataArray[0]);
+            cantineService.deleteUser(userId);
+            screenManager.closeActiveWindow();
+            screenManager.showSuccessScreen("User deleted successfully!");
+        } catch (NumberFormatException e) {
+            screenManager.showErrorScreen("Invalid user ID format!");
+        } catch (UseriDDoesntExcistException e) {
+            screenManager.showErrorScreen(e.getMessage());
+        } catch (SQLException e) {
+            screenManager.showErrorScreen("There was an error while deleting user please try again!");
+        }
+    }
     // Weekly Plan
     private void handleShowWeeklyPlan(Object data) {
         try {

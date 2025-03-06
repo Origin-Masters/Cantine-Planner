@@ -30,6 +30,9 @@ public class CantineService {
         return usersRecord != null;
     }
 
+    public void editMeal(MealsRecord meal) throws SQLException, MealDoesntExistException {
+        dbConnection.editMeal(meal);
+    }
     public int getUserId(String username) throws SQLException, UserDoesntExistException {
         return dbConnection.getUserId(username);
     }
@@ -96,6 +99,9 @@ public class CantineService {
     public List<ReviewRecord> getAllReviewsByUser(int currentUserId) throws SQLException {
         return dbConnection.getAllReviewsByUser(currentUserId);
     }
+    public void updateUserRole(int userId, int role) throws SQLException, UserNotValidatedException {
+        dbConnection.updateUserRole(userId, role);
+    }
 
     public boolean isAdmin(int currentUserId) throws SQLException, UseriDDoesntExcistException {
         return dbConnection.isAdmin(currentUserId);
@@ -116,5 +122,10 @@ public class CantineService {
     public void editUserData(int currentUserId, String newPassword, String newEmail) throws SQLException, InvalidEmailTypeException {
         dbConnection.editUserData(currentUserId, newPassword, newEmail);
     }
-    // Add other methods as needed
+    public List<UsersRecord> getAllUser() throws SQLException {
+        return dbConnection.getAllUser();
+    }
+    public void deleteUser(int userId) throws SQLException, UserDoesntExistException {
+        dbConnection.deleteUserById(userId);
+    }
 }
