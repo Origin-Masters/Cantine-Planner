@@ -13,6 +13,14 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Controller class for managing the business logic and UI event handling
+ * in the Cantine Planner application.
+ * <p>
+ * This class acts as the central controller, handling events, switching menus,
+ * and delegating actions to the appropriate services.
+ * </p>
+ */
 public class Controller {
 
     // Abhängigkeiten und Statusvariablen
@@ -25,7 +33,13 @@ public class Controller {
 
     String PATH_TO_PROPERTIES = "hikari.properties";
 
-
+    /**
+     * Constructs a new Controller instance.
+     * <p>
+     * Initializes the event manager, screen manager, and cantine service.
+     * Also subscribes to various UI and business logic events.
+     * </p>
+     */
     public Controller() {
         this.eventManager = new EventManager();
         this.screenManager = new ScreenManager(eventManager);
@@ -36,7 +50,11 @@ public class Controller {
     }
 
     /**
-     * Registriert alle Events – gruppiert nach Themenbereichen.
+     * Subscribes to all relevant application events.
+     * <p>
+     * Groups subscriptions by themes such as navigation, user authentication,
+     * meal-related, review-related, user-related, and weekly plan events.
+     * </p>
      */
     private void subscribeToEvents() {
         // Navigation und allgemeine Nachrichten
@@ -110,12 +128,14 @@ public class Controller {
         eventManager.subscribe("editWeeklyPlanThursdaySubmit", this::handleEditWeeklyPlanThursday);
         eventManager.subscribe("editWeeklyPlanFriday", (data) -> screenManager.showEditWeeklyPlanFriday());
         eventManager.subscribe("editWeeklyPlanFridaySubmit", this::handleEditWeeklyPlanFriday);
-
-
     }
 
-
-    // Hauptschleife
+    /**
+     * Starts the main application loop.
+     * <p>
+     * Runs the main loop, switching between different menus based on the current state.
+     * </p>
+     */
     public void start() {
         running = true;
         currentMenu = 0;
@@ -144,20 +164,36 @@ public class Controller {
         }
     }
 
-    // Menü-Navigation
+    /**
+     * Switches the current active menu.
+     *
+     * @param menu the menu identifier to switch to
+     */
     private void switchMenu(int menu) {
         screenManager.closeActiveWindow();
         currentMenu = menu;
     }
 
+    /**
+     * Displays the login screen.
+     */
     public void loginMenu() {
         screenManager.showLoginScreen();
     }
 
+    /**
+     * Displays the main menu screen.
+     */
     public void mainMenu() {
         screenManager.showMainMenuScreen();
     }
 
+    /**
+     * Displays the meal menu screen.
+     * <p>
+     * Determines if the current user has admin privileges to customize the display.
+     * </p>
+     */
     public void mealMenu()  {
         try{
             screenManager.showMealMenuScreen(cantineService.isAdmin(currentUserId));
@@ -166,10 +202,19 @@ public class Controller {
         }
     }
 
+    /**
+     * Displays the review menu screen.
+     */
     public void reviewMenu() {
         screenManager.showReviewsMenu();
     }
 
+    /**
+     * Displays the user menu screen.
+     * <p>
+     * Checks if the current user is an admin to determine appropriate view.
+     * </p>
+     */
     public void userMenu() {
         try{
             screenManager.showUserMenuScreen(cantineService.isAdmin(currentUserId));
@@ -178,17 +223,26 @@ public class Controller {
         }
     }
 
+    /**
+     * Displays the weekly menu screen.
+     * <p>
+     * Checks if the current user is an admin to determine appropriate view.
+     * </p>
+     */
     public void weeklyMenu() {
         try {
             screenManager.showWeeklyMenuScreen(cantineService.isAdmin(currentUserId));
         } catch (SQLException e) {
             screenManager.showErrorScreen("There was an error while validating the user try again!");
         }
-
     }
 
-
-    // Beenden
+    /**
+     * Exits the application.
+     * <p>
+     * Closes the terminal and stops the main application loop.
+     * </p>
+     */
     private void exitApplication() {
         screenManager.closeTerminal();
         running = false;
@@ -197,6 +251,15 @@ public class Controller {
     // --- Event-Handler ---
 
     // User-Handler
+
+    /**
+     * Handles the login event.
+     * <p>
+     * Validates the user credentials and logs the user in if valid.
+     * </p>
+     *
+     * @param data an Object array containing username and password as Strings
+     */
     public void handleLogin(Object data) {
         String[] credentials = (String[]) data;
         String username = credentials[0];
@@ -215,6 +278,14 @@ public class Controller {
         }
     }
 
+    /**
+     * Handles user registration.
+     * <p>
+     * Registers a new user with the provided credentials if all fields are filled.
+     * </p>
+     *
+     * @param data an Object array containing username, password, and email as Strings
+     */
     public void handleRegister(Object data) {
         if (data == null) {
             screenManager.showErrorScreen("Data is null");
@@ -243,11 +314,21 @@ public class Controller {
         }
     }
 
-
+    /**
+     * Displays the registration input screen.
+     *
+     * @param data not used
+     */
     private void handleShowRegisterScreen(Object data) {
         screenManager.showInputScreenReg("Register", "register");
     }
 
+    /**
+     * Checks if any provided field is empty.
+     *
+     * @param fields variable number of String fields
+     * @return true if any field is empty, false otherwise
+     */
     private boolean isAnyFieldEmpty(String... fields) {
         for (String field : fields) {
             if (Objects.equals(field, "")) {
@@ -257,6 +338,14 @@ public class Controller {
         return false;
     }
 
+    /**
+     * Handles user data editing after verifying current password.
+     * <p>
+     * Validates the current password and then displays the screen to update user data.
+     * </p>
+     *
+     * @param data an Object array containing the current password as a String
+     */
     private void handleEditUserData(Object data) {
         if (data == null) {
             screenManager.showErrorScreen("Data is null");
@@ -278,6 +367,14 @@ public class Controller {
         }
     }
 
+    /**
+     * Handles updating the user data (password and email).
+     * <p>
+     * Validates input and updates the current user's data.
+     * </p>
+     *
+     * @param data an Object array containing new password and new email as Strings
+     */
     private void handleInputNewUserData(Object data) {
         if (data == null) {
             screenManager.showErrorScreen("Data is null");
@@ -304,6 +401,15 @@ public class Controller {
     }
 
     // Meal-Handler
+
+    /**
+     * Handles editing a meal.
+     * <p>
+     * Validates input data and updates the meal information accordingly.
+     * </p>
+     *
+     * @param data an Object array containing meal details; the first element must be meal ID
+     */
     public void handleEditMeal(Object data) {
         try {
             String[] mealData = (String[]) data;
@@ -346,6 +452,15 @@ public class Controller {
             screenManager.showErrorScreen("There was an error while updating meal please try again!");
         }
     }
+
+    /**
+     * Handles the event to display all meals.
+     * <p>
+     * Retrieves a list of all meals and passes it to the screen manager for display.
+     * </p>
+     *
+     * @param data not used
+     */
     public void handleShowAllMeals(Object data) {
         try {
             List<MealsRecord> meals = cantineService.getAllMeals();
@@ -355,6 +470,14 @@ public class Controller {
         }
     }
 
+    /**
+     * Handles displaying all allergy information.
+     * <p>
+     * Retrieves a list of all allergies from meals and displays them.
+     * </p>
+     *
+     * @param data not used
+     */
     private void handleShowAllAllergies(Object data) {
         try {
             List<MealsRecord> allergies = cantineService.getAllAllergies();
@@ -364,6 +487,14 @@ public class Controller {
         }
     }
 
+    /**
+     * Handles adding a new meal.
+     * <p>
+     * Parses the meal details from input data and creates a new meal record.
+     * </p>
+     *
+     * @param data an Object array containing meal name, price, calories, allergy info, and meat flag
+     */
     public void handleAddMeal(Object data) {
         try {
             String[] mealData = (String[]) data;
@@ -391,6 +522,14 @@ public class Controller {
         }
     }
 
+    /**
+     * Handles deleting a meal.
+     * <p>
+     * Parses the meal ID from input data and deletes the corresponding meal.
+     * </p>
+     *
+     * @param data an Object array where the first element is the meal ID as a String
+     */
     private void handleDeleteMeal(Object data) {
         try {
             String[] dataArray = (String[]) data;
@@ -407,6 +546,14 @@ public class Controller {
         }
     }
 
+    /**
+     * Handles displaying meal details by meal ID.
+     * <p>
+     * Retrieves and displays meal details based on the provided meal ID.
+     * </p>
+     *
+     * @param data an Object array where the first element is the meal ID as a String
+     */
     private void handleShowMealById(Object data) {
         try {
             String[] dataArray = (String[]) data;
@@ -424,6 +571,14 @@ public class Controller {
         }
     }
 
+    /**
+     * Handles displaying meal details by meal name.
+     * <p>
+     * Retrieves and displays meal details based on the provided meal name.
+     * </p>
+     *
+     * @param data an Object array where the first element is the meal name as a String
+     */
     private void handleShowMealByName(Object data) {
         try {
             String[] dataArray = (String[]) data;
@@ -440,6 +595,15 @@ public class Controller {
     }
 
     // Review-Handler
+
+    /**
+     * Handles adding a review for a meal.
+     * <p>
+     * Parses review data, creates a new review record, and adds it.
+     * </p>
+     *
+     * @param data an Object array containing rating, comment, and meal ID as Strings
+     */
     public void handleAddReview(Object data) {
         try {
             String[] reviewData = (String[]) data;
@@ -462,6 +626,14 @@ public class Controller {
         }
     }
 
+    /**
+     * Handles deleting a review.
+     * <p>
+     * Parses the review ID from input data and deletes the corresponding review.
+     * </p>
+     *
+     * @param data an Object array where the first element is the review ID as a String
+     */
     private void handleDeleteReview(Object data) {
         try {
             String[] dataArray = (String[]) data;
@@ -478,6 +650,14 @@ public class Controller {
         }
     }
 
+    /**
+     * Handles displaying all reviews.
+     * <p>
+     * Retrieves a list of all reviews and displays them.
+     * </p>
+     *
+     * @param data not used
+     */
     private void handleShowAllReviews(Object data) {
         try {
             List<ReviewRecord> reviews = cantineService.getAllReviews();
@@ -487,7 +667,14 @@ public class Controller {
         }
     }
 
-
+    /**
+     * Handles searching reviews by meal name.
+     * <p>
+     * Retrieves reviews corresponding to the given meal name and displays them.
+     * </p>
+     *
+     * @param data an Object array where the first element is the meal name as a String
+     */
     private void handleSearchReviewsByMealName(Object data) {
         try {
             String[] dataArray = (String[]) data;
@@ -501,8 +688,16 @@ public class Controller {
         }
     }
 
-
     // User-Handler
+
+    /**
+     * Handles updating a user's role.
+     * <p>
+     * Parses user ID and role from input data and updates the user's role.
+     * </p>
+     *
+     * @param data an Object array containing user ID and role as Strings
+     */
     private void handleUpdateUserRole(Object data) {
         try {
             String[] dataArray = (String[]) data;
@@ -517,6 +712,12 @@ public class Controller {
             screenManager.showErrorScreen("There was an error while updating user role please try again!");
         }
     }
+
+    /**
+     * Handles displaying all reviews made by the current user.
+     *
+     * @param data not used
+     */
     private void handleShowReviewsByUser(Object data) {
         try {
             List<ReviewRecord> reviews = cantineService.getAllReviewsByUser(currentUserId);
@@ -527,6 +728,15 @@ public class Controller {
             screenManager.showErrorScreen("There was an error while fetching all reviews please try again!");
         }
     }
+
+    /**
+     * Handles updating allergen settings for the current user.
+     * <p>
+     * Parses the allergen settings from input data and updates them.
+     * </p>
+     *
+     * @param data an Object array containing allergen settings as Strings
+     */
     private void handleAllergeneSettings(Object data){
         try {
             cantineService.setAllergeneSettings(currentUserId, Arrays.toString((String[]) data));
@@ -536,6 +746,15 @@ public class Controller {
             screenManager.showErrorScreen("There was an error while setting the allergene settings, please try again!");
         }
     }
+
+    /**
+     * Handles showing the admin menu.
+     * <p>
+     * Verifies if the current user has admin privileges and switches to the admin menu if so.
+     * </p>
+     *
+     * @param data not used
+     */
     private void handleShowAdminMenu(Object data) {
         try {
             if (cantineService.isAdmin(currentUserId)) {
@@ -546,8 +765,16 @@ public class Controller {
         } catch (SQLException | UserDoesntExistException e) {
             screenManager.showErrorScreen("There was an error while validating the user try again!");
         }
-
     }
+
+    /**
+     * Handles displaying all users.
+     * <p>
+     * Retrieves a list of all users and displays them.
+     * </p>
+     *
+     * @param data not used
+     */
     private void handleAllUser(Object data) {
         try{
             List<UsersRecord> users = cantineService.getAllUser();
@@ -556,6 +783,15 @@ public class Controller {
             screenManager.showErrorScreen("There was an error while fetching all users please try again!");
         }
     }
+
+    /**
+     * Handles deleting a user.
+     * <p>
+     * Parses the user ID from input data and deletes the corresponding user.
+     * </p>
+     *
+     * @param data an Object array where the first element is the user ID as a String
+     */
     private void handleDeleteUser(Object data) {
         try {
             String[] dataArray = (String[]) data;
@@ -571,7 +807,17 @@ public class Controller {
             screenManager.showErrorScreen("There was an error while deleting user please try again!");
         }
     }
+
     // Weekly Plan
+
+    /**
+     * Handles displaying the weekly meal plan.
+     * <p>
+     * Retrieves the weekly plan, sorts it by day, and displays it.
+     * </p>
+     *
+     * @param data not used
+     */
     private void handleShowWeeklyPlan(Object data) {
         try {
             List<MealsRecord> weeklyPlan = cantineService.getWeeklyPlan();
@@ -598,10 +844,20 @@ public class Controller {
         }
     }
 
+    /**
+     * Handles displaying the edit weekly plan screen.
+     *
+     * @param data not used
+     */
     private void handleShowEditWeeklyPlan(Object data) {
         screenManager.showEditWeeklyPlanScreen();
     }
 
+    /**
+     * Handles resetting the weekly meal plan to its default state.
+     *
+     * @param data not used
+     */
     private void handleResetWeeklyPlan(Object data) {
         try {
             cantineService.resetWeeklyPlan();
@@ -611,6 +867,14 @@ public class Controller {
         }
     }
 
+    /**
+     * Handles editing the meal for Monday in the weekly plan.
+     * <p>
+     * Updates the meal for Monday based on the provided meal name.
+     * </p>
+     *
+     * @param data an Object array where the first element is the meal name as a String
+     */
     public void handleEditWeeklyPlanMonday(Object data) {
         String[] mealData = (String[]) data;
         String mealName = mealData[0];
@@ -623,6 +887,14 @@ public class Controller {
         }
     }
 
+    /**
+     * Handles editing the meal for Tuesday in the weekly plan.
+     * <p>
+     * Updates the meal for Tuesday based on the provided meal name.
+     * </p>
+     *
+     * @param data an Object array where the first element is the meal name as a String
+     */
     public void handleEditWeeklyPlanTuesday(Object data) {
         String[] mealData = (String[]) data;
         String mealName = mealData[0];
@@ -635,6 +907,14 @@ public class Controller {
         }
     }
 
+    /**
+     * Handles editing the meal for Wednesday in the weekly plan.
+     * <p>
+     * Updates the meal for Wednesday based on the provided meal name.
+     * </p>
+     *
+     * @param data an Object array where the first element is the meal name as a String
+     */
     public void handleEditWeeklyPlanWednesday(Object data) {
         String[] mealData = (String[]) data;
         String mealName = mealData[0];
@@ -647,6 +927,14 @@ public class Controller {
         }
     }
 
+    /**
+     * Handles editing the meal for Thursday in the weekly plan.
+     * <p>
+     * Updates the meal for Thursday based on the provided meal name.
+     * </p>
+     *
+     * @param data an Object array where the first element is the meal name as a String
+     */
     public void handleEditWeeklyPlanThursday(Object data) {
         String[] mealData = (String[]) data;
         String mealName = mealData[0];
@@ -659,6 +947,14 @@ public class Controller {
         }
     }
 
+    /**
+     * Handles editing the meal for Friday in the weekly plan.
+     * <p>
+     * Updates the meal for Friday based on the provided meal name.
+     * </p>
+     *
+     * @param data an Object array where the first element is the meal name as a String
+     */
     public void handleEditWeeklyPlanFriday(Object data) {
         String[] mealData = (String[]) data;
         String mealName = mealData[0];
