@@ -1,4 +1,3 @@
-// src/main/java/de/htwsaar/cantineplanner/presentation/Main.java
 package de.htwsaar.cantineplanner.presentation;
 
 import de.htwsaar.cantineplanner.businessLogic.Controller;
