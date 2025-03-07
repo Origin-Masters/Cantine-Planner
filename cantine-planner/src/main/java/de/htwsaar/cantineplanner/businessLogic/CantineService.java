@@ -188,6 +188,18 @@ public class CantineService {
     }
 
     /**
+     * Returns the user ID from a review ID.
+     *
+     * @param reviewId review ID
+     * @return user ID
+     * @throws SQLException                if a database error occurs
+     * @throws ReviewiDDoesntExistException if the review ID does not exist
+     */
+    public int getUserIdFromReviewId(int reviewId) throws SQLException, ReviewiDDoesntExistException {
+        return dbConnection.getUserIdFromReviewId(reviewId);
+    }
+
+    /**
      * Adds a new review.
      *
      * @param review the review record to add

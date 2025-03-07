@@ -564,7 +564,7 @@ public class Controller {
             }
         } catch (NumberFormatException e) {
             screenManager.showErrorScreen("Invalid meal ID format!");
-        } catch (MealDoesntExistException e) {
+        } catch (MealiDNotFoundException e) {
             screenManager.showErrorScreen(e.getMessage());
         } catch (SQLException e) {
             screenManager.showErrorScreen("There was an error while fetching meal please try again!");
@@ -636,17 +636,26 @@ public class Controller {
      */
     private void handleDeleteReview(Object data) {
         try {
-            String[] dataArray = (String[]) data;
-            int ratingId = Integer.parseInt(dataArray[0]);
-            cantineService.deleteReview(ratingId);
-            screenManager.closeActiveWindow();
+            String[] reviewData = (String[]) data;
+            int reviewId = Integer.parseInt(reviewData[0]);
+            int reviewUserId = cantineService.getUserIdFromReviewId(reviewId);
+            // Check if the current user is admin
+            boolean isAdmin = cantineService.isAdmin(currentUserId);
+            // If not admin and review's user id does not match, reject deletion
+            if (!isAdmin && reviewUserId != currentUserId) {
+                screenManager.showErrorScreen("Unauthorized: You can only delete your own reviews.");
+                return;
+            }
+
+            // Authorized to delete review
+            cantineService.deleteReview(reviewId);
             screenManager.showSuccessScreen("Review deleted successfully!");
         } catch (NumberFormatException e) {
             screenManager.showErrorScreen("Invalid review ID format!");
         } catch (ReviewiDDoesntExistException e) {
             screenManager.showErrorScreen(e.getMessage());
-        } catch (SQLException e) {
-            screenManager.showErrorScreen("There was an error while deleting review please try again!");
+        } catch ( SQLException e) {
+            screenManager.showErrorScreen("Error deleting review, please try again!");
         }
     }
 

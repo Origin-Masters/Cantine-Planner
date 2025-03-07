@@ -412,6 +412,22 @@ public class DBConnection {
     }
 
     /**
+     * Method
+     * @param reviewId
+     * @return
+     * @throws SQLException
+     * @throws ReviewiDDoesntExistException
+     */
+    public int getUserIdFromReviewId(int reviewId) throws SQLException, ReviewiDDoesntExistException {
+        try (Connection connection = dataSource.getConnection()) {
+            DSLContext dsl = getDSLContext(connection);
+            if (!dsl.fetchExists(dsl.selectFrom(Review.REVIEW).where(Review.REVIEW.RATING_ID.eq(reviewId)))) {
+                throw new ReviewiDDoesntExistException("Review iD that was provided does not exist ! ");
+            }
+            return dsl.select(Review.REVIEW.USERID).from(Review.REVIEW).where(Review.REVIEW.RATING_ID.eq(reviewId)).fetchOne(Review.REVIEW.USERID);
+        }
+    }
+    /**
      * Method getAllReviews displays all reviews in the database
      */
     public List<ReviewRecord> getAllReviewsByUser(int userId) throws SQLException {
