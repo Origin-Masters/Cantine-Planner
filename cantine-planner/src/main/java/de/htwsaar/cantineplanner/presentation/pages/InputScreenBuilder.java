@@ -10,10 +10,10 @@ import java.util.Arrays;
 import java.util.List;
 
 public class InputScreenBuilder {
-    private MultiWindowTextGUI gui;
-    private EventManager eventManager;
-    private String title;
-    private List<TextBox> textBoxes;
+    private final MultiWindowTextGUI gui;
+    private final EventManager eventManager;
+    private final String title;
+    private final List<TextBox> textBoxes;
 
     public InputScreenBuilder(MultiWindowTextGUI gui, EventManager eventManager, String title) {
         this.gui = gui;
@@ -32,16 +32,13 @@ public class InputScreenBuilder {
         panel.addComponent(textBox);
     }
 
+
     // Method to display the panel with a list of labels
     public void display(List<String> labels, String event) {
         Panel panel = new Panel(new GridLayout(2));
         GridLayout gridLayout = (GridLayout) panel.getLayoutManager();
         gridLayout.setHorizontalSpacing(5);
         gridLayout.setVerticalSpacing(2);
-
-        panel.addComponent(new Label(title)
-                .setForegroundColor(TextColor.ANSI.BLACK_BRIGHT)
-                .addStyle(SGR.BOLD), GridLayout.createHorizontallyFilledLayoutData(2));
 
         // Add labeled TextBoxes for each label in the list
         for (String label : labels) {

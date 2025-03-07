@@ -79,6 +79,11 @@ public class Meals extends TableImpl<MealsRecord> {
      */
     public final TableField<MealsRecord, Integer> MEAT = createField(DSL.name("meat"), SQLDataType.INTEGER, this, "");
 
+    /**
+     * The column <code>meals.day</code>.
+     */
+    public final TableField<MealsRecord, String> DAY = createField(DSL.name("day"), SQLDataType.CHAR(3), this, "");
+
     private Meals(Name alias, Table<MealsRecord> aliased) {
         this(alias, aliased, (Field<?>[]) null, null);
     }

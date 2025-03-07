@@ -37,9 +37,7 @@ public class MenuBuilder {
         GridLayout gridLayout = (GridLayout) panel.getLayoutManager();
         gridLayout.setHorizontalSpacing(3);
         gridLayout.setVerticalSpacing(2);
-        panel.addComponent(new Label(title)
-                .setForegroundColor(TextColor.ANSI.BLACK_BRIGHT)
-                .addStyle(SGR.BOLD));
+
         for (MenuButton button : buttons) {
             panel.addComponent(new Button(button.getLabel(), () -> eventManager.notify(button.getEvent(), null))
                     .setPreferredSize(new TerminalSize(35, 3))

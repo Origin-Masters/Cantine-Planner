@@ -11,24 +11,29 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class CantineService {
-    private DBConnection dbConnection;
-
+    private final DBConnection dbConnection;
 
 
     public CantineService(String propertiesFilePath) {
         this.dbConnection = new DBConnection(propertiesFilePath);
     }
 
-    public boolean validateUser(String username, String password) throws SQLException , UserAlreadyExistsException {
+    public boolean validateUser(String username, String password) throws SQLException, UserNotValidatedException {
         return dbConnection.validateUser(username, password);
     }
+    public boolean validateUser(int userID, String password) throws SQLException, UserNotValidatedException {
+        return dbConnection.validateUser(userID, password);
+    }
 
-   public boolean registerUser(String username, String password, String email) throws SQLException, UserAlreadyExistsException {
+    public boolean registerUser(String username, String password, String email) throws SQLException, UserAlreadyExistsException, InvalidEmailTypeException {
         UsersRecord usersRecord = dbConnection.registerUser(username, password, email);
         return usersRecord != null;
     }
 
-    public int getUserId(String username) throws SQLException, UserAlreadyExistsException, NullPointerException {
+    public void editMeal(MealsRecord meal) throws SQLException, MealDoesntExistException {
+        dbConnection.editMeal(meal);
+    }
+    public int getUserId(String username) throws SQLException, UserDoesntExistException {
         return dbConnection.getUserId(username);
     }
 
@@ -47,22 +52,39 @@ public class CantineService {
     public MealsRecord addMeal(MealsRecord meal) throws SQLException, MealAlreadyExistsException {
         return dbConnection.addMeal(meal);
     }
+
     public void deleteReview(int reviewId) throws SQLException, ReviewiDDoesntExistException {
         dbConnection.deleteReview(reviewId);
     }
 
-
-    public void deleteMeal(int mealId) throws SQLException , MealDoesntExistException {
-        dbConnection.deleteMeal(mealId);
+    public void setAllergeneSettings(int userId, String allergene) throws SQLException, UserDoesntExistException {
+        allergene = allergene.replaceAll("^\\[|\\]$", "");
+        String[] allergeneArray = allergene.split(",");
+        StringBuilder abbrAllergene = new StringBuilder();
+        for (String allergen : allergeneArray) {
+            String trimmedAllergen = allergen.trim();
+            String abbr = AllergenMapper.getAllergenCode(trimmedAllergen);
+            if (abbr != null) {
+                if (abbrAllergene.length() > 0) {
+                    abbrAllergene.append(",");
+                }
+                abbrAllergene.append(abbr); // Append the abbreviation
+            }
+        }
+        dbConnection.setAllergeneSettings(userId, abbrAllergene.toString());
     }
 
-    public MealsRecord getMealById(int mealId) throws SQLException , MealDoesntExistException {
-        List<MealsRecord> meals = dbConnection.mealDetails(mealId);
+    public void deleteMeal(int mealId) throws SQLException, MealiDNotFoundException {
+        dbConnection.deleteMealById(mealId);
+    }
+
+    public MealsRecord getMealById(int mealId) throws SQLException, MealiDNotFoundException {
+        List<MealsRecord> meals = dbConnection.searchMealById(mealId);
         return meals.isEmpty() ? null : meals.get(0);
     }
 
-    public MealsRecord getMealByName(String name) throws SQLException {
-        List<MealsRecord> meals = dbConnection.searchMeal(name);
+    public MealsRecord getMealByName(String name) throws SQLException, MealDoesntExistException {
+        List<MealsRecord> meals = dbConnection.searchMealByName(name);
         return meals.isEmpty() ? null : meals.get(0);
     }
 
@@ -70,21 +92,40 @@ public class CantineService {
         dbConnection.addReview(review);
     }
 
-    public List<ReviewRecord> searchReviewsByMealId(int mealId) throws SQLException {
-        return dbConnection.reviewsByMealiD(mealId);
-    }
-
-    public List<ReviewRecord> searchReviewsByMealName(String mealName) throws SQLException {
+    public List<ReviewRecord> searchReviewsByMealName(String mealName) throws SQLException, MealDoesntExistException {
         return dbConnection.reviewsByMealName(mealName);
     }
 
     public List<ReviewRecord> getAllReviewsByUser(int currentUserId) throws SQLException {
         return dbConnection.getAllReviewsByUser(currentUserId);
     }
+    public void updateUserRole(int userId, int role) throws SQLException, UserNotValidatedException {
+        dbConnection.updateUserRole(userId, role);
+    }
 
-    public boolean isAdmin(int currentUserId) throws SQLException, UserDoesntExistException, NullPointerException {
+    public boolean isAdmin(int currentUserId) throws SQLException, UseriDDoesntExcistException {
         return dbConnection.isAdmin(currentUserId);
     }
 
-    // Add other methods as needed
+    public List<MealsRecord> getWeeklyPlan() throws SQLException {
+        return dbConnection.getWeeklyPlan();
+    }
+
+    public void editWeeklyPlan(String mealName, String day) throws SQLException, MealDoesntExistException {
+        dbConnection.editWeeklyPlan(mealName, day);
+    }
+
+    public void resetWeeklyPlan() throws SQLException {
+        dbConnection.resetWeeklyPlan();
+    }
+
+    public void editUserData(int currentUserId, String newPassword, String newEmail) throws SQLException, InvalidEmailTypeException {
+        dbConnection.editUserData(currentUserId, newPassword, newEmail);
+    }
+    public List<UsersRecord> getAllUser() throws SQLException {
+        return dbConnection.getAllUser();
+    }
+    public void deleteUser(int userId) throws SQLException, UserDoesntExistException {
+        dbConnection.deleteUserById(userId);
+    }
 }

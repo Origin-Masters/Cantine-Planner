@@ -9,18 +9,31 @@ import de.htwsaar.cantineplanner.businessLogic.EventManager;
 import de.htwsaar.cantineplanner.businessLogic.MealTypeMapper;
 import de.htwsaar.cantineplanner.codegen.tables.records.MealsRecord;
 import de.htwsaar.cantineplanner.codegen.tables.records.ReviewRecord;
+import de.htwsaar.cantineplanner.codegen.tables.records.UsersRecord;
 import de.htwsaar.cantineplanner.presentation.pages.*;
-
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Manager for application screens.
+ * <p>
+ * This class groups methods by menus, input screens, table screens, weekly plan screens, notifications and closing operations.
+ * </p>
+ */
 public class ScreenManager {
     private MultiWindowTextGUI gui;
-    private EventManager eventManager;
+    private final EventManager eventManager;
 
+    ////////////////////////////////////////////////////////////////////////////////
+    // Constructor and Initialization
+    ////////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * Constructor that initializes the terminal screen and GUI.
+     *
+     * @param eventManager the event manager for notifications and events.
+     */
     public ScreenManager(EventManager eventManager) {
         this.eventManager = eventManager;
         try {
@@ -32,58 +45,267 @@ public class ScreenManager {
         }
     }
 
-    public void showLoginScreen() {
-        LoginScreen loginScreen = new LoginScreen(gui, eventManager);
-        loginScreen.display();
+    ////////////////////////////////////////////////////////////////////////////////
+    // Menus
+    ////////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * Displays the main menu screen.
+     */
+    public void showMainMenuScreen() {
+        List<MenuBuilder.MenuButton> mainMenuButtons = Arrays.asList(
+                new MenuBuilder.MenuButton("User Menu", "showUserMenu"),
+                new MenuBuilder.MenuButton("Meal Menu", "showMealMenu"),
+                new MenuBuilder.MenuButton("Review Menu", "showReviewMenu"),
+                new MenuBuilder.MenuButton("Weekly Menu", "showWeeklyMenu"),
+                new MenuBuilder.MenuButton("Logout", "logout"),
+                new MenuBuilder.MenuButton("Exit", "exit")
+        );
+        MenuBuilder mainMenu = new MenuBuilder(gui, eventManager)
+                .setTitle("Main Menu")
+                .setButtons(mainMenuButtons);
+        mainMenu.display();
     }
 
-    public void showMealMenuScreen() {
-        List<MenuBuilder.MenuButton> mealMenuButtons = Arrays.asList(
-                new MenuBuilder.MenuButton("Alle Gerichte anzeigen", "showAllMeals"),
-                new MenuBuilder.MenuButton("Gericht hinzufügen", "showAddMeal"),
-                new MenuBuilder.MenuButton("Alle Allergien anzeigen", "showAllAllergies"),
-                new MenuBuilder.MenuButton("Gericht löschen", "showDeleteMeal"),
-                new MenuBuilder.MenuButton("Gericht nach Name suchen", "showSearchMealByName"),
-                new MenuBuilder.MenuButton("Gerichtdetails nach ID anzeigen", "showMealDetailsById"),
-                new MenuBuilder.MenuButton("Main Menü", "showMainMenu"),
-                new MenuBuilder.MenuButton("Programm beenden", "exit")
-        );
-
+    /**
+     * Displays the meal menu screen.
+     *
+     * @param isAdmin flag indicating if admin functionalities should be available.
+     */
+    public void showMealMenuScreen(boolean isAdmin) {
+        List<MenuBuilder.MenuButton> mealMenuButtons = new ArrayList<>(
+                Arrays.asList(
+                        new MenuBuilder.MenuButton("All Meal", "showAllMeals"),
+                        new MenuBuilder.MenuButton("Allergies in Meals", "showAllAllergies"),
+                        new MenuBuilder.MenuButton("Search Meal by Name", "showSearchMealByName"),
+                        new MenuBuilder.MenuButton("Search Meal by ID", "showMealDetailsById")
+                ));
+        if (isAdmin) {
+            mealMenuButtons.add(new MenuBuilder.MenuButton("Add Meal", "showAddMeal"));
+            mealMenuButtons.add(new MenuBuilder.MenuButton("Edit Meal", "showEditMeal"));
+            mealMenuButtons.add(new MenuBuilder.MenuButton("Delete Meal", "showDeleteMeal"));
+        }
+        mealMenuButtons.add(new MenuBuilder.MenuButton("Main Menu", "showMainMenu"));
         MenuBuilder mealMenu = new MenuBuilder(gui, eventManager)
                 .setTitle("Meal Menu")
                 .setButtons(mealMenuButtons);
         mealMenu.display();
     }
 
-    public void showUserMenuScreen() {
-        List<MenuBuilder.MenuButton> userMenuButtons = Arrays.asList(
-                new MenuBuilder.MenuButton("Benutzerdaten bearbeiten", "editUserData"),
-                new MenuBuilder.MenuButton("Allergien verwalten", "manageAllergies"),
-                new MenuBuilder.MenuButton("Bewertungen anzeigen", "showReviewsByUser"),
-                new MenuBuilder.MenuButton("Abmelden", "logout"),
-                new MenuBuilder.MenuButton("Admin Menu", "showAdminMenu"),
-                new MenuBuilder.MenuButton("Main Menü", "showMainMenu"),
-                new MenuBuilder.MenuButton("Programm beenden", "exit")
-        );
-
+    /**
+     * Displays the user menu screen.
+     *
+     * @param isAdmin flag indicating if admin functionalities should be available.
+     */
+    public void showUserMenuScreen(boolean isAdmin) {
+        List<MenuBuilder.MenuButton> userMenuButtons = new ArrayList<>(
+                Arrays.asList(
+                        new MenuBuilder.MenuButton("Edit My Data", "showEditUserData"),
+                        new MenuBuilder.MenuButton("Set My Allergy", "showAllergenSettings"),
+                        new MenuBuilder.MenuButton("My Reviews", "showReviewsByUser")
+                ));
+        if (isAdmin) {
+            userMenuButtons.add(new MenuBuilder.MenuButton("All Users", "showAllUsers"));
+            userMenuButtons.add(new MenuBuilder.MenuButton("Add User", "showRegisterScreen"));
+            userMenuButtons.add(new MenuBuilder.MenuButton("Delete User", "showDeleteUser"));
+            userMenuButtons.add(new MenuBuilder.MenuButton("Update User Roles", "showUpdateUserRole"));
+        }
+        userMenuButtons.add(new MenuBuilder.MenuButton("Main Menu", "showMainMenu"));
         MenuBuilder userMenu = new MenuBuilder(gui, eventManager)
                 .setTitle("User Menu")
                 .setButtons(userMenuButtons);
         userMenu.display();
     }
 
-    public void showErrorScreen(String message) {
-        NotificationScreenBuilder errorScreen = new NotificationScreenBuilder(gui, message,
-                new TextColor.RGB(255, 0, 0));
-        errorScreen.display();
+    /**
+     * Displays the reviews menu screen.
+     */
+    public void showReviewsMenu() {
+        List<MenuBuilder.MenuButton> reviewsMenuButtons = Arrays.asList(
+                new MenuBuilder.MenuButton("All Reviews", "showAllReviews"),
+                new MenuBuilder.MenuButton("Add Reviews", "showAddReview"),
+                new MenuBuilder.MenuButton("Delete Review", "showDeleteReview"),
+                new MenuBuilder.MenuButton("Search Reviews", "showSearchReviewsByMealName"),
+                new MenuBuilder.MenuButton("Main Menu", "showMainMenu")
+        );
+        MenuBuilder reviewsMenu = new MenuBuilder(gui, eventManager)
+                .setTitle("Reviews Menu")
+                .setButtons(reviewsMenuButtons);
+        reviewsMenu.display();
     }
 
-    public void showSuccessScreen(String message) {
-        NotificationScreenBuilder successScreen = new NotificationScreenBuilder(gui, message,
-                new TextColor.RGB(0, 255, 0));
-        successScreen.display();
+    /**
+     * Displays the weekly menu screen.
+     *
+     * @param isAdmin flag indicating if admin functionalities should be available.
+     */
+    public void showWeeklyMenuScreen(boolean isAdmin) {
+        List<MenuBuilder.MenuButton> weeklyMenuButtons = new ArrayList<>(
+                Arrays.asList(
+                        new MenuBuilder.MenuButton("Weekly Plan", "showWeeklyPlan")
+                ));
+        if (isAdmin) {
+            weeklyMenuButtons.add(new MenuBuilder.MenuButton("Edit Weekly Plan", "editWeeklyPlan"));
+        }
+        weeklyMenuButtons.add(new MenuBuilder.MenuButton("Main Menu", "showMainMenu"));
+        MenuBuilder weeklyMenu = new MenuBuilder(gui, eventManager)
+                .setTitle("Weekly Menu")
+                .setButtons(weeklyMenuButtons);
+        weeklyMenu.display();
     }
 
+    ////////////////////////////////////////////////////////////////////////////////
+    // Input Screens
+    ////////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * Displays the login screen.
+     */
+    public void showLoginScreen() {
+        LoginScreen loginScreen = new LoginScreen(gui, eventManager);
+        loginScreen.display();
+    }
+
+    /**
+     * Displays the edit meal input screen.
+     */
+    public void showEditMealScreen() {
+        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Edit Meal by Meal ID");
+        List<String> labels = List.of("ID", "Name", "Price", "Calories", "Allergy", "Meat");
+        inputScreenBuilder.display(labels, "editMeal");
+    }
+
+    /**
+     * Displays the update user role input screen.
+     */
+    public void showUpdateUserRoleScreen() {
+        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Update User Role");
+        List<String> labels = List.of("User ID", "Role");
+        inputScreenBuilder.display(labels, "updateUserRole");
+    }
+
+    /**
+     * Displays the edit user data input screen.
+     */
+    public void showEditUserDataScreen() {
+        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Edit User Data");
+        List<String> labels = Arrays.asList("Current Password");
+        inputScreenBuilder.display(labels, "editUserData");
+    }
+
+    /**
+     * Displays the edit new user data input screen.
+     */
+    public void showEditNewUserDataScreen() {
+        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Edit New User Data");
+        List<String> labels = Arrays.asList("New Password", "New Email");
+        inputScreenBuilder.display(labels, "editNewUserData");
+    }
+
+    /**
+     * Displays the registration input screen.
+     *
+     * @param title the title of the screen.
+     * @param event the event to be triggered.
+     */
+    public void showInputScreenReg(String title, String event) {
+        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, title);
+        List<String> labels = Arrays.asList("Username", "Password", "Email");
+        inputScreenBuilder.display(labels, event);
+    }
+
+    /**
+     * Displays the add review input screen.
+     */
+    public void showAddReviewScreen() {
+        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Add New Review");
+        List<String> labels = Arrays.asList("Rating", "Comment", "Meal ID");
+        inputScreenBuilder.display(labels, "addReview");
+    }
+
+    /**
+     * Displays the add meal input screen.
+     */
+    public void showAddMealScreen() {
+        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Add New Meal");
+        List<String> labels = Arrays.asList("Name", "Price", "Calories", "Allergy", "Meat");
+        inputScreenBuilder.display(labels, "addMeal");
+    }
+
+    /**
+     * Displays the delete meal input screen.
+     */
+    public void showDeleteMealScreen() {
+        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Delete Meal by Meal ID");
+        List<String> labels = List.of("ID");
+        inputScreenBuilder.display(labels, "deleteMeal");
+    }
+
+    /**
+     * Displays the delete review input screen.
+     */
+    public void showDeleteReviewScreen() {
+        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Delete Review by Rating ID");
+        List<String> labels = List.of("ID");
+        inputScreenBuilder.display(labels, "deleteReview");
+    }
+
+    /**
+     * Displays the search meal by ID input screen.
+     */
+    public void showMealDetailsById() {
+        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Search Meal by ID");
+        List<String> labels = List.of("ID");
+        inputScreenBuilder.display(labels, "mealDetailsById");
+    }
+
+    /**
+     * Displays the search meal by name input screen.
+     */
+    public void showSearchMealByName() {
+        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Search Meal by Name");
+        List<String> labels = List.of("Name");
+        inputScreenBuilder.display(labels, "searchMealByName");
+    }
+
+    /**
+     * Displays the search reviews by meal name input screen.
+     */
+    public void showSearchReviewsByMealName() {
+        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Search Reviews by Meal Name");
+        List<String> labels = List.of("Meal Name");
+        inputScreenBuilder.display(labels, "searchReviewsByMealName");
+    }
+
+    /**
+     * Displays the allergene settings input screen.
+     */
+    public void showAllergeneSettings() {
+        List<String> allergene = Arrays.asList("Gluten-containing cereals", "Crustaceans", "Eggs", "Fish", "Peanuts",
+                "Soy", "Milk", "Nuts", "Celery", "Mustard", "Sesame seeds", "Sulfur dioxide and sulfites", "Lupins",
+                "Molluscs");
+        CheckboxScreenBuilder builder = new CheckboxScreenBuilder(gui, eventManager, "Select Allergens");
+        builder.display(allergene, "allergeneSettings");
+    }
+
+    /**
+     * Displays the delete user input screen.
+     */
+    public void showDeleteUserScreen() {
+        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Delete User by User ID");
+        List<String> labels = List.of("ID");
+        inputScreenBuilder.display(labels, "deleteUser");
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // Table/List Screens
+    ////////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * Displays a table of all reviews.
+     *
+     * @param reviews the list of review records.
+     */
     public void showAllReviews(List<ReviewRecord> reviews) {
         TableBuilder tableBuilder = new TableBuilder(gui, "All Reviews")
                 .addColumn("ID")
@@ -93,81 +315,21 @@ public class ScreenManager {
                 .addColumn("Date")
                 .addColumn("UserID");
         for (ReviewRecord review : reviews) {
-            tableBuilder.addRow(Arrays.asList(
-                    String.valueOf(review.getRatingId()),
+            tableBuilder.addRow(Arrays.asList(String.valueOf(review.getRatingId()),
                     String.valueOf(review.getRating()),
                     review.getComment(),
                     String.valueOf(review.getMealId()),
                     review.getCreatedAt().toString(),
-                    String.valueOf(review.getUserid())
-            ));
+                    String.valueOf(review.getUserid())));
         }
         tableBuilder.display();
     }
 
-    public void showMainMenuScreen() {
-        List<MenuBuilder.MenuButton> mainMenuButtons = Arrays.asList(
-                new MenuBuilder.MenuButton("User Menu", "showUserMenu"),
-                new MenuBuilder.MenuButton("Meal Menu", "showMealMenu"),
-                new MenuBuilder.MenuButton("Review Menu", "showReviewMenu"),
-                new MenuBuilder.MenuButton("Weekly Menu", "showWeeklyMenu"),
-                new MenuBuilder.MenuButton("Exit", "exit")
-        );
-        MenuBuilder mainMenu = new MenuBuilder(gui, eventManager)
-                .setTitle("Main Menu")
-                .setButtons(mainMenuButtons);
-        mainMenu.display();
-    }
-
-
-    public void showWeeklyMenuScreen(){
-        List<MenuBuilder.MenuButton> weeklyMenuButtons = Arrays.asList(
-                new MenuBuilder.MenuButton("Weekly Plan", "showWeeklyMenu"),
-                new MenuBuilder.MenuButton("Edit Weekly Plan", "editWeeklyPlan"),
-                new MenuBuilder.MenuButton("Show Random Meals", "showRandomMeals"),
-                new MenuBuilder.MenuButton("Main Menu", "showMainMenu"),
-                new MenuBuilder.MenuButton("Programm beenden", "exit")
-        );
-        MenuBuilder weeklyMenu = new MenuBuilder(gui, eventManager)
-                .setTitle("Weekly Menu")
-                .setButtons(weeklyMenuButtons);
-        weeklyMenu.display();
-    }
-
-    public void showAllergiesMenu() {
-        List<MenuBuilder.MenuButton> allergiesMenuButtons = Arrays.asList(
-                new MenuBuilder.MenuButton("Alle Allergien anzeigen", "showAllAllergies"),
-                new MenuBuilder.MenuButton("Allergie hinzufügen", "addAllergy"),
-                new MenuBuilder.MenuButton("Allergie löschen", "deleteAllergy"),
-                new MenuBuilder.MenuButton("Allergie nach Name suchen", "searchAllergyByName"),
-                new MenuBuilder.MenuButton("Allergiedetails nach ID anzeigen", "showAllergyDetailsById"),
-                new MenuBuilder.MenuButton("Main Menü", "showMainMenu"),
-                new MenuBuilder.MenuButton("Programm beenden", "exit")
-        );
-
-        MenuBuilder allergiesMenu = new MenuBuilder(gui, eventManager)
-                .setTitle("Allergies Menu")
-                .setButtons(allergiesMenuButtons);
-        allergiesMenu.display();
-    }
-
-    public void showReviewsMenu() {
-        List<MenuBuilder.MenuButton> reviewsMenuButtons = Arrays.asList(
-                new MenuBuilder.MenuButton("Alle Reviews anzeigen", "showAllReviews"),
-                new MenuBuilder.MenuButton("Review hinzufügen", "showAddReview"),
-                new MenuBuilder.MenuButton("Review löschen", "showDeleteReview"),
-                new MenuBuilder.MenuButton("Review von einem bestimmten Gericht", "showSearchReviewsByMealName"),
-                new MenuBuilder.MenuButton("Reviewdetails nach ID anzeigen", "showReviewDetailsById"),
-                new MenuBuilder.MenuButton("Main Menü", "showMainMenu"),
-                new MenuBuilder.MenuButton("Programm beenden", "exit")
-        );
-
-        MenuBuilder reviewsMenu = new MenuBuilder(gui, eventManager)
-                .setTitle("Reviews Menu")
-                .setButtons(reviewsMenuButtons);
-        reviewsMenu.display();
-    }
-
+    /**
+     * Displays a table of all meals.
+     *
+     * @param meals the list of meal records.
+     */
     public void showAllMeals(List<MealsRecord> meals) {
         TableBuilder tableBuilder = new TableBuilder(gui, "All Meals")
                 .addColumn("ID")
@@ -176,34 +338,29 @@ public class ScreenManager {
                 .addColumn("Calories")
                 .addColumn("Allergens")
                 .addColumn("Meat");
-
         for (MealsRecord meal : meals) {
-            // Verwende Optional, um Null- oder Leereinträge abzufangen
             String allergenInfo = Optional.ofNullable(meal.getAllergy())
                     .filter(allergy -> !allergy.isEmpty())
                     .map(allergy -> Arrays.stream(allergy.split(""))
                             .map(AllergenMapper::getAllergenFullName)
                             .collect(Collectors.joining(" ")))
-                    .orElse("keine Allergene");
-
-            // Ermittele den Fleisch-Typ (MealType)
+                    .orElse("No Allergies");
             String mealType = MealTypeMapper.getMealTypeName(meal.getMeat());
-
-            // Füge eine Zeile mit den benötigten Informationen hinzu
-            tableBuilder.addRow(Arrays.asList(
-                    String.valueOf(meal.getMealId()),
+            tableBuilder.addRow(Arrays.asList(String.valueOf(meal.getMealId()),
                     meal.getName(),
                     String.format("%.2f", meal.getPrice()),
                     String.valueOf(meal.getCalories()),
                     allergenInfo,
-                    mealType
-            ));
+                    mealType));
         }
-
-
         tableBuilder.display();
     }
 
+    /**
+     * Displays meal details in a table format.
+     *
+     * @param meal the meal record.
+     */
     public void showMealDetails(MealsRecord meal) {
         TableBuilder tableBuilder = new TableBuilder(gui, "Meal Details")
                 .addColumn("ID")
@@ -212,139 +369,203 @@ public class ScreenManager {
                 .addColumn("Calories")
                 .addColumn("Allergens")
                 .addColumn("Meat");
-
         String allergens = Optional.ofNullable(meal.getAllergy())
-                .filter(allergy -> !allergy.isEmpty()) // Prüfe auch auf leere Strings
+                .filter(allergy -> !allergy.isEmpty())
                 .map(allergy -> Arrays.stream(allergy.split(""))
                         .map(AllergenMapper::getAllergenFullName)
                         .collect(Collectors.joining(" ")))
-                .orElse("keine Allergene");
-
-        // Füge die Zeile mit allen benötigten Informationen hinzu
-        tableBuilder.addRow(Arrays.asList(
-                String.valueOf(meal.getMealId()),
+                .orElse("No Allergies");
+        tableBuilder.addRow(Arrays.asList(String.valueOf(meal.getMealId()),
                 meal.getName(),
                 String.format("%.2f", meal.getPrice()),
                 String.valueOf(meal.getCalories()),
                 allergens,
-                MealTypeMapper.getMealTypeName(meal.getMeat())
-        ));
-
+                MealTypeMapper.getMealTypeName(meal.getMeat())));
         tableBuilder.display();
     }
 
-    public void showInputScreenReg(String title, String event) {
-        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, title);
-        List<String> labels = Arrays.asList("Username", "Password", "Email");
-        inputScreenBuilder.display(labels, event);
-    }
-
+    /**
+     * Displays a table of all allergies in meals.
+     *
+     * @param meals the list of meal records.
+     */
     public void showAllAllergies(List<MealsRecord> meals) {
-        TableBuilder tableBuilder = new TableBuilder(gui, "All Allergies")
+        TableBuilder tableBuilder = new TableBuilder(gui, "Allergies in Meals")
                 .addColumn("Meal Name")
                 .addColumn("Allergy");
-
         for (MealsRecord meal : meals) {
             String allergens = Optional.ofNullable(meal.getAllergy())
                     .filter(allergy -> !allergy.isEmpty())
                     .map(allergy -> Arrays.stream(allergy.split(""))
                             .map(AllergenMapper::getAllergenFullName)
                             .collect(Collectors.joining(" ")))
-                    .orElse("keine Allergene");
-
-            tableBuilder.addRow(Arrays.asList(
-                    meal.getName(),
-                    allergens
-            ));
+                    .orElse("No Allergies");
+            tableBuilder.addRow(Arrays.asList(meal.getName(), allergens));
         }
-
         tableBuilder.display();
     }
-    public void showAddReviewScreen() {
-        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Add Review");
-        List<String> labels = Arrays.asList("Rating", "Comment", "Meal ID");
-        inputScreenBuilder.display(labels, "addReview");
-    }
-    public void showAddMealScreen() {
-        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Add Meal");
-        List<String> labels = Arrays.asList("Name", "Price", "Calories", "Allergy", "Meat");
-        inputScreenBuilder.display(labels, "addMeal");
-    }
-    public void showDeleteMealScreen() {
-        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Delete Meal");
-        List<String> labels = Arrays.asList("ID");
-        inputScreenBuilder.display(labels, "deleteMeal");
-    }
-    public void showDeleteReviewScreen() {
-        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Delete Review");
-        List<String> labels = Arrays.asList("ID");
-        inputScreenBuilder.display(labels, "deleteReview");
-    }
-    public void showMealDetailsById() {
-        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Show by ID Meal");
-        List<String> labels = Arrays.asList("ID");
-        inputScreenBuilder.display(labels, "mealDetailsById");
+
+    /**
+     * Displays a table of all users.
+     *
+     * @param users the list of user records.
+     */
+    public void showAllUser(List<UsersRecord> users) {
+        TableBuilder tableBuilder = new TableBuilder(gui, "All Users")
+                .addColumn("ID")
+                .addColumn("Username")
+                .addColumn("Email")
+                .addColumn("Role");
+        for (UsersRecord user : users) {
+            tableBuilder.addRow(Arrays.asList(String.valueOf(user.getUserid()),
+                    user.getUsername(),
+                    user.getEmail(),
+                    String.valueOf(user.getRole())));
+        }
+        tableBuilder.display();
     }
 
-    public void showSearchMealByName() {
-        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Show by Name Meal");
-        List<String> labels = Arrays.asList("Name");
-        inputScreenBuilder.display(labels, "searchMealByName");
+    /**
+     * Displays a table of the weekly meal plan.
+     *
+     * @param weeklyPlan the list of meal records for the weekly plan.
+     */
+    public void showWeeklyPlanScreen(List<MealsRecord> weeklyPlan) {
+        TableBuilder tableBuilder = new TableBuilder(gui, "Weekly Plan")
+                .addColumn("Day")
+                .addColumn("Meal Name")
+                .addColumn("Price")
+                .addColumn("Calories")
+                .addColumn("Allergens")
+                .addColumn("Meat");
+        for (MealsRecord meal : weeklyPlan) {
+            String allergens = Optional.ofNullable(meal.getAllergy())
+                    .filter(allergy -> !allergy.isEmpty())
+                    .map(allergy -> Arrays.stream(allergy.split(""))
+                            .map(AllergenMapper::getAllergenFullName)
+                            .collect(Collectors.joining(" ")))
+                    .orElse("No Allergies");
+            tableBuilder.addRow(Arrays.asList(meal.getDay(),
+                    meal.getName(),
+                    String.format("%.2f", meal.getPrice()),
+                    String.valueOf(meal.getCalories()),
+                    allergens,
+                    MealTypeMapper.getMealTypeName(meal.getMeat())));
+        }
+        tableBuilder.display();
     }
 
+    ////////////////////////////////////////////////////////////////////////////////
+    // Weekly Plan Input Screens
+    ////////////////////////////////////////////////////////////////////////////////
 
+    /**
+     * Displays the weekly plan editing menu.
+     */
+    public void showEditWeeklyPlanScreen() {
+        List<MenuBuilder.MenuButton> weeklyPlanButtons = Arrays.asList(
+                new MenuBuilder.MenuButton("Monday", "editWeeklyPlanMonday"),
+                new MenuBuilder.MenuButton("Tuesday", "editWeeklyPlanTuesday"),
+                new MenuBuilder.MenuButton("Wednesday", "editWeeklyPlanWednesday"),
+                new MenuBuilder.MenuButton("Thursday", "editWeeklyPlanThursday"),
+                new MenuBuilder.MenuButton("Friday", "editWeeklyPlanFriday"),
+                new MenuBuilder.MenuButton("Reset Weekly Plan", "resetWeeklyPlan"),
+                new MenuBuilder.MenuButton("Main Menu", "showMainMenu")
+        );
+        MenuBuilder weeklyPlan = new MenuBuilder(gui, eventManager)
+                .setTitle("Edit Weekly Plan")
+                .setButtons(weeklyPlanButtons);
+        weeklyPlan.display();
+    }
+
+    /**
+     * Displays the input screen for editing Monday's meal.
+     */
+    public void showEditWeeklyPlanMonday() {
+        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Edit Monday");
+        List<String> labels = List.of("Meal Name");
+        inputScreenBuilder.display(labels, "editWeeklyPlanMondaySubmit");
+    }
+
+    /**
+     * Displays the input screen for editing Tuesday's meal.
+     */
+    public void showEditWeeklyPlanTuesday() {
+        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Edit Tuesday");
+        List<String> labels = Arrays.asList("Meal Name");
+        inputScreenBuilder.display(labels, "editWeeklyPlanTuesdaySubmit");
+    }
+
+    /**
+     * Displays the input screen for editing Wednesday's meal.
+     */
+    public void showEditWeeklyPlanWednesday() {
+        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Edit Wednesday");
+        List<String> labels = Arrays.asList("Meal Name");
+        inputScreenBuilder.display(labels, "editWeeklyPlanWednesdaySubmit");
+    }
+
+    /**
+     * Displays the input screen for editing Thursday's meal.
+     */
+    public void showEditWeeklyPlanThursday() {
+        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Edit Thursday");
+        List<String> labels = Arrays.asList("Meal Name");
+        inputScreenBuilder.display(labels, "editWeeklyPlanThursdaySubmit");
+    }
+
+    /**
+     * Displays the input screen for editing Friday's meal.
+     */
+    public void showEditWeeklyPlanFriday() {
+        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Edit Friday");
+        List<String> labels = Arrays.asList("Meal Name");
+        inputScreenBuilder.display(labels, "editWeeklyPlanFridaySubmit");
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // Notification and Closing Screens
+    ////////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * Displays an error notification screen.
+     *
+     * @param message the error message to show.
+     */
+    public void showErrorScreen(String message) {
+        NotificationScreenBuilder errorScreen = new NotificationScreenBuilder(gui, message,
+                new TextColor.RGB(255, 0, 0));
+        errorScreen.display();
+    }
+
+    /**
+     * Displays a success notification screen.
+     *
+     * @param message the success message to show.
+     */
+    public void showSuccessScreen(String message) {
+        NotificationScreenBuilder successScreen = new NotificationScreenBuilder(gui, message,
+                new TextColor.RGB(0, 255, 0));
+        successScreen.display();
+    }
+
+    /**
+     * Closes the currently active window.
+     */
     public void closeActiveWindow() {
         if (gui.getActiveWindow() != null) {
             gui.getActiveWindow().close();
         }
     }
 
-    public void showInputScreen(String title, String event, List<String> labels) {
-        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, title);
-        inputScreenBuilder.display(labels, event);
-    }
-
+    /**
+     * Closes the terminal screen.
+     */
     public void closeTerminal() {
         try {
             gui.getScreen().stopScreen();
         } catch (IOException e) {
             eventManager.notify("error", "Error closing terminal");
-
         }
-    }
-
-    public void showSearchReviewsByMealId() {
-        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Search Reviews by Meal ID");
-        List<String> labels = Arrays.asList("Meal ID");
-        inputScreenBuilder.display(labels, "searchReviewsByMealId");
-    }
-
-    public void showSearchReviewsByMealName() {
-        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Search Reviews by Meal Name");
-        List<String> labels = Arrays.asList("Meal Name");
-        inputScreenBuilder.display(labels, "searchReviewsByMealName");
-    }
-
-    public void showAdminMenuScreen() {
-        List<MenuBuilder.MenuButton> adminMenuButtons = Arrays.asList(
-                new MenuBuilder.MenuButton("View Users", "showUserManagement"),
-                new MenuBuilder.MenuButton("Add User", "showAddUser"),
-                new MenuBuilder.MenuButton("Delete User", "showDeleteUser"),
-                new MenuBuilder.MenuButton("Update User Roles", "showUpdateUserRole"),
-                new MenuBuilder.MenuButton("View Meals", "showMealManagement"),
-                new MenuBuilder.MenuButton("Add Meal", "showAddMeal"),
-                new MenuBuilder.MenuButton("Delete Meal", "showDeleteMeal"),
-                new MenuBuilder.MenuButton("Edit Meal", "showEditMeal"),
-                new MenuBuilder.MenuButton("View Reviews", "showReviewManagement"),
-                new MenuBuilder.MenuButton("Delete Review", "showDeleteReview"),
-                new MenuBuilder.MenuButton("View Popular Meals", "showPopularMeals"),
-                new MenuBuilder.MenuButton("Main Menu", "showMainMenu"),
-                new MenuBuilder.MenuButton("Exit", "exit")
-        );
-
-        MenuBuilder adminMenu = new MenuBuilder(gui, eventManager)
-                .setTitle("Admin Menu")
-                .setButtons(adminMenuButtons);
-        adminMenu.display();
     }
 }

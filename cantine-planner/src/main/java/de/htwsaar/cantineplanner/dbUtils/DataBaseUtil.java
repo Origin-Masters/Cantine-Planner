@@ -1,51 +1,49 @@
 package de.htwsaar.cantineplanner.dbUtils;
 
 import java.io.*;
-import java.nio.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 
+/**
+ * Utility class for database operations.
+ */
 public class DataBaseUtil {
-    /**
-     * Load the database from resources and copy it to the file system
-     *
-     * @param databaseName Name der Datenbank im FAT JAR ("database.db")
-     * @param targetPath   Name des Pfades wohin die DB soll ("./database/database.db")
-     */
-    public static void loadDataBase(String databaseName, String targetPath) {
 
-        // InputStream zum LEsen der Datenbank aus dem mitgelierferten FAT jarr
-        try (InputStream inputStream = DataBaseUtil.class.getClassLoader().getResourceAsStream(databaseName)) {
+    private static final String DATABASE_NAME = "database.db";
+
+    /**
+     * Loads the database from the application resources and copies it to the file system.
+     *
+     * @param targetPath the target path where the database should be placed (e.g., "./database/database.db")
+     */
+    public static void loadInitialDataBase(String targetPath) {
+
+        // Open an InputStream to read the database from the bundled FAT jar.
+        try (InputStream inputStream = DataBaseUtil.class.getClassLoader().getResourceAsStream(DATABASE_NAME)) {
 
             if (inputStream == null) {
-                System.out.println("Die Datenbank wurde leider nicht gefunden: " + databaseName);
+                System.out.println("The database was not found: " + DATABASE_NAME);
                 return;
             }
 
             Path target = Paths.get(targetPath);
 
-            // Sicherstellen, dass der Ordner existiert
-            // Falls nicht, wird er erstellt
+            // Ensure that the target directory exists.
+            // If it does not exist, it will be created.
             Files.createDirectories(target.getParent());
 
-            // Datei kopieren (binär)
-            // kopiert Datei von InputStream nach Target
-            Files.copy(inputStream, target, StandardCopyOption.REPLACE_EXISTING);
+            if (target.toFile().exists()) {
+                return;
+            }
+            // Copy the file in binary mode.
+            // Copies the file from the InputStream to the target path.
+            Files.copy(inputStream, target);
 
-            System.out.println("Datenbank erfolgreich geladen: " + databaseName + " -> " + targetPath);
+            System.out.println("Database loaded successfully: " + DATABASE_NAME + " -> " + targetPath);
 
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
-
-
-
-
-
-
-
 }

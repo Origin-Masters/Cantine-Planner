@@ -102,6 +102,20 @@ public class MealsRecord extends UpdatableRecordImpl<MealsRecord> {
         return (Integer) get(5);
     }
 
+    /**
+     * Setter for <code>meals.day</code>.
+     */
+    public void setDay(String value) {
+        set(6, value);
+    }
+
+    /**
+     * Getter for <code>meals.day</code>.
+     */
+    public String getDay() {
+        return (String) get(6);
+    }
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -125,7 +139,7 @@ public class MealsRecord extends UpdatableRecordImpl<MealsRecord> {
     /**
      * Create a detached, initialised MealsRecord
      */
-    public MealsRecord(Integer mealId, String name, Float price, Integer calories, String allergy, Integer meat) {
+    public MealsRecord(Integer mealId, String name, Float price, Integer calories, String allergy, Integer meat, String day) {
         super(Meals.MEALS);
 
         setMealId(mealId);
@@ -134,6 +148,7 @@ public class MealsRecord extends UpdatableRecordImpl<MealsRecord> {
         setCalories(calories);
         setAllergy(allergy);
         setMeat(meat);
+        setDay(day);
         resetChangedOnNotNull();
     }
 }
