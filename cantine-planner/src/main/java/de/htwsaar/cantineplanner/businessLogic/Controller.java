@@ -139,9 +139,6 @@ public class Controller {
                 case 5:
                     weeklyMenu();
                     break;
-                case 6:
-                    adminMenu();
-                    break;
                 default:
             }
         }
@@ -182,12 +179,14 @@ public class Controller {
     }
 
     public void weeklyMenu() {
-        screenManager.showWeeklyMenuScreen();
+        try {
+            screenManager.showWeeklyMenuScreen(cantineService.isAdmin(currentUserId));
+        } catch (SQLException e) {
+            screenManager.showErrorScreen("There was an error while validating the user try again!");
+        }
+
     }
 
-    public void adminMenu() {
-        screenManager.showAdminMenuScreen();
-    }
 
     // Beenden
     private void exitApplication() {
