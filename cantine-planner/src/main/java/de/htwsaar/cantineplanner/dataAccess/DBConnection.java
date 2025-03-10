@@ -447,7 +447,7 @@ public class DBConnection {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
             if (!dsl.fetchExists(dsl.selectFrom(Meals.MEALS).where(Meals.MEALS.NAME.eq(mealName)))) {
-                throw new MealDoesntExistException("Meal with name" + mealName + " doesnt exist !");
+                throw new MealDoesntExistException("Meal with name " + mealName + " doesnt exist !");
             }
             return dsl.select().from(Review.REVIEW).join(Meals.MEALS).on(
                     Review.REVIEW.MEAL_ID.eq(Meals.MEALS.MEAL_ID)).where(Meals.MEALS.NAME.eq(mealName)).fetchInto(

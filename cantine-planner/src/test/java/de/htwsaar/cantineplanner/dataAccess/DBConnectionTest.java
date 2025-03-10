@@ -212,27 +212,39 @@ public class DBConnectionTest {
 
         assertDoesNotThrow(() -> dbConnection.addReview(review));
 
-        // Get the ratingId of the added review
-        int ratingId = dbConnection.getAllReviews().get(0).getRatingId();
+        // Get the ratingId of the last added review
+        List<ReviewRecord> allReviews = dbConnection.getAllReviews();
+        int ratingId = allReviews.get(allReviews.size() - 1).getRatingId();
 
         // Now delete the review
         assertDoesNotThrow(() -> dbConnection.deleteReview(ratingId));
     }
 
     @Test
-    public void testAddReview() {
+    public void testAddReview() throws SQLException {
         ReviewRecord review = new ReviewRecord();
         review.setMealId(1);
         review.setRating(5);
         review.setComment("Great Really Good ! Now in Test DB ! !");
+        review.setUserid(10);
 
         ReviewRecord review2 = new ReviewRecord();
         review2.setMealId(2);
         review2.setRating(4);
         review2.setComment("Good!");
+        review2.setUserid(11);
 
         assertDoesNotThrow(() -> dbConnection.addReview(review));
         assertDoesNotThrow(() -> dbConnection.addReview(review2));
+
+        // Get the ratingId of the last added review
+        List<ReviewRecord> allReviews = dbConnection.getAllReviews();
+        int ratingId1 = allReviews.get(allReviews.size() - 1).getRatingId();
+        int ratingId2 = allReviews.get(allReviews.size() - 2).getRatingId();
+
+        assertDoesNotThrow(() -> dbConnection.deleteReview(ratingId1));
+        assertDoesNotThrow(() -> dbConnection.deleteReview(ratingId2));
+
     }
 
     @Test
