@@ -19,6 +19,9 @@ public class MainController extends AbstractController {
 
     @Override
     protected void subscribeToEvents() {
+        //TODO switchMenu
+        eventManager.subscribe("switchMenu", (data) -> switchMenu((int) data));
+
         eventManager.subscribe("showMainMenu", (data) -> switchMenu(1));
         eventManager.subscribe("showMealMenu", (data) -> switchMenu(2));
         eventManager.subscribe("showReviewMenu", (data) -> switchMenu(3));
@@ -27,6 +30,10 @@ public class MainController extends AbstractController {
         eventManager.subscribe("exit", (data) -> exitApplication());
         eventManager.subscribe("success", (data) -> screenManager.showSuccessScreen((String) data));
         eventManager.subscribe("error", (data) -> screenManager.showErrorScreen((String) data));
+        eventManager.subscribe("logout", (data) -> {
+            switchMenu(0);
+            this.currentUserId = -1;
+        });
     }
 
     /**
