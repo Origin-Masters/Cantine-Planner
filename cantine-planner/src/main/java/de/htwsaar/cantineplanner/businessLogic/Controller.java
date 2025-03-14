@@ -42,8 +42,8 @@ public class Controller {
      */
     public Controller() {
         this.eventManager = new EventManager();
-        this.screenManager = new ScreenManager(eventManager);
         this.cantineService = new CantineService(PATH_TO_PROPERTIES);
+        this.screenManager = new ScreenManager(eventManager, cantineService);
         this.currentUserId = -1;
         this.running = false;
         subscribeToEvents();

@@ -5,6 +5,7 @@ import com.googlecode.lanterna.gui2.MultiWindowTextGUI;
 import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import de.htwsaar.cantineplanner.businessLogic.AllergenMapper;
+import de.htwsaar.cantineplanner.businessLogic.CantineService;
 import de.htwsaar.cantineplanner.businessLogic.EventManager;
 import de.htwsaar.cantineplanner.businessLogic.MealTypeMapper;
 import de.htwsaar.cantineplanner.codegen.tables.records.MealsRecord;
@@ -12,6 +13,7 @@ import de.htwsaar.cantineplanner.codegen.tables.records.ReviewRecord;
 import de.htwsaar.cantineplanner.codegen.tables.records.UsersRecord;
 import de.htwsaar.cantineplanner.presentation.pages.*;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -24,6 +26,7 @@ import java.util.stream.Collectors;
 public class ScreenManager {
     private MultiWindowTextGUI gui;
     private final EventManager eventManager;
+    private  CantineService cantineService;
 
     ////////////////////////////////////////////////////////////////////////////////
     // Constructor and Initialization
@@ -34,8 +37,10 @@ public class ScreenManager {
      *
      * @param eventManager the event manager for notifications and events.
      */
-    public ScreenManager(EventManager eventManager) {
+    public ScreenManager(EventManager eventManager, CantineService cantineService) {
         this.eventManager = eventManager;
+        this.cantineService = cantineService;
+
         try {
             Screen screen = new DefaultTerminalFactory().createScreen();
             screen.startScreen();
@@ -330,14 +335,15 @@ public class ScreenManager {
      *
      * @param meals the list of meal records.
      */
-    public void showAllMeals(List<MealsRecord> meals) {
+    public void showAllMeals(List<MealsRecord> meals) throws SQLException {
         TableBuilder tableBuilder = new TableBuilder(gui, "All Meals")
                 .addColumn("ID")
                 .addColumn("Name")
                 .addColumn("Price")
                 .addColumn("Calories")
                 .addColumn("Allergens")
-                .addColumn("Meat");
+                .addColumn("Meat")
+                .addColumn("Median Rating");
         for (MealsRecord meal : meals) {
             String allergenInfo = Optional.ofNullable(meal.getAllergy())
                     .filter(allergy -> !allergy.isEmpty())
@@ -346,12 +352,17 @@ public class ScreenManager {
                             .collect(Collectors.joining(" ")))
                     .orElse("No Allergies");
             String mealType = MealTypeMapper.getMealTypeName(meal.getMeat());
+
+            double medianRating;
+            medianRating = cantineService.calculateMedianRatingForMeal(meal.getMealId());
+
             tableBuilder.addRow(Arrays.asList(String.valueOf(meal.getMealId()),
                     meal.getName(),
                     String.format("%.2f", meal.getPrice()),
                     String.valueOf(meal.getCalories()),
                     allergenInfo,
-                    mealType));
+                    mealType,
+                    medianRating == -1 ? "No Reviews" : String.format("%.2f", medianRating)));
         }
         tableBuilder.display();
     }

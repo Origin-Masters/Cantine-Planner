@@ -365,5 +365,8 @@ public class DBConnectionTest {
     }
 
 
+    @Test
+    void calculateMedianRatingForMeal() {
+    }
 }
 

@@ -82,7 +82,7 @@ public class CantineService {
      *
      * @param username user's name
      * @return user ID
-     * @throws SQLException            if a database error occurs
+     * @throws SQLException             if a database error occurs
      * @throws UserDoesntExistException if the user does not exist
      */
     public int getUserId(String username) throws SQLException, UserDoesntExistException {
@@ -97,7 +97,7 @@ public class CantineService {
      * Edits an existing meal.
      *
      * @param meal the meal record to edit
-     * @throws SQLException            if a database error occurs
+     * @throws SQLException             if a database error occurs
      * @throws MealDoesntExistException if the meal does not exist
      */
     public void editMeal(MealsRecord meal) throws SQLException, MealDoesntExistException {
@@ -140,7 +140,7 @@ public class CantineService {
      * Deletes a meal by meal ID.
      *
      * @param mealId meal ID
-     * @throws SQLException          if a database error occurs
+     * @throws SQLException            if a database error occurs
      * @throws MealiDNotFoundException if the meal does not exist
      */
     public void deleteMeal(int mealId) throws SQLException, MealiDNotFoundException {
@@ -152,7 +152,7 @@ public class CantineService {
      *
      * @param mealId meal ID
      * @return meal record or null if not found
-     * @throws SQLException          if a database error occurs
+     * @throws SQLException            if a database error occurs
      * @throws MealiDNotFoundException if the meal ID is invalid
      */
     public MealsRecord getMealById(int mealId) throws SQLException, MealiDNotFoundException {
@@ -165,7 +165,7 @@ public class CantineService {
      *
      * @param name meal name
      * @return meal record or null if not found
-     * @throws SQLException            if a database error occurs
+     * @throws SQLException             if a database error occurs
      * @throws MealDoesntExistException if the meal name is invalid
      */
     public MealsRecord getMealByName(String name) throws SQLException, MealDoesntExistException {
@@ -192,7 +192,7 @@ public class CantineService {
      *
      * @param reviewId review ID
      * @return user ID
-     * @throws SQLException                if a database error occurs
+     * @throws SQLException                 if a database error occurs
      * @throws ReviewiDDoesntExistException if the review ID does not exist
      */
     public int getUserIdFromReviewId(int reviewId) throws SQLException, ReviewiDDoesntExistException {
@@ -214,7 +214,7 @@ public class CantineService {
      *
      * @param mealName the meal name
      * @return list of matching reviews
-     * @throws SQLException            if a database error occurs
+     * @throws SQLException             if a database error occurs
      * @throws MealDoesntExistException if the meal does not exist
      */
     public List<ReviewRecord> searchReviewsByMealName(String mealName) throws SQLException, MealDoesntExistException {
@@ -236,12 +236,24 @@ public class CantineService {
      * Deletes a review by review ID.
      *
      * @param reviewId review ID
-     * @throws SQLException                if a database error occurs
+     * @throws SQLException                 if a database error occurs
      * @throws ReviewiDDoesntExistException if the review does not exist
      */
     public void deleteReview(int reviewId) throws SQLException, ReviewiDDoesntExistException {
         dbConnection.deleteReview(reviewId);
     }
+
+    /**
+     * Calculates the median rating for a given meal.
+     *
+     * @param mealId the ID of the meal for which to calculate the median rating
+     * @return the median rating of the meal
+     * @throws SQLException if a database error occurs
+     */
+    public double calculateMedianRatingForMeal(int mealId) throws SQLException {
+        return dbConnection.calculateMedianRatingForMeal(mealId);
+    }
+
 
     ////////////////////////////////////////////////////////////////////////////////
     // Allergene Settings
@@ -250,7 +262,7 @@ public class CantineService {
     /**
      * Sets allergene settings for a user.
      *
-     * @param userId   user ID
+     * @param userId    user ID
      * @param allergene allergenes in string form
      * @throws SQLException             if a database error occurs
      * @throws UserDoesntExistException if the user does not exist
@@ -291,7 +303,7 @@ public class CantineService {
      *
      * @param mealName meal name
      * @param day      shorthand day (Mon, Tue, etc.)
-     * @throws SQLException            if a database error occurs
+     * @throws SQLException             if a database error occurs
      * @throws MealDoesntExistException if the meal does not exist
      */
     public void editWeeklyPlan(String mealName, String day) throws SQLException, MealDoesntExistException {
@@ -317,7 +329,7 @@ public class CantineService {
      * @param currentUserId user ID
      * @param newPassword   new password
      * @param newEmail      new email
-     * @throws SQLException             if a database error occurs
+     * @throws SQLException              if a database error occurs
      * @throws InvalidEmailTypeException if the new email is invalid
      */
     public void editUserData(int currentUserId, String newPassword, String newEmail)
@@ -355,7 +367,7 @@ public class CantineService {
      *
      * @param userId user ID
      * @param role   new role to set
-     * @throws SQLException             if a database error occurs
+     * @throws SQLException              if a database error occurs
      * @throws UserNotValidatedException if the user couldn't be validated
      */
     public void updateUserRole(int userId, int role) throws SQLException, UserNotValidatedException {
@@ -367,7 +379,7 @@ public class CantineService {
      *
      * @param currentUserId user ID
      * @return true if admin, otherwise false
-     * @throws SQLException               if a database error occurs
+     * @throws SQLException                if a database error occurs
      * @throws UseriDDoesntExcistException if the user does not exist
      */
     public boolean isAdmin(int currentUserId) throws SQLException, UseriDDoesntExcistException {
