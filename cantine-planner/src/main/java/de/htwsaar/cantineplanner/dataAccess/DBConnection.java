@@ -413,7 +413,7 @@ public class DBConnection {
 
 
     /**
-     * Method calculateAverageRatingForMeal calculates the average rating for a meal
+     * Method calculateMedianRatingForMeal calculates the median rating for a meal
      *
      * @param mealId of type int of the meal to be calculated
      */
@@ -424,6 +424,7 @@ public class DBConnection {
                     Review.REVIEW.MEAL_ID.eq(mealId)).fetchOne(0, double.class);
         }
     }
+
 
     /**
      * Method
@@ -494,9 +495,6 @@ public class DBConnection {
      * @param givenReview of type ReviewRecord to be added
      */
     public boolean addReview(ReviewRecord givenReview) throws SQLException {
-        if (givenReview.getRating() < 0 || givenReview.getRating() > 5) {
-            throw new IllegalArgumentException("Rating must be between 0 and 5.");
-        }
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
             dsl.insertInto(Review.REVIEW).set(Review.REVIEW.MEAL_ID, givenReview.getMealId()).set(Review.REVIEW.RATING,

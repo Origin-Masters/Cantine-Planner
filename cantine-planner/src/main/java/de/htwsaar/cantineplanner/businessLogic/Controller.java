@@ -611,6 +611,11 @@ public class Controller {
             int rating = Integer.parseInt(reviewData[0]);
             String comment = reviewData[1];
 
+            if (rating < 0 || rating > 5) {
+                screenManager.showErrorScreen("Rating must be between 0 and 5.");
+                return;
+            }
+
             ReviewRecord review = new ReviewRecord();
             review.setMealId(mealId);
             review.setRating(rating);

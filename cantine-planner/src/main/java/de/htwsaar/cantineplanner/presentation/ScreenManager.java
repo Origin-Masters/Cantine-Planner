@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 public class ScreenManager {
     private MultiWindowTextGUI gui;
     private final EventManager eventManager;
-    private  CantineService cantineService;
+    private final CantineService cantineService;
 
     ////////////////////////////////////////////////////////////////////////////////
     // Constructor and Initialization
