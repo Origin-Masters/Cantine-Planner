@@ -367,6 +367,18 @@ public class DBConnectionTest {
 
     @Test
     void calculateMedianRatingForMeal() {
+        int mealId = 1;
+        assertDoesNotThrow(() -> {
+            double medianRating = dbConnection.calculateMedianRatingForMeal(mealId);
+            assertTrue(medianRating >= 0 && medianRating <= 5);
+        });
+
+        int mealId2 = 2;
+        assertDoesNotThrow(() -> {
+            double medianRating = dbConnection.calculateMedianRatingForMeal(mealId2);
+            assertTrue(medianRating >= 0 && medianRating <= 5);
+        });
+
     }
 }
 

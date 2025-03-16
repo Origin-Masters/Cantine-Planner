@@ -12,6 +12,7 @@ import de.htwsaar.cantineplanner.codegen.tables.records.MealsRecord;
 import de.htwsaar.cantineplanner.codegen.tables.records.ReviewRecord;
 import de.htwsaar.cantineplanner.codegen.tables.records.UsersRecord;
 import de.htwsaar.cantineplanner.presentation.pages.*;
+
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.*;
@@ -277,7 +278,8 @@ public class ScreenManager {
      * Displays the search reviews by meal name input screen.
      */
     public void showSearchReviewsByMealName() {
-        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Search Reviews by Meal Name");
+        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager,
+                "Search Reviews by Meal Name");
         List<String> labels = List.of("Meal Name");
         inputScreenBuilder.display(labels, "searchReviewsByMealName");
     }
@@ -353,8 +355,7 @@ public class ScreenManager {
                     .orElse("No Allergies");
             String mealType = MealTypeMapper.getMealTypeName(meal.getMeat());
 
-            double medianRating;
-            medianRating = cantineService.calculateMedianRatingForMeal(meal.getMealId());
+            double medianRating = cantineService.calculateMedianRatingForMeal(meal.getMealId());
 
             tableBuilder.addRow(Arrays.asList(String.valueOf(meal.getMealId()),
                     meal.getName(),
