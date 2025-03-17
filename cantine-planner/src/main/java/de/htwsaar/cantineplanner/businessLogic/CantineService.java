@@ -387,8 +387,24 @@ public class CantineService {
     }
 
 
-
-    public List<MealsRecord> sortMeals() {
-        return dbConnection.sortMeals();
+    public List<MealsRecord> sortMealsByPrice() throws SQLException {
+        return dbConnection.sortMealsByPrice();
     }
+
+    public List<MealsRecord> sortMealsByRating() throws SQLException {
+        return dbConnection.sortMealsByRating();
+    }
+
+    public List<MealsRecord> sortMealsByName() throws SQLException {
+        return dbConnection.sortMealsByName();
+    }
+
+    public List<MealsRecord> sortMealsByCalories() throws SQLException {
+        return dbConnection.sortMealsByCalories();
+    }
+
+    public List<MealsRecord> sortMealsByAllergy() throws SQLException {
+        return dbConnection.sortMealsByAllergy();
+    }
+
 }

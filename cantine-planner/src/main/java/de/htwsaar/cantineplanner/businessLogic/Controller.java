@@ -3,7 +3,6 @@ package de.htwsaar.cantineplanner.businessLogic;
 import de.htwsaar.cantineplanner.codegen.tables.records.MealsRecord;
 import de.htwsaar.cantineplanner.codegen.tables.records.ReviewRecord;
 import de.htwsaar.cantineplanner.codegen.tables.records.UsersRecord;
-import de.htwsaar.cantineplanner.dbUtils.DataBaseUtil;
 import de.htwsaar.cantineplanner.exceptions.*;
 import de.htwsaar.cantineplanner.presentation.ScreenManager;
 
@@ -80,6 +79,13 @@ public class Controller {
         // Meal-bezogene Events
         eventManager.subscribe("showAllMeals", this::handleShowAllMeals);
         eventManager.subscribe("showSortMeals", (data) -> screenManager.showSortMealScreen());
+
+        eventManager.subscribe("sortMealByPrice", this::handleSortMealByPrice);
+        eventManager.subscribe("sortMealByRating", this::handleSortMealByRating);
+        eventManager.subscribe("sortMealByName", this::handleSortMealByName);
+        eventManager.subscribe("sortMealByAllergy", this::handleSortMealByAllergy);
+        eventManager.subscribe("sortMealByCalories", this::handleSortMealByCalories);
+
         eventManager.subscribe("showAllAllergies", this::handleShowAllAllergies);
         eventManager.subscribe("showAddMeal", (data) -> screenManager.showAddMealScreen());
         eventManager.subscribe("showDeleteMeal", (data) -> screenManager.showDeleteMealScreen());
@@ -471,8 +477,49 @@ public class Controller {
         }
     }
 
-    private void handleShowSortMeals(Object data) {
+    private void handleSortMealByPrice(Object o) {
+        try{
+            List<MealsRecord> meals = cantineService.sortMealsByPrice();
+            screenManager.showAllMeals(meals);
+        } catch (SQLException e) {
+            screenManager.showErrorScreen("There was an error while sorting meals by price please try again!");
+        }
+    }
 
+    private void handleSortMealByRating(Object o) {
+        try{
+            List<MealsRecord> meals = cantineService.sortMealsByRating();
+            screenManager.showAllMeals(meals);
+        } catch (SQLException e) {
+            screenManager.showErrorScreen("There was an error while sorting meals by rating please try again!");
+        }
+    }
+
+    private void handleSortMealByName(Object o) {
+        try{
+            List<MealsRecord> meals = cantineService.sortMealsByName();
+            screenManager.showAllMeals(meals);
+        } catch (SQLException e) {
+            screenManager.showErrorScreen("There was an error while sorting meals by name please try again!");
+        }
+    }
+
+    private void handleSortMealByCalories(Object o) {
+        try{
+            List<MealsRecord> meals = cantineService.sortMealsByCalories();
+            screenManager.showAllMeals(meals);
+        } catch (SQLException e) {
+            screenManager.showErrorScreen("There was an error while sorting meals by calories please try again!");
+        }
+    }
+
+    private void handleSortMealByAllergy(Object o) {
+        try{
+            List<MealsRecord> meals = cantineService.sortMealsByAllergy();
+            screenManager.showAllMeals(meals);
+        } catch (SQLException e) {
+            screenManager.showErrorScreen("There was an error while sorting meals by allergy please try again!");
+        }
     }
 
     /**

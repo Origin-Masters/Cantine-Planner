@@ -124,6 +124,7 @@ public class DBConnection {
 
     /**
      * Method getAllUsers retrieves all users from the database
+     *
      * @return List of UsersRecord
      */
     public List<UsersRecord> getAllUser() throws SQLException {
@@ -132,6 +133,7 @@ public class DBConnection {
             return dsl.selectFrom(Users.USERS).fetchInto(UsersRecord.class);
         }
     }
+
     /**
      * Retrieves a user record by user ID from the database.
      *
@@ -154,6 +156,7 @@ public class DBConnection {
 
     /**
      * Method updateUserRole updates the role of a user by userId
+     *
      * @param userId
      * @param role
      * @throws SQLException
@@ -214,6 +217,7 @@ public class DBConnection {
             }
         }
     }
+
     /**
      * Method isAdmin checks if a user is an admin or not
      *
@@ -428,6 +432,7 @@ public class DBConnection {
 
     /**
      * Method
+     *
      * @param reviewId
      * @return
      * @throws SQLException
@@ -439,9 +444,11 @@ public class DBConnection {
             if (!dsl.fetchExists(dsl.selectFrom(Review.REVIEW).where(Review.REVIEW.RATING_ID.eq(reviewId)))) {
                 throw new ReviewiDDoesntExistException("Review iD that was provided does not exist ! ");
             }
-            return dsl.select(Review.REVIEW.USERID).from(Review.REVIEW).where(Review.REVIEW.RATING_ID.eq(reviewId)).fetchOne(Review.REVIEW.USERID);
+            return dsl.select(Review.REVIEW.USERID).from(Review.REVIEW).where(
+                    Review.REVIEW.RATING_ID.eq(reviewId)).fetchOne(Review.REVIEW.USERID);
         }
     }
+
     /**
      * Method getAllReviews displays all reviews in the database
      */
@@ -584,13 +591,43 @@ public class DBConnection {
     }
 
 
-    public List<MealsRecord> sortMeals() {
+    public List<MealsRecord> sortMealsByPrice() throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
-            return dsl.selectFrom(Meals.MEALS).orderBy(Meals.MEALS.NAME.asc()).fetchInto(MealsRecord.class);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
+            return dsl.selectFrom(Meals.MEALS)
+                    .orderBy(Meals.MEALS.PRICE.asc())
+                    .fetchInto(MealsRecord.class);
+        }
+    }
+
+    public List<MealsRecord> sortMealsByRating() throws SQLException {
+        return null;
+    }
+
+    public List<MealsRecord> sortMealsByName() throws SQLException {
+        try (Connection connection = dataSource.getConnection()) {
+            DSLContext dsl = getDSLContext(connection);
+            return dsl.selectFrom(Meals.MEALS)
+                    .orderBy(Meals.MEALS.NAME.asc())
+                    .fetchInto(MealsRecord.class);
+        }
+    }
+
+    public List<MealsRecord> sortMealsByCalories() throws SQLException {
+        try (Connection connection = dataSource.getConnection()) {
+            DSLContext dsl = getDSLContext(connection);
+            return dsl.selectFrom(Meals.MEALS)
+                    .orderBy(Meals.MEALS.CALORIES.asc())
+                    .fetchInto(MealsRecord.class);
+        }
+    }
+
+    public List<MealsRecord> sortMealsByAllergy() throws SQLException {
+        try (Connection connection = dataSource.getConnection()) {
+            DSLContext dsl = getDSLContext(connection);
+            return dsl.selectFrom(Meals.MEALS)
+                    .orderBy(Meals.MEALS.ALLERGY.asc())
+                    .fetchInto(MealsRecord.class);
         }
     }
 }

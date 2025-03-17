@@ -369,6 +369,11 @@ public class ScreenManager {
         tableBuilder.display();
     }
 
+    /**
+     * Displays the sort meal screen with various sorting options.
+     * This method creates a menu with buttons for sorting meals by different criteria such as price, median rating, name, allergies, and calories.
+     * It also includes a button to return to the main menu.
+     */
     public void showSortMealScreen() {
         List<MenuBuilder.MenuButton> sortMealButtons = Arrays.asList(
                 new MenuBuilder.MenuButton("Sort by Price", "sortMealByPrice"),
@@ -444,12 +449,14 @@ public class ScreenManager {
                 .addColumn("ID")
                 .addColumn("Username")
                 .addColumn("Email")
-                .addColumn("Role");
+                .addColumn("Role")
+                .addColumn("Allergies");
         for (UsersRecord user : users) {
             tableBuilder.addRow(Arrays.asList(String.valueOf(user.getUserid()),
                     user.getUsername(),
                     user.getEmail(),
-                    String.valueOf(user.getRole())));
+                    String.valueOf(user.getRole()),
+                    user.getDontShowMeal()));
         }
         tableBuilder.display();
     }
