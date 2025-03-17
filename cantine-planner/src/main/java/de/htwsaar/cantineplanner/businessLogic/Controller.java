@@ -79,6 +79,7 @@ public class Controller {
 
         // Meal-bezogene Events
         eventManager.subscribe("showAllMeals", this::handleShowAllMeals);
+        eventManager.subscribe("showSortMeals", (data) -> screenManager.showSortMealScreen());
         eventManager.subscribe("showAllAllergies", this::handleShowAllAllergies);
         eventManager.subscribe("showAddMeal", (data) -> screenManager.showAddMealScreen());
         eventManager.subscribe("showDeleteMeal", (data) -> screenManager.showDeleteMealScreen());
@@ -468,6 +469,10 @@ public class Controller {
         } catch (SQLException e) {
             screenManager.showErrorScreen("There was an error while fetching all meals please try again!");
         }
+    }
+
+    private void handleShowSortMeals(Object data) {
+
     }
 
     /**

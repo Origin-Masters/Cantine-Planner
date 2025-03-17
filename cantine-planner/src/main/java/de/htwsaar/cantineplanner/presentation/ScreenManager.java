@@ -82,6 +82,7 @@ public class ScreenManager {
         List<MenuBuilder.MenuButton> mealMenuButtons = new ArrayList<>(
                 Arrays.asList(
                         new MenuBuilder.MenuButton("All Meal", "showAllMeals"),
+                        new MenuBuilder.MenuButton("Sort Meal", "showSortMeals"),
                         new MenuBuilder.MenuButton("Allergies in Meals", "showAllAllergies"),
                         new MenuBuilder.MenuButton("Search Meal by Name", "showSearchMealByName"),
                         new MenuBuilder.MenuButton("Search Meal by ID", "showMealDetailsById")
@@ -366,6 +367,22 @@ public class ScreenManager {
                     medianRating == -1 ? "No Reviews" : String.format("%.2f", medianRating)));
         }
         tableBuilder.display();
+    }
+
+    public void showSortMealScreen() {
+        List<MenuBuilder.MenuButton> sortMealButtons = Arrays.asList(
+                new MenuBuilder.MenuButton("Sort by Price", "sortMealByPrice"),
+                new MenuBuilder.MenuButton("Sort by Median Rating", "sortMealByRating"),
+                new MenuBuilder.MenuButton("Sort by Name", "sortMealByName"),
+                new MenuBuilder.MenuButton("Sort by Allergies", "sortMealByAllergies"),
+                new MenuBuilder.MenuButton("Sort by Calories", "sortMealByCalories"),
+
+                new MenuBuilder.MenuButton("Main Menu", "showMainMenu")
+        );
+        MenuBuilder sortMeal = new MenuBuilder(gui, eventManager)
+                .setTitle("Sort Meal")
+                .setButtons(sortMealButtons);
+        sortMeal.display();
     }
 
     /**

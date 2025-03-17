@@ -584,4 +584,13 @@ public class DBConnection {
     }
 
 
+    public List<MealsRecord> sortMeals() {
+        try (Connection connection = dataSource.getConnection()) {
+            DSLContext dsl = getDSLContext(connection);
+            return dsl.selectFrom(Meals.MEALS).orderBy(Meals.MEALS.NAME.asc()).fetchInto(MealsRecord.class);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

@@ -385,4 +385,10 @@ public class CantineService {
     public boolean isAdmin(int currentUserId) throws SQLException, UseriDDoesntExcistException {
         return dbConnection.isAdmin(currentUserId);
     }
+
+
+
+    public List<MealsRecord> sortMeals() {
+        return dbConnection.sortMeals();
+    }
 }
