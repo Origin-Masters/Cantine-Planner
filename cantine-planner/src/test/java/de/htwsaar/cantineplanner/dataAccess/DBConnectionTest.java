@@ -380,5 +380,26 @@ public class DBConnectionTest {
         });
 
     }
+
+    @Test
+    void sortMealsByPrice() {
+    }
+
+    @Test
+    void sortMealsByRating() {
+    }
+
+    @Test
+    void sortMealsByName() {
+    }
+
+    @Test
+    void sortMealsByCalories() {
+    }
+
+    @Test
+    void sortMealsByAllergy() {
+    }
+
 }
 

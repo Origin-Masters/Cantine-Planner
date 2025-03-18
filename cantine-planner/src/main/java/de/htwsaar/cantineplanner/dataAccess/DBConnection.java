@@ -16,7 +16,9 @@ import org.jooq.impl.DSL;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class DBConnection {
@@ -601,7 +603,26 @@ public class DBConnection {
     }
 
     public List<MealsRecord> sortMealsByRating() throws SQLException {
-        return null;
+        try (Connection connection = dataSource.getConnection()) {
+            DSLContext dsl = getDSLContext(connection);
+
+            // Fetch all meals
+            List<MealsRecord> meals = dsl.selectFrom(Meals.MEALS).fetchInto(MealsRecord.class);
+
+            // Calculate average rating for each meal
+            Map<Integer, Double> mealRatings = new HashMap<>();
+            for (MealsRecord record : meals) {
+                Double AverageRating = dsl.select(DSL.avg(Review.REVIEW.RATING))
+                        .from(Review.REVIEW)
+                        .where(Review.REVIEW.MEAL_ID.eq(record.getMealId()))
+                        .fetchOne(0, Double.class);
+                mealRatings.put(record.getMealId(), AverageRating != null ? AverageRating : 0.0);
+            }
+
+            // Sort meals by calculated rating
+            meals.sort((m1, m2) -> Double.compare(mealRatings.get(m2.getMealId()), mealRatings.get(m1.getMealId())));
+            return meals;
+        }
     }
 
     public List<MealsRecord> sortMealsByName() throws SQLException {
