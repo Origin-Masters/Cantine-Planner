@@ -2,6 +2,7 @@ package de.htwsaar.cantineplanner.businessLogic.controller;
 
 import de.htwsaar.cantineplanner.businessLogic.CantineService;
 import de.htwsaar.cantineplanner.businessLogic.EventManager;
+import de.htwsaar.cantineplanner.codegen.tables.Review;
 import de.htwsaar.cantineplanner.exceptions.UserDoesntExistException;
 import de.htwsaar.cantineplanner.presentation.ScreenManager;
 
@@ -10,11 +11,24 @@ import java.sql.SQLException;
 public class MainController extends AbstractController {
     private int currentMenu;
     private boolean running;
+
+    MealController mealController;
+    ReviewController reviewController;
+    UserController userController;
+    WeeklyController weeklyController;
+
+
     public MainController(ScreenManager screenManager,
                           CantineService cantineService,
                           EventManager eventManager,
-                          int currentUserId) {
+                          int currentUserId,
+                          MealController mealController,
+                          ReviewController reviewController,
+                          UserController userController,
+                          WeeklyController weeklyController) {
+
         super(screenManager, cantineService, eventManager, currentUserId);
+
     }
 
     @Override
