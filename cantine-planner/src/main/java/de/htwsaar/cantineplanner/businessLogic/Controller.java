@@ -83,7 +83,7 @@ public class Controller {
         eventManager.subscribe("sortMealByPrice", this::handleSortMealByPrice);
         eventManager.subscribe("sortMealByRating", this::handleSortMealByRating);
         eventManager.subscribe("sortMealByName", this::handleSortMealByName);
-        eventManager.subscribe("sortMealByAllergy", this::handleSortMealByAllergy);
+        eventManager.subscribe("sortMealByAllergies", this::handleSortMealByAllergy);
         eventManager.subscribe("sortMealByCalories", this::handleSortMealByCalories);
 
         eventManager.subscribe("showAllAllergies", this::handleShowAllAllergies);
@@ -477,7 +477,7 @@ public class Controller {
         }
     }
 
-    private void handleSortMealByPrice(Object o) {
+    private void handleSortMealByPrice(Object data) {
         try{
             List<MealsRecord> meals = cantineService.sortMealsByPrice();
             screenManager.showAllMeals(meals);
@@ -486,7 +486,7 @@ public class Controller {
         }
     }
 
-    private void handleSortMealByRating(Object o) {
+    private void handleSortMealByRating(Object data) {
         try{
             List<MealsRecord> meals = cantineService.sortMealsByRating();
             screenManager.showAllMeals(meals);
@@ -495,7 +495,7 @@ public class Controller {
         }
     }
 
-    private void handleSortMealByName(Object o) {
+    private void handleSortMealByName(Object data) {
         try{
             List<MealsRecord> meals = cantineService.sortMealsByName();
             screenManager.showAllMeals(meals);
@@ -504,7 +504,7 @@ public class Controller {
         }
     }
 
-    private void handleSortMealByCalories(Object o) {
+    private void handleSortMealByCalories(Object data) {
         try{
             List<MealsRecord> meals = cantineService.sortMealsByCalories();
             screenManager.showAllMeals(meals);
@@ -513,9 +513,9 @@ public class Controller {
         }
     }
 
-    private void handleSortMealByAllergy(Object o) {
+    private void handleSortMealByAllergy(Object data) {
         try{
-            List<MealsRecord> meals = cantineService.sortMealsByAllergy();
+            List<MealsRecord> meals = cantineService.sortMealsByAllergy(currentUserId);
             screenManager.showAllMeals(meals);
         } catch (SQLException e) {
             screenManager.showErrorScreen("There was an error while sorting meals by allergy please try again!");

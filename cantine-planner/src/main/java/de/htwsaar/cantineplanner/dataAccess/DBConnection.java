@@ -16,9 +16,11 @@ import org.jooq.impl.DSL;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 public class DBConnection {
@@ -643,12 +645,60 @@ public class DBConnection {
         }
     }
 
-    public List<MealsRecord> sortMealsByAllergy() throws SQLException {
+    /**
+     * Sorts meals by excluding those that contain the user's allergies.
+     *
+     * @param userId the ID of the user
+     * @return a list of meals excluding those with the user's allergies
+     * @throws SQLException             if a database access error occurs
+     * @throws UserDoesntExistException if the user with the given ID doesn't exist
+     */
+    public List<MealsRecord> sortMealsByAllergy(int userId) throws SQLException, UserDoesntExistException {
+        List<String> userAllergies = getUserAllergies(userId);
+
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
-            return dsl.selectFrom(Meals.MEALS)
-                    .orderBy(Meals.MEALS.ALLERGY.asc())
-                    .fetchInto(MealsRecord.class);
+
+            // Fetch all meals
+            List<MealsRecord> meals = dsl.selectFrom(Meals.MEALS).fetchInto(MealsRecord.class);
+
+            // Filter out meals that contain user's allergies
+            return meals.stream()
+                    .filter(meal -> {
+                        String[] mealAllergies = meal.getAllergy().split(",");
+                        for (String allergy : mealAllergies) {
+                            if (userAllergies.contains(allergy.trim())) {
+                                return false;
+                            }
+                        }
+                        return true;
+                    })
+                    .collect(Collectors.toList());
+        }
+    }
+
+    /**
+     * Retrieves the allergy settings for a user by user ID.
+     *
+     * @param userId the ID of the user
+     * @return a list of allergies
+     * @throws SQLException             if a database access error occurs
+     * @throws UserDoesntExistException if the user with the given ID doesn't exist
+     */
+    private List<String> getUserAllergies(int userId) throws SQLException, UserDoesntExistException {
+        try (Connection connection = dataSource.getConnection()) {
+            DSLContext dsl = getDSLContext(connection);
+
+            UsersRecord user = dsl.selectFrom(Users.USERS)
+                    .where(Users.USERS.USERID.eq(userId))
+                    .fetchOne();
+
+            if (user == null) {
+                throw new UserDoesntExistException("The user with the given UserId doesn't exist!");
+            }
+
+            String allergies = user.getDontShowMeal();
+            return Arrays.asList(allergies.split(","));
         }
     }
 }

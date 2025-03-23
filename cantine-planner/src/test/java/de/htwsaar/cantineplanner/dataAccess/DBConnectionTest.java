@@ -401,5 +401,8 @@ public class DBConnectionTest {
     void sortMealsByAllergy() {
     }
 
+    @Test
+    void testSortMealsByAllergy() {
+    }
 }
 

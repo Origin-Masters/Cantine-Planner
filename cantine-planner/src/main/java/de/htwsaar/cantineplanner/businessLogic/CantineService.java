@@ -403,8 +403,9 @@ public class CantineService {
         return dbConnection.sortMealsByCalories();
     }
 
-    public List<MealsRecord> sortMealsByAllergy() throws SQLException {
-        return dbConnection.sortMealsByAllergy();
+    public List<MealsRecord> sortMealsByAllergy(int currentUserId) throws SQLException {
+        return dbConnection.sortMealsByAllergy(currentUserId);
     }
+
 
 }
