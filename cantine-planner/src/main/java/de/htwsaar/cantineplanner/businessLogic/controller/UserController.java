@@ -9,6 +9,7 @@ import de.htwsaar.cantineplanner.exceptions.UserDoesntExistException;
 import de.htwsaar.cantineplanner.exceptions.UserNotValidatedException;
 import de.htwsaar.cantineplanner.exceptions.UseriDDoesntExcistException;
 import de.htwsaar.cantineplanner.presentation.ScreenManager;
+import org.jooq.User;
 
 import java.sql.SQLException;
 import java.util.Arrays;
@@ -16,11 +17,15 @@ import java.util.List;
 import java.util.Objects;
 
 public class UserController extends AbstractController {
+    private int currentUserId;
     public UserController(ScreenManager screenManager,
                           CantineService cantineService,
                           EventManager eventManager,
-                          int currentUserId) {
-        super(screenManager, cantineService, eventManager, currentUserId);
+                          UsersRecord userRecord) {
+        super(screenManager, cantineService, eventManager, userRecord);
+        this.subscribeToEvents();
+
+        currentUserId = userRecord.getUserid();
     }
 
     @Override
@@ -42,6 +47,17 @@ public class UserController extends AbstractController {
         eventManager.subscribe("updateUserRole", this::handleUpdateUserRole);
 
     }
+
+    public void showUserMenu(int currentUserId) {
+        try {
+            screenManager.showUserMenuScreen(cantineService.isAdmin(currentUserId));
+        } catch (SQLException | UserDoesntExistException e) {
+            screenManager.showErrorScreen("There was an error while validating the user. Try again!");
+        }
+    }
+
+
+
 
     /**
      * Handles user data editing after verifying current password.

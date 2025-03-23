@@ -3,6 +3,7 @@ package de.htwsaar.cantineplanner.businessLogic.controller;
 import de.htwsaar.cantineplanner.businessLogic.CantineService;
 import de.htwsaar.cantineplanner.businessLogic.EventManager;
 import de.htwsaar.cantineplanner.codegen.tables.records.ReviewRecord;
+import de.htwsaar.cantineplanner.codegen.tables.records.UsersRecord;
 import de.htwsaar.cantineplanner.exceptions.MealDoesntExistException;
 import de.htwsaar.cantineplanner.exceptions.ReviewiDDoesntExistException;
 import de.htwsaar.cantineplanner.presentation.ScreenManager;
@@ -11,11 +12,16 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class ReviewController extends AbstractController {
+
+    private int currentUserId;
     public ReviewController(ScreenManager screenManager,
                             CantineService cantineService,
                             EventManager eventManager,
-                            int currentUserId) {
-        super(screenManager, cantineService, eventManager, currentUserId);
+                            UsersRecord userRecord) {
+        super(screenManager, cantineService, eventManager, userRecord);
+        this.subscribeToEvents();
+
+        currentUserId = userRecord.getUserid();
     }
 
     @Override
@@ -30,6 +36,11 @@ public class ReviewController extends AbstractController {
         eventManager.subscribe("showSearchReviewsByMealName", (data) -> screenManager.showSearchReviewsByMealName());
         eventManager.subscribe("searchReviewsByMealName", this::handleSearchReviewsByMealName);
 
+
+    }
+
+    public void showReviewMenu() {
+        screenManager.showReviewsMenu();
     }
 
     /**

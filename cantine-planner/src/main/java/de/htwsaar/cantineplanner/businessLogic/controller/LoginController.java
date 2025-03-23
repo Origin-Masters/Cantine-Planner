@@ -2,6 +2,7 @@ package de.htwsaar.cantineplanner.businessLogic.controller;
 
 import de.htwsaar.cantineplanner.businessLogic.CantineService;
 import de.htwsaar.cantineplanner.businessLogic.EventManager;
+import de.htwsaar.cantineplanner.codegen.tables.records.UsersRecord;
 import de.htwsaar.cantineplanner.exceptions.InvalidEmailTypeException;
 import de.htwsaar.cantineplanner.exceptions.UserAlreadyExistsException;
 import de.htwsaar.cantineplanner.exceptions.UserNotValidatedException;
@@ -11,14 +12,19 @@ import java.sql.SQLException;
 import java.util.Objects;
 
 public class LoginController extends AbstractController {
+
+    private int currentUserId;
     public LoginController(ScreenManager screenManager,
                           CantineService cantineService,
                           EventManager eventManager,
-                           int currentUserId ) {
-        super(screenManager, cantineService, eventManager, currentUserId);
+                           UsersRecord userRecord ) {
+        super(screenManager, cantineService, eventManager, userRecord);
+        this.subscribeToEvents();
+        this.currentUserId = userRecord.getUserid();
     }
     @Override
     protected void subscribeToEvents() {
+
         // User-Authentifizierung und Registrierung
         eventManager.subscribe("login", this::handleLogin);
         eventManager.subscribe("register", this::handleRegister);

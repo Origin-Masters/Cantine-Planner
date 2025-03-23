@@ -3,6 +3,7 @@ package de.htwsaar.cantineplanner.businessLogic.controller;
 import de.htwsaar.cantineplanner.businessLogic.CantineService;
 import de.htwsaar.cantineplanner.businessLogic.EventManager;
 import de.htwsaar.cantineplanner.codegen.tables.records.MealsRecord;
+import de.htwsaar.cantineplanner.codegen.tables.records.UsersRecord;
 import de.htwsaar.cantineplanner.exceptions.MealDoesntExistException;
 import de.htwsaar.cantineplanner.presentation.ScreenManager;
 
@@ -14,10 +15,11 @@ public class WeeklyController extends AbstractController {
     public WeeklyController(ScreenManager screenManager,
                             CantineService cantineService,
                             EventManager eventManager,
-                            int currentUserId) {
+                            UsersRecord userRecord) {
 
 
-        super(screenManager, cantineService, eventManager, currentUserId);
+        super(screenManager, cantineService, eventManager, userRecord);
+        this.subscribeToEvents();
     }
 
     @Override
@@ -37,6 +39,14 @@ public class WeeklyController extends AbstractController {
         eventManager.subscribe("editWeeklyPlanFriday", (data) -> screenManager.showEditWeeklyPlanFriday());
         eventManager.subscribe("editWeeklyPlanFridaySubmit", this::handleEditWeeklyPlanFriday);
 
+    }
+
+    public void showWeeklyMenu(int currentUserId) {
+        try {
+            screenManager.showWeeklyMenuScreen(cantineService.isAdmin(currentUserId));
+        } catch (SQLException e) {
+            screenManager.showErrorScreen("There was an error while validating the user. Try again!");
+        }
     }
 
     /**

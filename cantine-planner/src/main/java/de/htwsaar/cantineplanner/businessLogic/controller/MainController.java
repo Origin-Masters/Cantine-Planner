@@ -3,6 +3,7 @@ package de.htwsaar.cantineplanner.businessLogic.controller;
 import de.htwsaar.cantineplanner.businessLogic.CantineService;
 import de.htwsaar.cantineplanner.businessLogic.EventManager;
 import de.htwsaar.cantineplanner.codegen.tables.Review;
+import de.htwsaar.cantineplanner.codegen.tables.records.UsersRecord;
 import de.htwsaar.cantineplanner.exceptions.UserDoesntExistException;
 import de.htwsaar.cantineplanner.presentation.ScreenManager;
 
@@ -12,23 +13,30 @@ public class MainController extends AbstractController {
     private int currentMenu;
     private boolean running;
 
-    MealController mealController;
-    ReviewController reviewController;
-    UserController userController;
-    WeeklyController weeklyController;
+    private MealController mealController;
+    private ReviewController reviewController;
+    private UserController userController;
+    private WeeklyController weeklyController;
+    private LoginController loginController;
+
+    private int currentUserId;
 
 
     public MainController(ScreenManager screenManager,
                           CantineService cantineService,
                           EventManager eventManager,
-                          int currentUserId,
-                          MealController mealController,
-                          ReviewController reviewController,
-                          UserController userController,
-                          WeeklyController weeklyController) {
+                          UsersRecord userRecord) {
 
-        super(screenManager, cantineService, eventManager, currentUserId);
+        super(screenManager, cantineService, eventManager, userRecord);
+        this.mealController = new MealController(screenManager, cantineService, eventManager, userRecord);
+        this.reviewController = new ReviewController(screenManager, cantineService, eventManager, userRecord);
+        this.userController = new UserController(screenManager, cantineService, eventManager, userRecord);
+        this.weeklyController = new WeeklyController(screenManager, cantineService, eventManager, userRecord);
+        this.loginController = new LoginController(screenManager, cantineService, eventManager, userRecord);
 
+        this.currentUserId = userRecord.getUserid();
+
+        subscribeToEvents();
     }
 
     @Override
@@ -115,18 +123,14 @@ public class MainController extends AbstractController {
      * </p>
      */
     private void mealMenu()  {
-        try{
-            screenManager.showMealMenuScreen(cantineService.isAdmin(currentUserId));
-        } catch (SQLException | UserDoesntExistException e) {
-            screenManager.showErrorScreen("There was an error while validating the user try again!");
-        }
+     mealController.showMealMenu(currentUserId);
     }
 
     /**
      * Displays the review menu screen.
      */
     private void reviewMenu() {
-        screenManager.showReviewsMenu();
+        reviewController.showReviewMenu();
     }
 
     /**
@@ -136,11 +140,8 @@ public class MainController extends AbstractController {
      * </p>
      */
     private void userMenu() {
-        try{
-            screenManager.showUserMenuScreen(cantineService.isAdmin(currentUserId));
-        } catch (SQLException | UserDoesntExistException e) {
-            screenManager.showErrorScreen("There was an error while validating the user try again!");
-        }
+
+        userController.showUserMenu(currentUserId);
     }
 
     /**
@@ -150,11 +151,8 @@ public class MainController extends AbstractController {
      * </p>
      */
     private void weeklyMenu() {
-        try {
-            screenManager.showWeeklyMenuScreen(cantineService.isAdmin(currentUserId));
-        } catch (SQLException e) {
-            screenManager.showErrorScreen("There was an error while validating the user try again!");
-        }
+
+        weeklyController.showWeeklyMenu(currentUserId);
     }
 
     /**

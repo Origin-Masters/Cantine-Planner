@@ -3,10 +3,10 @@ package de.htwsaar.cantineplanner.businessLogic.controller;
 import de.htwsaar.cantineplanner.businessLogic.CantineService;
 import de.htwsaar.cantineplanner.businessLogic.EventManager;
 import de.htwsaar.cantineplanner.codegen.tables.records.MealsRecord;
-import de.htwsaar.cantineplanner.exceptions.MealAlreadyExistsException;
-import de.htwsaar.cantineplanner.exceptions.MealDoesntExistException;
-import de.htwsaar.cantineplanner.exceptions.MealiDNotFoundException;
+import de.htwsaar.cantineplanner.codegen.tables.records.UsersRecord;
+import de.htwsaar.cantineplanner.exceptions.*;
 import de.htwsaar.cantineplanner.presentation.ScreenManager;
+import org.jooq.User;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -18,12 +18,14 @@ public class MealController extends AbstractController{
 
     public MealController(ScreenManager screenManager,
                           CantineService cantineService,
-                          EventManager eventManager, int currentUserId ) {
+                          EventManager eventManager,
+                          UsersRecord userRecord) {
 
 
 
 
-        super(screenManager, cantineService, eventManager, currentUserId);
+        super(screenManager, cantineService, eventManager, userRecord);
+        this.subscribeToEvents();
     }
 
     @Override
@@ -43,6 +45,22 @@ public class MealController extends AbstractController{
         eventManager.subscribe("editMeal", this::handleEditMeal);
 
     }
+
+    public void showMealMenu(int currentUserId) {
+        try {
+            if (cantineService.isAdmin(currentUserId)) {
+                screenManager.showMealMenuScreen(cantineService.isAdmin(currentUserId));
+            } else {
+                screenManager.showErrorScreen("You do not have the necessary permissions to access the meal menu.");
+            }
+        } catch (UseriDDoesntExcistException e) {
+            screenManager.showErrorScreen("The user with the given username doesn't exist!");
+        } catch (SQLException e) {
+            screenManager.showErrorScreen("There was an error while accessing the meal menu, please try again!");
+        }
+    }
+
+
 
     /**
      * Handles editing a meal.
