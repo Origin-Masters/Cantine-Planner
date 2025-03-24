@@ -13,7 +13,7 @@ import java.util.List;
 
 public class ReviewController extends AbstractController {
 
-    private int currentUserId;
+    private final int currentUserId;
     public ReviewController(ScreenManager screenManager,
                             CantineService cantineService,
                             EventManager eventManager,

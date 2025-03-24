@@ -4,10 +4,11 @@ import com.googlecode.lanterna.gui2.*;
 import com.googlecode.lanterna.TextColor;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class NotificationScreenBuilder extends AbstractScreen {
-    private String notificationMessage;
-    private TextColor textColor;
+    private final String notificationMessage;
+    private final TextColor textColor;
 
     public NotificationScreenBuilder(MultiWindowTextGUI gui, String notificationMessage, TextColor textColor) {
         super(gui);
@@ -33,7 +34,7 @@ public class NotificationScreenBuilder extends AbstractScreen {
 
         BasicWindow window = new BasicWindow("Notification");
         window.setComponent(panel);
-        window.setHints(Arrays.asList(Window.Hint.CENTERED));
+        window.setHints(List.of(Window.Hint.CENTERED));
 
         gui.addWindowAndWait(window);
     }

@@ -50,7 +50,7 @@ TableBuilder {
 
         BasicWindow window = new BasicWindow(title);
         window.setComponent(panel);
-        window.setHints(Arrays.asList(Window.Hint.CENTERED));
+        window.setHints(List.of(Window.Hint.CENTERED));
 
         gui.addWindowAndWait(window);
     }

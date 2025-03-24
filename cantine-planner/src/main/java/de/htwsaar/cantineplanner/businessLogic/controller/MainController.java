@@ -13,11 +13,11 @@ public class MainController extends AbstractController {
     private int currentMenu;
     private boolean running;
 
-    private MealController mealController;
-    private ReviewController reviewController;
-    private UserController userController;
-    private WeeklyController weeklyController;
-    private LoginController loginController;
+    private final MealController mealController;
+    private final ReviewController reviewController;
+    private final UserController userController;
+    private final WeeklyController weeklyController;
+    private final LoginController loginController;
 
     private int currentUserId;
 

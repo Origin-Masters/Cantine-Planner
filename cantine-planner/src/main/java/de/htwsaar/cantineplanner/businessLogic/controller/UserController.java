@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class UserController extends AbstractController {
-    private int currentUserId;
+    private final int currentUserId;
     public UserController(ScreenManager screenManager,
                           CantineService cantineService,
                           EventManager eventManager,

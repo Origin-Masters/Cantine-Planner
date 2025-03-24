@@ -7,6 +7,7 @@ import com.googlecode.lanterna.SGR;
 import de.htwsaar.cantineplanner.businessLogic.EventManager;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class LoginScreen extends AbstractScreen {
     private final EventManager eventManager;
@@ -57,7 +58,7 @@ public class LoginScreen extends AbstractScreen {
 
         BasicWindow window = new BasicWindow("Login");
         window.setComponent(panel);
-        window.setHints(Arrays.asList(Window.Hint.CENTERED));
+        window.setHints(List.of(Window.Hint.CENTERED));
 
         gui.addWindowAndWait(window);
     }

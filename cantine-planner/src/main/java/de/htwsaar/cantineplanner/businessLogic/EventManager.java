@@ -12,7 +12,7 @@ import java.util.function.Consumer;
  * und diese bei Bedarf aufzurufen.
  */
 public class EventManager {
-    private Map<String, List<Consumer<Object>>> listeners = new HashMap<>();
+    private final Map<String, List<Consumer<Object>>> listeners = new HashMap<>();
 
     public void subscribe(String eventType, Consumer<Object> listener) {
         listeners.computeIfAbsent(eventType, k -> new ArrayList<>()).add(listener);

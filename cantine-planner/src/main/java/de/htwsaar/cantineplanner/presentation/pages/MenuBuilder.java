@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 public class MenuBuilder {
-    private MultiWindowTextGUI gui;
-    private EventManager eventManager;
+    private final MultiWindowTextGUI gui;
+    private final EventManager eventManager;
     private String title;
     private List<MenuButton> buttons;
     public MenuBuilder(MultiWindowTextGUI gui, EventManager eventManager) {
@@ -45,13 +45,13 @@ public class MenuBuilder {
         }
         BasicWindow window = new BasicWindow(title);
         window.setComponent(panel);
-        window.setHints(Arrays.asList(Window.Hint.CENTERED));
+        window.setHints(List.of(Window.Hint.CENTERED));
         gui.addWindowAndWait(window);
     }
     // Öffentliche statische Klasse für Buttons
     public static class MenuButton {
-        private String label;
-        private String event;
+        private final String label;
+        private final String event;
         public MenuButton(String label, String event) {
             this.label = label;
             this.event = event;

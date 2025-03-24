@@ -13,13 +13,18 @@ public class App {
     public static void main(String[] args) {
         DataBaseUtil.loadInitialDataBase("./database/database.db");
 
-        /*
+
         String PATH_TO_PROPERTIES = "hikari.properties";
 
         EventManager eventManager = new EventManager();
         CantineService cantineService = new CantineService(PATH_TO_PROPERTIES);
         ScreenManager screenManager = new ScreenManager(eventManager, cantineService);
-       ;
+
+        UsersRecord newUser = new UsersRecord();
+        newUser.setUsername("admin");
+        newUser.setPassword("admin");
+        newUser.setEmail("admin@htwsaar.de");
+
 
         // Instantiate and start the MainController:
         MainController mainController = new MainController(
@@ -30,10 +35,10 @@ public class App {
         );
 
         mainController.start();
-         */
 
-        Controller controller = new Controller();
-        controller.start();
+
+       // Controller controller = new Controller();
+       // controller.start();
 
 
 

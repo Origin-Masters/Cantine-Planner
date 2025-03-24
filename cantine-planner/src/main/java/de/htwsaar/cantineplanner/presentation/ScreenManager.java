@@ -148,7 +148,7 @@ public class ScreenManager {
      */
     public void showWeeklyMenuScreen(boolean isAdmin) {
         List<MenuBuilder.MenuButton> weeklyMenuButtons = new ArrayList<>(
-                Arrays.asList(
+                List.of(
                         new MenuBuilder.MenuButton("Weekly Plan", "showWeeklyPlan")
                 ));
         if (isAdmin) {
@@ -196,7 +196,7 @@ public class ScreenManager {
      */
     public void showEditUserDataScreen() {
         InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Edit User Data");
-        List<String> labels = Arrays.asList("Current Password");
+        List<String> labels = List.of("Current Password");
         inputScreenBuilder.display(labels, "editUserData");
     }
 
@@ -527,7 +527,7 @@ public class ScreenManager {
      */
     public void showEditWeeklyPlanTuesday() {
         InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Edit Tuesday");
-        List<String> labels = Arrays.asList("Meal Name");
+        List<String> labels = List.of("Meal Name");
         inputScreenBuilder.display(labels, "editWeeklyPlanTuesdaySubmit");
     }
 
@@ -536,7 +536,7 @@ public class ScreenManager {
      */
     public void showEditWeeklyPlanWednesday() {
         InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Edit Wednesday");
-        List<String> labels = Arrays.asList("Meal Name");
+        List<String> labels = List.of("Meal Name");
         inputScreenBuilder.display(labels, "editWeeklyPlanWednesdaySubmit");
     }
 
@@ -545,7 +545,7 @@ public class ScreenManager {
      */
     public void showEditWeeklyPlanThursday() {
         InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Edit Thursday");
-        List<String> labels = Arrays.asList("Meal Name");
+        List<String> labels = List.of("Meal Name");
         inputScreenBuilder.display(labels, "editWeeklyPlanThursdaySubmit");
     }
 
@@ -554,7 +554,7 @@ public class ScreenManager {
      */
     public void showEditWeeklyPlanFriday() {
         InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Edit Friday");
-        List<String> labels = Arrays.asList("Meal Name");
+        List<String> labels = List.of("Meal Name");
         inputScreenBuilder.display(labels, "editWeeklyPlanFridaySubmit");
     }
 
