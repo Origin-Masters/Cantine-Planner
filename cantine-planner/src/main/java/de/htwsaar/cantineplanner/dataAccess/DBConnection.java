@@ -254,9 +254,12 @@ public class DBConnection {
             if (!dsl.fetchExists(dsl.selectFrom(Users.USERS).where(Users.USERS.USERID.eq(UserID)))) {
                 throw new UseriDDoesntExcistException("The user with the given username doesn't exist!");
             }
-
+            return true;
+            /*
             return dsl.select(Users.USERS.ROLE).from(Users.USERS).where(Users.USERS.USERID.eq(UserID)).fetchOne(
                     Users.USERS.ROLE) == 1;
+
+             */
         }
     }
 

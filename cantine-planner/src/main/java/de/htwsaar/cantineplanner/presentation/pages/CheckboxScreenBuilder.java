@@ -4,6 +4,8 @@ import com.googlecode.lanterna.SGR;
 import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.gui2.*;
 import de.htwsaar.cantineplanner.businessLogic.EventManager;
+import de.htwsaar.cantineplanner.businessLogic.controller.eventdata.AllergeneSettingsData;
+import de.htwsaar.cantineplanner.businessLogic.controller.eventdata.EventType;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,7 +32,7 @@ public class CheckboxScreenBuilder {
     }
 
     // Methode zur Anzeige des Panels mit einer Liste von Labels
-    public void display(List<String> labels, String event) {
+    public void display(List<String> labels, EventType eventType) {
         Panel panel = new Panel(new GridLayout(1));
         GridLayout gridLayout = (GridLayout) panel.getLayoutManager();
         gridLayout.setHorizontalSpacing(2);
@@ -52,7 +54,7 @@ public class CheckboxScreenBuilder {
                 }
             }
             String result = String.join(",", selectedValues);
-            eventManager.notify(event, new String[]{result});
+            eventManager.notify(eventType, new AllergeneSettingsData(new String[]{result}));
         }));
 
         panel.addComponent(buttonPanel);

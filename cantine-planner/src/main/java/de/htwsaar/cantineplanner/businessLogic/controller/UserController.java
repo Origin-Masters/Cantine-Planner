@@ -2,6 +2,10 @@ package de.htwsaar.cantineplanner.businessLogic.controller;
 
 import de.htwsaar.cantineplanner.businessLogic.CantineService;
 import de.htwsaar.cantineplanner.businessLogic.EventManager;
+import de.htwsaar.cantineplanner.businessLogic.controller.eventdata.ArrayListData;
+import de.htwsaar.cantineplanner.businessLogic.controller.eventdata.EventType;
+import de.htwsaar.cantineplanner.businessLogic.controller.eventdata.IntData;
+import de.htwsaar.cantineplanner.businessLogic.controller.eventdata.StringArrayData;
 import de.htwsaar.cantineplanner.codegen.tables.records.ReviewRecord;
 import de.htwsaar.cantineplanner.codegen.tables.records.UsersRecord;
 import de.htwsaar.cantineplanner.exceptions.InvalidEmailTypeException;
@@ -27,19 +31,19 @@ public class UserController extends AbstractController {
     @Override
     protected void subscribeToEvents() {
         // User-bezogene Events
-        eventManager.subscribe("showEditUserData", (data) -> screenManager.showEditUserDataScreen());
-        eventManager.subscribe("editUserData", this::handleEditUserData);
-        eventManager.subscribe("showEditNewUserData", (data) -> screenManager.showEditNewUserDataScreen());
-        eventManager.subscribe("editNewUserData", this::handleInputNewUserData);
-        eventManager.subscribe("showReviewsByUser", this::handleShowReviewsByUser);
-        eventManager.subscribe("showAdminMenu", this::handleShowAdminMenu);
-        eventManager.subscribe("showAllergenSettings", (data) -> screenManager.showAllergeneSettings());
-        eventManager.subscribe("allergeneSettings", this::handleAllergeneSettings);
-        eventManager.subscribe("showAllUsers", this::handleAllUser);
-        eventManager.subscribe("showDeleteUser", (data) -> screenManager.showDeleteUserScreen());
-        eventManager.subscribe("deleteUser", this::handleDeleteUser);
-        eventManager.subscribe("showUpdateUserRole", (data) -> screenManager.showUpdateUserRoleScreen());
-        eventManager.subscribe("updateUserRole", this::handleUpdateUserRole);
+        eventManager.subscribe(EventType.SHOW_EDIT_USER_DATA, (data) -> screenManager.showEditUserDataScreen());
+        eventManager.subscribe(EventType.EDIT_USER_DATA, this::handleEditUserData);
+        eventManager.subscribe(EventType.SHOW_EDIT_NEW_USER_DATA, (data) -> screenManager.showEditNewUserDataScreen());
+        eventManager.subscribe(EventType.EDIT_NEW_USER_DATA, (data) -> handleInputNewUserData((StringArrayData) data));
+        eventManager.subscribe(EventType.SHOW_REVIEWS_BY_USER, this::handleShowReviewsByUser);
+        eventManager.subscribe(EventType.SHOW_ADMIN_MENU, this::handleShowAdminMenu);
+        eventManager.subscribe(EventType.SHOW_ALLERGEN_SETTINGS, (data) -> screenManager.showAllergeneSettings());
+        eventManager.subscribe(EventType.ALLERGEN_SETTINGS, this::handleAllergeneSettings);
+        eventManager.subscribe(EventType.SHOW_ALL_USERS, this::handleAllUser);
+        eventManager.subscribe(EventType.SHOW_DELETE_USER, (data) -> screenManager.showDeleteUserScreen());
+        eventManager.subscribe(EventType.DELETE_USER, this::handleDeleteUser);
+        eventManager.subscribe(EventType.SHOW_UPDATE_USER_ROLE, (data) -> screenManager.showUpdateUserRoleScreen());
+        eventManager.subscribe(EventType.UPDATE_USER_ROLE, this::handleUpdateUserRole);
     }
 
     public void showUserMenu() {
@@ -87,12 +91,12 @@ public class UserController extends AbstractController {
      *
      * @param data an Object array containing new password and new email as Strings
      */
-    private void handleInputNewUserData(Object data) {
+    private void handleInputNewUserData(StringArrayData data) {
         if (data == null) {
             screenManager.showErrorScreen("Data is null");
             return;
         }
-        String[] userData = (String[]) data;
+        String[] userData = (String[]) data.getData();
         String newPassword = userData[0];
         String newEmail = userData[1];
 
@@ -181,7 +185,7 @@ public class UserController extends AbstractController {
     private void handleShowAdminMenu(Object data) {
         try {
             if (cantineService.isAdmin(currentUser.getUserid())) {
-                eventManager.notify("switchMenu", 6);
+                eventManager.notify(EventType.SWITCH_MENU, new IntData(6));
             } else {
                 screenManager.showErrorScreen("You are not authorized to access this menu!");
             }

@@ -2,6 +2,8 @@ package de.htwsaar.cantineplanner.businessLogic.controller;
 
 import de.htwsaar.cantineplanner.businessLogic.CantineService;
 import de.htwsaar.cantineplanner.businessLogic.EventManager;
+import de.htwsaar.cantineplanner.businessLogic.controller.eventdata.EventType;
+import de.htwsaar.cantineplanner.businessLogic.controller.eventdata.IntData;
 import de.htwsaar.cantineplanner.codegen.tables.records.MealsRecord;
 import de.htwsaar.cantineplanner.codegen.tables.records.UsersRecord;
 import de.htwsaar.cantineplanner.exceptions.*;
@@ -23,18 +25,18 @@ public class MealController extends AbstractController{
     @Override
     protected void subscribeToEvents() {
         // Meal-bezogene Events
-        eventManager.subscribe("showAllMeals", this::handleShowAllMeals);
-        eventManager.subscribe("showAllAllergies", this::handleShowAllAllergies);
-        eventManager.subscribe("showAddMeal", (data) -> screenManager.showAddMealScreen());
-        eventManager.subscribe("showDeleteMeal", (data) -> screenManager.showDeleteMealScreen());
-        eventManager.subscribe("addMeal", this::handleAddMeal);
-        eventManager.subscribe("deleteMeal", this::handleDeleteMeal);
-        eventManager.subscribe("showMealDetailsById", (data) -> screenManager.showMealDetailsById());
-        eventManager.subscribe("mealDetailsById", this::handleShowMealById);
-        eventManager.subscribe("showSearchMealByName", (data) -> screenManager.showSearchMealByName());
-        eventManager.subscribe("searchMealByName", this::handleShowMealByName);
-        eventManager.subscribe("showEditMeal", (data) -> screenManager.showEditMealScreen());
-        eventManager.subscribe("editMeal", this::handleEditMeal);
+        eventManager.subscribe(EventType.SHOW_ALL_MEALS, this::handleShowAllMeals);
+        eventManager.subscribe(EventType.SHOW_ALL_ALLERGIES, this::handleShowAllAllergies);
+        eventManager.subscribe(EventType.SHOW_ALL_MEALS, this::handleShowAllMeals);
+        eventManager.subscribe(EventType.SHOW_DELETE_MEAL, this::handleDeleteMeal);
+        eventManager.subscribe(EventType.ADD_MEAL, this::handleAddMeal);
+        eventManager.subscribe(EventType.DELETE_MEAL, this::handleDeleteMeal);
+        eventManager.subscribe(EventType.SHOW_MEAL_DETAILS_BY_ID, (data) -> screenManager.showMealDetailsById());
+        eventManager.subscribe(EventType.MEAL_DETAILS_BY_ID, this::handleShowMealById);
+        eventManager.subscribe(EventType.SHOW_SEARCH_MEAL_BY_NAME, (data) -> screenManager.showSearchMealByName());
+        eventManager.subscribe(EventType.SEARCH_MEAL_BY_NAME, this::handleShowMealByName);
+        eventManager.subscribe(EventType.SHOW_EDIT_MEAL, (data) -> screenManager.showEditMealScreen());
+        eventManager.subscribe(EventType.EDIT_MEAL, this::handleEditMeal);
 
     }
 
@@ -44,6 +46,7 @@ public class MealController extends AbstractController{
                 screenManager.showMealMenuScreen(true);
             } else {
                 screenManager.showErrorScreen("You do not have the necessary permissions to access the meal menu.");
+                eventManager.notify(EventType.SWITCH_MENU, new IntData(1));
             }
         } catch (UseriDDoesntExcistException e) {
             screenManager.showErrorScreen("The user with the given username doesn't exist!");

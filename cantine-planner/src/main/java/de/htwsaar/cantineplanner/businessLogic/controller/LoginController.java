@@ -2,7 +2,9 @@ package de.htwsaar.cantineplanner.businessLogic.controller;
 
 import de.htwsaar.cantineplanner.businessLogic.CantineService;
 import de.htwsaar.cantineplanner.businessLogic.EventManager;
-import de.htwsaar.cantineplanner.codegen.tables.records.UsersRecord;
+import de.htwsaar.cantineplanner.businessLogic.controller.eventdata.EventType;
+import de.htwsaar.cantineplanner.businessLogic.controller.eventdata.IntData;
+import de.htwsaar.cantineplanner.businessLogic.controller.eventdata.StringArrayData;
 import de.htwsaar.cantineplanner.exceptions.InvalidEmailTypeException;
 import de.htwsaar.cantineplanner.exceptions.UserAlreadyExistsException;
 import de.htwsaar.cantineplanner.exceptions.UserDoesntExistException;
@@ -24,9 +26,9 @@ public class LoginController extends AbstractController {
     protected void subscribeToEvents() {
 
         // User-Authentifizierung und Registrierung
-        eventManager.subscribe("login", this::handleLogin);
-        eventManager.subscribe("register", this::handleRegister);
-        eventManager.subscribe("showRegisterScreen", this::handleShowRegisterScreen);
+        eventManager.subscribe(EventType.LOGIN, (data) -> handleLogin((StringArrayData) data));
+        eventManager.subscribe(EventType.REGISTER, this::handleRegister);
+        eventManager.subscribe(EventType.SHOW_REGISTER_SCREEN, this::handleShowRegisterScreen);
     }
     // User-Handler
 
@@ -38,16 +40,16 @@ public class LoginController extends AbstractController {
      *
      * @param data an Object array containing username and password as Strings
      */
-    public void handleLogin(Object data) {
-        String[] credentials = (String[]) data;
+    public void handleLogin(StringArrayData data) {
+        String[] credentials = (String[]) data.getData();
         String username = credentials[0];
         String password = credentials[1];
         try {
             if (cantineService.validateUser(username, password)) {
-                currentUser = cantineService.getUser(username);
+                //currentUser = cantineService.getUser(username);
                 screenManager.closeActiveWindow();
                 screenManager.showSuccessScreen("Login successful!");
-                eventManager.notify("switchMenu", 1);
+                eventManager.notify(EventType.SWITCH_MENU, new IntData(1));
             }
         } catch (UserNotValidatedException e) {
             screenManager.showErrorScreen(e.getMessage());
@@ -82,7 +84,7 @@ public class LoginController extends AbstractController {
             if (cantineService.registerUser(username, password, email)) {
                 screenManager.closeActiveWindow();
                 screenManager.showSuccessScreen("Registration successful!");
-                eventManager.notify("switchMenu", 0);
+                eventManager.notify(EventType.SWITCH_MENU, new IntData(0));
             }
 
         } catch (InvalidEmailTypeException | UserAlreadyExistsException e) {
@@ -98,7 +100,7 @@ public class LoginController extends AbstractController {
      * @param data not used
      */
     private void handleShowRegisterScreen(Object data) {
-        screenManager.showInputScreenReg("Register", "register");
+        screenManager.showInputScreenReg("Register", EventType.REGISTER);
     }
 
     /**

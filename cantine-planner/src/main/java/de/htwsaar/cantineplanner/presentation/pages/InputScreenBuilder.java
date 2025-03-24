@@ -4,6 +4,9 @@ import com.googlecode.lanterna.SGR;
 import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.gui2.*;
 import de.htwsaar.cantineplanner.businessLogic.EventManager;
+import de.htwsaar.cantineplanner.businessLogic.controller.eventdata.ArrayListData;
+import de.htwsaar.cantineplanner.businessLogic.controller.eventdata.EventType;
+import de.htwsaar.cantineplanner.businessLogic.controller.eventdata.StringArrayData;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,7 +37,7 @@ public class InputScreenBuilder {
 
 
     // Method to display the panel with a list of labels
-    public void display(List<String> labels, String event) {
+    public void display(List<String> labels, EventType eventType) {
         Panel panel = new Panel(new GridLayout(2));
         GridLayout gridLayout = (GridLayout) panel.getLayoutManager();
         gridLayout.setHorizontalSpacing(5);
@@ -51,11 +54,11 @@ public class InputScreenBuilder {
             gui.getActiveWindow().close();
         }));
         buttonPanel.addComponent(new Button("Submit", () -> {
-            List<String> values = new ArrayList<>();
+            ArrayList<String> values = new ArrayList<>();
             for (TextBox textBox : textBoxes) {
                 values.add(textBox.getText());
             }
-            eventManager.notify(event, values.toArray(new String[0]));
+            eventManager.notify(eventType, new StringArrayData(values.toArray(new String[0])));
         }));
 
         panel.addComponent(buttonPanel, GridLayout.createHorizontallyFilledLayoutData(2));

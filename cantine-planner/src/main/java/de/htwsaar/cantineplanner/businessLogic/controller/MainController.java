@@ -2,6 +2,7 @@ package de.htwsaar.cantineplanner.businessLogic.controller;
 
 import de.htwsaar.cantineplanner.businessLogic.CantineService;
 import de.htwsaar.cantineplanner.businessLogic.EventManager;
+import de.htwsaar.cantineplanner.businessLogic.controller.eventdata.EventType;
 import de.htwsaar.cantineplanner.codegen.tables.Review;
 import de.htwsaar.cantineplanner.codegen.tables.records.UsersRecord;
 import de.htwsaar.cantineplanner.exceptions.UserDoesntExistException;
@@ -38,20 +39,23 @@ public class MainController extends AbstractController {
 
     @Override
     protected void subscribeToEvents() {
-        //TODO switchMenu
-        eventManager.subscribe("switchMenu", (data) -> switchMenu((int) data));
+        //TODO switchMenu EVENT
+        eventManager.subscribe(EventType.SWITCH_MENU, (data) -> switchMenu((int) data.getData()));
 
-        /**
-        eventManager.subscribe("showMainMenu", (data) -> switchMenu(1));
-        eventManager.subscribe("showMealMenu", (data) -> switchMenu(2));
-        eventManager.subscribe("showReviewMenu", (data) -> switchMenu(3));
-        eventManager.subscribe("showUserMenu", (data) -> switchMenu(4));
-        eventManager.subscribe("showWeeklyMenu", (data) -> switchMenu(5));
-        **/
-        eventManager.subscribe("exit", (data) -> exitApplication());
-        eventManager.subscribe("success", (data) -> screenManager.showSuccessScreen((String) data));
-        eventManager.subscribe("error", (data) -> screenManager.showErrorScreen((String) data));
-        eventManager.subscribe("logout", (data) -> {
+
+//
+//        eventManager.subscribe(EventType.SHOW_MAIN_MENU, this::mainMenu);
+//        eventManager.subscribe(EventType.SHOW_MEAL_MENU, this::mealMenu);
+//        eventManager.subscribe(EventType.SHOW_REVIEW_MENU, this::reviewMenu);
+//        eventManager.subscribe(EventType.SHOW_USER_MENU, this::userMenu);
+//        eventManager.subscribe(EventType.SHOW_WEEKLY_MENU, this::weeklyMenu);
+//
+
+
+        eventManager.subscribe(EventType.EXIT, (data) -> exitApplication());
+        eventManager.subscribe(EventType.SHOW_SUCCESS_SCREEN, (data) -> screenManager.showSuccessScreen((String) data.getData()));
+        eventManager.subscribe(EventType.SHOW_ERROR_SCREEN, (data) -> screenManager.showErrorScreen((String) data.getData()));
+        eventManager.subscribe(EventType.LOGOUT, (data) -> {
             switchMenu(0);
             currentUser = null;
         });

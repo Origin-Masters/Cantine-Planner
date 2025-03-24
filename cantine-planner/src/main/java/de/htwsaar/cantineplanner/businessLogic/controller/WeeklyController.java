@@ -2,6 +2,7 @@ package de.htwsaar.cantineplanner.businessLogic.controller;
 
 import de.htwsaar.cantineplanner.businessLogic.CantineService;
 import de.htwsaar.cantineplanner.businessLogic.EventManager;
+import de.htwsaar.cantineplanner.businessLogic.controller.eventdata.EventType;
 import de.htwsaar.cantineplanner.codegen.tables.records.MealsRecord;
 import de.htwsaar.cantineplanner.exceptions.MealDoesntExistException;
 import de.htwsaar.cantineplanner.presentation.ScreenManager;
@@ -21,19 +22,19 @@ public class WeeklyController extends AbstractController {
     @Override
     protected void subscribeToEvents() {
 
-        eventManager.subscribe("showWeeklyPlan", this::handleShowWeeklyPlan);
-        eventManager.subscribe("editWeeklyPlan", this::handleShowEditWeeklyPlan);
-        eventManager.subscribe("resetWeeklyPlan", this::handleResetWeeklyPlan);
-        eventManager.subscribe("editWeeklyPlanMonday", (data) -> screenManager.showEditWeeklyPlanMonday());
-        eventManager.subscribe("editWeeklyPlanMondaySubmit", this::handleEditWeeklyPlanMonday);
-        eventManager.subscribe("editWeeklyPlanTuesday", (data) -> screenManager.showEditWeeklyPlanTuesday());
-        eventManager.subscribe("editWeeklyPlanTuesdaySubmit", this::handleEditWeeklyPlanTuesday);
-        eventManager.subscribe("editWeeklyPlanWednesday", (data) -> screenManager.showEditWeeklyPlanWednesday());
-        eventManager.subscribe("editWeeklyPlanWednesdaySubmit", this::handleEditWeeklyPlanWednesday);
-        eventManager.subscribe("editWeeklyPlanThursday", (data) -> screenManager.showEditWeeklyPlanThursday());
-        eventManager.subscribe("editWeeklyPlanThursdaySubmit", this::handleEditWeeklyPlanThursday);
-        eventManager.subscribe("editWeeklyPlanFriday", (data) -> screenManager.showEditWeeklyPlanFriday());
-        eventManager.subscribe("editWeeklyPlanFridaySubmit", this::handleEditWeeklyPlanFriday);
+        eventManager.subscribe(EventType.SHOW_WEEKLY_PLAN, this::handleShowWeeklyPlan);
+        eventManager.subscribe(EventType.EDIT_WEEKLY_PLAN, this::handleShowEditWeeklyPlan);
+        eventManager.subscribe(EventType.RESET_WEEKLY_PLAN, this::handleResetWeeklyPlan);
+        eventManager.subscribe(EventType.EDIT_WEEKLY_PLAN_MONDAY, (data) -> screenManager.showEditWeeklyPlanMonday());
+        eventManager.subscribe(EventType.EDIT_WEEKLY_PLAN_MONDAY_SUBMIT, this::handleEditWeeklyPlanMonday);
+        eventManager.subscribe(EventType.EDIT_WEEKLY_PLAN_TUESDAY, (data) -> screenManager.showEditWeeklyPlanTuesday());
+        eventManager.subscribe(EventType.EDIT_WEEKLY_PLAN_TUESDAY_SUBMIT, this::handleEditWeeklyPlanTuesday);
+        eventManager.subscribe(EventType.EDIT_WEEKLY_PLAN_WEDNESDAY, this::handleEditWeeklyPlanWednesday);
+        eventManager.subscribe(EventType.EDIT_WEEKLY_PLAN_WEDNESDAY_SUBMIT, (data) -> screenManager.showEditWeeklyPlanWednesday());
+        eventManager.subscribe(EventType.EDIT_WEEKLY_PLAN_THURSDAY, (data) -> screenManager.showEditWeeklyPlanThursday());
+        eventManager.subscribe(EventType.EDIT_WEEKLY_PLAN_THURSDAY_SUBMIT, this::handleEditWeeklyPlanThursday);
+        eventManager.subscribe(EventType.EDIT_WEEKLY_PLAN_FRIDAY, (data) -> screenManager.showEditWeeklyPlanFriday());
+        eventManager.subscribe(EventType.EDIT_WEEKLY_PLAN_FRIDAY_SUBMIT, this::handleEditWeeklyPlanFriday);
     }
 
     public void showWeeklyMenu() {

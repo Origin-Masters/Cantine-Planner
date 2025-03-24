@@ -4,6 +4,9 @@ import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.gui2.*;
 import de.htwsaar.cantineplanner.businessLogic.EventManager;
+import de.htwsaar.cantineplanner.businessLogic.controller.eventdata.EventType;
+import de.htwsaar.cantineplanner.businessLogic.controller.eventdata.IntData;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -23,7 +26,7 @@ public class MenuBuilder {
         return this;
     }
     // Einzelnen Button hinzufügen
-    public MenuBuilder addButton(String label, String event) {
+    public MenuBuilder addButton(String label, EventType event) {
         this.buttons.add(new MenuButton(label, event));
         return this;
     }
@@ -52,13 +55,13 @@ public class MenuBuilder {
     // Öffentliche statische Klasse für Buttons
     public static class MenuButton {
         private String label;
-        private String event;
-        private Object data;
-        public MenuButton(String label, String event) {
+        private EventType event;
+        private IntData data;
+        public MenuButton(String label, EventType event) {
             this.label = label;
             this.event = event;
         }
-        public MenuButton(String label, String event, Object data) {
+        public MenuButton(String label, EventType event, IntData data) {
             this.label = label;
             this.event = event;
             this.data = data;
@@ -66,10 +69,10 @@ public class MenuBuilder {
         public String getLabel() {
             return label;
         }
-        public String getEvent() {
+        public EventType getEvent() {
             return event;
         }
-        public Object getData() {
+        public IntData getData() {
             return data;
         }
     }

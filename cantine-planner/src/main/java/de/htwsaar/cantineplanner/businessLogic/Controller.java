@@ -1,5 +1,6 @@
 package de.htwsaar.cantineplanner.businessLogic;
 
+import de.htwsaar.cantineplanner.businessLogic.controller.eventdata.EventType;
 import de.htwsaar.cantineplanner.codegen.tables.records.MealsRecord;
 import de.htwsaar.cantineplanner.codegen.tables.records.ReviewRecord;
 import de.htwsaar.cantineplanner.codegen.tables.records.UsersRecord;
@@ -45,7 +46,7 @@ public class Controller {
         this.screenManager = new ScreenManager(eventManager, cantineService);
         this.currentUserId = -1;
         this.running = false;
-        subscribeToEvents();
+        //subscribeToEvents();
     }
 
     /**
@@ -54,7 +55,6 @@ public class Controller {
      * Groups subscriptions by themes such as navigation, user authentication,
      * meal-related, review-related, user-related, and weekly plan events.
      * </p>
-     */
     private void subscribeToEvents() {
         // Navigation und allgemeine Nachrichten
         eventManager.subscribe("switchMenu", (data) -> switchMenu((int) data));
@@ -137,6 +137,8 @@ public class Controller {
         eventManager.subscribe("editWeeklyPlanFriday", (data) -> screenManager.showEditWeeklyPlanFriday());
         eventManager.subscribe("editWeeklyPlanFridaySubmit", this::handleEditWeeklyPlanFriday);
     }
+     */
+
 
     /**
      * Starts the main application loop.
@@ -328,7 +330,7 @@ public class Controller {
      * @param data not used
      */
     private void handleShowRegisterScreen(Object data) {
-        screenManager.showInputScreenReg("Register", "register");
+        screenManager.showInputScreenReg("Register", EventType.REGISTER);
     }
 
     /**

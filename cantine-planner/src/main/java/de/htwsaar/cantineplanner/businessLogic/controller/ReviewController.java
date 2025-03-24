@@ -2,6 +2,7 @@ package de.htwsaar.cantineplanner.businessLogic.controller;
 
 import de.htwsaar.cantineplanner.businessLogic.CantineService;
 import de.htwsaar.cantineplanner.businessLogic.EventManager;
+import de.htwsaar.cantineplanner.businessLogic.controller.eventdata.EventType;
 import de.htwsaar.cantineplanner.codegen.tables.records.ReviewRecord;
 import de.htwsaar.cantineplanner.codegen.tables.records.UsersRecord;
 import de.htwsaar.cantineplanner.exceptions.MealDoesntExistException;
@@ -23,13 +24,13 @@ public class ReviewController extends AbstractController {
     @Override
     protected void subscribeToEvents() {
         // Review-bezogene Events
-        eventManager.subscribe("showAddReview", (data) -> screenManager.showAddReviewScreen());
-        eventManager.subscribe("addReview", this::handleAddReview);
-        eventManager.subscribe("showDeleteReview", (data) -> screenManager.showDeleteReviewScreen());
-        eventManager.subscribe("deleteReview", this::handleDeleteReview);
-        eventManager.subscribe("showAllReviews", this::handleShowAllReviews);
-        eventManager.subscribe("showSearchReviewsByMealName", (data) -> screenManager.showSearchReviewsByMealName());
-        eventManager.subscribe("searchReviewsByMealName", this::handleSearchReviewsByMealName);
+        eventManager.subscribe(EventType.SHOW_ADD_REVIEW, (data) -> screenManager.showAddReviewScreen());
+        eventManager.subscribe(EventType.ADD_REVIEW, this::handleAddReview);
+        eventManager.subscribe(EventType.SHOW_DELETE_REVIEW, (data) -> screenManager.showDeleteReviewScreen());
+        eventManager.subscribe(EventType.DELETE_REVIEW, this::handleDeleteReview);
+        eventManager.subscribe(EventType.SHOW_ALL_REVIEWS, this::handleShowAllReviews);
+        eventManager.subscribe(EventType.SHOW_SEARCH_REVIEWS_BY_MEAL_NAME, (data) -> screenManager.showSearchReviewsByMealName());
+        eventManager.subscribe(EventType.SEARCH_REVIEWS_BY_MEAL_NAME, this::handleSearchReviewsByMealName);
     }
 
     public void showReviewMenu() {

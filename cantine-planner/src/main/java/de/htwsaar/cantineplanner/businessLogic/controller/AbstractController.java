@@ -9,7 +9,7 @@ public abstract class AbstractController {
     protected ScreenManager screenManager;
     protected CantineService cantineService;
     protected EventManager eventManager;
-    protected static UsersRecord currentUser = null;
+    protected static UsersRecord currentUser = new UsersRecord(1, "test", "123", "mail@mail.de", 1, 1, "");
 
     public AbstractController(ScreenManager screenManager,
                               CantineService cantineService,
@@ -17,7 +17,7 @@ public abstract class AbstractController {
         this.screenManager = screenManager;
         this.cantineService = cantineService;
         this.eventManager = eventManager;
-        subscribeToEvents();
+        //subscribeToEvents();
     }
 
     protected abstract void subscribeToEvents();
