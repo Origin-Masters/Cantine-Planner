@@ -57,11 +57,12 @@ public class Controller {
      */
     private void subscribeToEvents() {
         // Navigation und allgemeine Nachrichten
-        eventManager.subscribe("showMainMenu", (data) -> switchMenu(1));
-        eventManager.subscribe("showMealMenu", (data) -> switchMenu(2));
-        eventManager.subscribe("showReviewMenu", (data) -> switchMenu(3));
-        eventManager.subscribe("showUserMenu", (data) -> switchMenu(4));
-        eventManager.subscribe("showWeeklyMenu", (data) -> switchMenu(5));
+        eventManager.subscribe("switchMenu", (data) -> switchMenu((int) data));
+//        eventManager.subscribe("showMainMenu", (data) -> switchMenu(1));
+//        eventManager.subscribe("showMealMenu", (data) -> switchMenu(2));
+//        eventManager.subscribe("showReviewMenu", (data) -> switchMenu(3));
+//        eventManager.subscribe("showUserMenu", (data) -> switchMenu(4));
+//        eventManager.subscribe("showWeeklyMenu", (data) -> switchMenu(5));
         eventManager.subscribe("exit", (data) -> exitApplication());
         eventManager.subscribe("success", (data) -> screenManager.showSuccessScreen((String) data));
         eventManager.subscribe("error", (data) -> screenManager.showErrorScreen((String) data));
