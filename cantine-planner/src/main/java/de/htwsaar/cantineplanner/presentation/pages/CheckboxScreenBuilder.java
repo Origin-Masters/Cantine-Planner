@@ -33,8 +33,8 @@ public class CheckboxScreenBuilder {
     public void display(List<String> labels, String event) {
         Panel panel = new Panel(new GridLayout(1));
         GridLayout gridLayout = (GridLayout) panel.getLayoutManager();
-        gridLayout.setHorizontalSpacing(5);
-        gridLayout.setVerticalSpacing(2);
+        gridLayout.setHorizontalSpacing(2);
+        gridLayout.setVerticalSpacing(1);
 
         // Labeled CheckBoxes hinzufügen
         for (String label : labels) {

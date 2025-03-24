@@ -128,12 +128,11 @@ public class CantineService {
      * Adds a new meal.
      *
      * @param meal meal record to add
-     * @return the newly added meal record
      * @throws SQLException               if a database error occurs
      * @throws MealAlreadyExistsException if the meal already exists
      */
-    public MealsRecord addMeal(MealsRecord meal) throws SQLException, MealAlreadyExistsException {
-        return dbConnection.addMeal(meal);
+    public void addMeal(MealsRecord meal) throws SQLException, MealAlreadyExistsException {
+        dbConnection.addMeal(meal);
     }
 
     /**
@@ -171,6 +170,58 @@ public class CantineService {
     public MealsRecord getMealByName(String name) throws SQLException, MealDoesntExistException {
         List<MealsRecord> meals = dbConnection.searchMealByName(name);
         return meals.isEmpty() ? null : meals.get(0);
+    }
+
+
+    /**
+     * Sorts meals by price in ascending order.
+     *
+     * @return a list of meals sorted by price
+     * @throws SQLException if a database error occurs
+     */
+    public List<MealsRecord> sortMealsByPrice() throws SQLException {
+        return dbConnection.sortMealsByPrice();
+    }
+
+    /**
+     * Sorts meals by rating in descending order.
+     *
+     * @return a list of meals sorted by rating
+     * @throws SQLException if a database error occurs
+     */
+    public List<MealsRecord> sortMealsByRating() throws SQLException {
+        return dbConnection.sortMealsByRating();
+    }
+
+    /**
+     * Sorts meals by name in alphabetical order.
+     *
+     * @return a list of meals sorted by name
+     * @throws SQLException if a database error occurs
+     */
+    public List<MealsRecord> sortMealsByName() throws SQLException {
+        return dbConnection.sortMealsByName();
+    }
+
+    /**
+     * Sorts meals by calories in ascending order.
+     *
+     * @return a list of meals sorted by calories
+     * @throws SQLException if a database error occurs
+     */
+    public List<MealsRecord> sortMealsByCalories() throws SQLException {
+        return dbConnection.sortMealsByCalories();
+    }
+
+    /**
+     * Sorts meals by excluding those that contain the user's allergies.
+     *
+     * @param currentUserId the ID of the current user
+     * @return a list of meals excluding those with the user's allergies
+     * @throws SQLException if a database error occurs
+     */
+    public List<MealsRecord> sortMealsByAllergy(int currentUserId) throws SQLException {
+        return dbConnection.sortMealsByAllergy(currentUserId);
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -268,14 +319,14 @@ public class CantineService {
      * @throws UserDoesntExistException if the user does not exist
      */
     public void setAllergeneSettings(int userId, String allergene) throws SQLException, UserDoesntExistException {
-        allergene = allergene.replaceAll("^\\[|\\]$", "");
+        allergene = allergene.replaceAll("^\\[|]$", "");
         String[] allergeneArray = allergene.split(",");
         StringBuilder abbrAllergene = new StringBuilder();
         for (String allergen : allergeneArray) {
             String trimmedAllergen = allergen.trim();
             String abbr = AllergenMapper.getAllergenCode(trimmedAllergen);
             if (abbr != null) {
-                if (abbrAllergene.length() > 0) {
+                if (!abbrAllergene.isEmpty()) {
                     abbrAllergene.append(",");
                 }
                 abbrAllergene.append(abbr);
@@ -384,27 +435,6 @@ public class CantineService {
      */
     public boolean isAdmin(int currentUserId) throws SQLException, UseriDDoesntExcistException {
         return dbConnection.isAdmin(currentUserId);
-    }
-
-
-    public List<MealsRecord> sortMealsByPrice() throws SQLException {
-        return dbConnection.sortMealsByPrice();
-    }
-
-    public List<MealsRecord> sortMealsByRating() throws SQLException {
-        return dbConnection.sortMealsByRating();
-    }
-
-    public List<MealsRecord> sortMealsByName() throws SQLException {
-        return dbConnection.sortMealsByName();
-    }
-
-    public List<MealsRecord> sortMealsByCalories() throws SQLException {
-        return dbConnection.sortMealsByCalories();
-    }
-
-    public List<MealsRecord> sortMealsByAllergy(int currentUserId) throws SQLException {
-        return dbConnection.sortMealsByAllergy(currentUserId);
     }
 
 
