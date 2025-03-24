@@ -13,20 +13,15 @@ import java.util.List;
 
 public class ReviewController extends AbstractController {
 
-    private final int currentUserId;
     public ReviewController(ScreenManager screenManager,
                             CantineService cantineService,
-                            EventManager eventManager,
-                            UsersRecord userRecord) {
-        super(screenManager, cantineService, eventManager, userRecord);
+                            EventManager eventManager) {
+        super(screenManager, cantineService, eventManager);
         this.subscribeToEvents();
-
-        currentUserId = userRecord.getUserid();
     }
 
     @Override
     protected void subscribeToEvents() {
-
         // Review-bezogene Events
         eventManager.subscribe("showAddReview", (data) -> screenManager.showAddReviewScreen());
         eventManager.subscribe("addReview", this::handleAddReview);
@@ -35,8 +30,6 @@ public class ReviewController extends AbstractController {
         eventManager.subscribe("showAllReviews", this::handleShowAllReviews);
         eventManager.subscribe("showSearchReviewsByMealName", (data) -> screenManager.showSearchReviewsByMealName());
         eventManager.subscribe("searchReviewsByMealName", this::handleSearchReviewsByMealName);
-
-
     }
 
     public void showReviewMenu() {
@@ -67,7 +60,7 @@ public class ReviewController extends AbstractController {
             review.setMealId(mealId);
             review.setRating(rating);
             review.setComment(comment);
-            review.setUserid(currentUserId);
+            review.setUserid(currentUser.getUserid());
             cantineService.addReview(review);
             screenManager.closeActiveWindow();
             screenManager.showSuccessScreen("Review added successfully!");
@@ -93,9 +86,9 @@ public class ReviewController extends AbstractController {
             int reviewId = Integer.parseInt(reviewData[0]);
             int reviewUserId = cantineService.getUserIdFromReviewId(reviewId);
             // Check if the current user is admin
-            boolean isAdmin = cantineService.isAdmin(currentUserId);
+            boolean isAdmin = cantineService.isAdmin(currentUser.getUserid());
             // If not admin and review's user id does not match, reject deletion
-            if (!isAdmin && reviewUserId != currentUserId) {
+            if (!isAdmin && reviewUserId != currentUser.getUserid()) {
                 screenManager.showErrorScreen("Unauthorized: You can only delete your own reviews.");
                 return;
             }

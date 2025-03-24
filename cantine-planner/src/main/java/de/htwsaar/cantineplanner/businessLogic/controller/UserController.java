@@ -17,20 +17,15 @@ import java.util.List;
 import java.util.Objects;
 
 public class UserController extends AbstractController {
-    private final int currentUserId;
     public UserController(ScreenManager screenManager,
                           CantineService cantineService,
-                          EventManager eventManager,
-                          UsersRecord userRecord) {
-        super(screenManager, cantineService, eventManager, userRecord);
+                          EventManager eventManager) {
+        super(screenManager, cantineService, eventManager);
         this.subscribeToEvents();
-
-        currentUserId = userRecord.getUserid();
     }
 
     @Override
     protected void subscribeToEvents() {
-
         // User-bezogene Events
         eventManager.subscribe("showEditUserData", (data) -> screenManager.showEditUserDataScreen());
         eventManager.subscribe("editUserData", this::handleEditUserData);
@@ -45,19 +40,15 @@ public class UserController extends AbstractController {
         eventManager.subscribe("deleteUser", this::handleDeleteUser);
         eventManager.subscribe("showUpdateUserRole", (data) -> screenManager.showUpdateUserRoleScreen());
         eventManager.subscribe("updateUserRole", this::handleUpdateUserRole);
-
     }
 
-    public void showUserMenu(int currentUserId) {
+    public void showUserMenu() {
         try {
-            screenManager.showUserMenuScreen(cantineService.isAdmin(currentUserId));
+            screenManager.showUserMenuScreen(cantineService.isAdmin(currentUser.getUserid()));
         } catch (SQLException | UserDoesntExistException e) {
             screenManager.showErrorScreen("There was an error while validating the user. Try again!");
         }
     }
-
-
-
 
     /**
      * Handles user data editing after verifying current password.
@@ -76,7 +67,7 @@ public class UserController extends AbstractController {
         String currentPassword = userData[0];
 
         try {
-            if (cantineService.validateUser(currentUserId, currentPassword)) {
+            if (cantineService.validateUser(currentUser.getUserid(), currentPassword)) {
                 screenManager.closeActiveWindow();
                 screenManager.showSuccessScreen("User validated!");
                 screenManager.showEditNewUserDataScreen();
@@ -111,7 +102,7 @@ public class UserController extends AbstractController {
         }
 
         try {
-            cantineService.editUserData(currentUserId, newPassword, newEmail);
+            cantineService.editUserData(currentUser.getUserid(), newPassword, newEmail);
             screenManager.closeActiveWindow();
             screenManager.showSuccessScreen("Password and email updated successfully!");
         } catch (InvalidEmailTypeException e) {
@@ -152,7 +143,7 @@ public class UserController extends AbstractController {
      */
     private void handleShowReviewsByUser(Object data) {
         try {
-            List<ReviewRecord> reviews = cantineService.getAllReviewsByUser(currentUserId);
+            List<ReviewRecord> reviews = cantineService.getAllReviewsByUser(currentUser.getUserid());
             screenManager.showAllReviews(reviews);
         } catch (UseriDDoesntExcistException e) {
             screenManager.showErrorScreen(e.getMessage());
@@ -169,9 +160,9 @@ public class UserController extends AbstractController {
      *
      * @param data an Object array containing allergen settings as Strings
      */
-    private void handleAllergeneSettings(Object data){
+    private void handleAllergeneSettings(Object data) {
         try {
-            cantineService.setAllergeneSettings(currentUserId, Arrays.toString((String[]) data));
+            cantineService.setAllergeneSettings(currentUser.getUserid(), Arrays.toString((String[]) data));
             screenManager.closeActiveWindow();
             screenManager.showSuccessScreen("Allergene settings updated successfully!");
         } catch (SQLException e) {
@@ -189,7 +180,7 @@ public class UserController extends AbstractController {
      */
     private void handleShowAdminMenu(Object data) {
         try {
-            if (cantineService.isAdmin(currentUserId)) {
+            if (cantineService.isAdmin(currentUser.getUserid())) {
                 eventManager.notify("switchMenu", 6);
             } else {
                 screenManager.showErrorScreen("You are not authorized to access this menu!");
@@ -223,14 +214,13 @@ public class UserController extends AbstractController {
      * @param data not used
      */
     private void handleAllUser(Object data) {
-        try{
+        try {
             List<UsersRecord> users = cantineService.getAllUser();
             screenManager.showAllUser(users);
         } catch (SQLException e) {
             screenManager.showErrorScreen("There was an error while fetching all users please try again!");
         }
     }
-
 
     /**
      * Handles deleting a user.
@@ -255,12 +245,4 @@ public class UserController extends AbstractController {
             screenManager.showErrorScreen("There was an error while deleting user please try again!");
         }
     }
-
-
-
-
-
-
-
-
 }

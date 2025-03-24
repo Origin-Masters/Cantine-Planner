@@ -3,7 +3,6 @@ package de.htwsaar.cantineplanner.businessLogic.controller;
 import de.htwsaar.cantineplanner.businessLogic.CantineService;
 import de.htwsaar.cantineplanner.businessLogic.EventManager;
 import de.htwsaar.cantineplanner.codegen.tables.records.MealsRecord;
-import de.htwsaar.cantineplanner.codegen.tables.records.UsersRecord;
 import de.htwsaar.cantineplanner.exceptions.MealDoesntExistException;
 import de.htwsaar.cantineplanner.presentation.ScreenManager;
 
@@ -14,11 +13,8 @@ import java.util.List;
 public class WeeklyController extends AbstractController {
     public WeeklyController(ScreenManager screenManager,
                             CantineService cantineService,
-                            EventManager eventManager,
-                            UsersRecord userRecord) {
-
-
-        super(screenManager, cantineService, eventManager, userRecord);
+                            EventManager eventManager) {
+        super(screenManager, cantineService, eventManager);
         this.subscribeToEvents();
     }
 
@@ -38,12 +34,11 @@ public class WeeklyController extends AbstractController {
         eventManager.subscribe("editWeeklyPlanThursdaySubmit", this::handleEditWeeklyPlanThursday);
         eventManager.subscribe("editWeeklyPlanFriday", (data) -> screenManager.showEditWeeklyPlanFriday());
         eventManager.subscribe("editWeeklyPlanFridaySubmit", this::handleEditWeeklyPlanFriday);
-
     }
 
-    public void showWeeklyMenu(int currentUserId) {
+    public void showWeeklyMenu() {
         try {
-            screenManager.showWeeklyMenuScreen(cantineService.isAdmin(currentUserId));
+            screenManager.showWeeklyMenuScreen(cantineService.isAdmin(currentUser.getUserid()));
         } catch (SQLException e) {
             screenManager.showErrorScreen("There was an error while validating the user. Try again!");
         }
@@ -61,21 +56,13 @@ public class WeeklyController extends AbstractController {
         try {
             List<MealsRecord> weeklyPlan = cantineService.getWeeklyPlan();
             // Sort the weeklyPlan by the day field
-            weeklyPlan.sort(Comparator.comparing(meal -> {
-                switch (meal.getDay()) {
-                    case "Mon":
-                        return 1;
-                    case "Tue":
-                        return 2;
-                    case "Wed":
-                        return 3;
-                    case "Thu":
-                        return 4;
-                    case "Fri":
-                        return 5;
-                    default:
-                        return 6;
-                }
+            weeklyPlan.sort(Comparator.comparing(meal -> switch (meal.getDay()) {
+                case "Mon" -> 1;
+                case "Tue" -> 2;
+                case "Wed" -> 3;
+                case "Thu" -> 4;
+                case "Fri" -> 5;
+                default -> 6;
             }));
             screenManager.showWeeklyPlanScreen(weeklyPlan);
         } catch (SQLException e) {
@@ -93,7 +80,6 @@ public class WeeklyController extends AbstractController {
         screenManager.showEditWeeklyPlanScreen();
     }
 
-
     /**
      * Handles resetting the weekly meal plan to its default state.
      *
@@ -107,7 +93,6 @@ public class WeeklyController extends AbstractController {
             screenManager.showErrorScreen("There was an error while resetting the weekly plan, please try again!");
         }
     }
-
 
     /**
      * Handles editing the meal for Monday in the weekly plan.
@@ -208,13 +193,4 @@ public class WeeklyController extends AbstractController {
             screenManager.showErrorScreen("Error updating meal for Friday: " + e.getMessage());
         }
     }
-
-
-
-
-
-
-
-
-
 }

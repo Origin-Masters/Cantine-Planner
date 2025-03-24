@@ -13,18 +13,10 @@ import java.util.List;
 
 public class MealController extends AbstractController{
 
-    private int currentMenu;
-    private boolean running;
-
     public MealController(ScreenManager screenManager,
                           CantineService cantineService,
-                          EventManager eventManager,
-                          UsersRecord userRecord) {
-
-
-
-
-        super(screenManager, cantineService, eventManager, userRecord);
+                          EventManager eventManager) {
+        super(screenManager, cantineService, eventManager);
         this.subscribeToEvents();
     }
 
@@ -46,10 +38,10 @@ public class MealController extends AbstractController{
 
     }
 
-    public void showMealMenu(int currentUserId) {
+    public void showMealMenu() {
         try {
-            if (cantineService.isAdmin(currentUserId)) {
-                screenManager.showMealMenuScreen(cantineService.isAdmin(currentUserId));
+            if (cantineService.isAdmin(currentUser.getUserid())) {
+                screenManager.showMealMenuScreen(true);
             } else {
                 screenManager.showErrorScreen("You do not have the necessary permissions to access the meal menu.");
             }
@@ -253,17 +245,4 @@ public class MealController extends AbstractController{
             screenManager.showErrorScreen("There was an error while fetching meal please try again!");
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 }

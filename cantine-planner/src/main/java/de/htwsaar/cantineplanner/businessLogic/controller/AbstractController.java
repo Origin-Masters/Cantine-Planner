@@ -9,16 +9,14 @@ public abstract class AbstractController {
     protected ScreenManager screenManager;
     protected CantineService cantineService;
     protected EventManager eventManager;
-   UsersRecord usersRecord;
+    protected static UsersRecord currentUser = null;
 
     public AbstractController(ScreenManager screenManager,
                               CantineService cantineService,
-                              EventManager eventManager,
-                             UsersRecord usersRecord) {
+                              EventManager eventManager) {
         this.screenManager = screenManager;
         this.cantineService = cantineService;
         this.eventManager = eventManager;
-        this.usersRecord = usersRecord;
         subscribeToEvents();
     }
 

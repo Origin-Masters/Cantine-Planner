@@ -19,7 +19,6 @@ public class MainController extends AbstractController {
     private final WeeklyController weeklyController;
     private final LoginController loginController;
 
-    private int currentUserId;
 
 
     public MainController(ScreenManager screenManager,
@@ -27,14 +26,12 @@ public class MainController extends AbstractController {
                           EventManager eventManager,
                           UsersRecord userRecord) {
 
-        super(screenManager, cantineService, eventManager, userRecord);
-        this.mealController = new MealController(screenManager, cantineService, eventManager, userRecord);
-        this.reviewController = new ReviewController(screenManager, cantineService, eventManager, userRecord);
-        this.userController = new UserController(screenManager, cantineService, eventManager, userRecord);
-        this.weeklyController = new WeeklyController(screenManager, cantineService, eventManager, userRecord);
-        this.loginController = new LoginController(screenManager, cantineService, eventManager, userRecord);
-
-        this.currentUserId = userRecord.getUserid();
+        super(screenManager, cantineService, eventManager);
+        this.mealController = new MealController(screenManager, cantineService, eventManager);
+        this.reviewController = new ReviewController(screenManager, cantineService, eventManager);
+        this.userController = new UserController(screenManager, cantineService, eventManager);
+        this.weeklyController = new WeeklyController(screenManager, cantineService, eventManager);
+        this.loginController = new LoginController(screenManager, cantineService, eventManager);
 
         subscribeToEvents();
     }
@@ -44,17 +41,19 @@ public class MainController extends AbstractController {
         //TODO switchMenu
         eventManager.subscribe("switchMenu", (data) -> switchMenu((int) data));
 
+        /**
         eventManager.subscribe("showMainMenu", (data) -> switchMenu(1));
         eventManager.subscribe("showMealMenu", (data) -> switchMenu(2));
         eventManager.subscribe("showReviewMenu", (data) -> switchMenu(3));
         eventManager.subscribe("showUserMenu", (data) -> switchMenu(4));
         eventManager.subscribe("showWeeklyMenu", (data) -> switchMenu(5));
+        **/
         eventManager.subscribe("exit", (data) -> exitApplication());
         eventManager.subscribe("success", (data) -> screenManager.showSuccessScreen((String) data));
         eventManager.subscribe("error", (data) -> screenManager.showErrorScreen((String) data));
         eventManager.subscribe("logout", (data) -> {
             switchMenu(0);
-            this.currentUserId = -1;
+            currentUser = null;
         });
     }
 
@@ -123,7 +122,7 @@ public class MainController extends AbstractController {
      * </p>
      */
     private void mealMenu()  {
-     mealController.showMealMenu(currentUserId);
+     mealController.showMealMenu();
     }
 
     /**
@@ -141,7 +140,7 @@ public class MainController extends AbstractController {
      */
     private void userMenu() {
 
-        userController.showUserMenu(currentUserId);
+        userController.showUserMenu();
     }
 
     /**
@@ -152,7 +151,7 @@ public class MainController extends AbstractController {
      */
     private void weeklyMenu() {
 
-        weeklyController.showWeeklyMenu(currentUserId);
+        weeklyController.showWeeklyMenu();
     }
 
     /**

@@ -16,9 +16,8 @@ public class LoginController extends AbstractController {
 
     public LoginController(ScreenManager screenManager,
                           CantineService cantineService,
-                          EventManager eventManager,
-                           UsersRecord userRecord ) {
-        super(screenManager, cantineService, eventManager, userRecord);
+                          EventManager eventManager) {
+        super(screenManager, cantineService, eventManager);
         this.subscribeToEvents();
     }
     @Override

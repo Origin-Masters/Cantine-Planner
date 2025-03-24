@@ -438,4 +438,7 @@ public class CantineService {
     }
 
 
+    public UsersRecord getUser(String username) throws SQLException , UserDoesntExistException{
+        return dbConnection.getUser(username);
+    }
 }
