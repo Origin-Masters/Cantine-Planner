@@ -127,6 +127,24 @@ public class DBConnection {
     }
 
     /**
+     * Method getUser retrieves a user by username
+     * @param username
+     * @return UsersRecord
+     * @throws SQLException if an SQL exception occurs
+     * @throws UserDoesntExistException if the user doesn't exist
+     */
+    public UsersRecord getUser(String username) throws SQLException, UserDoesntExistException {
+        try (Connection connection = dataSource.getConnection()) {
+            DSLContext dsl = getDSLContext(connection);
+
+            if (!dsl.fetchExists(dsl.selectFrom(Users.USERS).where(Users.USERS.USERNAME.eq(username)))) {
+                throw new UserDoesntExistException("The user with the given username doesn't exist!");
+            }
+
+            return dsl.selectFrom(Users.USERS).where(Users.USERS.USERNAME.eq(username)).fetchOne();
+        }
+    }
+    /**
      * Method getAllUsers retrieves all users from the database
      *
      * @return List of UsersRecord
@@ -701,4 +719,6 @@ public class DBConnection {
             return Arrays.asList(allergies.split(","));
         }
     }
+
+
 }

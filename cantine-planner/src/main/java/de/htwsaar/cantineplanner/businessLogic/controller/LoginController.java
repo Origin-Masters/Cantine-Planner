@@ -5,6 +5,7 @@ import de.htwsaar.cantineplanner.businessLogic.EventManager;
 import de.htwsaar.cantineplanner.codegen.tables.records.UsersRecord;
 import de.htwsaar.cantineplanner.exceptions.InvalidEmailTypeException;
 import de.htwsaar.cantineplanner.exceptions.UserAlreadyExistsException;
+import de.htwsaar.cantineplanner.exceptions.UserDoesntExistException;
 import de.htwsaar.cantineplanner.exceptions.UserNotValidatedException;
 import de.htwsaar.cantineplanner.presentation.ScreenManager;
 
@@ -13,14 +14,12 @@ import java.util.Objects;
 
 public class LoginController extends AbstractController {
 
-    private int currentUserId;
     public LoginController(ScreenManager screenManager,
                           CantineService cantineService,
                           EventManager eventManager,
                            UsersRecord userRecord ) {
         super(screenManager, cantineService, eventManager, userRecord);
         this.subscribeToEvents();
-        this.currentUserId = userRecord.getUserid();
     }
     @Override
     protected void subscribeToEvents() {
@@ -46,14 +45,14 @@ public class LoginController extends AbstractController {
         String password = credentials[1];
         try {
             if (cantineService.validateUser(username, password)) {
-                currentUserId = cantineService.getUserId(username);
+                currentUser = cantineService.getUser(username);
                 screenManager.closeActiveWindow();
                 screenManager.showSuccessScreen("Login successful!");
                 eventManager.notify("switchMenu", 1);
             }
         } catch (UserNotValidatedException e) {
             screenManager.showErrorScreen(e.getMessage());
-        } catch (SQLException e) {
+        } catch (SQLException | UserDoesntExistException e) {
             screenManager.showErrorScreen("There was an error while logging in please try again!");
         }
     }

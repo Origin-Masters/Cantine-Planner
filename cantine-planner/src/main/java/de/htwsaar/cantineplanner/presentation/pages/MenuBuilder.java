@@ -6,6 +6,7 @@ import com.googlecode.lanterna.gui2.*;
 import de.htwsaar.cantineplanner.businessLogic.EventManager;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 public class MenuBuilder {
     private final MultiWindowTextGUI gui;
@@ -39,7 +40,7 @@ public class MenuBuilder {
         gridLayout.setVerticalSpacing(2);
 
         for (MenuButton button : buttons) {
-            panel.addComponent(new Button(button.getLabel(), () -> eventManager.notify(button.getEvent(), null))
+            panel.addComponent(new Button(button.getLabel(), () -> eventManager.notify(button.getEvent(), button.getData()))
                     .setPreferredSize(new TerminalSize(35, 3))
                     .setLayoutData(GridLayout.createLayoutData(GridLayout.Alignment.CENTER, GridLayout.Alignment.CENTER)));
         }
@@ -50,17 +51,26 @@ public class MenuBuilder {
     }
     // Öffentliche statische Klasse für Buttons
     public static class MenuButton {
-        private final String label;
-        private final String event;
+        private String label;
+        private String event;
+        private Object data;
         public MenuButton(String label, String event) {
             this.label = label;
             this.event = event;
+        }
+        public MenuButton(String label, String event, Object data) {
+            this.label = label;
+            this.event = event;
+            this.data = data;
         }
         public String getLabel() {
             return label;
         }
         public String getEvent() {
             return event;
+        }
+        public Object getData() {
+            return data;
         }
     }
 }
