@@ -53,7 +53,7 @@ public class ReviewRepository extends AbstractRepository {
      * @throws SQLException                 if a database access error occurs
      * @throws ReviewiDDoesntExistException if the review ID does not exist
      */
-    protected int getUserIdFromReviewId(int reviewId) throws SQLException, ReviewiDDoesntExistException {
+    protected int getUserIdFromReviewId(int reviewId) throws SQLException, ReviewiDDoesntExistException , NullPointerException{
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
             if (!dsl.fetchExists(dsl.selectFrom(Review.REVIEW).where(Review.REVIEW.RATING_ID.eq(reviewId)))) {

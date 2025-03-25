@@ -264,7 +264,7 @@ public class CantineService {
      * @throws SQLException                 if a database error occurs
      * @throws ReviewiDDoesntExistException if the review ID does not exist
      */
-    public int getUserIdFromReviewId(int reviewId) throws SQLException, ReviewiDDoesntExistException {
+    public int getUserIdFromReviewId(int reviewId) throws SQLException, ReviewiDDoesntExistException, NullPointerException {
         return reviewRepository.getUserIdFromReviewId(reviewId);
     }
 

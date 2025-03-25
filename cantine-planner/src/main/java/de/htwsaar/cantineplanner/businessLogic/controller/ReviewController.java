@@ -131,7 +131,7 @@ public class ReviewController extends AbstractController {
             screenManager.showErrorScreen("Invalid review ID format!");
         } catch (ReviewiDDoesntExistException e) {
             screenManager.showErrorScreen(e.getMessage());
-        } catch (SQLException e) {
+        } catch (SQLException | NullPointerException  e) {
             screenManager.showErrorScreen("Error deleting review, please try again!");
         }
     }
