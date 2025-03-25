@@ -24,13 +24,35 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class MealsRepository extends AbstractRepository{
-
-    public MealsRepository(HikariCPDataSource dataSource) {
+/**
+ * The MealsRepository class is responsible for handling meal data in the database.
+ */
+public class MealsRepository extends AbstractRepository {
+    /**
+     * Constructor for MealsRepository
+     *
+     * @param dataSource
+     */
+    protected MealsRepository(HikariCPDataSource dataSource) {
         super(dataSource);
     }
 
-    public void editMeal(MealsRecord meal) throws SQLException, MealDoesntExistException {
+    /**
+     * Updates the specified meal record in the database.
+     * <p>
+     * This method dynamically updates the meal fields based on the non-null
+     * values provided in the given meal record. It first verifies that a meal
+     * with the specified meal ID exists in the database. If the meal does not
+     * exist, a MealDoesntExistException is thrown. Otherwise, it constructs
+     * the update query using jOOQ and executes it.
+     * </p>
+     *
+     * @param meal a MealsRecord instance containing the updated meal data;
+     *             non-null fields will be updated in the database
+     * @throws SQLException             if a database error occurs during connection or query execution
+     * @throws MealDoesntExistException if the meal with the specified ID is not found
+     */
+    protected void editMeal(MealsRecord meal) throws SQLException, MealDoesntExistException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = super.getDSLContext(connection);
 
@@ -66,7 +88,6 @@ public class MealsRepository extends AbstractRepository{
                         ? updateQuery.set(Meals.MEALS.MEAT, meal.getMeat())
                         : setSteps.set(Meals.MEALS.MEAT, meal.getMeat());
             }
-
             if (setSteps != null) {
                 setSteps.where(Meals.MEALS.MEAL_ID.eq(meal.getMealId()))
                         .execute();
@@ -74,56 +95,88 @@ public class MealsRepository extends AbstractRepository{
         }
     }
 
-
     /**
-     * Method addMeal adds a meal for the database
+     * Adds a new meal record to the database.
+     * <p>
+     * This method first checks if a meal with the same name already exists in the database.
+     * If the meal already exists, a MealAlreadyExistsException is thrown. Otherwise, it
+     * inserts the new meal record into the Meals table and returns the inserted record.
+     * </p>
      *
-     * @param meal of type MealsRecord to be added
+     * @param meal a MealsRecord instance containing the meal data to be added
+     * @return the inserted MealsRecord object
+     * @throws SQLException               if a database access error occurs
+     * @throws MealAlreadyExistsException if a meal with the same name already exists
      */
-    public MealsRecord addMeal(MealsRecord meal) throws SQLException, MealAlreadyExistsException {
+    protected MealsRecord addMeal(MealsRecord meal) throws SQLException, MealAlreadyExistsException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
             if (dsl.fetchExists(dsl.selectFrom(Meals.MEALS).where(Meals.MEALS.NAME.eq(meal.getName())))) {
-                throw new MealAlreadyExistsException(" Meal Already exists !");
+                throw new MealAlreadyExistsException("Meal already exists!");
             }
 
-            dsl.insertInto(Meals.MEALS).set(Meals.MEALS.NAME, meal.getName()).set(Meals.MEALS.PRICE,
-                    meal.getPrice()).set(Meals.MEALS.CALORIES, meal.getCalories()).set(Meals.MEALS.ALLERGY,
-                    meal.getAllergy()).set(Meals.MEALS.MEAT, meal.getMeat()).set(Meals.MEALS.DAY,
-                    meal.getDay()).execute();
+            dsl.insertInto(Meals.MEALS)
+                    .set(Meals.MEALS.NAME, meal.getName())
+                    .set(Meals.MEALS.PRICE, meal.getPrice())
+                    .set(Meals.MEALS.CALORIES, meal.getCalories())
+                    .set(Meals.MEALS.ALLERGY, meal.getAllergy())
+                    .set(Meals.MEALS.MEAT, meal.getMeat())
+                    .set(Meals.MEALS.DAY, meal.getDay())
+                    .execute();
 
-            return dsl.selectFrom(Meals.MEALS).where(Meals.MEALS.NAME.eq(meal.getName())).fetchOne();
-
-        }
-
-    }
-
-    /**
-     * Method getAllMeals displays all meals in the database
-     */
-    public List<MealsRecord> getAllMeals() throws SQLException {
-        try (Connection connection = dataSource.getConnection()) {
-            DSLContext dsl = getDSLContext(connection);
-            return dsl.selectFrom(Meals.MEALS).fetchInto(MealsRecord.class);
+            return dsl.selectFrom(Meals.MEALS)
+                    .where(Meals.MEALS.NAME.eq(meal.getName()))
+                    .fetchOne();
         }
     }
 
     /**
-     * Method getAllAllergies displays all allergies in the database
-     */
-    public List<MealsRecord> getAllAllergies() throws SQLException {
-        try (Connection connection = dataSource.getConnection()) {
-            DSLContext dsl = getDSLContext(connection);
-            return dsl.selectFrom(Meals.MEALS).fetchInto(MealsRecord.class);
-        }
-    }
-
-    /**
-     * Method deleteMeal deletes a meal from the database
+     * Retrieves all meal records from the database.
+     * <p>
+     * This method fetches all records from the Meals table. The results are returned as
+     * a list of MealsRecord objects.
+     * </p>
      *
-     * @param mealId of type int of the meal to be deleted
+     * @return a list of MealsRecord objects representing all meals in the database
+     * @throws SQLException if a database access error occurs
      */
-    public void deleteMealById(int mealId) throws SQLException, MealiDNotFoundException {
+    protected List<MealsRecord> getAllMeals() throws SQLException {
+        try (Connection connection = dataSource.getConnection()) {
+            DSLContext dsl = getDSLContext(connection);
+            return dsl.selectFrom(Meals.MEALS).fetchInto(MealsRecord.class);
+        }
+    }
+
+    /**
+     * Retrieves all meal records with allergy information from the database.
+     * <p>
+     * This method fetches all records from the Meals table. The results are returned as
+     * a list of MealsRecord objects.
+     * </p>
+     *
+     * @return a list of MealsRecord objects representing all meals with allergy information in the database
+     * @throws SQLException if a database access error occurs
+     */
+    protected List<MealsRecord> getAllAllergies() throws SQLException {
+        try (Connection connection = dataSource.getConnection()) {
+            DSLContext dsl = getDSLContext(connection);
+            return dsl.selectFrom(Meals.MEALS).fetchInto(MealsRecord.class);
+        }
+    }
+
+    /**
+     * Deletes a meal record from the database by meal ID.
+     * <p>
+     * This method first checks if a meal with the specified ID exists in the database.
+     * If the meal does not exist, a MealiDNotFoundException is thrown. Otherwise, it
+     * deletes the meal record from the Meals table.
+     * </p>
+     *
+     * @param mealId the ID of the meal to be deleted
+     * @throws SQLException            if a database access error occurs
+     * @throws MealiDNotFoundException if the meal with the specified ID is not found
+     */
+    protected void deleteMealById(int mealId) throws SQLException, MealiDNotFoundException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
             if (!dsl.fetchExists(dsl.selectFrom(Meals.MEALS).where(Meals.MEALS.MEAL_ID.eq(mealId)))) {
@@ -135,15 +188,23 @@ public class MealsRepository extends AbstractRepository{
     }
 
     /**
-     * Method searchMeal searches for a meal by name
+     * Searches for a meal by its name in the database.
+     * <p>
+     * This method checks if a meal with the specified name exists in the database.
+     * If the meal does not exist, a MealDoesntExistException is thrown. Otherwise,
+     * it fetches and returns the meal records that match the given name.
+     * </p>
      *
-     * @param name of type String of the meal to be searched
+     * @param name the name of the meal to be searched
+     * @return a list of MealsRecord objects representing the meals with the specified name
+     * @throws SQLException             if a database access error occurs
+     * @throws MealDoesntExistException if a meal with the specified name is not found
      */
-    public List<MealsRecord> searchMealByName(String name) throws SQLException, MealDoesntExistException {
+    protected List<MealsRecord> searchMealByName(String name) throws SQLException, MealDoesntExistException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
             if (!dsl.fetchExists(dsl.selectFrom(Meals.MEALS).where(Meals.MEALS.NAME.eq(name)))) {
-                throw new MealDoesntExistException("Meal with name " + name + " doesnt exist !");
+                throw new MealDoesntExistException("Meal with name " + name + " doesn't exist!");
             }
 
             return dsl.selectFrom(Meals.MEALS).where(Meals.MEALS.NAME.eq(name)).fetchInto(MealsRecord.class);
@@ -151,22 +212,38 @@ public class MealsRepository extends AbstractRepository{
     }
 
     /**
-     * Method mealDetails displays the details of a meal
+     * Searches for a meal by its ID in the database.
+     * <p>
+     * This method checks if a meal with the specified ID exists in the database.
+     * If the meal does not exist, a MealiDNotFoundException is thrown. Otherwise,
+     * it fetches and returns the meal records that match the given ID.
+     * </p>
      *
-     * @param mealId of type int of the meal to be displayed
+     * @param mealId the ID of the meal to be searched
+     * @return a list of MealsRecord objects representing the meals with the specified ID
+     * @throws SQLException            if a database access error occurs
+     * @throws MealiDNotFoundException if a meal with the specified ID is not found
      */
-    public List<MealsRecord> searchMealById(int mealId) throws SQLException, MealiDNotFoundException {
+    protected List<MealsRecord> searchMealById(int mealId) throws SQLException, MealiDNotFoundException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
             if (!dsl.fetchExists(dsl.selectFrom(Meals.MEALS).where(Meals.MEALS.MEAL_ID.eq(mealId)))) {
-                throw new MealiDNotFoundException("Meal with the given iD " + mealId + " doesnt exist !");
+                throw new MealiDNotFoundException("Meal with the given ID " + mealId + " doesn't exist!");
             }
             return dsl.selectFrom(Meals.MEALS).where(Meals.MEALS.MEAL_ID.eq(mealId)).fetchInto(MealsRecord.class);
         }
     }
 
-
-    public List<MealsRecord> sortMealsByPrice() throws SQLException {
+    /**
+     * Sorts meals by price in ascending order.
+     * <p>
+     * This method fetches all meal records from the database and sorts them by price in ascending order.
+     * </p>
+     *
+     * @return a list of MealsRecord objects sorted by price
+     * @throws SQLException if a database access error occurs
+     */
+    protected List<MealsRecord> sortMealsByPrice() throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
             return dsl.selectFrom(Meals.MEALS)
@@ -175,7 +252,17 @@ public class MealsRepository extends AbstractRepository{
         }
     }
 
-    public List<MealsRecord> sortMealsByRating() throws SQLException {
+    /**
+     * Sorts meals by their median rating in descending order.
+     * <p>
+     * This method fetches all meal records from the database, calculates the median rating for each meal,
+     * and sorts the meals by their median rating in descending order.
+     * </p>
+     *
+     * @return a list of MealsRecord objects sorted by their median rating
+     * @throws SQLException if a database access error occurs
+     */
+    protected List<MealsRecord> sortMealsByRating() throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
 
@@ -198,7 +285,16 @@ public class MealsRepository extends AbstractRepository{
         }
     }
 
-    public List<MealsRecord> sortMealsByName() throws SQLException {
+    /**
+     * Sorts meals by name in ascending order.
+     * <p>
+     * This method fetches all meal records from the database and sorts them by name in ascending order.
+     * </p>
+     *
+     * @return a list of MealsRecord objects sorted by name
+     * @throws SQLException if a database access error occurs
+     */
+    protected List<MealsRecord> sortMealsByName() throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
             return dsl.selectFrom(Meals.MEALS)
@@ -207,7 +303,16 @@ public class MealsRepository extends AbstractRepository{
         }
     }
 
-    public List<MealsRecord> sortMealsByCalories() throws SQLException {
+    /**
+     * Sorts meals by calories in ascending order.
+     * <p>
+     * This method fetches all meal records from the database and sorts them by calories in ascending order.
+     * </p>
+     *
+     * @return a list of MealsRecord objects sorted by calories
+     * @throws SQLException if a database access error occurs
+     */
+    protected List<MealsRecord> sortMealsByCalories() throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
             return dsl.selectFrom(Meals.MEALS)
@@ -218,13 +323,18 @@ public class MealsRepository extends AbstractRepository{
 
     /**
      * Sorts meals by excluding those that contain the user's allergies.
+     * <p>
+     * This method retrieves all meal records from the database and filters out
+     * meals that contain any of the user's allergies. The user's allergies are
+     * fetched based on the provided user ID.
+     * </p>
      *
      * @param userId the ID of the user
-     * @return a list of meals excluding those with the user's allergies
+     * @return a list of MealsRecord objects excluding those with the user's allergies
      * @throws SQLException             if a database access error occurs
      * @throws UserDoesntExistException if the user with the given ID doesn't exist
      */
-    public List<MealsRecord> sortMealsByAllergy(int userId) throws SQLException, UserDoesntExistException {
+    protected List<MealsRecord> sortMealsByAllergy(int userId) throws SQLException, UserDoesntExistException {
         List<String> userAllergies = getUserAllergies(userId);
 
         try (Connection connection = dataSource.getConnection()) {
@@ -250,6 +360,9 @@ public class MealsRepository extends AbstractRepository{
 
     /**
      * Retrieves the allergy settings for a user by user ID.
+     * <p>
+     * This method fetches the user's allergy information from the database based on the provided user ID.
+     * </p>
      *
      * @param userId the ID of the user
      * @return a list of allergies
@@ -274,18 +387,22 @@ public class MealsRepository extends AbstractRepository{
     }
 
     /**
-     * Method calculateMedianRatingForMeal calculates the median rating for a meal
+     * Calculates the median rating for a meal.
+     * <p>
+     * This method calculates the median rating for a meal based on the provided meal ID.
+     * </p>
      *
-     * @param mealId of type int of the meal to be calculated
+     * @param mealId the ID of the meal to calculate the median rating for
+     * @return the median rating of the meal
+     * @throws SQLException if a database access error occurs
      */
-    public double calculateMedianRatingForMeal(int mealId) throws SQLException {
+    protected double calculateMedianRatingForMeal(int mealId) throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
-            return dsl.select(DSL.median(Review.REVIEW.RATING)).from(Review.REVIEW).where(
-                    Review.REVIEW.MEAL_ID.eq(mealId)).fetchOne(0, double.class);
+            return dsl.select(DSL.median(Review.REVIEW.RATING))
+                    .from(Review.REVIEW)
+                    .where(Review.REVIEW.MEAL_ID.eq(mealId))
+                    .fetchOne(0, double.class);
         }
     }
-
-
-
 }

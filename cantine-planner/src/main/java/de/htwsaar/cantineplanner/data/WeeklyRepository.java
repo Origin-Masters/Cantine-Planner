@@ -12,37 +12,48 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
-public class WeeklyRepository extends AbstractRepository{
-
+/**
+ * The WeeklyRepository class is responsible for handling all database operations related to the weekly plan.
+ */
+public class WeeklyRepository extends AbstractRepository {
+    /**
+     * Constructs a new WeeklyRepository object.
+     *
+     * @param dataSource
+     */
     protected WeeklyRepository(HikariCPDataSource dataSource) {
         super(dataSource);
-
     }
 
     /**
-     * Method getWeeklyPlan returns the weekly plan of meals
+     * Retrieves the weekly plan of meals from the database.
+     * <p>
+     * This method fetches all meal records from the database where the day is not null.
+     * </p>
      *
-     * @return List of MealsRecord
-     * @throws SQLException if an SQL exception occurs
+     * @return a list of MealsRecord representing the weekly plan
+     * @throws SQLException if a database access error occurs
      */
-    public List<MealsRecord> getWeeklyPlan() throws SQLException {
+    protected List<MealsRecord> getWeeklyPlan() throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
             return dsl.selectFrom(Meals.MEALS).where(Meals.MEALS.DAY.isNotNull()).fetchInto(MealsRecord.class);
-
         }
     }
 
-
     /**
-     * Method editWeeklyPlan edits the weekly plan
+     * Edits the weekly plan by updating the day for a specific meal.
+     * <p>
+     * This method updates the day field of a meal record in the database based on the provided meal name.
+     * If the meal does not exist, a MealDoesntExistException is thrown.
+     * </p>
      *
-     * @param mealName of type String
-     * @param day      of type String
-     * @throws SQLException             if an SQL exception occurs
-     * @throws MealDoesntExistException if the meal doesn't exist
+     * @param mealName the name of the meal to be updated
+     * @param day      the new day to be set for the meal
+     * @throws SQLException             if a database access error occurs
+     * @throws MealDoesntExistException if the meal with the given name does not exist
      */
-    public void editWeeklyPlan(String mealName, String day) throws SQLException, MealDoesntExistException {
+    protected void editWeeklyPlan(String mealName, String day) throws SQLException, MealDoesntExistException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext create = DSL.using(connection, SQLDialect.SQLITE);
             int rowsAffected = create.update(DSL.table("meals")).set(DSL.field("day"), day).where(
@@ -56,15 +67,17 @@ public class WeeklyRepository extends AbstractRepository{
     }
 
     /**
-     * Method resetWeeklyPlan resets the weekly plan
+     * Resets the weekly plan.
+     * <p>
+     * This method sets the day field of all meal records in the database to null, effectively resetting the weekly plan.
+     * </p>
      *
-     * @throws SQLException if an SQL exception occurs
+     * @throws SQLException if a database access error occurs
      */
-    public void resetWeeklyPlan() throws SQLException {
+    protected void resetWeeklyPlan() throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
             dsl.update(DSL.table("meals")).set(DSL.field("day"), (String) null).execute();
         }
     }
-
 }

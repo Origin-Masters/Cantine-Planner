@@ -13,21 +13,33 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * The UserRepository class is responsible for handling user data in the database.
+ */
 public class UserRepository extends AbstractRepository {
-
+    /**
+     * Constructs a new UserRepository object.
+     *
+     * @param dataSource
+     */
     protected UserRepository(HikariCPDataSource dataSource) {
         super(dataSource);
     }
 
-
     /**
-     * Method validateUser validates a user by username and password
+     * Validates a user by username and password.
+     * <p>
+     * This method checks if the provided username and plain text password match the stored hashed password in the database.
+     * If the username or password is invalid, a UserNotValidatedException is thrown.
+     * </p>
      *
-     * @param username          of type String
-     * @param plainTextPassword of type String
-     * @throws UserNotValidatedException if the user is not validated
+     * @param username          the username of the user to be validated
+     * @param plainTextPassword the plain text password of the user to be validated
+     * @return true if the user is successfully validated
+     * @throws SQLException              if a database access error occurs
+     * @throws UserNotValidatedException if the username or password is invalid
      */
-    public boolean validateUser(String username, String plainTextPassword) throws SQLException, UserNotValidatedException {
+    protected boolean validateUser(String username, String plainTextPassword) throws SQLException, UserNotValidatedException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
             String hashedPassword = dsl.select(Users.USERS.PASSWORD).from(Users.USERS).where(
@@ -41,13 +53,19 @@ public class UserRepository extends AbstractRepository {
     }
 
     /**
-     * Method validateUser validates a user by username and password
+     * Validates a user by user ID and password.
+     * <p>
+     * This method checks if the provided user ID and plain text password match the stored hashed password in the database.
+     * If the password is invalid, a UserNotValidatedException is thrown.
+     * </p>
      *
-     * @param userID            of type Int
-     * @param plainTextPassword of type String
-     * @throws UserNotValidatedException if the user is not validated
+     * @param userID            the ID of the user to be validated
+     * @param plainTextPassword the plain text password of the user to be validated
+     * @return true if the user is successfully validated
+     * @throws SQLException              if a database access error occurs
+     * @throws UserNotValidatedException if the password is invalid
      */
-    public boolean validateUser(int userID, String plainTextPassword) throws SQLException, UserNotValidatedException {
+    protected boolean validateUser(int userID, String plainTextPassword) throws SQLException, UserNotValidatedException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
             String hashedPassword = dsl.select(Users.USERS.PASSWORD).from(Users.USERS).where(
@@ -61,14 +79,18 @@ public class UserRepository extends AbstractRepository {
     }
 
     /**
-     * Method getUserId searches for a user by username and returns the userId
+     * Retrieves the user ID for a given username.
+     * <p>
+     * This method fetches the user ID from the database based on the provided username.
+     * If the username does not exist, a UserDoesntExistException is thrown.
+     * </p>
      *
-     * @param username of type String
-     * @return userId of type int
-     * @throws SQLException             if an SQL exception occurs
-     * @throws UserDoesntExistException if the user doesn't exist
+     * @param username the username of the user whose ID is to be retrieved
+     * @return the user ID of the user with the given username
+     * @throws SQLException             if a database access error occurs
+     * @throws UserDoesntExistException if the user with the given username does not exist
      */
-    public int getUserId(String username) throws SQLException, UserDoesntExistException {
+    protected int getUserId(String username) throws SQLException, UserDoesntExistException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
 
@@ -82,13 +104,18 @@ public class UserRepository extends AbstractRepository {
     }
 
     /**
-     * Method getUser retrieves a user by username
-     * @param username
-     * @return UsersRecord
-     * @throws SQLException if an SQL exception occurs
-     * @throws UserDoesntExistException if the user doesn't exist
+     * Retrieves a user record by username from the database.
+     * <p>
+     * This method fetches the user record from the database based on the provided username.
+     * If the username does not exist, a UserDoesntExistException is thrown.
+     * </p>
+     *
+     * @param username the username of the user to be retrieved
+     * @return the UsersRecord of the user with the given username
+     * @throws SQLException             if a database access error occurs
+     * @throws UserDoesntExistException if the user with the given username does not exist
      */
-    public UsersRecord getUser(String username) throws SQLException, UserDoesntExistException {
+    protected UsersRecord getUser(String username) throws SQLException, UserDoesntExistException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
 
@@ -99,12 +126,17 @@ public class UserRepository extends AbstractRepository {
             return dsl.selectFrom(Users.USERS).where(Users.USERS.USERNAME.eq(username)).fetchOne();
         }
     }
+
     /**
-     * Method getAllUsers retrieves all users from the database
+     * Retrieves all users from the database.
+     * <p>
+     * This method fetches all user records from the database.
+     * </p>
      *
-     * @return List of UsersRecord
+     * @return a list of UsersRecord objects representing all users
+     * @throws SQLException if a database access error occurs
      */
-    public List<UsersRecord> getAllUser() throws SQLException {
+    protected List<UsersRecord> getAllUser() throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
             return dsl.selectFrom(Users.USERS).fetchInto(UsersRecord.class);
@@ -113,13 +145,17 @@ public class UserRepository extends AbstractRepository {
 
     /**
      * Retrieves a user record by user ID from the database.
+     * <p>
+     * This method fetches the user record from the database based on the provided user ID.
+     * If the user ID does not exist, a UserDoesntExistException is thrown.
+     * </p>
      *
-     * @param userId the ID of the user to retrieve
+     * @param userId the ID of the user to be retrieved
      * @return the UsersRecord of the user with the given ID
      * @throws SQLException             if a database access error occurs
-     * @throws UserDoesntExistException if the user with the given ID doesn't exist
+     * @throws UserDoesntExistException if the user with the given ID does not exist
      */
-    public UsersRecord getUserById(int userId) throws SQLException, UserDoesntExistException {
+    protected UsersRecord getUserById(int userId) throws SQLException, UserDoesntExistException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
 
@@ -132,14 +168,18 @@ public class UserRepository extends AbstractRepository {
     }
 
     /**
-     * Method updateUserRole updates the role of a user by userId
+     * Updates the role of a user by user ID.
+     * <p>
+     * This method updates the role of a user in the database based on the provided user ID.
+     * If the user ID does not exist, a UserDoesntExistException is thrown.
+     * </p>
      *
-     * @param userId
-     * @param role
-     * @throws SQLException
-     * @throws UserDoesntExistException
+     * @param userId the ID of the user whose role is to be updated
+     * @param role   the new role to be assigned to the user
+     * @throws SQLException             if a database access error occurs
+     * @throws UserDoesntExistException if the user with the given ID does not exist
      */
-    public void updateUserRole(int userId, int role) throws SQLException, UserDoesntExistException {
+    protected void updateUserRole(int userId, int role) throws SQLException, UserDoesntExistException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
 
@@ -152,35 +192,46 @@ public class UserRepository extends AbstractRepository {
     }
 
     /**
-     * Method isAdmin checks if a user is an admin or not
+     * Checks if a user is an admin by user ID.
+     * <p>
+     * This method checks if the user with the given user ID has an admin role.
+     * If the user ID does not exist, a UserDoesntExistException is thrown.
+     * </p>
      *
-     * @return boolean true if the user is an admin, false otherwise
-     * @throws SQLException             if an SQL exception occurs
-     * @throws UserDoesntExistException if the user doesn't exist
+     * @param userID the ID of the user to be checked
+     * @return true if the user is an admin, false otherwise
+     * @throws SQLException             if a database access error occurs
+     * @throws UserDoesntExistException if the user with the given ID does not exist
      */
-    public boolean isAdmin(int UserID) throws SQLException, UseriDDoesntExcistException {
+    protected boolean isAdmin(int userID) throws SQLException, UserDoesntExistException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
 
-            if (!dsl.fetchExists(dsl.selectFrom(Users.USERS).where(Users.USERS.USERID.eq(UserID)))) {
-                throw new UseriDDoesntExcistException("The user with the given username doesn't exist!");
+            if (!dsl.fetchExists(dsl.selectFrom(Users.USERS).where(Users.USERS.USERID.eq(userID)))) {
+                throw new UserDoesntExistException("The user with the given ID doesn't exist!");
             }
-            return dsl.select(Users.USERS.ROLE).from(Users.USERS).where(Users.USERS.USERID.eq(UserID)).fetchOne(
+            return dsl.select(Users.USERS.ROLE).from(Users.USERS).where(Users.USERS.USERID.eq(userID)).fetchOne(
                     Users.USERS.ROLE) == 1;
         }
     }
 
     /**
-     * Method registerUser registers a user in the database with the given username, password and email
+     * Registers a new user in the database.
+     * <p>
+     * This method inserts a new user record into the database with the provided username, password, and email.
+     * If the username already exists, a UserAlreadyExistsException is thrown.
+     * If the email is invalid, an InvalidEmailTypeException is thrown.
+     * </p>
      *
-     * @param username          of type String
-     * @param plainTextPassword of type String
-     * @param email             of type String
-     * @return A UsersRecord of the registered user
-     * @throws SQLException               if an SQL exception occurs
-     * @throws UserAlreadyExistsException if the user already exists
+     * @param username          the username of the user to be registered
+     * @param plainTextPassword the plain text password of the user to be registered
+     * @param email             the email of the user to be registered
+     * @return the UsersRecord of the registered user
+     * @throws SQLException               if a database access error occurs
+     * @throws UserAlreadyExistsException if the username already exists
+     * @throws InvalidEmailTypeException  if the email is invalid
      */
-    public UsersRecord registerUser(String username, String plainTextPassword, String email) throws SQLException, UserAlreadyExistsException, InvalidEmailTypeException {
+    protected UsersRecord registerUser(String username, String plainTextPassword, String email) throws SQLException, UserAlreadyExistsException, InvalidEmailTypeException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
 
@@ -200,23 +251,30 @@ public class UserRepository extends AbstractRepository {
     }
 
     /**
-     * Method isValidEmail checks if the email is valid
+     * Validates an email address.
+     * <p>
+     * This method checks if the provided email address matches the standard email format.
+     * </p>
      *
-     * @param email of type String
-     * @return boolean true if the email is valid, false otherwise
+     * @param email the email address to be validated
+     * @return true if the email address is valid, false otherwise
      */
-    public boolean isValidEmail(String email) {
+    protected boolean isValidEmail(String email) {
         return email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
     }
 
     /**
-     * Method deleteUserById deletes a user from the database by userId
+     * Deletes a user from the database by user ID.
+     * <p>
+     * This method deletes a user record from the database based on the provided user ID.
+     * If the user ID does not exist, a UserDoesntExistException is thrown.
+     * </p>
      *
-     * @param userId of type int of the user to be deleted
-     * @throws SQLException             if an SQL exception occurs
-     * @throws UserDoesntExistException if the user doesn't exist
+     * @param userId the ID of the user to be deleted
+     * @throws SQLException             if a database access error occurs
+     * @throws UserDoesntExistException if the user with the given ID does not exist
      */
-    public void deleteUserById(int userId) throws SQLException, UserDoesntExistException {
+    protected void deleteUserById(int userId) throws SQLException, UserDoesntExistException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
 
@@ -229,13 +287,17 @@ public class UserRepository extends AbstractRepository {
     }
 
     /**
-     * Method deleteUserByName deletes a user from the database by username
+     * Deletes a user from the database by username.
+     * <p>
+     * This method deletes a user record from the database based on the provided username.
+     * If the username does not exist, a UserDoesntExistException is thrown.
+     * </p>
      *
-     * @param UserName of type String of the user to be deleted
-     * @throws SQLException             if an SQL exception occurs
-     * @throws UserDoesntExistException if the user doesn't exist
+     * @param UserName the username of the user to be deleted
+     * @throws SQLException             if a database access error occurs
+     * @throws UserDoesntExistException if the user with the given username does not exist
      */
-    public void deleteUserByName(String UserName) throws SQLException, UserDoesntExistException {
+    protected void deleteUserByName(String UserName) throws SQLException, UserDoesntExistException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
 
@@ -248,15 +310,19 @@ public class UserRepository extends AbstractRepository {
     }
 
     /**
-     * Method editUserData edits the user data in the database
+     * Edits the user data in the database.
+     * <p>
+     * This method updates the user's password and/or email in the database based on the provided user ID.
+     * If the new email is invalid, an InvalidEmailTypeException is thrown.
+     * </p>
      *
-     * @param currentUserId of type int
-     * @param newPassword   of type String
-     * @param newEmail      of type String
-     * @throws SQLException             if an SQL exception occurs
-     * @throws UserDoesntExistException if the user doesn't exist
+     * @param currentUserId the ID of the user whose data is to be edited
+     * @param newPassword   the new password to be set for the user (can be null or empty if not changing)
+     * @param newEmail      the new email to be set for the user (can be null or empty if not changing)
+     * @throws SQLException              if a database access error occurs
+     * @throws InvalidEmailTypeException if the new email is invalid
      */
-    public void editUserData(int currentUserId, String newPassword, String newEmail) throws SQLException, InvalidEmailTypeException {
+    protected void editUserData(int currentUserId, String newPassword, String newEmail) throws SQLException, InvalidEmailTypeException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
 
@@ -280,14 +346,17 @@ public class UserRepository extends AbstractRepository {
     }
 
     /**
-     * Method setAllergyForUser sets allergies for a user by userId
+     * Sets allergies for a user by user ID.
+     * <p>
+     * This method updates the user's allergy settings in the database based on the provided user ID.
+     * </p>
      *
-     * @param userId    of type int
-     * @param allergies of type String
-     * @return boolean true if the allergies are set, false otherwise
-     * @throws SQLException if an SQL exception occurs
+     * @param userId    the ID of the user whose allergy settings are to be updated
+     * @param allergies the allergies to be set for the user
+     * @return true if the allergies are successfully set, false otherwise
+     * @throws SQLException if a database access error occurs
      */
-    public boolean setAllergeneSettings(int userId, String allergies) throws SQLException {
+    protected boolean setAllergeneSettings(int userId, String allergies) throws SQLException {
         //  String cleanAllergies = allergies.replace("[", "").replace("]", "");
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
@@ -298,8 +367,4 @@ public class UserRepository extends AbstractRepository {
             return true;
         }
     }
-
-
-
-
 }

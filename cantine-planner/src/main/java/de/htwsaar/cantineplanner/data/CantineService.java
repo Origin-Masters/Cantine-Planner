@@ -31,7 +31,7 @@ public class CantineService {
     ////////////////////////////////////////////////////////////////////////////////
 
 
-/**
+    /**
      * Constructs a new CantineService instance.
      *
      * @param propertiesFilePath the path to the properties file for configuring the HikariCP data source
@@ -330,10 +330,14 @@ public class CantineService {
 
     /**
      * Sets allergene settings for a user.
+     * <p>
+     * This method updates the user's allergene settings in the database based on the provided user ID.
+     * It processes the allergene string, maps each allergen to its code, and stores the result.
+     * </p>
      *
-     * @param userId    user ID
-     * @param allergene allergenes in string form
-     * @throws SQLException             if a database error occurs
+     * @param userId    the ID of the user whose allergene settings are to be updated
+     * @param allergene the allergenes in string form
+     * @throws SQLException             if a database access error occurs
      * @throws UserDoesntExistException if the user does not exist
      */
     public void setAllergeneSettings(int userId, String allergene) throws SQLException, UserDoesntExistException {
@@ -457,8 +461,15 @@ public class CantineService {
         return userRepository.isAdmin(currentUserId);
     }
 
-
-    public UsersRecord getUser(String username) throws SQLException , UserDoesntExistException{
+    /**
+     * Retrieves a user by username.
+     *
+     * @param username user name
+     * @return user record
+     * @throws SQLException             if a database error occurs
+     * @throws UserDoesntExistException if the user does not exist
+     */
+    public UsersRecord getUser(String username) throws SQLException, UserDoesntExistException {
         return userRepository.getUser(username);
     }
 }
