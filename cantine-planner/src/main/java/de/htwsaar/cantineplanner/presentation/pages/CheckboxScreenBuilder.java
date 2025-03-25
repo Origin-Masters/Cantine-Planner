@@ -1,12 +1,11 @@
 package de.htwsaar.cantineplanner.presentation.pages;
 
-import com.googlecode.lanterna.SGR;
-import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.gui2.*;
 import de.htwsaar.cantineplanner.businessLogic.EventManager;
+import de.htwsaar.cantineplanner.businessLogic.controller.eventdata.EventType;
+import de.htwsaar.cantineplanner.businessLogic.controller.eventdata.StringArrayData;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class CheckboxScreenBuilder {
@@ -30,11 +29,11 @@ public class CheckboxScreenBuilder {
     }
 
     // Methode zur Anzeige des Panels mit einer Liste von Labels
-    public void display(List<String> labels, String event) {
+    public void display(List<String> labels, EventType eventType) {
         Panel panel = new Panel(new GridLayout(1));
         GridLayout gridLayout = (GridLayout) panel.getLayoutManager();
-        gridLayout.setHorizontalSpacing(5);
-        gridLayout.setVerticalSpacing(2);
+        gridLayout.setHorizontalSpacing(2);
+        gridLayout.setVerticalSpacing(1);
 
         // Labeled CheckBoxes hinzufügen
         for (String label : labels) {
@@ -52,14 +51,14 @@ public class CheckboxScreenBuilder {
                 }
             }
             String result = String.join(",", selectedValues);
-            eventManager.notify(event, new String[]{result});
+            eventManager.notify(eventType, new StringArrayData(new String[]{result}));
         }));
 
         panel.addComponent(buttonPanel);
 
         BasicWindow window = new BasicWindow(title);
         window.setComponent(panel);
-        window.setHints(Arrays.asList(Window.Hint.CENTERED));
+        window.setHints(List.of(Window.Hint.CENTERED));
 
         gui.addWindowAndWait(window);
     }

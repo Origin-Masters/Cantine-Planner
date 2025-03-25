@@ -5,8 +5,10 @@ import com.googlecode.lanterna.gui2.*;
 import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.SGR;
 import de.htwsaar.cantineplanner.businessLogic.EventManager;
+import de.htwsaar.cantineplanner.businessLogic.controller.eventdata.EventType;
+import de.htwsaar.cantineplanner.businessLogic.controller.eventdata.StringArrayData;
 
-import java.util.Arrays;
+import java.util.List;
 
 public class LoginScreen extends AbstractScreen {
     private final EventManager eventManager;
@@ -37,18 +39,14 @@ public class LoginScreen extends AbstractScreen {
         buttonPanel.addComponent(new Button("Login", () -> {
             String user = username.getText();
             String pass = password.getText();
-            eventManager.notify("login", new String[]{user, pass});
+            eventManager.notify(EventType.LOGIN, new StringArrayData(new String[]{user, pass}));
         }).setPreferredSize(new TerminalSize(20, 3)).setLayoutData(
                 GridLayout.createLayoutData(GridLayout.Alignment.BEGINNING, GridLayout.Alignment.BEGINNING)));
 
-        buttonPanel.addComponent(new Button("Register", () -> {
-            eventManager.notify("showRegisterScreen", null);
-        }).setPreferredSize(new TerminalSize(20, 3)).setLayoutData(
+        buttonPanel.addComponent(new Button("Register", () -> eventManager.notify(EventType.SHOW_REGISTER_SCREEN, null)).setPreferredSize(new TerminalSize(20, 3)).setLayoutData(
                 GridLayout.createLayoutData(GridLayout.Alignment.BEGINNING, GridLayout.Alignment.BEGINNING)));
 
-        buttonPanel.addComponent(new Button("Exit", () -> {
-            eventManager.notify("exit", null);
-        }).setPreferredSize(new TerminalSize(20, 3)).setLayoutData(
+        buttonPanel.addComponent(new Button("Exit", () -> eventManager.notify(EventType.EXIT, null)).setPreferredSize(new TerminalSize(20, 3)).setLayoutData(
                 GridLayout.createLayoutData(GridLayout.Alignment.CENTER, GridLayout.Alignment.CENTER)));
 
         panel.addComponent(buttonPanel,
@@ -57,7 +55,7 @@ public class LoginScreen extends AbstractScreen {
 
         BasicWindow window = new BasicWindow("Login");
         window.setComponent(panel);
-        window.setHints(Arrays.asList(Window.Hint.CENTERED));
+        window.setHints(List.of(Window.Hint.CENTERED));
 
         gui.addWindowAndWait(window);
     }

@@ -3,7 +3,6 @@ package de.htwsaar.cantineplanner.presentation.pages;
 import com.googlecode.lanterna.gui2.*;
 import com.googlecode.lanterna.gui2.table.Table;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class
@@ -50,7 +49,7 @@ TableBuilder {
 
         BasicWindow window = new BasicWindow(title);
         window.setComponent(panel);
-        window.setHints(Arrays.asList(Window.Hint.CENTERED));
+        window.setHints(List.of(Window.Hint.CENTERED));
 
         gui.addWindowAndWait(window);
     }

@@ -1,6 +1,9 @@
 package de.htwsaar.cantineplanner.businessLogic;
 
 
+import de.htwsaar.cantineplanner.businessLogic.controller.eventdata.EventData;
+import de.htwsaar.cantineplanner.businessLogic.controller.eventdata.EventType;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,17 +15,32 @@ import java.util.function.Consumer;
  * und diese bei Bedarf aufzurufen.
  */
 public class EventManager {
-    private Map<String, List<Consumer<Object>>> listeners = new HashMap<>();
+    private final Map<EventType, List<Consumer<EventData>>> listeners = new HashMap<>();
 
-    public void subscribe(String eventType, Consumer<Object> listener) {
-        listeners.computeIfAbsent(eventType, k -> new ArrayList<>()).add(listener);
+    public void subscribe(EventType eventType, Consumer<EventData> eventFunction) {
+        List<Consumer<EventData>> list = new ArrayList<>();
+        if (listeners.containsKey(eventType)) {
+            list = listeners.get(eventType);
+        }
+        list.add(eventFunction);
+        listeners.put(eventType, list);
+
     }
 
-    public void notify(String eventType, Object data) {
-        List<Consumer<Object>> list = listeners.get(eventType);
-        if (list != null) {
-            for (Consumer<Object> listener : list) {
-                listener.accept(data);
+    public void subscribe(EventType eventType, Runnable eventFunction) {
+        subscribe(eventType, eventData -> eventFunction.run());
+    }
+
+    public void notify(EventType eventType, EventData data) {
+
+        if(eventType.verifyEventData(data)) {
+            List<Consumer<EventData>> list = listeners.get(eventType);
+
+            if (list != null) {
+                for (Consumer<EventData> eventFunction : list) {
+
+                    eventFunction.accept(data);
+                }
             }
         }
     }

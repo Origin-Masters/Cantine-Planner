@@ -1,5 +1,7 @@
 package de.htwsaar.cantineplanner.dbUtils;
 
+import de.htwsaar.cantineplanner.exceptions.DataBaseLoadException;
+
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -23,8 +25,7 @@ public class DataBaseUtil {
         try (InputStream inputStream = DataBaseUtil.class.getClassLoader().getResourceAsStream(DATABASE_NAME)) {
 
             if (inputStream == null) {
-                System.out.println("The database was not found: " + DATABASE_NAME);
-                return;
+                throw new DataBaseLoadException("The database was not found: " + DATABASE_NAME);
             }
 
             Path target = Paths.get(targetPath);
@@ -43,7 +44,7 @@ public class DataBaseUtil {
             System.out.println("Database loaded successfully: " + DATABASE_NAME + " -> " + targetPath);
 
         } catch (IOException e) {
-            e.printStackTrace();
+           throw new DataBaseLoadException("Error loading the DB...", e);
         }
     }
 }

@@ -3,8 +3,6 @@ package de.htwsaar.cantineplanner.dataAccess;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
@@ -13,7 +11,7 @@ import java.util.Properties;
 
 public class HikariCPDataSource {
 
-    private HikariDataSource dataSource;
+    private final HikariDataSource dataSource;
 
     /**
      * Load the HikariCP configuration from hikari.properties and create the data source pool

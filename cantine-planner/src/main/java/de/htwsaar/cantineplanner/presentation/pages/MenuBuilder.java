@@ -1,15 +1,15 @@
 package de.htwsaar.cantineplanner.presentation.pages;
-import com.googlecode.lanterna.SGR;
 import com.googlecode.lanterna.TerminalSize;
-import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.gui2.*;
 import de.htwsaar.cantineplanner.businessLogic.EventManager;
+import de.htwsaar.cantineplanner.businessLogic.controller.eventdata.EventType;
+import de.htwsaar.cantineplanner.businessLogic.controller.eventdata.IntData;
+
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 public class MenuBuilder {
-    private MultiWindowTextGUI gui;
-    private EventManager eventManager;
+    private final MultiWindowTextGUI gui;
+    private final EventManager eventManager;
     private String title;
     private List<MenuButton> buttons;
     public MenuBuilder(MultiWindowTextGUI gui, EventManager eventManager) {
@@ -22,7 +22,7 @@ public class MenuBuilder {
         return this;
     }
     // Einzelnen Button hinzufügen
-    public MenuBuilder addButton(String label, String event) {
+    public MenuBuilder addButton(String label, EventType event) {
         this.buttons.add(new MenuButton(label, event));
         return this;
     }
@@ -39,28 +39,37 @@ public class MenuBuilder {
         gridLayout.setVerticalSpacing(2);
 
         for (MenuButton button : buttons) {
-            panel.addComponent(new Button(button.getLabel(), () -> eventManager.notify(button.getEvent(), null))
+            panel.addComponent(new Button(button.getLabel(), () -> eventManager.notify(button.getEvent(), button.getData()))
                     .setPreferredSize(new TerminalSize(35, 3))
                     .setLayoutData(GridLayout.createLayoutData(GridLayout.Alignment.CENTER, GridLayout.Alignment.CENTER)));
         }
         BasicWindow window = new BasicWindow(title);
         window.setComponent(panel);
-        window.setHints(Arrays.asList(Window.Hint.CENTERED));
+        window.setHints(List.of(Window.Hint.CENTERED));
         gui.addWindowAndWait(window);
     }
     // Öffentliche statische Klasse für Buttons
     public static class MenuButton {
-        private String label;
-        private String event;
-        public MenuButton(String label, String event) {
+        private final String label;
+        private final EventType event;
+        private IntData data;
+        public MenuButton(String label, EventType event) {
             this.label = label;
             this.event = event;
+        }
+        public MenuButton(String label, EventType event, IntData data) {
+            this.label = label;
+            this.event = event;
+            this.data = data;
         }
         public String getLabel() {
             return label;
         }
-        public String getEvent() {
+        public EventType getEvent() {
             return event;
+        }
+        public IntData getData() {
+            return data;
         }
     }
 }
