@@ -28,7 +28,7 @@ public class LoginController extends AbstractController {
         // User-Authentifizierung und Registrierung
         eventManager.subscribe(EventType.LOGIN, (data) -> handleLogin((StringArrayData) data));
         eventManager.subscribe(EventType.REGISTER, this::handleRegister);
-        eventManager.subscribe(EventType.SHOW_REGISTER_SCREEN, this::handleShowRegisterScreen);
+        eventManager.subscribe(EventType.SHOW_REGISTER_SCREEN,(data) -> screenManager.showInputScreenReg("Register", EventType.REGISTER));
     }
     // User-Handler
 
@@ -41,6 +41,10 @@ public class LoginController extends AbstractController {
      * @param data an Object array containing username and password as Strings
      */
     public void handleLogin(StringArrayData data) {
+        if (data == null) {
+            screenManager.showErrorScreen("Please fill in all fields!");
+            return;
+        }
         String[] credentials = (String[]) data.getData();
         String username = credentials[0];
         String password = credentials[1];
@@ -67,20 +71,15 @@ public class LoginController extends AbstractController {
      * @param data an Object array containing username, password, and email as Strings
      */
     public void handleRegister(Object data) {
-        if (data == null) {
-            screenManager.showErrorScreen("Data is null");
-            return;
-        }
-        String[] credentials = (String[]) data;
-        String username = credentials[0];
-        String password = credentials[1];
-        String email = credentials[2];
-        if (isAnyFieldEmpty(username, password, email)) {
-            screenManager.showErrorScreen("Please fill in all fields!");
-            return;
-        }
-
         try {
+            String[] credentials = (String[]) data;
+            String username = credentials[0];
+            String password = credentials[1];
+            String email = credentials[2];
+            if (isAnyFieldEmpty(username, password, email)) {
+                screenManager.showErrorScreen("Please fill in all fields!");
+                return;
+            }
             if (cantineService.registerUser(username, password, email)) {
                 screenManager.closeActiveWindow();
                 screenManager.showSuccessScreen("Registration successful!");
@@ -89,18 +88,9 @@ public class LoginController extends AbstractController {
 
         } catch (InvalidEmailTypeException | UserAlreadyExistsException e) {
             screenManager.showErrorScreen(e.getMessage());
-        } catch (SQLException e) {
-            screenManager.showErrorScreen("There was an error while registering please try again!");
+        } catch (Exception e) {  //TODO exeption handling besser machen das casten oben bereitet probleme wenn man nicht alle felder füllt!
+            screenManager.showErrorScreen("There was an error while registering please try again and check if you filled everything correctly!");
         }
-    }
-
-    /**
-     * Displays the registration input screen.
-     *
-     * @param data not used
-     */
-    private void handleShowRegisterScreen(Object data) {
-        screenManager.showInputScreenReg("Register", EventType.REGISTER);
     }
 
     /**
