@@ -437,6 +437,7 @@ public class DBConnection {
     }
 
 
+    //TODO: check
     /**
      * Method calculateMedianRatingForMeal calculates the median rating for a meal
      *
