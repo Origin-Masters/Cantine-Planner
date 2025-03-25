@@ -10,7 +10,7 @@ import de.htwsaar.cantineplanner.businessLogic.EventManager;
 import de.htwsaar.cantineplanner.businessLogic.MealTypeMapper;
 import de.htwsaar.cantineplanner.businessLogic.controller.eventdata.EventType;
 import de.htwsaar.cantineplanner.businessLogic.controller.eventdata.IntData;
-import de.htwsaar.cantineplanner.businessLogic.controller.eventdata.ShowErrorScreenData;
+import de.htwsaar.cantineplanner.businessLogic.controller.eventdata.StringData;
 import de.htwsaar.cantineplanner.codegen.tables.records.MealsRecord;
 import de.htwsaar.cantineplanner.codegen.tables.records.ReviewRecord;
 import de.htwsaar.cantineplanner.codegen.tables.records.UsersRecord;
@@ -51,7 +51,7 @@ public class ScreenManager {
             screen.startScreen();
             this.gui = new MultiWindowTextGUI(screen);
         } catch (IOException e) {
-            eventManager.notify(EventType.SHOW_ERROR_SCREEN, new ShowErrorScreenData("Error starting terminal"));
+            eventManager.notify(EventType.SHOW_ERROR_SCREEN, new StringData("Error starting terminal"));
         }
     }
 
@@ -605,7 +605,7 @@ public class ScreenManager {
         try {
             gui.getScreen().stopScreen();
         } catch (IOException e) {
-            eventManager.notify(EventType.SHOW_ERROR_SCREEN, new ShowErrorScreenData("Error closing terminal"));
+            eventManager.notify(EventType.SHOW_ERROR_SCREEN, new StringData("Error closing terminal"));
         }
     }
 }

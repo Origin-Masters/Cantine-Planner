@@ -31,16 +31,13 @@ public class EventManager {
         subscribe(eventType, eventData -> eventFunction.run());
     }
 
-    public void notify(EventType eventType) {
-        notify(eventType, null);
-    }
-
     public void notify(EventType eventType, EventData data) {
         System.out.println("Event: " + eventType);
         if(eventType.verifyEventData(data)) {
             List<Consumer<EventData>> list = listeners.get(eventType);
             if (list != null) {
                 for (Consumer<EventData> eventFunction : list) {
+                    System.out.println("Calling: " + eventFunction);
                     eventFunction.accept(data);
                 }
             }

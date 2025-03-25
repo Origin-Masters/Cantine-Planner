@@ -54,8 +54,8 @@ public class MenuBuilder {
     }
     // Öffentliche statische Klasse für Buttons
     public static class MenuButton {
-        private String label;
-        private EventType event;
+        private final String label;
+        private final EventType event;
         private IntData data;
         public MenuButton(String label, EventType event) {
             this.label = label;

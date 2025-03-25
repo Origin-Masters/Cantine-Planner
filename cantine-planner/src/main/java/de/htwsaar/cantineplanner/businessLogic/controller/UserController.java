@@ -2,10 +2,8 @@ package de.htwsaar.cantineplanner.businessLogic.controller;
 
 import de.htwsaar.cantineplanner.businessLogic.CantineService;
 import de.htwsaar.cantineplanner.businessLogic.EventManager;
-import de.htwsaar.cantineplanner.businessLogic.controller.eventdata.ArrayListData;
+import de.htwsaar.cantineplanner.businessLogic.controller.eventdata.EventData;
 import de.htwsaar.cantineplanner.businessLogic.controller.eventdata.EventType;
-import de.htwsaar.cantineplanner.businessLogic.controller.eventdata.IntData;
-import de.htwsaar.cantineplanner.businessLogic.controller.eventdata.StringArrayData;
 import de.htwsaar.cantineplanner.codegen.tables.records.ReviewRecord;
 import de.htwsaar.cantineplanner.codegen.tables.records.UsersRecord;
 import de.htwsaar.cantineplanner.exceptions.InvalidEmailTypeException;
@@ -13,7 +11,6 @@ import de.htwsaar.cantineplanner.exceptions.UserDoesntExistException;
 import de.htwsaar.cantineplanner.exceptions.UserNotValidatedException;
 import de.htwsaar.cantineplanner.exceptions.UseriDDoesntExcistException;
 import de.htwsaar.cantineplanner.presentation.ScreenManager;
-import org.jooq.User;
 
 import java.sql.SQLException;
 import java.util.Arrays;
@@ -31,17 +28,17 @@ public class UserController extends AbstractController {
     @Override
     protected void subscribeToEvents() {
         // User-bezogene Events
-        eventManager.subscribe(EventType.SHOW_EDIT_USER_DATA, (data) -> screenManager.showEditUserDataScreen());
+        eventManager.subscribe(EventType.SHOW_EDIT_USER_DATA, () -> screenManager.showEditUserDataScreen());
         eventManager.subscribe(EventType.EDIT_USER_DATA, this::handleEditUserData);
-        eventManager.subscribe(EventType.SHOW_EDIT_NEW_USER_DATA, (data) -> screenManager.showEditNewUserDataScreen());
-        eventManager.subscribe(EventType.EDIT_NEW_USER_DATA, (data) -> handleInputNewUserData((StringArrayData) data));
+        eventManager.subscribe(EventType.SHOW_EDIT_NEW_USER_DATA, () -> screenManager.showEditNewUserDataScreen());
+        eventManager.subscribe(EventType.EDIT_NEW_USER_DATA, this::handleInputNewUserData);
         eventManager.subscribe(EventType.SHOW_REVIEWS_BY_USER, this::handleShowReviewsByUser);
-        eventManager.subscribe(EventType.SHOW_ALLERGEN_SETTINGS, (data) -> screenManager.showAllergeneSettings());
-        eventManager.subscribe(EventType.ALLERGEN_SETTINGS, this::handleAllergeneSettings);
+        eventManager.subscribe(EventType.SHOW_ALLERGEN_SETTINGS, () -> screenManager.showAllergeneSettings());
+        eventManager.subscribe(EventType.ALLERGENE_SETTINGS, this::handleAllergeneSettings);
         eventManager.subscribe(EventType.SHOW_ALL_USERS, this::handleAllUser);
-        eventManager.subscribe(EventType.SHOW_DELETE_USER, (data) -> screenManager.showDeleteUserScreen());
+        eventManager.subscribe(EventType.SHOW_DELETE_USER, () -> screenManager.showDeleteUserScreen());
         eventManager.subscribe(EventType.DELETE_USER, this::handleDeleteUser);
-        eventManager.subscribe(EventType.SHOW_UPDATE_USER_ROLE, (data) -> screenManager.showUpdateUserRoleScreen());
+        eventManager.subscribe(EventType.SHOW_UPDATE_USER_ROLE, () -> screenManager.showUpdateUserRoleScreen());
         eventManager.subscribe(EventType.UPDATE_USER_ROLE, this::handleUpdateUserRole);
     }
 
@@ -61,12 +58,12 @@ public class UserController extends AbstractController {
      *
      * @param data an Object array containing the current password as a String
      */
-    private void handleEditUserData(Object data) {
+    private void handleEditUserData(EventData data) {
         if (data == null) {
             screenManager.showErrorScreen("Data is null");
             return;
         }
-        String[] userData = (String[]) data;
+        String[] userData = (String[]) data.getData();
         String currentPassword = userData[0];
 
         try {
@@ -90,7 +87,7 @@ public class UserController extends AbstractController {
      *
      * @param data an Object array containing new password and new email as Strings
      */
-    private void handleInputNewUserData(StringArrayData data) {
+    private void handleInputNewUserData(EventData data) {
         if (data == null) {
             screenManager.showErrorScreen("Data is null");
             return;
@@ -124,9 +121,9 @@ public class UserController extends AbstractController {
      *
      * @param data an Object array containing user ID and role as Strings
      */
-    private void handleUpdateUserRole(Object data) {
+    private void handleUpdateUserRole(EventData data) {
         try {
-            String[] dataArray = (String[]) data;
+            String[] dataArray = (String[]) data.getData();
             int userId = Integer.parseInt(dataArray[0]);
             int role = Integer.parseInt(dataArray[1]);
             cantineService.updateUserRole(userId, role);
@@ -142,9 +139,8 @@ public class UserController extends AbstractController {
     /**
      * Handles displaying all reviews made by the current user.
      *
-     * @param data not used
      */
-    private void handleShowReviewsByUser(Object data) {
+    private void handleShowReviewsByUser() {
         try {
             List<ReviewRecord> reviews = cantineService.getAllReviewsByUser(currentUser.getUserid());
             screenManager.showAllReviews(reviews);
@@ -163,9 +159,10 @@ public class UserController extends AbstractController {
      *
      * @param data an Object array containing allergen settings as Strings
      */
-    private void handleAllergeneSettings(Object data) {
+    private void handleAllergeneSettings(EventData data) {
+        System.out.println("Handle allergene settings");
         try {
-            cantineService.setAllergeneSettings(currentUser.getUserid(), Arrays.toString((String[]) data));
+            cantineService.setAllergeneSettings(currentUser.getUserid(), Arrays.toString((String[]) data.getData()));
             screenManager.closeActiveWindow();
             screenManager.showSuccessScreen("Allergene settings updated successfully!");
         } catch (SQLException e) {
@@ -194,9 +191,8 @@ public class UserController extends AbstractController {
      * Retrieves a list of all users and displays them.
      * </p>
      *
-     * @param data not used
      */
-    private void handleAllUser(Object data) {
+    private void handleAllUser() {
         try {
             List<UsersRecord> users = cantineService.getAllUser();
             screenManager.showAllUser(users);
@@ -213,9 +209,9 @@ public class UserController extends AbstractController {
      *
      * @param data an Object array where the first element is the user ID as a String
      */
-    private void handleDeleteUser(Object data) {
+    private void handleDeleteUser(EventData data) {
         try {
-            String[] dataArray = (String[]) data;
+            String[] dataArray = (String[]) data.getData();
             int userId = Integer.parseInt(dataArray[0]);
             cantineService.deleteUser(userId);
             screenManager.closeActiveWindow();

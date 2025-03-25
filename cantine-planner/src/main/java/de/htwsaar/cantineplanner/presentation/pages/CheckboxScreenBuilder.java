@@ -4,8 +4,8 @@ import com.googlecode.lanterna.SGR;
 import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.gui2.*;
 import de.htwsaar.cantineplanner.businessLogic.EventManager;
-import de.htwsaar.cantineplanner.businessLogic.controller.eventdata.AllergeneSettingsData;
 import de.htwsaar.cantineplanner.businessLogic.controller.eventdata.EventType;
+import de.htwsaar.cantineplanner.businessLogic.controller.eventdata.StringArrayData;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -54,7 +54,7 @@ public class CheckboxScreenBuilder {
                 }
             }
             String result = String.join(",", selectedValues);
-            eventManager.notify(eventType, new AllergeneSettingsData(new String[]{result}));
+            eventManager.notify(eventType, new StringArrayData(new String[]{result}));
         }));
 
         panel.addComponent(buttonPanel);

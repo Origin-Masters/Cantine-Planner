@@ -2,6 +2,7 @@ package de.htwsaar.cantineplanner.businessLogic.controller;
 
 import de.htwsaar.cantineplanner.businessLogic.CantineService;
 import de.htwsaar.cantineplanner.businessLogic.EventManager;
+import de.htwsaar.cantineplanner.businessLogic.controller.eventdata.EventData;
 import de.htwsaar.cantineplanner.businessLogic.controller.eventdata.EventType;
 import de.htwsaar.cantineplanner.businessLogic.controller.eventdata.IntData;
 import de.htwsaar.cantineplanner.codegen.tables.records.MealsRecord;
@@ -244,9 +245,9 @@ public class MealController extends AbstractController{
      *
      * @param data an Object array where the first element is the meal name as a String
      */
-    private void handleShowMealByName(Object data) {
+    private void handleShowMealByName(EventData data) {
         try {
-            String[] dataArray = (String[]) data;
+            String[] dataArray = (String[]) data.getData();
             String mealName = dataArray[0];
             MealsRecord meal = cantineService.getMealByName(mealName);
             if (meal != null) {

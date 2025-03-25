@@ -64,9 +64,9 @@ public enum EventType {
 
 
 
-    SHOW_ERROR_SCREEN(ShowErrorScreenData.class),
-    SHOW_SUCCESS_SCREEN(ShowSuccessScreenData.class),
-    ALLERGENE_SETTINGS(AllergeneSettingsData.class),
+    SHOW_ERROR_SCREEN(StringData.class),
+    SHOW_SUCCESS_SCREEN(StringData.class),
+    ALLERGENE_SETTINGS(StringArrayData.class),
     ;
 
 

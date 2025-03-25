@@ -1,9 +1,9 @@
 package de.htwsaar.cantineplanner.businessLogic.controller.eventdata;
 
-public class ShowSuccessScreenData extends EventData {
+public class StringData extends EventData {
 
-    public ShowSuccessScreenData(String message) {
-        super(message);
+    public StringData(String data) {
+        super(data);
     }
 
     public String getMessage() {
