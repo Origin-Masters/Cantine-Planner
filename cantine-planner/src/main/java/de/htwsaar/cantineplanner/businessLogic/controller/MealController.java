@@ -6,11 +6,8 @@ import de.htwsaar.cantineplanner.businessLogic.controller.eventdata.EventData;
 import de.htwsaar.cantineplanner.businessLogic.controller.eventdata.EventType;
 import de.htwsaar.cantineplanner.businessLogic.controller.eventdata.IntData;
 import de.htwsaar.cantineplanner.codegen.tables.records.MealsRecord;
-import de.htwsaar.cantineplanner.codegen.tables.records.UsersRecord;
 import de.htwsaar.cantineplanner.exceptions.*;
 import de.htwsaar.cantineplanner.presentation.ScreenManager;
-import jdk.jfr.Event;
-import org.jooq.User;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -43,10 +40,10 @@ public class MealController extends AbstractController{
         eventManager.subscribe(EventType.SHOW_ADD_MEAL, (data) -> screenManager.showAddMealScreen());
         eventManager.subscribe(EventType.ADD_MEAL, this::handleAddMeal);
         eventManager.subscribe(EventType.DELETE_MEAL, this::handleDeleteMeal);
-        eventManager.subscribe(EventType.SHOW_MEAL_DETAILS_BY_ID, (data) -> screenManager.showMealDetailsById());
-        eventManager.subscribe(EventType.MEAL_DETAILS_BY_ID, this::handleShowMealById);
+        eventManager.subscribe(EventType.SHOW_SEARCH_MEAL_BY_ID, () -> screenManager.showMealDetailsById());
+        eventManager.subscribe(EventType.SHOW_MEAL_BY_ID, this::handleShowMealById);
         eventManager.subscribe(EventType.SHOW_SEARCH_MEAL_BY_NAME, (data) -> screenManager.showSearchMealByName());
-        eventManager.subscribe(EventType.SEARCH_MEAL_BY_NAME, this::handleShowMealByName);
+        eventManager.subscribe(EventType.SHOW_MEAL_BY_NAME, this::handleShowMealByName);
         eventManager.subscribe(EventType.SHOW_EDIT_MEAL, (data) -> screenManager.showEditMealScreen());
         eventManager.subscribe(EventType.EDIT_MEAL, this::handleEditMeal);
 

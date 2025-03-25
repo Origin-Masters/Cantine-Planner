@@ -15,7 +15,6 @@ import de.htwsaar.cantineplanner.codegen.tables.records.MealsRecord;
 import de.htwsaar.cantineplanner.codegen.tables.records.ReviewRecord;
 import de.htwsaar.cantineplanner.codegen.tables.records.UsersRecord;
 import de.htwsaar.cantineplanner.presentation.pages.*;
-import jdk.jfr.Event;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -89,7 +88,7 @@ public class ScreenManager {
                         new MenuBuilder.MenuButton("Sort Meal", EventType.SHOW_SORT_MEALS),
                         new MenuBuilder.MenuButton("Allergies in Meals", EventType.SHOW_ALL_ALLERGIES),
                         new MenuBuilder.MenuButton("Search Meal by Name", EventType.SHOW_SEARCH_MEAL_BY_NAME),
-                        new MenuBuilder.MenuButton("Search Meal by ID", EventType.SHOW_MEAL_DETAILS_BY_ID)
+                        new MenuBuilder.MenuButton("Search Meal by ID", EventType.SHOW_SEARCH_MEAL_BY_ID)
                 ));
         if (isAdmin) {
             mealMenuButtons.add(new MenuBuilder.MenuButton("Add Meal", EventType.SHOW_ADD_MEAL));
@@ -267,7 +266,7 @@ public class ScreenManager {
     public void showMealDetailsById() {
         InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Search Meal by ID");
         List<String> labels = List.of("ID");
-        inputScreenBuilder.display(labels, EventType.MEAL_DETAILS_BY_ID);
+        inputScreenBuilder.display(labels, EventType.SHOW_MEAL_BY_ID);
     }
 
     /**
@@ -276,7 +275,7 @@ public class ScreenManager {
     public void showSearchMealByName() {
         InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Search Meal by Name");
         List<String> labels = List.of("Name");
-        inputScreenBuilder.display(labels, EventType.SEARCH_MEAL_BY_NAME);
+        inputScreenBuilder.display(labels, EventType.SHOW_MEAL_BY_NAME);
     }
 
     /**
