@@ -43,6 +43,7 @@ public class UserController extends AbstractController {
     }
 
     public void showUserMenu() {
+        System.out.println(currentUser);
         try {
             screenManager.showUserMenuScreen(cantineService.isAdmin(currentUser.getUserid()));
         } catch (SQLException | UserDoesntExistException e) {

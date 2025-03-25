@@ -2,6 +2,7 @@ package de.htwsaar.cantineplanner.businessLogic.controller;
 
 import de.htwsaar.cantineplanner.businessLogic.CantineService;
 import de.htwsaar.cantineplanner.businessLogic.EventManager;
+import de.htwsaar.cantineplanner.businessLogic.controller.eventdata.EventData;
 import de.htwsaar.cantineplanner.businessLogic.controller.eventdata.EventType;
 import de.htwsaar.cantineplanner.businessLogic.controller.eventdata.IntData;
 import de.htwsaar.cantineplanner.businessLogic.controller.eventdata.StringArrayData;
@@ -50,7 +51,8 @@ public class LoginController extends AbstractController {
         String password = credentials[1];
         try {
             if (cantineService.validateUser(username, password)) {
-                //currentUser = cantineService.getUser(username);
+                currentUser = cantineService.getUser(username);
+                System.out.println("User " + currentUser.getUsername() + " logged in.");
                 screenManager.closeActiveWindow();
                 screenManager.showSuccessScreen("Login successful!");
                 eventManager.notify(EventType.SWITCH_MENU, new IntData(1));
@@ -70,9 +72,9 @@ public class LoginController extends AbstractController {
      *
      * @param data an Object array containing username, password, and email as Strings
      */
-    public void handleRegister(Object data) {
+    public void handleRegister(EventData data) {
         try {
-            String[] credentials = (String[]) data;
+            String[] credentials = (String[]) data.getData();
             String username = credentials[0];
             String password = credentials[1];
             String email = credentials[2];

@@ -2,6 +2,7 @@ package de.htwsaar.cantineplanner.businessLogic.controller;
 
 import de.htwsaar.cantineplanner.businessLogic.CantineService;
 import de.htwsaar.cantineplanner.businessLogic.EventManager;
+import de.htwsaar.cantineplanner.businessLogic.controller.eventdata.EventData;
 import de.htwsaar.cantineplanner.businessLogic.controller.eventdata.EventType;
 import de.htwsaar.cantineplanner.codegen.tables.records.ReviewRecord;
 import de.htwsaar.cantineplanner.codegen.tables.records.UsersRecord;
@@ -45,9 +46,9 @@ public class ReviewController extends AbstractController {
      *
      * @param data an Object array containing rating, comment, and meal ID as Strings
      */
-    private void handleAddReview(Object data) {
+    private void handleAddReview(EventData data) {
         try {
-            String[] reviewData = (String[]) data;
+            String[] reviewData = (String[]) data.getData();
             int mealId = Integer.parseInt(reviewData[2]);
             int rating = Integer.parseInt(reviewData[0]);
             String comment = reviewData[1];
@@ -81,9 +82,9 @@ public class ReviewController extends AbstractController {
      *
      * @param data an Object array where the first element is the review ID as a String
      */
-    private void handleDeleteReview(Object data) {
+    private void handleDeleteReview(EventData data) {
         try {
-            String[] reviewData = (String[]) data;
+            String[] reviewData = (String[]) data.getData();
             int reviewId = Integer.parseInt(reviewData[0]);
             int reviewUserId = cantineService.getUserIdFromReviewId(reviewId);
             // Check if the current user is admin
@@ -112,9 +113,8 @@ public class ReviewController extends AbstractController {
      * Retrieves a list of all reviews and displays them.
      * </p>
      *
-     * @param data not used
      */
-    private void handleShowAllReviews(Object data) {
+    private void handleShowAllReviews() {
         try {
             List<ReviewRecord> reviews = cantineService.getAllReviews();
             screenManager.showAllReviews(reviews);
@@ -131,9 +131,9 @@ public class ReviewController extends AbstractController {
      *
      * @param data an Object array where the first element is the meal name as a String
      */
-    private void handleSearchReviewsByMealName(Object data) {
+    private void handleSearchReviewsByMealName(EventData data) {
         try {
-            String[] dataArray = (String[]) data;
+            String[] dataArray = (String[]) data.getData();
             String mealName = dataArray[0];
             List<ReviewRecord> reviews = cantineService.searchReviewsByMealName(mealName);
             screenManager.showAllReviews(reviews);

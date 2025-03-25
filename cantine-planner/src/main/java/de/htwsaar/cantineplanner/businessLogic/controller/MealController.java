@@ -9,6 +9,7 @@ import de.htwsaar.cantineplanner.codegen.tables.records.MealsRecord;
 import de.htwsaar.cantineplanner.codegen.tables.records.UsersRecord;
 import de.htwsaar.cantineplanner.exceptions.*;
 import de.htwsaar.cantineplanner.presentation.ScreenManager;
+import jdk.jfr.Event;
 import org.jooq.User;
 
 import java.sql.SQLException;
@@ -76,9 +77,9 @@ public class MealController extends AbstractController{
      *
      * @param data an Object array containing meal details; the first element must be meal ID
      */
-    public void handleEditMeal(Object data) {
+    public void handleEditMeal(EventData data) {
         try {
-            String[] mealData = (String[]) data;
+            String[] mealData = (String[]) data.getData();
 
             // Check if at least the meal ID is provided
             if (mealData.length < 1 || mealData[0].isEmpty()) {
@@ -125,9 +126,8 @@ public class MealController extends AbstractController{
      * Retrieves a list of all meals and passes it to the screen manager for display.
      * </p>
      *
-     * @param data not used
      */
-    public void handleShowAllMeals(Object data) {
+    public void handleShowAllMeals() {
         try {
             List<MealsRecord> meals = cantineService.getAllMeals();
             screenManager.showAllMeals(meals);
@@ -142,9 +142,8 @@ public class MealController extends AbstractController{
      * Retrieves a list of all allergies from meals and displays them.
      * </p>
      *
-     * @param data not used
      */
-    private void handleShowAllAllergies(Object data) {
+    private void handleShowAllAllergies() {
         try {
             List<MealsRecord> allergies = cantineService.getAllAllergies();
             screenManager.showAllAllergies(allergies);
@@ -161,9 +160,9 @@ public class MealController extends AbstractController{
      *
      * @param data an Object array containing meal name, price, calories, allergy info, and meat flag
      */
-    public void handleAddMeal(Object data) {
+    public void handleAddMeal(EventData data) {
         try {
-            String[] mealData = (String[]) data;
+            String[] mealData = (String[]) data.getData();
             String mealName = mealData[0];
             float price = Float.parseFloat(mealData[1]);
             int calories = Integer.parseInt(mealData[2]);
@@ -196,9 +195,9 @@ public class MealController extends AbstractController{
      *
      * @param data an Object array where the first element is the meal ID as a String
      */
-    private void handleDeleteMeal(Object data) {
+    private void handleDeleteMeal(EventData data) {
         try {
-            String[] dataArray = (String[]) data;
+            String[] dataArray = (String[]) data.getData();
             int mealId = Integer.parseInt(dataArray[0]);
             cantineService.deleteMeal(mealId);
             screenManager.closeActiveWindow();
@@ -220,9 +219,9 @@ public class MealController extends AbstractController{
      *
      * @param data an Object array where the first element is the meal ID as a String
      */
-    private void handleShowMealById(Object data) {
+    private void handleShowMealById(EventData data) {
         try {
-            String[] dataArray = (String[]) data;
+            String[] dataArray = (String[]) data.getData();
             int mealId = Integer.parseInt(dataArray[0]);
             MealsRecord meal = cantineService.getMealById(mealId);
             if (meal != null) {
@@ -267,9 +266,8 @@ public class MealController extends AbstractController{
      * and displays them using the screen manager. If an SQLException is encountered,
      * an error screen is shown.</p>
      *
-     * @param data not used
      */
-    private void handleSortMealByPrice(Object data) {
+    private void handleSortMealByPrice() {
         try {
             List<MealsRecord> meals = cantineService.sortMealsByPrice();
             screenManager.showAllMeals(meals);
@@ -285,9 +283,8 @@ public class MealController extends AbstractController{
      * and displays them using the screen manager. If an SQLException is encountered,
      * an error screen is shown.</p>
      *
-     * @param data not used
      */
-    private void handleSortMealByRating(Object data) {
+    private void handleSortMealByRating() {
         try {
             List<MealsRecord> meals = cantineService.sortMealsByRating();
             screenManager.showAllMeals(meals);
@@ -303,9 +300,8 @@ public class MealController extends AbstractController{
      * and displays them using the screen manager. If an SQLException is encountered,
      * an error screen is shown.</p>
      *
-     * @param data not used
      */
-    private void handleSortMealByName(Object data) {
+    private void handleSortMealByName() {
         try {
             List<MealsRecord> meals = cantineService.sortMealsByName();
             screenManager.showAllMeals(meals);
@@ -321,9 +317,8 @@ public class MealController extends AbstractController{
      * and displays them using the screen manager. If an SQLException is encountered,
      * an error screen is shown.</p>
      *
-     * @param data not used
      */
-    private void handleSortMealByCalories(Object data) {
+    private void handleSortMealByCalories() {
         try {
             List<MealsRecord> meals = cantineService.sortMealsByCalories();
             screenManager.showAllMeals(meals);
@@ -339,9 +334,8 @@ public class MealController extends AbstractController{
      * from the cantine service and displays them using the screen manager. If an SQLException is encountered,
      * an error screen is shown.</p>
      *
-     * @param data not used
      */
-    private void handleSortMealByAllergy(Object data) {
+    private void handleSortMealByAllergy() {
         try {
             List<MealsRecord> meals = cantineService.sortMealsByAllergy(currentUser.getUserid());
             screenManager.showAllMeals(meals);

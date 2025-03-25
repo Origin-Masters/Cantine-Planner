@@ -24,8 +24,7 @@ public class MainController extends AbstractController {
 
     public MainController(ScreenManager screenManager,
                           CantineService cantineService,
-                          EventManager eventManager,
-                          UsersRecord userRecord) {
+                          EventManager eventManager) {
 
         super(screenManager, cantineService, eventManager);
         this.mealController = new MealController(screenManager, cantineService, eventManager);

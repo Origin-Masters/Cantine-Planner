@@ -2,6 +2,7 @@ package de.htwsaar.cantineplanner.businessLogic.controller;
 
 import de.htwsaar.cantineplanner.businessLogic.CantineService;
 import de.htwsaar.cantineplanner.businessLogic.EventManager;
+import de.htwsaar.cantineplanner.businessLogic.controller.eventdata.EventData;
 import de.htwsaar.cantineplanner.businessLogic.controller.eventdata.EventType;
 import de.htwsaar.cantineplanner.codegen.tables.records.MealsRecord;
 import de.htwsaar.cantineplanner.exceptions.MealDoesntExistException;
@@ -51,9 +52,8 @@ public class WeeklyController extends AbstractController {
      * Retrieves the weekly plan, sorts it by day, and displays it.
      * </p>
      *
-     * @param data not used
      */
-    private void handleShowWeeklyPlan(Object data) {
+    private void handleShowWeeklyPlan() {
         try {
             List<MealsRecord> weeklyPlan = cantineService.getWeeklyPlan();
             // Sort the weeklyPlan by the day field
@@ -75,18 +75,16 @@ public class WeeklyController extends AbstractController {
     /**
      * Handles displaying the edit weekly plan screen.
      *
-     * @param data not used
      */
-    private void handleShowEditWeeklyPlan(Object data) {
+    private void handleShowEditWeeklyPlan() {
         screenManager.showEditWeeklyPlanScreen();
     }
 
     /**
      * Handles resetting the weekly meal plan to its default state.
      *
-     * @param data not used
      */
-    private void handleResetWeeklyPlan(Object data) {
+    private void handleResetWeeklyPlan() {
         try {
             cantineService.resetWeeklyPlan();
             screenManager.showSuccessScreen("Weekly plan has been reset!");
@@ -103,8 +101,8 @@ public class WeeklyController extends AbstractController {
      *
      * @param data an Object array where the first element is the meal name as a String
      */
-    public void handleEditWeeklyPlanMonday(Object data) {
-        String[] mealData = (String[]) data;
+    public void handleEditWeeklyPlanMonday(EventData data) {
+        String[] mealData = (String[]) data.getData();
         String mealName = mealData[0];
         try {
             cantineService.editWeeklyPlan(mealName, "Mon");
@@ -123,8 +121,8 @@ public class WeeklyController extends AbstractController {
      *
      * @param data an Object array where the first element is the meal name as a String
      */
-    public void handleEditWeeklyPlanTuesday(Object data) {
-        String[] mealData = (String[]) data;
+    public void handleEditWeeklyPlanTuesday(EventData data) {
+        String[] mealData = (String[]) data.getData();
         String mealName = mealData[0];
         try {
             cantineService.editWeeklyPlan(mealName, "Tue");
@@ -143,8 +141,8 @@ public class WeeklyController extends AbstractController {
      *
      * @param data an Object array where the first element is the meal name as a String
      */
-    public void handleEditWeeklyPlanWednesday(Object data) {
-        String[] mealData = (String[]) data;
+    public void handleEditWeeklyPlanWednesday(EventData data) {
+        String[] mealData = (String[]) data.getData();
         String mealName = mealData[0];
         try {
             cantineService.editWeeklyPlan(mealName, "Wed");
@@ -163,8 +161,8 @@ public class WeeklyController extends AbstractController {
      *
      * @param data an Object array where the first element is the meal name as a String
      */
-    public void handleEditWeeklyPlanThursday(Object data) {
-        String[] mealData = (String[]) data;
+    public void handleEditWeeklyPlanThursday(EventData data) {
+        String[] mealData = (String[]) data.getData();
         String mealName = mealData[0];
         try {
             cantineService.editWeeklyPlan(mealName, "Thu");
@@ -183,8 +181,8 @@ public class WeeklyController extends AbstractController {
      *
      * @param data an Object array where the first element is the meal name as a String
      */
-    public void handleEditWeeklyPlanFriday(Object data) {
-        String[] mealData = (String[]) data;
+    public void handleEditWeeklyPlanFriday(EventData data) {
+        String[] mealData = (String[]) data.getData();
         String mealName = mealData[0];
         try {
             cantineService.editWeeklyPlan(mealName, "Fri");
