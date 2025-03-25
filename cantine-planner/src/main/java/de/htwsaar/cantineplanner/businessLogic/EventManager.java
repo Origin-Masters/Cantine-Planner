@@ -35,6 +35,7 @@ public class EventManager {
         System.out.println("Event: " + eventType);
         if(eventType.verifyEventData(data)) {
             List<Consumer<EventData>> list = listeners.get(eventType);
+            System.out.println("Listeners: " + list);
             if (list != null) {
                 for (Consumer<EventData> eventFunction : list) {
                     System.out.println("Calling: " + eventFunction);
