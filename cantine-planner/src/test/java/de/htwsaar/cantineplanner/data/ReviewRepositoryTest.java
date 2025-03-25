@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ReviewRepositoryTest {
 
-    String PATH_TO_TEST_PROPERTIES = "hikari-test.properties";
+    final String PATH_TO_TEST_PROPERTIES = "hikari-test.properties";
     ReviewRepository reviewRepository;
 
     @BeforeEach

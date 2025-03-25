@@ -18,37 +18,34 @@ import java.util.List;
  * Groups user, meal, review, allergene, and weekly plan operations.
  */
 public class CantineService {
-   // private final DBConnection dbConnection;
 
-    MealsRepository mealsRepository;
-    ReviewRepository reviewRepository;
-    UserRepository userRepository;
-    WeeklyRepository weeklyRepository;
-    HikariCPDataSource hikariCPDataSource;
+    private final MealsRepository mealsRepository;
+    private final ReviewRepository reviewRepository;
+    private final UserRepository userRepository;
+    private final WeeklyRepository weeklyRepository;
+    private final HikariCPDataSource hikariCPDataSource;
 
-    //AbstractRepository abstractRepository;
 
     ////////////////////////////////////////////////////////////////////////////////
     // Constructor
     ////////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Initializes the CantineService with the specified properties file.
+
+/**
+     * Constructs a new CantineService instance.
      *
-     * @param propertiesFilePath path to the database configuration properties file
+     * @param propertiesFilePath the path to the properties file for configuring the HikariCP data source
      */
     public CantineService(String propertiesFilePath) {
 
+        // Initialize the HikariCP data source with the provided properties file path
         hikariCPDataSource = new HikariCPDataSource(propertiesFilePath);
 
-       // this.dbConnection = new DBConnection(propertiesFilePath);
-
+        // Initialize the repositories with the HikariCP data source
         this.mealsRepository = new MealsRepository(hikariCPDataSource);
         this.reviewRepository = new ReviewRepository(hikariCPDataSource);
         this.userRepository = new UserRepository(hikariCPDataSource);
         this.weeklyRepository = new WeeklyRepository(hikariCPDataSource);
-
-
     }
 
     ////////////////////////////////////////////////////////////////////////////////

@@ -14,12 +14,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class UserRepositoryTest {
 
-    String PATH_TO_TEST_PROPERTIES = "hikari-test.properties";
     UserRepository userRepository;
 
     @BeforeEach
     public void setUp() {
 
+        String PATH_TO_TEST_PROPERTIES = "hikari-test.properties";
         HikariCPDataSource dataSource = new HikariCPDataSource(PATH_TO_TEST_PROPERTIES);
         userRepository = new UserRepository(dataSource);
 
