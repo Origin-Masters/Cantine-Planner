@@ -1,7 +1,6 @@
 // Java
 package de.htwsaar.cantineplanner.data;
 
-import com.zaxxer.hikari.HikariConfig;
 import de.htwsaar.cantineplanner.businessLogic.AllergenMapper;
 import de.htwsaar.cantineplanner.codegen.tables.records.MealsRecord;
 import de.htwsaar.cantineplanner.codegen.tables.records.ReviewRecord;
@@ -23,7 +22,6 @@ public class CantineService {
     private final ReviewRepository reviewRepository;
     private final UserRepository userRepository;
     private final WeeklyRepository weeklyRepository;
-    private final HikariCPDataSource hikariCPDataSource;
 
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -39,7 +37,7 @@ public class CantineService {
     public CantineService(String propertiesFilePath) {
 
         // Initialize the HikariCP data source with the provided properties file path
-        hikariCPDataSource = new HikariCPDataSource(propertiesFilePath);
+        var hikariCPDataSource = new HikariCPDataSource(propertiesFilePath);
 
         // Initialize the repositories with the HikariCP data source
         this.mealsRepository = new MealsRepository(hikariCPDataSource);
@@ -91,7 +89,7 @@ public class CantineService {
      */
     public boolean registerUser(String username, String password, String email)
             throws SQLException, UserAlreadyExistsException, InvalidEmailTypeException {
-        UsersRecord usersRecord = userRepository.registerUser(username, password, email);
+        var usersRecord = userRepository.registerUser(username, password, email);
         return usersRecord != null;
     }
 
@@ -343,11 +341,11 @@ public class CantineService {
     public void setAllergeneSettings(int userId, String allergene) throws SQLException, UserDoesntExistException {
         System.out.println(allergene);
         allergene = allergene.replaceAll("^\\[|]$", "");
-        String[] allergeneArray = allergene.split(",");
-        StringBuilder abbrAllergene = new StringBuilder();
+        var allergeneArray = allergene.split(",");
+        var abbrAllergene = new StringBuilder();
         for (String allergen : allergeneArray) {
-            String trimmedAllergen = allergen.trim();
-            String abbr = AllergenMapper.getAllergenCode(trimmedAllergen);
+            var trimmedAllergen = allergen.trim();
+            var abbr = AllergenMapper.getAllergenCode(trimmedAllergen);
             if (abbr != null) {
                 if (!abbrAllergene.isEmpty()) {
                     abbrAllergene.append(",");

@@ -24,7 +24,7 @@ public class EventManager {
         }
         list.add(eventFunction);
         listeners.put(eventType, list);
-        System.out.println("Subscribed to: " + eventType + " (" + list.size() + ")");
+
     }
 
     public void subscribe(EventType eventType, Runnable eventFunction) {
@@ -32,18 +32,16 @@ public class EventManager {
     }
 
     public void notify(EventType eventType, EventData data) {
-        System.out.println("Event: " + eventType);
+
         if(eventType.verifyEventData(data)) {
             List<Consumer<EventData>> list = listeners.get(eventType);
-            System.out.println("Listeners: " + list);
+
             if (list != null) {
                 for (Consumer<EventData> eventFunction : list) {
-                    System.out.println("Calling: " + eventFunction);
+
                     eventFunction.accept(data);
                 }
             }
-        } else {
-            System.out.println("EventData is invalid");
         }
     }
 }

@@ -111,26 +111,7 @@ public class MealController extends AbstractController {
                 return;
             }
 
-            int mealId = Integer.parseInt(mealData[0]);
-            MealsRecord meal = new MealsRecord();
-            meal.setMealId(mealId);
-
-            // If a value exists and is not empty, set it
-            if (mealData.length > 1 && !mealData[1].isEmpty()) {
-                meal.setName(mealData[1]);
-            }
-            if (mealData.length > 2 && !mealData[2].isEmpty()) {
-                meal.setPrice(Float.parseFloat(mealData[2]));
-            }
-            if (mealData.length > 3 && !mealData[3].isEmpty()) {
-                meal.setCalories(Integer.parseInt(mealData[3]));
-            }
-            if (mealData.length > 4 && !mealData[4].isEmpty()) {
-                meal.setAllergy(mealData[4]);
-            }
-            if (mealData.length > 5 && !mealData[5].isEmpty()) {
-                meal.setMeat(Integer.parseInt(mealData[5]));
-            }
+            MealsRecord meal = getMealsRecord(mealData);
 
             cantineService.editMeal(meal);
             screenManager.closeActiveWindow();
@@ -142,6 +123,30 @@ public class MealController extends AbstractController {
         } catch (SQLException e) {
             screenManager.showErrorScreen("There was an error while updating meal please try again!");
         }
+    }
+
+    private static MealsRecord getMealsRecord(String[] mealData) {
+        int mealId = Integer.parseInt(mealData[0]);
+        MealsRecord meal = new MealsRecord();
+        meal.setMealId(mealId);
+
+        // If a value exists and is not empty, set it
+        if (mealData.length > 1 && !mealData[1].isEmpty()) {
+            meal.setName(mealData[1]);
+        }
+        if (mealData.length > 2 && !mealData[2].isEmpty()) {
+            meal.setPrice(Float.parseFloat(mealData[2]));
+        }
+        if (mealData.length > 3 && !mealData[3].isEmpty()) {
+            meal.setCalories(Integer.parseInt(mealData[3]));
+        }
+        if (mealData.length > 4 && !mealData[4].isEmpty()) {
+            meal.setAllergy(mealData[4]);
+        }
+        if (mealData.length > 5 && !mealData[5].isEmpty()) {
+            meal.setMeat(Integer.parseInt(mealData[5]));
+        }
+        return meal;
     }
 
     /**
@@ -184,19 +189,7 @@ public class MealController extends AbstractController {
      */
     public void handleAddMeal(EventData data) {
         try {
-            String[] mealData = (String[]) data.getData();
-            String mealName = mealData[0];
-            float price = Float.parseFloat(mealData[1]);
-            int calories = Integer.parseInt(mealData[2]);
-            String allergy = mealData[3];
-            int meat = Integer.parseInt(mealData[4]);
-
-            MealsRecord meal = new MealsRecord();
-            meal.setName(mealName);
-            meal.setPrice(price);
-            meal.setCalories(calories);
-            meal.setAllergy(allergy);
-            meal.setMeat(meat);
+            MealsRecord meal = getMealsRecord(data);
             cantineService.addMeal(meal);
             screenManager.closeActiveWindow();
             screenManager.showSuccessScreen("Meal added successfully!");
@@ -207,6 +200,23 @@ public class MealController extends AbstractController {
         } catch (SQLException e) {
             screenManager.showErrorScreen("There was an error while adding meal please try again!");
         }
+    }
+
+    private static MealsRecord getMealsRecord(EventData data) {
+        String[] mealData = (String[]) data.getData();
+        String mealName = mealData[0];
+        float price = Float.parseFloat(mealData[1]);
+        int calories = Integer.parseInt(mealData[2]);
+        String allergy = mealData[3];
+        int meat = Integer.parseInt(mealData[4]);
+
+        MealsRecord meal = new MealsRecord();
+        meal.setName(mealName);
+        meal.setPrice(price);
+        meal.setCalories(calories);
+        meal.setAllergy(allergy);
+        meal.setMeat(meat);
+        return meal;
     }
 
     /**

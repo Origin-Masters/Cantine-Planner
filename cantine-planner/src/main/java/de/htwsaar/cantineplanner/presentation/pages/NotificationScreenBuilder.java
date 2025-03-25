@@ -3,7 +3,6 @@ package de.htwsaar.cantineplanner.presentation.pages;
 import com.googlecode.lanterna.gui2.*;
 import com.googlecode.lanterna.TextColor;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class NotificationScreenBuilder extends AbstractScreen {
@@ -27,9 +26,7 @@ public class NotificationScreenBuilder extends AbstractScreen {
         panel.addComponent(new Label(notificationMessage)
                 .setForegroundColor(textColor));
 
-        Button closeButton = new Button("Close", () -> {
-            gui.getActiveWindow().close();
-        });
+        Button closeButton = new Button("Close", () -> gui.getActiveWindow().close());
         panel.addComponent(closeButton);
 
         BasicWindow window = new BasicWindow("Notification");

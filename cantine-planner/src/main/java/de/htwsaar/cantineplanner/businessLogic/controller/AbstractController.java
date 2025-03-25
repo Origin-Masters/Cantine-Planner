@@ -6,17 +6,21 @@ import de.htwsaar.cantineplanner.codegen.tables.records.UsersRecord;
 import de.htwsaar.cantineplanner.presentation.ScreenManager;
 
 public abstract class AbstractController {
-    protected ScreenManager screenManager;
-    protected CantineService cantineService;
-    protected EventManager eventManager;
+    protected static  ScreenManager screenManager;
+    protected static  CantineService cantineService;
+    protected static  EventManager eventManager;
     protected static UsersRecord currentUser;
 
     public AbstractController(ScreenManager screenManager,
                               CantineService cantineService,
                               EventManager eventManager) {
-        this.screenManager = screenManager;
-        this.cantineService = cantineService;
-        this.eventManager = eventManager;
+        AbstractController.screenManager = screenManager;
+        AbstractController.cantineService = cantineService;
+        AbstractController.eventManager = eventManager;
+    }
+
+    public AbstractController() {
+
     }
     protected abstract void subscribeToEvents();
 

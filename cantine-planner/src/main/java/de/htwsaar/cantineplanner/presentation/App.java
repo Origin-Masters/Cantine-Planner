@@ -27,13 +27,5 @@ public class App {
 
        mainController.start();
 
-
-        //Controller controller = new Controller();
-        //controller.start();
-
-
-
-
-
     }
 }

@@ -4,24 +4,18 @@ import de.htwsaar.cantineplanner.codegen.tables.Meals;
 import de.htwsaar.cantineplanner.codegen.tables.Review;
 import de.htwsaar.cantineplanner.codegen.tables.Users;
 import de.htwsaar.cantineplanner.codegen.tables.records.MealsRecord;
-import de.htwsaar.cantineplanner.codegen.tables.records.UsersRecord;
 import de.htwsaar.cantineplanner.dataAccess.HikariCPDataSource;
 import de.htwsaar.cantineplanner.exceptions.MealAlreadyExistsException;
 import de.htwsaar.cantineplanner.exceptions.MealDoesntExistException;
 import de.htwsaar.cantineplanner.exceptions.MealiDNotFoundException;
 import de.htwsaar.cantineplanner.exceptions.UserDoesntExistException;
-import org.jooq.DSLContext;
-import org.jooq.SQLDialect;
 import org.jooq.UpdateSetFirstStep;
 import org.jooq.UpdateSetMoreStep;
 import org.jooq.impl.DSL;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -31,7 +25,8 @@ public class MealsRepository extends AbstractRepository {
     /**
      * Constructor for MealsRepository
      *
-     * @param dataSource
+     * @param dataSource an instance of HikariCPDataSource, offering a connection pool
+     * for efficient and reliable database connectivity.
      */
     protected MealsRepository(HikariCPDataSource dataSource) {
         super(dataSource);
@@ -54,7 +49,7 @@ public class MealsRepository extends AbstractRepository {
      */
     protected void editMeal(MealsRecord meal) throws SQLException, MealDoesntExistException {
         try (Connection connection = dataSource.getConnection()) {
-            DSLContext dsl = super.getDSLContext(connection);
+            var dsl = super.getDSLContext(connection);
 
             if (!dsl.fetchExists(dsl.selectFrom(Meals.MEALS).where(Meals.MEALS.MEAL_ID.eq(meal.getMealId())))) {
                 throw new MealDoesntExistException("The meal with the given ID doesn't exist!");
@@ -64,9 +59,7 @@ public class MealsRepository extends AbstractRepository {
             UpdateSetMoreStep<MealsRecord> setSteps = null;
 
             if (meal.getName() != null) {
-                setSteps = (setSteps == null)
-                        ? updateQuery.set(Meals.MEALS.NAME, meal.getName())
-                        : setSteps.set(Meals.MEALS.NAME, meal.getName());
+                setSteps = updateQuery.set(Meals.MEALS.NAME, meal.getName());
             }
             if (meal.getPrice() != null) {
                 setSteps = (setSteps == null)
@@ -108,9 +101,9 @@ public class MealsRepository extends AbstractRepository {
      * @throws SQLException               if a database access error occurs
      * @throws MealAlreadyExistsException if a meal with the same name already exists
      */
-    protected MealsRecord addMeal(MealsRecord meal) throws SQLException, MealAlreadyExistsException {
-        try (Connection connection = dataSource.getConnection()) {
-            DSLContext dsl = getDSLContext(connection);
+    protected Optional<MealsRecord> addMeal(MealsRecord meal) throws SQLException, MealAlreadyExistsException {
+        try (var connection = dataSource.getConnection()) {
+            var dsl = getDSLContext(connection);
             if (dsl.fetchExists(dsl.selectFrom(Meals.MEALS).where(Meals.MEALS.NAME.eq(meal.getName())))) {
                 throw new MealAlreadyExistsException("Meal already exists!");
             }
@@ -124,11 +117,13 @@ public class MealsRepository extends AbstractRepository {
                     .set(Meals.MEALS.DAY, meal.getDay())
                     .execute();
 
-            return dsl.selectFrom(Meals.MEALS)
+            // Rückgabe als Optional, um den Fall eines fehlenden Datensatzes explizit zu behandeln:
+            return Optional.ofNullable(dsl.selectFrom(Meals.MEALS)
                     .where(Meals.MEALS.NAME.eq(meal.getName()))
-                    .fetchOne();
+                    .fetchOne());
         }
     }
+
 
     /**
      * Retrieves all meal records from the database.
@@ -142,7 +137,7 @@ public class MealsRepository extends AbstractRepository {
      */
     protected List<MealsRecord> getAllMeals() throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
-            DSLContext dsl = getDSLContext(connection);
+            var dsl = getDSLContext(connection);
             return dsl.selectFrom(Meals.MEALS).fetchInto(MealsRecord.class);
         }
     }
@@ -159,7 +154,7 @@ public class MealsRepository extends AbstractRepository {
      */
     protected List<MealsRecord> getAllAllergies() throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
-            DSLContext dsl = getDSLContext(connection);
+            var dsl = getDSLContext(connection);
             return dsl.selectFrom(Meals.MEALS).fetchInto(MealsRecord.class);
         }
     }
@@ -178,7 +173,7 @@ public class MealsRepository extends AbstractRepository {
      */
     protected void deleteMealById(int mealId) throws SQLException, MealiDNotFoundException {
         try (Connection connection = dataSource.getConnection()) {
-            DSLContext dsl = getDSLContext(connection);
+            var dsl = getDSLContext(connection);
             if (!dsl.fetchExists(dsl.selectFrom(Meals.MEALS).where(Meals.MEALS.MEAL_ID.eq(mealId)))) {
                 throw new MealiDNotFoundException("The meal with the given ID doesn't exist!");
             }
@@ -202,7 +197,7 @@ public class MealsRepository extends AbstractRepository {
      */
     protected List<MealsRecord> searchMealByName(String name) throws SQLException, MealDoesntExistException {
         try (Connection connection = dataSource.getConnection()) {
-            DSLContext dsl = getDSLContext(connection);
+            var dsl = getDSLContext(connection);
             if (!dsl.fetchExists(dsl.selectFrom(Meals.MEALS).where(Meals.MEALS.NAME.eq(name)))) {
                 throw new MealDoesntExistException("Meal with name " + name + " doesn't exist!");
             }
@@ -226,7 +221,7 @@ public class MealsRepository extends AbstractRepository {
      */
     protected List<MealsRecord> searchMealById(int mealId) throws SQLException, MealiDNotFoundException {
         try (Connection connection = dataSource.getConnection()) {
-            DSLContext dsl = getDSLContext(connection);
+            var dsl = getDSLContext(connection);
             if (!dsl.fetchExists(dsl.selectFrom(Meals.MEALS).where(Meals.MEALS.MEAL_ID.eq(mealId)))) {
                 throw new MealiDNotFoundException("Meal with the given ID " + mealId + " doesn't exist!");
             }
@@ -245,7 +240,7 @@ public class MealsRepository extends AbstractRepository {
      */
     protected List<MealsRecord> sortMealsByPrice() throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
-            DSLContext dsl = getDSLContext(connection);
+            var dsl = getDSLContext(connection);
             return dsl.selectFrom(Meals.MEALS)
                     .orderBy(Meals.MEALS.PRICE.asc())
                     .fetchInto(MealsRecord.class);
@@ -264,7 +259,7 @@ public class MealsRepository extends AbstractRepository {
      */
     protected List<MealsRecord> sortMealsByRating() throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
-            DSLContext dsl = getDSLContext(connection);
+            var dsl = getDSLContext(connection);
 
             // Fetch all meals
             List<MealsRecord> meals = dsl.selectFrom(Meals.MEALS).fetchInto(MealsRecord.class);
@@ -296,7 +291,7 @@ public class MealsRepository extends AbstractRepository {
      */
     protected List<MealsRecord> sortMealsByName() throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
-            DSLContext dsl = getDSLContext(connection);
+            var dsl = getDSLContext(connection);
             return dsl.selectFrom(Meals.MEALS)
                     .orderBy(Meals.MEALS.NAME.asc())
                     .fetchInto(MealsRecord.class);
@@ -314,7 +309,7 @@ public class MealsRepository extends AbstractRepository {
      */
     protected List<MealsRecord> sortMealsByCalories() throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
-            DSLContext dsl = getDSLContext(connection);
+            var dsl = getDSLContext(connection);
             return dsl.selectFrom(Meals.MEALS)
                     .orderBy(Meals.MEALS.CALORIES.asc())
                     .fetchInto(MealsRecord.class);
@@ -338,7 +333,7 @@ public class MealsRepository extends AbstractRepository {
         List<String> userAllergies = getUserAllergies(userId);
 
         try (Connection connection = dataSource.getConnection()) {
-            DSLContext dsl = getDSLContext(connection);
+            var dsl = getDSLContext(connection);
 
             // Fetch all meals
             List<MealsRecord> meals = dsl.selectFrom(Meals.MEALS).fetchInto(MealsRecord.class);
@@ -371,9 +366,9 @@ public class MealsRepository extends AbstractRepository {
      */
     private List<String> getUserAllergies(int userId) throws SQLException, UserDoesntExistException {
         try (Connection connection = dataSource.getConnection()) {
-            DSLContext dsl = getDSLContext(connection);
+            var dsl = getDSLContext(connection);
 
-            UsersRecord user = dsl.selectFrom(Users.USERS)
+            var user = dsl.selectFrom(Users.USERS)
                     .where(Users.USERS.USERID.eq(userId))
                     .fetchOne();
 
@@ -396,9 +391,10 @@ public class MealsRepository extends AbstractRepository {
      * @return the median rating of the meal
      * @throws SQLException if a database access error occurs
      */
+    //FIXME
     protected double calculateMedianRatingForMeal(int mealId) throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
-            DSLContext dsl = getDSLContext(connection);
+            var dsl = getDSLContext(connection);
             return dsl.select(DSL.median(Review.REVIEW.RATING))
                     .from(Review.REVIEW)
                     .where(Review.REVIEW.MEAL_ID.eq(mealId))

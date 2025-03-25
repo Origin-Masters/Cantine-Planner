@@ -114,7 +114,7 @@ public class LoginController extends AbstractController {
         } catch (InvalidEmailTypeException | UserAlreadyExistsException e) {
             screenManager.showErrorScreen(e.getMessage());
         } catch (
-                Exception e) {  //TODO exeption handling besser machen das casten oben bereitet probleme wenn man nicht alle felder füllt!
+                Exception e) {  //TODO exception handling besser machen das casten oben bereitet probleme wenn man nicht alle felder füllt!
             screenManager.showErrorScreen("There was an error while registering please try again and check if you filled everything correctly!");
         }
     }

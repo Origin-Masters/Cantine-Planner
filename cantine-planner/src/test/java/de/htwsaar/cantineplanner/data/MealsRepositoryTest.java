@@ -1,9 +1,7 @@
 package de.htwsaar.cantineplanner.data;
 
-import com.zaxxer.hikari.HikariConfig;
 import de.htwsaar.cantineplanner.codegen.tables.records.MealsRecord;
 import de.htwsaar.cantineplanner.dataAccess.HikariCPDataSource;
-import de.htwsaar.cantineplanner.dataAccess.HikariCPDataSourceTest;
 import de.htwsaar.cantineplanner.exceptions.MealAlreadyExistsException;
 import de.htwsaar.cantineplanner.exceptions.MealiDNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,22 +27,56 @@ class MealsRepositoryTest {
 
     @Test
     void sortMealsByPrice() {
+        assertDoesNotThrow(() -> {
+            List<MealsRecord> meals = mealsRepository.sortMealsByPrice();
+            assertNotNull(meals);
+            assertFalse(meals.isEmpty());
+            for (int i = 1; i < meals.size(); i++) {
+                assertTrue(meals.get(i - 1).getPrice() <= meals.get(i).getPrice());
+            }
+        });
     }
 
     @Test
     void sortMealsByRating() {
+        assertDoesNotThrow(() -> {
+            List<MealsRecord> meals = mealsRepository.sortMealsByRating();
+            assertNotNull(meals);
+            assertFalse(meals.isEmpty());
+            for (int i = 1; i < meals.size(); i++) {
+                assertTrue(mealsRepository.calculateMedianRatingForMeal(meals.get(i - 1).getMealId()) >=
+                        mealsRepository.calculateMedianRatingForMeal(meals.get(i).getMealId()));
+            }
+        });
     }
 
     @Test
     void sortMealsByName() {
+        assertDoesNotThrow(() -> {
+            List<MealsRecord> meals = mealsRepository.sortMealsByName();
+            assertNotNull(meals);
+            assertFalse(meals.isEmpty());
+            for (int i = 1; i < meals.size(); i++) {
+                assertTrue(meals.get(i - 1).getName().compareTo(meals.get(i).getName()) <= 0);
+            }
+        });
     }
 
     @Test
     void sortMealsByCalories() {
+        assertDoesNotThrow(() -> {
+            List<MealsRecord> meals = mealsRepository.sortMealsByCalories();
+            assertNotNull(meals);
+            assertFalse(meals.isEmpty());
+            for (int i = 1; i < meals.size(); i++) {
+                assertTrue(meals.get(i - 1).getCalories() <= meals.get(i).getCalories());
+            }
+        });
     }
 
     @Test
     void sortMealsByAllergy() {
+
     }
 
     @Test

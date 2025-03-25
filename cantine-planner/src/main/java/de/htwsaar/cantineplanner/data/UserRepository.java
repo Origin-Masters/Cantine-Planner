@@ -10,7 +10,6 @@ import org.jooq.impl.DSL;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -19,8 +18,8 @@ import java.util.List;
 public class UserRepository extends AbstractRepository {
     /**
      * Constructs a new UserRepository object.
-     *
-     * @param dataSource
+     * @param dataSource an instance of HikariCPDataSource, offering a connection pool
+     * for efficient and reliable database connectivity.
      */
     protected UserRepository(HikariCPDataSource dataSource) {
         super(dataSource);
@@ -90,6 +89,7 @@ public class UserRepository extends AbstractRepository {
      * @throws SQLException             if a database access error occurs
      * @throws UserDoesntExistException if the user with the given username does not exist
      */
+    //FIXME
     protected int getUserId(String username) throws SQLException, UserDoesntExistException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
@@ -203,6 +203,7 @@ public class UserRepository extends AbstractRepository {
      * @throws SQLException             if a database access error occurs
      * @throws UserDoesntExistException if the user with the given ID does not exist
      */
+    //FIXME
     protected boolean isAdmin(int userID) throws SQLException, UserDoesntExistException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
@@ -353,10 +354,9 @@ public class UserRepository extends AbstractRepository {
      *
      * @param userId    the ID of the user whose allergy settings are to be updated
      * @param allergies the allergies to be set for the user
-     * @return true if the allergies are successfully set, false otherwise
      * @throws SQLException if a database access error occurs
      */
-    protected boolean setAllergeneSettings(int userId, String allergies) throws SQLException {
+    protected void setAllergeneSettings(int userId, String allergies) throws SQLException {
         //  String cleanAllergies = allergies.replace("[", "").replace("]", "");
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
@@ -364,7 +364,6 @@ public class UserRepository extends AbstractRepository {
                     .set(Users.USERS.DONT_SHOW_MEAL, allergies)
                     .where(Users.USERS.USERID.eq(userId))
                     .execute();
-            return true;
         }
     }
 }

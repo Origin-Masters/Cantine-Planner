@@ -7,7 +7,6 @@ import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
 
 import java.sql.Connection;
-import java.sql.SQLException;
 
 /**
  * The AbstractRepository class is an abstract class that provides common functionality for all repository classes.
@@ -17,8 +16,8 @@ public abstract class AbstractRepository {
 
     /**
      * Constructs a new AbstractRepository object.
-     *
-     * @param dataSource
+     * @param dataSource an instance of HikariCPDataSource, offering a connection pool
+     * for efficient and reliable database connectivity.
      */
     protected AbstractRepository(HikariCPDataSource dataSource) {
         AbstractRepository.dataSource = dataSource;

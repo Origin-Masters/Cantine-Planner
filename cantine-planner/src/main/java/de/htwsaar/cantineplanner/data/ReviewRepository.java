@@ -19,7 +19,8 @@ public class ReviewRepository extends AbstractRepository {
     /**
      * Constructs a new ReviewRepository object.
      *
-     * @param dataSource
+     * @param dataSource an instance of HikariCPDataSource, offering a connection pool
+     *                   for efficient and reliable database connectivity.
      */
     protected ReviewRepository(HikariCPDataSource dataSource) {
         super(dataSource);
@@ -35,8 +36,8 @@ public class ReviewRepository extends AbstractRepository {
      * @throws SQLException if a database access error occurs
      */
     protected List<ReviewRecord> getAllReviews() throws SQLException {
-        try (Connection connection = dataSource.getConnection()) {
-            DSLContext dsl = getDSLContext(connection);
+        try (var connection = dataSource.getConnection()) {
+            var dsl = getDSLContext(connection);
             return dsl.selectFrom(Review.REVIEW).fetchInto(ReviewRecord.class);
         }
     }
@@ -53,7 +54,7 @@ public class ReviewRepository extends AbstractRepository {
      * @throws SQLException                 if a database access error occurs
      * @throws ReviewiDDoesntExistException if the review ID does not exist
      */
-    protected int getUserIdFromReviewId(int reviewId) throws SQLException, ReviewiDDoesntExistException , NullPointerException{
+    protected int getUserIdFromReviewId(int reviewId) throws SQLException, ReviewiDDoesntExistException, NullPointerException {
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
             if (!dsl.fetchExists(dsl.selectFrom(Review.REVIEW).where(Review.REVIEW.RATING_ID.eq(reviewId)))) {
@@ -75,8 +76,8 @@ public class ReviewRepository extends AbstractRepository {
      * @throws SQLException if a database access error occurs
      */
     protected List<ReviewRecord> getAllReviewsByUser(int userId) throws SQLException {
-        try (Connection connection = dataSource.getConnection()) {
-            DSLContext dsl = getDSLContext(connection);
+        try (var connection = dataSource.getConnection()) {
+            var dsl = getDSLContext(connection);
             return dsl.selectFrom(Review.REVIEW).where(Review.REVIEW.USERID.eq(userId)).fetchInto(ReviewRecord.class);
         }
     }
@@ -94,8 +95,8 @@ public class ReviewRepository extends AbstractRepository {
      * @throws MealDoesntExistException if the meal with the given name does not exist
      */
     protected List<ReviewRecord> reviewsByMealName(String mealName) throws SQLException, MealDoesntExistException {
-        try (Connection connection = dataSource.getConnection()) {
-            DSLContext dsl = getDSLContext(connection);
+        try (var connection = dataSource.getConnection()) {
+            var dsl = getDSLContext(connection);
             if (!dsl.fetchExists(dsl.selectFrom(Meals.MEALS).where(Meals.MEALS.NAME.eq(mealName)))) {
                 throw new MealDoesntExistException("Meal with name " + mealName + " doesn't exist!");
             }
@@ -117,8 +118,8 @@ public class ReviewRepository extends AbstractRepository {
      * @throws ReviewiDDoesntExistException if the review ID does not exist
      */
     protected void deleteReview(int ratingId) throws SQLException, ReviewiDDoesntExistException {
-        try (Connection connection = dataSource.getConnection()) {
-            DSLContext dsl = getDSLContext(connection);
+        try (var connection = dataSource.getConnection()) {
+            var dsl = getDSLContext(connection);
             // if the review ID doesn't exist, we throw an exception
             if (!dsl.fetchExists(dsl.selectFrom(Review.REVIEW).where(Review.REVIEW.RATING_ID.eq(ratingId)))) {
                 throw new ReviewiDDoesntExistException("Review ID that was provided does not exist!");
@@ -139,8 +140,8 @@ public class ReviewRepository extends AbstractRepository {
      * @throws SQLException if a database access error occurs
      */
     protected boolean addReview(ReviewRecord givenReview) throws SQLException {
-        try (Connection connection = dataSource.getConnection()) {
-            DSLContext dsl = getDSLContext(connection);
+        try (var connection = dataSource.getConnection()) {
+            var dsl = getDSLContext(connection);
             dsl.insertInto(Review.REVIEW)
                     .set(Review.REVIEW.MEAL_ID, givenReview.getMealId())
                     .set(Review.REVIEW.RATING, givenReview.getRating())

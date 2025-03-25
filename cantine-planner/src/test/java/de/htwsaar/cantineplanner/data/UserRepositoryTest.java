@@ -5,7 +5,6 @@ import de.htwsaar.cantineplanner.dataAccess.HikariCPDataSource;
 import de.htwsaar.cantineplanner.exceptions.UserAlreadyExistsException;
 import de.htwsaar.cantineplanner.exceptions.UserDoesntExistException;
 import de.htwsaar.cantineplanner.exceptions.UserNotValidatedException;
-import de.htwsaar.cantineplanner.exceptions.UseriDDoesntExcistException;
 import de.htwsaar.cantineplanner.security.PasswordUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

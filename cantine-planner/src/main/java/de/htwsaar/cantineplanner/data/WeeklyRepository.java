@@ -19,7 +19,8 @@ public class WeeklyRepository extends AbstractRepository {
     /**
      * Constructs a new WeeklyRepository object.
      *
-     * @param dataSource
+     * @param dataSource an instance of HikariCPDataSource, offering a connection pool
+     * for efficient and reliable database connectivity.
      */
     protected WeeklyRepository(HikariCPDataSource dataSource) {
         super(dataSource);
