@@ -33,7 +33,7 @@ public class MainController extends AbstractController {
      * @param cantineService the service to handle cantine-related operations
      * @param eventManager   the event manager to handle events
      */
-    public MainController(ScreenManager screenManager,
+    public  MainController(ScreenManager screenManager,
                              CantineService cantineService,
                              EventManager eventManager) {
 
