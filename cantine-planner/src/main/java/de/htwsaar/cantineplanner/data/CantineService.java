@@ -1,10 +1,13 @@
 // Java
-package de.htwsaar.cantineplanner.businessLogic;
+package de.htwsaar.cantineplanner.data;
 
+import com.zaxxer.hikari.HikariConfig;
+import de.htwsaar.cantineplanner.businessLogic.AllergenMapper;
 import de.htwsaar.cantineplanner.codegen.tables.records.MealsRecord;
 import de.htwsaar.cantineplanner.codegen.tables.records.ReviewRecord;
 import de.htwsaar.cantineplanner.codegen.tables.records.UsersRecord;
-import de.htwsaar.cantineplanner.dataAccess.DBConnection;
+
+import de.htwsaar.cantineplanner.dataAccess.HikariCPDataSource;
 import de.htwsaar.cantineplanner.exceptions.*;
 
 import java.sql.SQLException;
@@ -15,7 +18,15 @@ import java.util.List;
  * Groups user, meal, review, allergene, and weekly plan operations.
  */
 public class CantineService {
-    private final DBConnection dbConnection;
+   // private final DBConnection dbConnection;
+
+    MealsRepository mealsRepository;
+    ReviewRepository reviewRepository;
+    UserRepository userRepository;
+    WeeklyRepository weeklyRepository;
+    HikariCPDataSource hikariCPDataSource;
+
+    //AbstractRepository abstractRepository;
 
     ////////////////////////////////////////////////////////////////////////////////
     // Constructor
@@ -27,7 +38,17 @@ public class CantineService {
      * @param propertiesFilePath path to the database configuration properties file
      */
     public CantineService(String propertiesFilePath) {
-        this.dbConnection = new DBConnection(propertiesFilePath);
+
+        hikariCPDataSource = new HikariCPDataSource(propertiesFilePath);
+
+       // this.dbConnection = new DBConnection(propertiesFilePath);
+
+        this.mealsRepository = new MealsRepository(hikariCPDataSource);
+        this.reviewRepository = new ReviewRepository(hikariCPDataSource);
+        this.userRepository = new UserRepository(hikariCPDataSource);
+        this.weeklyRepository = new WeeklyRepository(hikariCPDataSource);
+
+
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -44,7 +65,7 @@ public class CantineService {
      * @throws UserNotValidatedException if the user could not be validated
      */
     public boolean validateUser(String username, String password) throws SQLException, UserNotValidatedException {
-        return dbConnection.validateUser(username, password);
+        return userRepository.validateUser(username, password);
     }
 
     /**
@@ -57,7 +78,7 @@ public class CantineService {
      * @throws UserNotValidatedException if the user could not be validated
      */
     public boolean validateUser(int userID, String password) throws SQLException, UserNotValidatedException {
-        return dbConnection.validateUser(userID, password);
+        return userRepository.validateUser(userID, password);
     }
 
     /**
@@ -73,7 +94,7 @@ public class CantineService {
      */
     public boolean registerUser(String username, String password, String email)
             throws SQLException, UserAlreadyExistsException, InvalidEmailTypeException {
-        UsersRecord usersRecord = dbConnection.registerUser(username, password, email);
+        UsersRecord usersRecord = userRepository.registerUser(username, password, email);
         return usersRecord != null;
     }
 
@@ -86,7 +107,7 @@ public class CantineService {
      * @throws UserDoesntExistException if the user does not exist
      */
     public int getUserId(String username) throws SQLException, UserDoesntExistException {
-        return dbConnection.getUserId(username);
+        return userRepository.getUserId(username);
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -101,7 +122,7 @@ public class CantineService {
      * @throws MealDoesntExistException if the meal does not exist
      */
     public void editMeal(MealsRecord meal) throws SQLException, MealDoesntExistException {
-        dbConnection.editMeal(meal);
+        mealsRepository.editMeal(meal);
     }
 
     /**
@@ -111,7 +132,7 @@ public class CantineService {
      * @throws SQLException if a database error occurs
      */
     public List<MealsRecord> getAllMeals() throws SQLException {
-        return dbConnection.getAllMeals();
+        return mealsRepository.getAllMeals();
     }
 
     /**
@@ -121,7 +142,7 @@ public class CantineService {
      * @throws SQLException if a database error occurs
      */
     public List<MealsRecord> getAllAllergies() throws SQLException {
-        return dbConnection.getAllAllergies();
+        return mealsRepository.getAllAllergies();
     }
 
     /**
@@ -132,7 +153,7 @@ public class CantineService {
      * @throws MealAlreadyExistsException if the meal already exists
      */
     public void addMeal(MealsRecord meal) throws SQLException, MealAlreadyExistsException {
-        dbConnection.addMeal(meal);
+        mealsRepository.addMeal(meal);
     }
 
     /**
@@ -143,7 +164,7 @@ public class CantineService {
      * @throws MealiDNotFoundException if the meal does not exist
      */
     public void deleteMeal(int mealId) throws SQLException, MealiDNotFoundException {
-        dbConnection.deleteMealById(mealId);
+        mealsRepository.deleteMealById(mealId);
     }
 
     /**
@@ -155,7 +176,7 @@ public class CantineService {
      * @throws MealiDNotFoundException if the meal ID is invalid
      */
     public MealsRecord getMealById(int mealId) throws SQLException, MealiDNotFoundException {
-        List<MealsRecord> meals = dbConnection.searchMealById(mealId);
+        List<MealsRecord> meals = mealsRepository.searchMealById(mealId);
         return meals.isEmpty() ? null : meals.get(0);
     }
 
@@ -168,7 +189,7 @@ public class CantineService {
      * @throws MealDoesntExistException if the meal name is invalid
      */
     public MealsRecord getMealByName(String name) throws SQLException, MealDoesntExistException {
-        List<MealsRecord> meals = dbConnection.searchMealByName(name);
+        List<MealsRecord> meals = mealsRepository.searchMealByName(name);
         return meals.isEmpty() ? null : meals.get(0);
     }
 
@@ -180,7 +201,7 @@ public class CantineService {
      * @throws SQLException if a database error occurs
      */
     public List<MealsRecord> sortMealsByPrice() throws SQLException {
-        return dbConnection.sortMealsByPrice();
+        return mealsRepository.sortMealsByPrice();
     }
 
     /**
@@ -190,7 +211,7 @@ public class CantineService {
      * @throws SQLException if a database error occurs
      */
     public List<MealsRecord> sortMealsByRating() throws SQLException {
-        return dbConnection.sortMealsByRating();
+        return mealsRepository.sortMealsByRating();
     }
 
     /**
@@ -200,7 +221,7 @@ public class CantineService {
      * @throws SQLException if a database error occurs
      */
     public List<MealsRecord> sortMealsByName() throws SQLException {
-        return dbConnection.sortMealsByName();
+        return mealsRepository.sortMealsByName();
     }
 
     /**
@@ -210,7 +231,7 @@ public class CantineService {
      * @throws SQLException if a database error occurs
      */
     public List<MealsRecord> sortMealsByCalories() throws SQLException {
-        return dbConnection.sortMealsByCalories();
+        return mealsRepository.sortMealsByCalories();
     }
 
     /**
@@ -221,7 +242,7 @@ public class CantineService {
      * @throws SQLException if a database error occurs
      */
     public List<MealsRecord> sortMealsByAllergy(int currentUserId) throws SQLException {
-        return dbConnection.sortMealsByAllergy(currentUserId);
+        return mealsRepository.sortMealsByAllergy(currentUserId);
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -235,7 +256,7 @@ public class CantineService {
      * @throws SQLException if a database error occurs
      */
     public List<ReviewRecord> getAllReviews() throws SQLException {
-        return dbConnection.getAllReviews();
+        return reviewRepository.getAllReviews();
     }
 
     /**
@@ -247,7 +268,7 @@ public class CantineService {
      * @throws ReviewiDDoesntExistException if the review ID does not exist
      */
     public int getUserIdFromReviewId(int reviewId) throws SQLException, ReviewiDDoesntExistException {
-        return dbConnection.getUserIdFromReviewId(reviewId);
+        return reviewRepository.getUserIdFromReviewId(reviewId);
     }
 
     /**
@@ -257,7 +278,7 @@ public class CantineService {
      * @throws SQLException if a database error occurs
      */
     public void addReview(ReviewRecord review) throws SQLException {
-        dbConnection.addReview(review);
+        reviewRepository.addReview(review);
     }
 
     /**
@@ -269,7 +290,7 @@ public class CantineService {
      * @throws MealDoesntExistException if the meal does not exist
      */
     public List<ReviewRecord> searchReviewsByMealName(String mealName) throws SQLException, MealDoesntExistException {
-        return dbConnection.reviewsByMealName(mealName);
+        return reviewRepository.reviewsByMealName(mealName);
     }
 
     /**
@@ -280,7 +301,7 @@ public class CantineService {
      * @throws SQLException if a database error occurs
      */
     public List<ReviewRecord> getAllReviewsByUser(int currentUserId) throws SQLException {
-        return dbConnection.getAllReviewsByUser(currentUserId);
+        return reviewRepository.getAllReviewsByUser(currentUserId);
     }
 
     /**
@@ -291,7 +312,7 @@ public class CantineService {
      * @throws ReviewiDDoesntExistException if the review does not exist
      */
     public void deleteReview(int reviewId) throws SQLException, ReviewiDDoesntExistException {
-        dbConnection.deleteReview(reviewId);
+        reviewRepository.deleteReview(reviewId);
     }
 
     /**
@@ -302,7 +323,7 @@ public class CantineService {
      * @throws SQLException if a database error occurs
      */
     public double calculateMedianRatingForMeal(int mealId) throws SQLException {
-        return dbConnection.calculateMedianRatingForMeal(mealId);
+        return mealsRepository.calculateMedianRatingForMeal(mealId);
     }
 
 
@@ -334,7 +355,7 @@ public class CantineService {
             }
         }
         System.out.println(abbrAllergene + " " + userId);
-        dbConnection.setAllergeneSettings(userId, abbrAllergene.toString());
+        userRepository.setAllergeneSettings(userId, abbrAllergene.toString());
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -348,7 +369,7 @@ public class CantineService {
      * @throws SQLException if a database error occurs
      */
     public List<MealsRecord> getWeeklyPlan() throws SQLException {
-        return dbConnection.getWeeklyPlan();
+        return weeklyRepository.getWeeklyPlan();
     }
 
     /**
@@ -360,7 +381,7 @@ public class CantineService {
      * @throws MealDoesntExistException if the meal does not exist
      */
     public void editWeeklyPlan(String mealName, String day) throws SQLException, MealDoesntExistException {
-        dbConnection.editWeeklyPlan(mealName, day);
+        weeklyRepository.editWeeklyPlan(mealName, day);
     }
 
     /**
@@ -369,7 +390,7 @@ public class CantineService {
      * @throws SQLException if a database error occurs
      */
     public void resetWeeklyPlan() throws SQLException {
-        dbConnection.resetWeeklyPlan();
+        weeklyRepository.resetWeeklyPlan();
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -387,7 +408,7 @@ public class CantineService {
      */
     public void editUserData(int currentUserId, String newPassword, String newEmail)
             throws SQLException, InvalidEmailTypeException {
-        dbConnection.editUserData(currentUserId, newPassword, newEmail);
+        userRepository.editUserData(currentUserId, newPassword, newEmail);
     }
 
     /**
@@ -397,7 +418,7 @@ public class CantineService {
      * @throws SQLException if a database error occurs
      */
     public List<UsersRecord> getAllUser() throws SQLException {
-        return dbConnection.getAllUser();
+        return userRepository.getAllUser();
     }
 
     /**
@@ -408,7 +429,7 @@ public class CantineService {
      * @throws UserDoesntExistException if the specified user does not exist
      */
     public void deleteUser(int userId) throws SQLException, UserDoesntExistException {
-        dbConnection.deleteUserById(userId);
+        userRepository.deleteUserById(userId);
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -424,7 +445,7 @@ public class CantineService {
      * @throws UserNotValidatedException if the user couldn't be validated
      */
     public void updateUserRole(int userId, int role) throws SQLException, UserNotValidatedException {
-        dbConnection.updateUserRole(userId, role);
+        userRepository.updateUserRole(userId, role);
     }
 
     /**
@@ -436,11 +457,11 @@ public class CantineService {
      * @throws UseriDDoesntExcistException if the user does not exist
      */
     public boolean isAdmin(int currentUserId) throws SQLException, UseriDDoesntExcistException {
-        return dbConnection.isAdmin(currentUserId);
+        return userRepository.isAdmin(currentUserId);
     }
 
 
     public UsersRecord getUser(String username) throws SQLException , UserDoesntExistException{
-        return dbConnection.getUser(username);
+        return userRepository.getUser(username);
     }
 }

@@ -1,12 +1,12 @@
 package de.htwsaar.cantineplanner.presentation;
 
-import de.htwsaar.cantineplanner.businessLogic.CantineService;
+import de.htwsaar.cantineplanner.data.CantineService;
 import de.htwsaar.cantineplanner.businessLogic.EventManager;
 import de.htwsaar.cantineplanner.businessLogic.controller.MainController;
 import de.htwsaar.cantineplanner.dbUtils.DataBaseUtil;
 
 
-public class App {
+public classApp {
     public static void main(String[] args) {
         DataBaseUtil.loadInitialDataBase("./database/database.db");
 

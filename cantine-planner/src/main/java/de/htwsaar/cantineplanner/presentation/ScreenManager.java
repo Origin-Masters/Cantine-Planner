@@ -5,7 +5,7 @@ import com.googlecode.lanterna.gui2.MultiWindowTextGUI;
 import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import de.htwsaar.cantineplanner.businessLogic.AllergenMapper;
-import de.htwsaar.cantineplanner.businessLogic.CantineService;
+import de.htwsaar.cantineplanner.data.CantineService;
 import de.htwsaar.cantineplanner.businessLogic.EventManager;
 import de.htwsaar.cantineplanner.businessLogic.MealTypeMapper;
 import de.htwsaar.cantineplanner.businessLogic.controller.eventdata.EventType;
@@ -134,8 +134,8 @@ public class ScreenManager {
         List<MenuBuilder.MenuButton> reviewsMenuButtons = Arrays.asList(
                 new MenuBuilder.MenuButton("All Reviews", EventType.SHOW_ALL_REVIEWS),
                 new MenuBuilder.MenuButton("Add Reviews", EventType.SHOW_ADD_REVIEW),
-                new MenuBuilder.MenuButton("Delete Review", EventType.DELETE_REVIEW),
-                new MenuBuilder.MenuButton("Search Reviews", EventType.SEARCH_REVIEWS_BY_MEAL_NAME),
+                new MenuBuilder.MenuButton("Delete Review", EventType.SHOW_DELETE_REVIEW),
+                new MenuBuilder.MenuButton("Search Reviews", EventType.SHOW_SEARCH_REVIEWS_BY_MEAL_NAME),
                 new MenuBuilder.MenuButton("Main Menu", EventType.SWITCH_MENU, new IntData(1))
         );
         MenuBuilder reviewsMenu = new MenuBuilder(gui, eventManager)
@@ -384,7 +384,7 @@ public class ScreenManager {
                 new MenuBuilder.MenuButton("Sort by Median Rating", EventType.SORT_MEALS_BY_RATING),
                 new MenuBuilder.MenuButton("Sort by Name", EventType.SORT_MEALS_BY_NAME),
                 new MenuBuilder.MenuButton("Sort by Calories", EventType.SORT_MEALS_BY_CALORIES),
-                new MenuBuilder.MenuButton("Sort by your Allergies", EventType.SORT_MEALS_BY_ALLERGENS),
+                new MenuBuilder.MenuButton("Filter Meal by your Allergies", EventType.SORT_MEALS_BY_ALLERGENS),
                 new MenuBuilder.MenuButton("Go  Back", EventType.SWITCH_MENU, new IntData(2))
         );
         MenuBuilder sortMeal = new MenuBuilder(gui, eventManager)

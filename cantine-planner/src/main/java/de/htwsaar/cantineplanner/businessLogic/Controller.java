@@ -4,6 +4,7 @@ import de.htwsaar.cantineplanner.businessLogic.controller.eventdata.EventType;
 import de.htwsaar.cantineplanner.codegen.tables.records.MealsRecord;
 import de.htwsaar.cantineplanner.codegen.tables.records.ReviewRecord;
 import de.htwsaar.cantineplanner.codegen.tables.records.UsersRecord;
+import de.htwsaar.cantineplanner.data.CantineService;
 import de.htwsaar.cantineplanner.exceptions.*;
 import de.htwsaar.cantineplanner.presentation.ScreenManager;
 

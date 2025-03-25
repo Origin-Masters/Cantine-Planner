@@ -1,6 +1,6 @@
 package de.htwsaar.cantineplanner.businessLogic.controller;
 
-import de.htwsaar.cantineplanner.businessLogic.CantineService;
+import de.htwsaar.cantineplanner.data.CantineService;
 import de.htwsaar.cantineplanner.businessLogic.EventManager;
 import de.htwsaar.cantineplanner.businessLogic.controller.eventdata.EventData;
 import de.htwsaar.cantineplanner.businessLogic.controller.eventdata.EventType;
@@ -30,8 +30,8 @@ public class WeeklyController extends AbstractController {
         eventManager.subscribe(EventType.EDIT_WEEKLY_PLAN_MONDAY_SUBMIT, this::handleEditWeeklyPlanMonday);
         eventManager.subscribe(EventType.EDIT_WEEKLY_PLAN_TUESDAY, (data) -> screenManager.showEditWeeklyPlanTuesday());
         eventManager.subscribe(EventType.EDIT_WEEKLY_PLAN_TUESDAY_SUBMIT, this::handleEditWeeklyPlanTuesday);
-        eventManager.subscribe(EventType.EDIT_WEEKLY_PLAN_WEDNESDAY, this::handleEditWeeklyPlanWednesday);
-        eventManager.subscribe(EventType.EDIT_WEEKLY_PLAN_WEDNESDAY_SUBMIT, (data) -> screenManager.showEditWeeklyPlanWednesday());
+        eventManager.subscribe(EventType.EDIT_WEEKLY_PLAN_WEDNESDAY, (data) -> screenManager.showEditWeeklyPlanWednesday());
+        eventManager.subscribe(EventType.EDIT_WEEKLY_PLAN_WEDNESDAY_SUBMIT,this::handleEditWeeklyPlanWednesday);
         eventManager.subscribe(EventType.EDIT_WEEKLY_PLAN_THURSDAY, (data) -> screenManager.showEditWeeklyPlanThursday());
         eventManager.subscribe(EventType.EDIT_WEEKLY_PLAN_THURSDAY_SUBMIT, this::handleEditWeeklyPlanThursday);
         eventManager.subscribe(EventType.EDIT_WEEKLY_PLAN_FRIDAY, (data) -> screenManager.showEditWeeklyPlanFriday());

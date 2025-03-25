@@ -1,6 +1,6 @@
 package de.htwsaar.cantineplanner.businessLogic.controller;
 
-import de.htwsaar.cantineplanner.businessLogic.CantineService;
+import de.htwsaar.cantineplanner.data.CantineService;
 import de.htwsaar.cantineplanner.businessLogic.EventManager;
 import de.htwsaar.cantineplanner.codegen.tables.records.UsersRecord;
 import de.htwsaar.cantineplanner.presentation.ScreenManager;

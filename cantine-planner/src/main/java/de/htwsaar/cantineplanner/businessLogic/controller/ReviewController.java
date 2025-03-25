@@ -1,11 +1,10 @@
 package de.htwsaar.cantineplanner.businessLogic.controller;
 
-import de.htwsaar.cantineplanner.businessLogic.CantineService;
+import de.htwsaar.cantineplanner.data.CantineService;
 import de.htwsaar.cantineplanner.businessLogic.EventManager;
 import de.htwsaar.cantineplanner.businessLogic.controller.eventdata.EventData;
 import de.htwsaar.cantineplanner.businessLogic.controller.eventdata.EventType;
 import de.htwsaar.cantineplanner.codegen.tables.records.ReviewRecord;
-import de.htwsaar.cantineplanner.codegen.tables.records.UsersRecord;
 import de.htwsaar.cantineplanner.exceptions.MealDoesntExistException;
 import de.htwsaar.cantineplanner.exceptions.ReviewiDDoesntExistException;
 import de.htwsaar.cantineplanner.presentation.ScreenManager;

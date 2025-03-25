@@ -1,14 +1,9 @@
 package de.htwsaar.cantineplanner.businessLogic.controller;
 
-import de.htwsaar.cantineplanner.businessLogic.CantineService;
+import de.htwsaar.cantineplanner.data.CantineService;
 import de.htwsaar.cantineplanner.businessLogic.EventManager;
 import de.htwsaar.cantineplanner.businessLogic.controller.eventdata.EventType;
-import de.htwsaar.cantineplanner.codegen.tables.Review;
-import de.htwsaar.cantineplanner.codegen.tables.records.UsersRecord;
-import de.htwsaar.cantineplanner.exceptions.UserDoesntExistException;
 import de.htwsaar.cantineplanner.presentation.ScreenManager;
-
-import java.sql.SQLException;
 
 public class MainController extends AbstractController {
     private int currentMenu;

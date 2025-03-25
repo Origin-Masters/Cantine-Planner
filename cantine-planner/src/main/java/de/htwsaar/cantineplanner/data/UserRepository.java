@@ -280,30 +280,24 @@ public class UserRepository extends AbstractRepository {
     }
 
     /**
-     * Retrieves the allergy settings for a user by user ID.
+     * Method setAllergyForUser sets allergies for a user by userId
      *
-     * @param userId the ID of the user
-     * @return a list of allergies
-     * @throws SQLException             if a database access error occurs
-     * @throws UserDoesntExistException if the user with the given ID doesn't exist
+     * @param userId    of type int
+     * @param allergies of type String
+     * @return boolean true if the allergies are set, false otherwise
+     * @throws SQLException if an SQL exception occurs
      */
-    private List<String> getUserAllergies(int userId) throws SQLException, UserDoesntExistException {
+    public boolean setAllergeneSettings(int userId, String allergies) throws SQLException {
+        //  String cleanAllergies = allergies.replace("[", "").replace("]", "");
         try (Connection connection = dataSource.getConnection()) {
             DSLContext dsl = getDSLContext(connection);
-
-            UsersRecord user = dsl.selectFrom(Users.USERS)
+            dsl.update(Users.USERS)
+                    .set(Users.USERS.DONT_SHOW_MEAL, allergies)
                     .where(Users.USERS.USERID.eq(userId))
-                    .fetchOne();
-
-            if (user == null) {
-                throw new UserDoesntExistException("The user with the given UserId doesn't exist!");
-            }
-
-            String allergies = user.getDontShowMeal();
-            return Arrays.asList(allergies.split(","));
+                    .execute();
+            return true;
         }
     }
-
 
 
 
