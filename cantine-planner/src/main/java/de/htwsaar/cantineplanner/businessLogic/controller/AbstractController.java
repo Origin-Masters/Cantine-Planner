@@ -18,7 +18,6 @@ public abstract class AbstractController {
         this.cantineService = cantineService;
         this.eventManager = eventManager;
     }
-
     protected abstract void subscribeToEvents();
 
 }

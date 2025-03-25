@@ -5,6 +5,13 @@ import de.htwsaar.cantineplanner.businessLogic.EventManager;
 import de.htwsaar.cantineplanner.businessLogic.controller.eventdata.EventType;
 import de.htwsaar.cantineplanner.presentation.ScreenManager;
 
+/**
+ * The MainController class is responsible for managing the main application loop.
+ * <p>
+ * The MainController class is responsible for managing the main application loop.
+ * It switches between different menus based on the current state of the application.
+ * </p>
+ */
 public class MainController extends AbstractController {
     private int currentMenu;
     private boolean running;
@@ -15,11 +22,20 @@ public class MainController extends AbstractController {
     private final WeeklyController weeklyController;
     private final LoginController loginController;
 
-
-
-    public MainController(ScreenManager screenManager,
-                          CantineService cantineService,
-                          EventManager eventManager) {
+    /**
+     * Constructs a new MainController.
+     * <p>
+     * This constructor initializes the MainController with the provided ScreenManager, CantineService, and EventManager.
+     * It also initializes the controllers for meals, reviews, users, weekly plans, and login, and subscribes to the relevant events.
+     * </p>
+     *
+     * @param screenManager  the screen manager to manage UI screens
+     * @param cantineService the service to handle cantine-related operations
+     * @param eventManager   the event manager to handle events
+     */
+    protected MainController(ScreenManager screenManager,
+                             CantineService cantineService,
+                             EventManager eventManager) {
 
         super(screenManager, cantineService, eventManager);
         this.mealController = new MealController(screenManager, cantineService, eventManager);
@@ -31,6 +47,13 @@ public class MainController extends AbstractController {
         subscribeToEvents();
     }
 
+    /**
+     * Subscribes to various application event types and associates them with their respective handlers.
+     * <p>
+     * This method sets up the event subscriptions for handling different application events such as switching menus,
+     * exiting the application, showing success and error screens, and logging out.
+     * </p>
+     */
     @Override
     protected void subscribeToEvents() {
         eventManager.subscribe(EventType.SWITCH_MENU, (data) -> switchMenu((int) data.getData()));
@@ -108,8 +131,8 @@ public class MainController extends AbstractController {
      * Determines if the current user has admin privileges to customize the display.
      * </p>
      */
-    private void mealMenu()  {
-     mealController.showMealMenu();
+    private void mealMenu() {
+        mealController.showMealMenu();
     }
 
     /**

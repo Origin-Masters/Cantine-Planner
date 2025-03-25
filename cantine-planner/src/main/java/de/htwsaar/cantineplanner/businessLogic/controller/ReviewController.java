@@ -12,15 +12,39 @@ import de.htwsaar.cantineplanner.presentation.ScreenManager;
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ * The ReviewController class is responsible for handling reviews.
+ * <p>
+ * The ReviewController class is responsible for handling reviews, including adding a review, deleting a review, showing all reviews,
+ * and searching reviews by meal name.
+ * </p>
+ */
 public class ReviewController extends AbstractController {
-
-    public ReviewController(ScreenManager screenManager,
-                            CantineService cantineService,
-                            EventManager eventManager) {
+    /**
+     * Constructs a new ReviewController.
+     * <p>
+     * This constructor initializes the ReviewController with the provided ScreenManager, CantineService, and EventManager.
+     * It also subscribes to the relevant events.
+     * </p>
+     *
+     * @param screenManager  the screen manager to manage UI screens
+     * @param cantineService the service to handle cantine-related operations
+     * @param eventManager   the event manager to handle events
+     */
+    protected ReviewController(ScreenManager screenManager,
+                               CantineService cantineService,
+                               EventManager eventManager) {
         super(screenManager, cantineService, eventManager);
         this.subscribeToEvents();
     }
 
+    /**
+     * Subscribes to various review-related event types and associates them with their respective handlers.
+     * <p>
+     * This method sets up the event subscriptions for handling different review-related events such as adding a review,
+     * deleting a review, showing all reviews, and searching reviews by meal name.
+     * </p>
+     */
     @Override
     protected void subscribeToEvents() {
         // Review-bezogene Events
@@ -33,6 +57,12 @@ public class ReviewController extends AbstractController {
         eventManager.subscribe(EventType.SEARCH_REVIEWS_BY_MEAL_NAME, this::handleSearchReviewsByMealName);
     }
 
+    /**
+     * Displays the review menu screen.
+     * <p>
+     * This method shows the review menu screen using the screen manager.
+     * </p>
+     */
     protected void showReviewMenu() {
         screenManager.showReviewsMenu();
     }
@@ -101,7 +131,7 @@ public class ReviewController extends AbstractController {
             screenManager.showErrorScreen("Invalid review ID format!");
         } catch (ReviewiDDoesntExistException e) {
             screenManager.showErrorScreen(e.getMessage());
-        } catch ( SQLException e) {
+        } catch (SQLException e) {
             screenManager.showErrorScreen("Error deleting review, please try again!");
         }
     }
@@ -111,7 +141,6 @@ public class ReviewController extends AbstractController {
      * <p>
      * Retrieves a list of all reviews and displays them.
      * </p>
-     *
      */
     private void handleShowAllReviews() {
         try {
@@ -142,13 +171,6 @@ public class ReviewController extends AbstractController {
             screenManager.showErrorScreen("There was an error while searching for the Reviews please try again!");
         }
     }
-
-
-
-
-
-
-
 
 
 }

@@ -12,21 +12,44 @@ import de.htwsaar.cantineplanner.presentation.ScreenManager;
 import java.sql.SQLException;
 import java.util.List;
 
-public class MealController extends AbstractController{
+/**
+ * The MealController class is responsible for handling meals.
+ * <p>
+ * The MealController class is responsible for handling meals, including sorting meals by price, rating, name, allergens, and calories,
+ * showing all meals, showing all allergies, adding a meal, deleting a meal, editing a meal, and showing meal details by ID or name.
+ * </p>
+ */
+public class MealController extends AbstractController {
 
-    public MealController(ScreenManager screenManager,
-                          CantineService cantineService,
-                          EventManager eventManager) {
+    /**
+     * Constructs a new MealController.
+     * <p>
+     * This constructor initializes the MealController with the provided ScreenManager, CantineService, and EventManager.
+     * It also subscribes to the relevant events.
+     * </p>
+     *
+     * @param screenManager  the screen manager to manage UI screens
+     * @param cantineService the service to handle cantine-related operations
+     * @param eventManager   the event manager to handle events
+     */
+    protected MealController(ScreenManager screenManager,
+                             CantineService cantineService,
+                             EventManager eventManager) {
         super(screenManager, cantineService, eventManager);
         this.subscribeToEvents();
     }
 
+    /**
+     * Subscribes to various meal-related event types and associates them with their respective handlers.
+     * <p>
+     * This method sets up the event subscriptions for handling different meal-related events such as sorting meals,
+     * showing all meals, adding a meal, deleting a meal, and editing a meal.
+     * </p>
+     */
     @Override
     protected void subscribeToEvents() {
         // Meal-bezogene Events
         eventManager.subscribe(EventType.SHOW_SORT_MEALS, (data) -> screenManager.showSortMealScreen());
-
-        //TODO: PLS check if the following handlers are correct and if they are implemented correctly
         eventManager.subscribe(EventType.SORT_MEALS_BY_PRICE, this::handleSortMealByPrice);
         eventManager.subscribe(EventType.SORT_MEALS_BY_RATING, this::handleSortMealByRating);
         eventManager.subscribe(EventType.SORT_MEALS_BY_NAME, this::handleSortMealByName);
@@ -45,10 +68,17 @@ public class MealController extends AbstractController{
         eventManager.subscribe(EventType.SHOW_MEAL_BY_NAME, this::handleShowMealByName);
         eventManager.subscribe(EventType.SHOW_EDIT_MEAL, (data) -> screenManager.showEditMealScreen());
         eventManager.subscribe(EventType.EDIT_MEAL, this::handleEditMeal);
-
     }
 
-    public void showMealMenu() {
+    /**
+     * Displays the meal menu screen.
+     * <p>
+     * This method checks if the current user is an admin and displays the meal menu screen accordingly.
+     * If the user does not have the necessary permissions, an error screen is shown and the menu is switched.
+     * If an error occurs while validating the user or accessing the meal menu, an error screen is shown.
+     * </p>
+     */
+    protected void showMealMenu() {
         try {
             if (cantineService.isAdmin(currentUser.getUserid())) {
                 screenManager.showMealMenuScreen(true);
@@ -62,8 +92,6 @@ public class MealController extends AbstractController{
             screenManager.showErrorScreen("There was an error while accessing the meal menu, please try again!");
         }
     }
-
-
 
     /**
      * Handles editing a meal.
@@ -109,7 +137,7 @@ public class MealController extends AbstractController{
             screenManager.showSuccessScreen("Meal updated successfully!");
         } catch (NumberFormatException e) {
             screenManager.showErrorScreen("Invalid input format!");
-        } catch (MealDoesntExistException e){
+        } catch (MealDoesntExistException e) {
             screenManager.showErrorScreen(e.getMessage());
         } catch (SQLException e) {
             screenManager.showErrorScreen("There was an error while updating meal please try again!");
@@ -121,7 +149,6 @@ public class MealController extends AbstractController{
      * <p>
      * Retrieves a list of all meals and passes it to the screen manager for display.
      * </p>
-     *
      */
     public void handleShowAllMeals() {
         try {
@@ -137,7 +164,6 @@ public class MealController extends AbstractController{
      * <p>
      * Retrieves a list of all allergies from meals and displays them.
      * </p>
-     *
      */
     private void handleShowAllAllergies() {
         try {
@@ -261,7 +287,6 @@ public class MealController extends AbstractController{
      * <p>This method retrieves a list of meals sorted by price from the cantine service
      * and displays them using the screen manager. If an SQLException is encountered,
      * an error screen is shown.</p>
-     *
      */
     private void handleSortMealByPrice() {
         try {
@@ -278,7 +303,6 @@ public class MealController extends AbstractController{
      * <p>This method retrieves a list of meals sorted by rating from the cantine service
      * and displays them using the screen manager. If an SQLException is encountered,
      * an error screen is shown.</p>
-     *
      */
     private void handleSortMealByRating() {
         try {
@@ -295,7 +319,6 @@ public class MealController extends AbstractController{
      * <p>This method retrieves a list of meals sorted by name from the cantine service
      * and displays them using the screen manager. If an SQLException is encountered,
      * an error screen is shown.</p>
-     *
      */
     private void handleSortMealByName() {
         try {
@@ -312,7 +335,6 @@ public class MealController extends AbstractController{
      * <p>This method retrieves a list of meals sorted by calories from the cantine service
      * and displays them using the screen manager. If an SQLException is encountered,
      * an error screen is shown.</p>
-     *
      */
     private void handleSortMealByCalories() {
         try {
@@ -329,7 +351,6 @@ public class MealController extends AbstractController{
      * <p>This method retrieves a list of meals sorted by allergy information, possibly based on the current user's ID,
      * from the cantine service and displays them using the screen manager. If an SQLException is encountered,
      * an error screen is shown.</p>
-     *
      */
     private void handleSortMealByAllergy() {
         try {

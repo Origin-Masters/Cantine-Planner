@@ -17,14 +17,39 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * The UserController class is responsible for handling user-related operations.
+ * <p>
+ * The UserController class is responsible for handling user-related operations, including editing user data, updating
+ * allergen settings, showing reviews by user, showing all users, deleting users, and updating user roles.
+ * </p>
+ */
 public class UserController extends AbstractController {
-    public UserController(ScreenManager screenManager,
-                          CantineService cantineService,
-                          EventManager eventManager) {
+    /**
+     * Constructs a new UserController.
+     * <p>
+     * This constructor initializes the UserController with the provided ScreenManager, CantineService, and EventManager.
+     * It also subscribes to the relevant events.
+     * </p>
+     *
+     * @param screenManager  the screen manager to manage UI screens
+     * @param cantineService the service to handle cantine-related operations
+     * @param eventManager   the event manager to handle events
+     */
+    protected UserController(ScreenManager screenManager,
+                             CantineService cantineService,
+                             EventManager eventManager) {
         super(screenManager, cantineService, eventManager);
         this.subscribeToEvents();
     }
 
+    /**
+     * Subscribes to various user-related event types and associates them with their respective handlers.
+     * <p>
+     * This method sets up the event subscriptions for handling different user-related events such as editing user data,
+     * showing reviews, updating allergen settings, displaying all users, deleting users, and updating user roles.
+     * </p>
+     */
     @Override
     protected void subscribeToEvents() {
         // User-bezogene Events
@@ -42,7 +67,14 @@ public class UserController extends AbstractController {
         eventManager.subscribe(EventType.UPDATE_USER_ROLE, this::handleUpdateUserRole);
     }
 
-    public void showUserMenu() {
+    /**
+     * Displays the user menu screen.
+     * <p>
+     * This method checks if the current user is an admin and displays the user menu screen accordingly.
+     * If an error occurs while validating the user, an error screen is shown.
+     * </p>
+     */
+    protected void showUserMenu() {
         System.out.println(currentUser);
         try {
             screenManager.showUserMenuScreen(cantineService.isAdmin(currentUser.getUserid()));
@@ -139,7 +171,6 @@ public class UserController extends AbstractController {
 
     /**
      * Handles displaying all reviews made by the current user.
-     *
      */
     private void handleShowReviewsByUser() {
         try {
@@ -191,7 +222,6 @@ public class UserController extends AbstractController {
      * <p>
      * Retrieves a list of all users and displays them.
      * </p>
-     *
      */
     private void handleAllUser() {
         try {

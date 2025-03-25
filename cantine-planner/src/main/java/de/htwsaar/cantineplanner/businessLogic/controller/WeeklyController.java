@@ -12,17 +12,41 @@ import java.sql.SQLException;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * The WeeklyController class is responsible for handling the weekly meal plan.
+ * <p>
+ * The WeeklyController class is responsible for handling the weekly meal plan, including displaying the weekly menu,
+ * showing the weekly plan, editing the weekly plan, and resetting the weekly plan.
+ * </p>
+ */
 public class WeeklyController extends AbstractController {
-    public WeeklyController(ScreenManager screenManager,
+    /**
+     * Constructs a new WeeklyController.
+     * <p>
+     * This constructor initializes the WeeklyController with the provided ScreenManager, CantineService, and EventManager.
+     * It also subscribes to the relevant events.
+     * </p>
+     *
+     * @param screenManager  the screen manager to manage UI screens
+     * @param cantineService the service to handle cantine-related operations
+     * @param eventManager   the event manager to handle events
+     */
+    protected WeeklyController(ScreenManager screenManager,
                             CantineService cantineService,
                             EventManager eventManager) {
         super(screenManager, cantineService, eventManager);
         this.subscribeToEvents();
     }
 
+    /**
+     * Subscribes to various event types and associates them with their respective handlers.
+     * <p>
+     * This method sets up the event subscriptions for handling different weekly plan events such as showing,
+     * editing, and resetting the weekly plan for each day of the week.
+     * </p>
+     */
     @Override
     protected void subscribeToEvents() {
-
         eventManager.subscribe(EventType.SHOW_WEEKLY_PLAN, this::handleShowWeeklyPlan);
         eventManager.subscribe(EventType.EDIT_WEEKLY_PLAN, this::handleShowEditWeeklyPlan);
         eventManager.subscribe(EventType.RESET_WEEKLY_PLAN, this::handleResetWeeklyPlan);
@@ -31,14 +55,21 @@ public class WeeklyController extends AbstractController {
         eventManager.subscribe(EventType.EDIT_WEEKLY_PLAN_TUESDAY, (data) -> screenManager.showEditWeeklyPlanTuesday());
         eventManager.subscribe(EventType.EDIT_WEEKLY_PLAN_TUESDAY_SUBMIT, this::handleEditWeeklyPlanTuesday);
         eventManager.subscribe(EventType.EDIT_WEEKLY_PLAN_WEDNESDAY, (data) -> screenManager.showEditWeeklyPlanWednesday());
-        eventManager.subscribe(EventType.EDIT_WEEKLY_PLAN_WEDNESDAY_SUBMIT,this::handleEditWeeklyPlanWednesday);
+        eventManager.subscribe(EventType.EDIT_WEEKLY_PLAN_WEDNESDAY_SUBMIT, this::handleEditWeeklyPlanWednesday);
         eventManager.subscribe(EventType.EDIT_WEEKLY_PLAN_THURSDAY, (data) -> screenManager.showEditWeeklyPlanThursday());
         eventManager.subscribe(EventType.EDIT_WEEKLY_PLAN_THURSDAY_SUBMIT, this::handleEditWeeklyPlanThursday);
         eventManager.subscribe(EventType.EDIT_WEEKLY_PLAN_FRIDAY, (data) -> screenManager.showEditWeeklyPlanFriday());
         eventManager.subscribe(EventType.EDIT_WEEKLY_PLAN_FRIDAY_SUBMIT, this::handleEditWeeklyPlanFriday);
     }
 
-    public void showWeeklyMenu() {
+    /**
+     * Displays the weekly menu screen.
+     * <p>
+     * This method checks if the current user is an admin and displays the weekly menu screen accordingly.
+     * If an error occurs while validating the user, an error screen is shown.
+     * </p>
+     */
+    protected void showWeeklyMenu() {
         try {
             screenManager.showWeeklyMenuScreen(cantineService.isAdmin(currentUser.getUserid()));
         } catch (SQLException e) {
@@ -51,7 +82,6 @@ public class WeeklyController extends AbstractController {
      * <p>
      * Retrieves the weekly plan, sorts it by day, and displays it.
      * </p>
-     *
      */
     private void handleShowWeeklyPlan() {
         try {
@@ -74,7 +104,6 @@ public class WeeklyController extends AbstractController {
 
     /**
      * Handles displaying the edit weekly plan screen.
-     *
      */
     private void handleShowEditWeeklyPlan() {
         screenManager.showEditWeeklyPlanScreen();
@@ -82,7 +111,6 @@ public class WeeklyController extends AbstractController {
 
     /**
      * Handles resetting the weekly meal plan to its default state.
-     *
      */
     private void handleResetWeeklyPlan() {
         try {

@@ -15,23 +15,46 @@ import de.htwsaar.cantineplanner.presentation.ScreenManager;
 import java.sql.SQLException;
 import java.util.Objects;
 
+/**
+ * The LoginController class is responsible for handling user authentication and registration.
+ * <p>
+ * The LoginController class is responsible for handling user authentication and registration, including logging in a user,
+ * registering a new user, and displaying the registration screen.
+ * </p>
+ */
 public class LoginController extends AbstractController {
 
-    public LoginController(ScreenManager screenManager,
-                          CantineService cantineService,
-                          EventManager eventManager) {
+    /**
+     * Constructs a new LoginController.
+     * <p>
+     * This constructor initializes the LoginController with the provided ScreenManager, CantineService, and EventManager.
+     * It also subscribes to the relevant events.
+     * </p>
+     *
+     * @param screenManager  the screen manager to manage UI screens
+     * @param cantineService the service to handle cantine-related operations
+     * @param eventManager   the event manager to handle events
+     */
+    protected LoginController(ScreenManager screenManager,
+                              CantineService cantineService,
+                              EventManager eventManager) {
         super(screenManager, cantineService, eventManager);
         this.subscribeToEvents();
     }
+
+    /**
+     * Subscribes to various user authentication and registration event types and associates them with their respective handlers.
+     * <p>
+     * This method sets up the event subscriptions for handling user login, registration, and displaying the registration screen.
+     * </p>
+     */
     @Override
     protected void subscribeToEvents() {
-
-        // User-Authentifizierung und Registrierung
+        // User authentication and registration
         eventManager.subscribe(EventType.LOGIN, (data) -> handleLogin((StringArrayData) data));
         eventManager.subscribe(EventType.REGISTER, this::handleRegister);
-        eventManager.subscribe(EventType.SHOW_REGISTER_SCREEN,(data) -> screenManager.showInputScreenReg("Register", EventType.REGISTER));
+        eventManager.subscribe(EventType.SHOW_REGISTER_SCREEN, (data) -> screenManager.showInputScreenReg("Register", EventType.REGISTER));
     }
-    // User-Handler
 
     /**
      * Handles the login event.
@@ -90,7 +113,8 @@ public class LoginController extends AbstractController {
 
         } catch (InvalidEmailTypeException | UserAlreadyExistsException e) {
             screenManager.showErrorScreen(e.getMessage());
-        } catch (Exception e) {  //TODO exeption handling besser machen das casten oben bereitet probleme wenn man nicht alle felder füllt!
+        } catch (
+                Exception e) {  //TODO exeption handling besser machen das casten oben bereitet probleme wenn man nicht alle felder füllt!
             screenManager.showErrorScreen("There was an error while registering please try again and check if you filled everything correctly!");
         }
     }
