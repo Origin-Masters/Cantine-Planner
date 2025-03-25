@@ -6,7 +6,7 @@ import de.htwsaar.cantineplanner.businessLogic.controller.MainController;
 import de.htwsaar.cantineplanner.dbUtils.DataBaseUtil;
 
 
-public classApp {
+public class App {
     public static void main(String[] args) {
         DataBaseUtil.loadInitialDataBase("./database/database.db");
 
