@@ -50,7 +50,7 @@ class UserRepositoryTest {
 
     @Test
     public void testIsAdmin() {
-        assertThrows(UseriDDoesntExcistException.class,
+        assertThrows(UserDoesntExistException.class,
                 () -> userRepository.isAdmin(9999)); // Assuming 9999 is a non-existent user ID
 
         assertDoesNotThrow(() -> {
