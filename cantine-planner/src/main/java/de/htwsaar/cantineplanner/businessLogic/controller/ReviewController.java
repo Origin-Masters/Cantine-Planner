@@ -33,7 +33,7 @@ public class ReviewController extends AbstractController {
         eventManager.subscribe(EventType.SEARCH_REVIEWS_BY_MEAL_NAME, this::handleSearchReviewsByMealName);
     }
 
-    public void showReviewMenu() {
+    protected void showReviewMenu() {
         screenManager.showReviewsMenu();
     }
 
@@ -45,7 +45,7 @@ public class ReviewController extends AbstractController {
      *
      * @param data an Object array containing rating, comment, and meal ID as Strings
      */
-    public void handleAddReview(Object data) {
+    private void handleAddReview(Object data) {
         try {
             String[] reviewData = (String[]) data;
             int mealId = Integer.parseInt(reviewData[2]);

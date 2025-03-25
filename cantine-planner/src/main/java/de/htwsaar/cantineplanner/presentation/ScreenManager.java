@@ -86,7 +86,7 @@ public class ScreenManager {
         List<MenuBuilder.MenuButton> mealMenuButtons = new ArrayList<>(
                 Arrays.asList(
                         new MenuBuilder.MenuButton("All Meal", EventType.SHOW_ALL_MEALS),
-                        new MenuBuilder.MenuButton("Sort Meal", EventType.SHOW_ALL_MEALS),
+                        new MenuBuilder.MenuButton("Sort Meal", EventType.SHOW_SORT_MEALS),
                         new MenuBuilder.MenuButton("Allergies in Meals", EventType.SHOW_ALL_ALLERGIES),
                         new MenuBuilder.MenuButton("Search Meal by Name", EventType.SHOW_SEARCH_MEAL_BY_NAME),
                         new MenuBuilder.MenuButton("Search Meal by ID", EventType.SHOW_MEAL_DETAILS_BY_ID)
@@ -379,19 +379,19 @@ public class ScreenManager {
      * It also includes a button to return to the main menu.
      */
     public void showSortMealScreen() {
-        //FIXME
-        /*List<MenuBuilder.MenuButton> sortMealButtons = Arrays.asList(
-                new MenuBuilder.MenuButton("Sort by Price", "sortMealByPrice"),
-                new MenuBuilder.MenuButton("Sort by Median Rating", "sortMealByRating"),
-                new MenuBuilder.MenuButton("Sort by Name", "sortMealByName"),
-                new MenuBuilder.MenuButton("Sort by Calories", "sortMealByCalories"),
-                new MenuBuilder.MenuButton("Sort by your Allergies", "sortMealByAllergies"),
-                new MenuBuilder.MenuButton("Main Menu", "switchMenu", 1)
+
+        List<MenuBuilder.MenuButton> sortMealButtons = Arrays.asList(
+                new MenuBuilder.MenuButton("Sort by Price", EventType.SORT_MEALS_BY_PRICE),
+                new MenuBuilder.MenuButton("Sort by Median Rating", EventType.SORT_MEALS_BY_RATING),
+                new MenuBuilder.MenuButton("Sort by Name", EventType.SORT_MEALS_BY_NAME),
+                new MenuBuilder.MenuButton("Sort by Calories", EventType.SORT_MEALS_BY_ALLERGENS),
+                new MenuBuilder.MenuButton("Sort by your Allergies", EventType.SORT_MEALS_BY_CALORIES),
+                new MenuBuilder.MenuButton("Quit", EventType.SWITCH_MENU, new IntData(2))
         );
         MenuBuilder sortMeal = new MenuBuilder(gui, eventManager)
                 .setTitle("Sort Meal")
                 .setButtons(sortMealButtons);
-        sortMeal.display();*/
+        sortMeal.display();
     }
 
     /**

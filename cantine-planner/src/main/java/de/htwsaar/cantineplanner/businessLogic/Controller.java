@@ -170,6 +170,7 @@ public class Controller {
                     weeklyMenu();
                     break;
                 default:
+                    break;
             }
         }
     }

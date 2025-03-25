@@ -39,19 +39,7 @@ public class MainController extends AbstractController {
 
     @Override
     protected void subscribeToEvents() {
-        //TODO switchMenu EVENT
         eventManager.subscribe(EventType.SWITCH_MENU, (data) -> switchMenu((int) data.getData()));
-
-
-//
-//        eventManager.subscribe(EventType.SHOW_MAIN_MENU, this::mainMenu);
-//        eventManager.subscribe(EventType.SHOW_MEAL_MENU, this::mealMenu);
-//        eventManager.subscribe(EventType.SHOW_REVIEW_MENU, this::reviewMenu);
-//        eventManager.subscribe(EventType.SHOW_USER_MENU, this::userMenu);
-//        eventManager.subscribe(EventType.SHOW_WEEKLY_MENU, this::weeklyMenu);
-//
-
-
         eventManager.subscribe(EventType.EXIT, (data) -> exitApplication());
         eventManager.subscribe(EventType.SHOW_SUCCESS_SCREEN, (data) -> screenManager.showSuccessScreen((String) data.getData()));
         eventManager.subscribe(EventType.SHOW_ERROR_SCREEN, (data) -> screenManager.showErrorScreen((String) data.getData()));
@@ -91,6 +79,7 @@ public class MainController extends AbstractController {
                     weeklyMenu();
                     break;
                 default:
+                    break;
             }
         }
     }

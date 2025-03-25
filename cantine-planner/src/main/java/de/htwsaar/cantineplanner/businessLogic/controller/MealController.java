@@ -25,10 +25,20 @@ public class MealController extends AbstractController{
     @Override
     protected void subscribeToEvents() {
         // Meal-bezogene Events
+        eventManager.subscribe(EventType.SHOW_SORT_MEALS, (data) -> screenManager.showSortMealScreen());
+
+        //TODO: PLS check if the following handlers are correct and if they are implemented correctly
+        eventManager.subscribe(EventType.SORT_MEALS_BY_PRICE, this::handleSortMealByPrice);
+        eventManager.subscribe(EventType.SORT_MEALS_BY_RATING, this::handleSortMealByRating);
+        eventManager.subscribe(EventType.SORT_MEALS_BY_NAME, this::handleSortMealByName);
+        eventManager.subscribe(EventType.SORT_MEALS_BY_ALLERGENS, this::handleSortMealByAllergy);
+        eventManager.subscribe(EventType.SORT_MEALS_BY_CALORIES, this::handleSortMealByCalories);
+
         eventManager.subscribe(EventType.SHOW_ALL_MEALS, this::handleShowAllMeals);
         eventManager.subscribe(EventType.SHOW_ALL_ALLERGIES, this::handleShowAllAllergies);
         eventManager.subscribe(EventType.SHOW_ALL_MEALS, this::handleShowAllMeals);
-        eventManager.subscribe(EventType.SHOW_DELETE_MEAL, this::handleDeleteMeal);
+        eventManager.subscribe(EventType.SHOW_DELETE_MEAL, (data) -> screenManager.showDeleteMealScreen());
+        eventManager.subscribe(EventType.SHOW_ADD_MEAL, (data) -> screenManager.showAddMealScreen());
         eventManager.subscribe(EventType.ADD_MEAL, this::handleAddMeal);
         eventManager.subscribe(EventType.DELETE_MEAL, this::handleDeleteMeal);
         eventManager.subscribe(EventType.SHOW_MEAL_DETAILS_BY_ID, (data) -> screenManager.showMealDetailsById());
@@ -246,6 +256,96 @@ public class MealController extends AbstractController{
             screenManager.showErrorScreen(e.getMessage());
         } catch (SQLException e) {
             screenManager.showErrorScreen("There was an error while fetching meal please try again!");
+        }
+    }
+
+    /**
+     * Handles sorting meals by price.
+     *
+     * <p>This method retrieves a list of meals sorted by price from the cantine service
+     * and displays them using the screen manager. If an SQLException is encountered,
+     * an error screen is shown.</p>
+     *
+     * @param data not used
+     */
+    private void handleSortMealByPrice(Object data) {
+        try {
+            List<MealsRecord> meals = cantineService.sortMealsByPrice();
+            screenManager.showAllMeals(meals);
+        } catch (SQLException e) {
+            screenManager.showErrorScreen("There was an error while sorting meals by price please try again!");
+        }
+    }
+
+    /**
+     * Handles sorting meals by rating.
+     *
+     * <p>This method retrieves a list of meals sorted by rating from the cantine service
+     * and displays them using the screen manager. If an SQLException is encountered,
+     * an error screen is shown.</p>
+     *
+     * @param data not used
+     */
+    private void handleSortMealByRating(Object data) {
+        try {
+            List<MealsRecord> meals = cantineService.sortMealsByRating();
+            screenManager.showAllMeals(meals);
+        } catch (SQLException e) {
+            screenManager.showErrorScreen("There was an error while sorting meals by rating please try again!");
+        }
+    }
+
+    /**
+     * Handles sorting meals by name.
+     *
+     * <p>This method retrieves a list of meals sorted by name from the cantine service
+     * and displays them using the screen manager. If an SQLException is encountered,
+     * an error screen is shown.</p>
+     *
+     * @param data not used
+     */
+    private void handleSortMealByName(Object data) {
+        try {
+            List<MealsRecord> meals = cantineService.sortMealsByName();
+            screenManager.showAllMeals(meals);
+        } catch (SQLException e) {
+            screenManager.showErrorScreen("There was an error while sorting meals by name please try again!");
+        }
+    }
+
+    /**
+     * Handles sorting meals by calories.
+     *
+     * <p>This method retrieves a list of meals sorted by calories from the cantine service
+     * and displays them using the screen manager. If an SQLException is encountered,
+     * an error screen is shown.</p>
+     *
+     * @param data not used
+     */
+    private void handleSortMealByCalories(Object data) {
+        try {
+            List<MealsRecord> meals = cantineService.sortMealsByCalories();
+            screenManager.showAllMeals(meals);
+        } catch (SQLException e) {
+            screenManager.showErrorScreen("There was an error while sorting meals by calories please try again!");
+        }
+    }
+
+    /**
+     * Handles sorting meals by allergy.
+     *
+     * <p>This method retrieves a list of meals sorted by allergy information, possibly based on the current user's ID,
+     * from the cantine service and displays them using the screen manager. If an SQLException is encountered,
+     * an error screen is shown.</p>
+     *
+     * @param data not used
+     */
+    private void handleSortMealByAllergy(Object data) {
+        try {
+            List<MealsRecord> meals = cantineService.sortMealsByAllergy(currentUser.getUserid());
+            screenManager.showAllMeals(meals);
+        } catch (SQLException e) {
+            screenManager.showErrorScreen("There was an error while sorting meals by allergy please try again!");
         }
     }
 }

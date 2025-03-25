@@ -36,7 +36,6 @@ public class UserController extends AbstractController {
         eventManager.subscribe(EventType.SHOW_EDIT_NEW_USER_DATA, (data) -> screenManager.showEditNewUserDataScreen());
         eventManager.subscribe(EventType.EDIT_NEW_USER_DATA, (data) -> handleInputNewUserData((StringArrayData) data));
         eventManager.subscribe(EventType.SHOW_REVIEWS_BY_USER, this::handleShowReviewsByUser);
-        eventManager.subscribe(EventType.SHOW_ADMIN_MENU, this::handleShowAdminMenu);
         eventManager.subscribe(EventType.SHOW_ALLERGEN_SETTINGS, (data) -> screenManager.showAllergeneSettings());
         eventManager.subscribe(EventType.ALLERGEN_SETTINGS, this::handleAllergeneSettings);
         eventManager.subscribe(EventType.SHOW_ALL_USERS, this::handleAllUser);
@@ -171,26 +170,6 @@ public class UserController extends AbstractController {
             screenManager.showSuccessScreen("Allergene settings updated successfully!");
         } catch (SQLException e) {
             screenManager.showErrorScreen("There was an error while setting the allergene settings, please try again!");
-        }
-    }
-
-    /**
-     * Handles showing the admin menu.
-     * <p>
-     * Verifies if the current user has admin privileges and switches to the admin menu if so.
-     * </p>
-     *
-     * @param data not used
-     */
-    private void handleShowAdminMenu(Object data) {
-        try {
-            if (cantineService.isAdmin(currentUser.getUserid())) {
-                eventManager.notify(EventType.SWITCH_MENU, new IntData(6));
-            } else {
-                screenManager.showErrorScreen("You are not authorized to access this menu!");
-            }
-        } catch (SQLException | UserDoesntExistException e) {
-            screenManager.showErrorScreen("There was an error while validating the user try again!");
         }
     }
 
