@@ -385,7 +385,7 @@ public class ScreenManager {
                 new MenuBuilder.MenuButton("Sort by Name", EventType.SORT_MEALS_BY_NAME),
                 new MenuBuilder.MenuButton("Sort by Calories", EventType.SORT_MEALS_BY_ALLERGENS),
                 new MenuBuilder.MenuButton("Sort by your Allergies", EventType.SORT_MEALS_BY_CALORIES),
-                new MenuBuilder.MenuButton("Quit", EventType.SWITCH_MENU, new IntData(2))
+                new MenuBuilder.MenuButton("Go  Back", EventType.SWITCH_MENU, new IntData(2))
         );
         MenuBuilder sortMeal = new MenuBuilder(gui, eventManager)
                 .setTitle("Sort Meal")

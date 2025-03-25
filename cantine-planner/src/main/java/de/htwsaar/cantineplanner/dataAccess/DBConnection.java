@@ -628,17 +628,17 @@ public class DBConnection {
             // Fetch all meals
             List<MealsRecord> meals = dsl.selectFrom(Meals.MEALS).fetchInto(MealsRecord.class);
 
-            // Calculate average rating for each meal
+            // Calculate median rating for each meal
             Map<Integer, Double> mealRatings = new HashMap<>();
             for (MealsRecord record : meals) {
-                Double AverageRating = dsl.select(DSL.avg(Review.REVIEW.RATING))
+                Double medianRating = dsl.select(DSL.median(Review.REVIEW.RATING))
                         .from(Review.REVIEW)
                         .where(Review.REVIEW.MEAL_ID.eq(record.getMealId()))
-                        .fetchOne(0, Double.class);
-                mealRatings.put(record.getMealId(), AverageRating != null ? AverageRating : 0.0);
+                        .fetchOne(0, double.class);
+                mealRatings.put(record.getMealId(), medianRating != null ? medianRating : 0.0);
             }
 
-            // Sort meals by calculated rating
+            // Sort meals by calculated median rating
             meals.sort((m1, m2) -> Double.compare(mealRatings.get(m2.getMealId()), mealRatings.get(m1.getMealId())));
             return meals;
         }
