@@ -51,96 +51,31 @@ Bei Nutzung eines **_Windows_** Betriebssystems kann die JAR mittels eines Doppe
 Bei Nutzung eines **_Mac OsX_** oder **_Linux_** Betriebssystems bitten wir Sie die JAR mittels eines Terminals und des Befehls `java -jar cantine-planner-Abgabeversion-shaded.jar ` auszuführen.
 
 ## 6. Anwendungsbeispiele
+Die Anwendung kann mittels den Pfeiltasten, dem Tabulator zum wechseln zwischen angezeigten Fenstern sowie der Enter-Taste zur Bestätigung bedient werden.
+Die Eingabe von Text für die Anwendung erfolgt über die Buchstaben auf der Tastatur.
+Das Benutzen einer Maus / eines Trackpads ist nicht vorgesehen.
+
 Um Alle Funktionen des Programms Nutzen zu können, kann der **_Admin-User_** verwendet werden.
 Hierbei lauten die Login-Daten wie folgt :
 ```
 Username : Admin
 Password : Admin
 ```
-### Soring Meals By Calories
+
+Eingabe der Funktion **_Add Review_** : Rating : _3_, Comment : _Tastes Good !_ , Meal iD : _2_
+
+Ausgabe : Review zu **_Ceasar Salad_**  kann in All Reviews gesehen werden.
+
+### Eingabe der Funktion _**Sorting Meals By Calories**_
 ![Meals By Calories](images/mealsByCalories.png)
 
-### ![All Reviews](images/AllReviews.png) 
+### Eingabe der Funktion _**All Reviews**_
+![All Reviews](images/AllReviews.png)
 
 ---
 
-Die Anwendung kann mittels den Pfeiltasten, dem Tabulator zum wechseln zwischen angezeigten Fenstern sowie der Enter-Taste zur Bestätigung bedient werden.
-Die Eingabe von Text für die Anwendung erfolgt über die Buchstaben auf der Tastatur.
-Das Benutzen einer Maus / eines Trackpads ist nicht vorgesehen.
+## 7. Bekannte Einschränkungen
+
 
 ---
 
-
-
-
-
-
-## 4. CI / CD
-Mittels GitHub workflows haben wir Continous Integration sowie Conitinous Deployment integriert.
-Der Workflow `maven.yml` baut das Maven Projekt und führt Tests mit jedem *Push* aus.
-Der Workflow `release.yml` baut das Maven Projekt und führt ebenfalls Tests mit jedem *Push* aus.
-Nach dem die Tests ausgeführt wurden, wird das Tag `submission`sowie das dazugehöroge GitHub release erstellt.
-## 5. Tests
-Wir haben mittels JUNIT 5.11.4 Tests implementiert, diese können innerhalb src/test angeschaut und  mittels `mvn test`innerhalb des Terminals ausgeführt werden.
-## 6. Projektstruktur
-```
-├── META-INF
-├── database
-├── src
-│   ├── main
-│   │   ├── java
-│   │   │   └── de
-│   │   │       └── htwsaar
-│   │   │           └── cantineplanner
-│   │   │               ├── businessLogic
-│   │   │               ├── codegen
-│   │   │               │   └── tables
-│   │   │               │       └── records
-│   │   │               ├── dataAccess
-│   │   │               ├── dbUtils
-│   │   │               ├── exceptions
-│   │   │               ├── presentation
-│   │   │               │   └── pages
-│   │   │               └── security
-│   │   └── resources
-│   │       └── META-INF
-│   └── test
-│       └── java
-│           └── de
-│               └── htwsaar
-│                   └── cantineplanner
-│                       └── dataAccess
-└── target
-    ├── classes
-    │   ├── META-INF
-    │   └── de
-    │       └── htwsaar
-    │           └── cantineplanner
-    │               ├── businessLogic
-    │               ├── codegen
-    │               │   └── tables
-    │               │       └── records
-    │               ├── dataAccess
-    │               ├── dbUtils
-    │               ├── exceptions
-    │               ├── presentation
-    │               │   └── pages
-    │               └── security
-    ├── generated-sources
-    │   └── annotations
-    ├── generated-test-sources
-    │   └── test-annotations
-    ├── maven-archiver
-    ├── maven-status
-    │   └── maven-compiler-plugin
-    │       ├── compile
-    │       │   └── default-compile
-    │       └── testCompile
-    │           └── default-testCompile
-    ├── surefire-reports
-    └── test-classes
-        └── de
-            └── htwsaar
-                └── cantineplanner
-                    └── dataAccess
-```
