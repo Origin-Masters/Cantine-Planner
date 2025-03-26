@@ -5,7 +5,6 @@ import de.htwsaar.cantineplanner.businessLogic.EventManager;
 import de.htwsaar.cantineplanner.businessLogic.controller.eventdata.EventData;
 import de.htwsaar.cantineplanner.businessLogic.controller.eventdata.EventType;
 import de.htwsaar.cantineplanner.codegen.tables.records.MealsRecord;
-import de.htwsaar.cantineplanner.exceptions.MealDoesntExistException;
 import de.htwsaar.cantineplanner.presentation.ScreenManager;
 
 import java.sql.SQLException;
@@ -20,6 +19,7 @@ import java.util.List;
  * </p>
  */
 public class WeeklyController extends AbstractController {
+    private String currentWeekdayEdit;
     /**
      * Constructs a new WeeklyController.
      * <p>
@@ -38,6 +38,7 @@ public class WeeklyController extends AbstractController {
                             SessionManager sessionManager) {
         super(screenManager, cantineService, eventManager, sessionManager);
         this.subscribeToEvents();
+        currentWeekdayEdit = null;
     }
 
     /**
@@ -52,16 +53,9 @@ public class WeeklyController extends AbstractController {
         eventManager.subscribe(EventType.SHOW_WEEKLY_PLAN, this::handleShowWeeklyPlan);
         eventManager.subscribe(EventType.EDIT_WEEKLY_PLAN, this::handleShowEditWeeklyPlan);
         eventManager.subscribe(EventType.RESET_WEEKLY_PLAN, this::handleResetWeeklyPlan);
-        eventManager.subscribe(EventType.EDIT_WEEKLY_PLAN_MONDAY, (data) -> screenManager.showEditWeeklyPlanMonday());
-        eventManager.subscribe(EventType.EDIT_WEEKLY_PLAN_MONDAY_SUBMIT, this::handleEditWeeklyPlanMonday);
-        eventManager.subscribe(EventType.EDIT_WEEKLY_PLAN_TUESDAY, (data) -> screenManager.showEditWeeklyPlanTuesday());
-        eventManager.subscribe(EventType.EDIT_WEEKLY_PLAN_TUESDAY_SUBMIT, this::handleEditWeeklyPlanTuesday);
-        eventManager.subscribe(EventType.EDIT_WEEKLY_PLAN_WEDNESDAY, (data) -> screenManager.showEditWeeklyPlanWednesday());
-        eventManager.subscribe(EventType.EDIT_WEEKLY_PLAN_WEDNESDAY_SUBMIT, this::handleEditWeeklyPlanWednesday);
-        eventManager.subscribe(EventType.EDIT_WEEKLY_PLAN_THURSDAY, (data) -> screenManager.showEditWeeklyPlanThursday());
-        eventManager.subscribe(EventType.EDIT_WEEKLY_PLAN_THURSDAY_SUBMIT, this::handleEditWeeklyPlanThursday);
-        eventManager.subscribe(EventType.EDIT_WEEKLY_PLAN_FRIDAY, (data) -> screenManager.showEditWeeklyPlanFriday());
-        eventManager.subscribe(EventType.EDIT_WEEKLY_PLAN_FRIDAY_SUBMIT, this::handleEditWeeklyPlanFriday);
+
+        eventManager.subscribe(EventType.EDIT_WEEKLY_PLAN_WEEKDAY, this::handleShowEditWeekdayPlan);
+        eventManager.subscribe(EventType.EDIT_WEEKLY_PLAN_WEEKDAY_SUBMIT, this::handleEditWeeklyPlan);
     }
 
     /**
@@ -111,6 +105,16 @@ public class WeeklyController extends AbstractController {
         screenManager.showEditWeeklyPlanScreen();
     }
 
+    private void handleShowEditWeekdayPlan(EventData data) {
+        try {
+            int weekdayIndex = Integer.parseInt(data.getData().toString());
+            currentWeekdayEdit = Weekday.getDisplayNameBySortOrder(weekdayIndex);
+            screenManager.showEditWeeklyPlanWeekday(currentWeekdayEdit);
+        } catch (Exception e) {
+            screenManager.showErrorScreen("There was an error while editing the meal-Plan");
+        }
+    }
+
     /**
      * Handles resetting the weekly meal plan to its default state.
      */
@@ -124,102 +128,30 @@ public class WeeklyController extends AbstractController {
     }
 
     /**
-     * Handles editing the meal for Monday in the weekly plan.
+     * Handles editing the meal for a specific day in the weekly plan.
      * <p>
-     * Updates the meal for Monday based on the provided meal name.
+     * This generic method processes meal updates for any weekday, extracting the meal name
+     * from the provided data and updating the weekly plan through the cantine service.
+     * It displays a success message upon successful update or an appropriate error message
+     * if the update fails.
      * </p>
      *
-     * @param data an Object array where the first element is the meal name as a String
+     * @param data the EventData containing the meal information, where the first element
+     *             of the data array is expected to be the meal name
+     * @throws ClassCastException if the data cannot be cast to a String array
+     * @throws ArrayIndexOutOfBoundsException if the data array is empty
      */
-    public void handleEditWeeklyPlanMonday(EventData data) {
-        String[] mealData = (String[]) data.getData();
-        String mealName = mealData[0];
+    private void handleEditWeeklyPlan(EventData data) {
         try {
-            cantineService.editWeeklyPlan(mealName, "Mon");
+            String[] mealData = (String[]) data.getData();
+            String mealName = mealData[0];
+
+            cantineService.editWeeklyPlan(mealName, currentWeekdayEdit);
             screenManager.closeActiveWindow();
-            screenManager.showSuccessScreen("Meal updated for Monday!");
-        } catch (SQLException | MealDoesntExistException e) {
-            screenManager.showErrorScreen("Error updating meal for Monday: " + e.getMessage());
+            screenManager.showSuccessScreen("Meal updated for " + currentWeekdayEdit + "!");
+        } catch (Exception e) {
+            screenManager.showErrorScreen("Error updating meal plan: " + e.getMessage());
         }
     }
 
-    /**
-     * Handles editing the meal for Tuesday in the weekly plan.
-     * <p>
-     * Updates the meal for Tuesday based on the provided meal name.
-     * </p>
-     *
-     * @param data an Object array where the first element is the meal name as a String
-     */
-    public void handleEditWeeklyPlanTuesday(EventData data) {
-        String[] mealData = (String[]) data.getData();
-        String mealName = mealData[0];
-        try {
-            cantineService.editWeeklyPlan(mealName, "Tue");
-            screenManager.closeActiveWindow();
-            screenManager.showSuccessScreen("Meal updated for Tuesday!");
-        } catch (SQLException | MealDoesntExistException e) {
-            screenManager.showErrorScreen("Error updating meal for Tuesday: " + e.getMessage());
-        }
-    }
-
-    /**
-     * Handles editing the meal for Wednesday in the weekly plan.
-     * <p>
-     * Updates the meal for Wednesday based on the provided meal name.
-     * </p>
-     *
-     * @param data an Object array where the first element is the meal name as a String
-     */
-    public void handleEditWeeklyPlanWednesday(EventData data) {
-        String[] mealData = (String[]) data.getData();
-        String mealName = mealData[0];
-        try {
-            cantineService.editWeeklyPlan(mealName, "Wed");
-            screenManager.closeActiveWindow();
-            screenManager.showSuccessScreen("Meal updated for Wednesday!");
-        } catch (SQLException | MealDoesntExistException e) {
-            screenManager.showErrorScreen("Error updating meal for Wednesday: " + e.getMessage());
-        }
-    }
-
-    /**
-     * Handles editing the meal for Thursday in the weekly plan.
-     * <p>
-     * Updates the meal for Thursday based on the provided meal name.
-     * </p>
-     *
-     * @param data an Object array where the first element is the meal name as a String
-     */
-    public void handleEditWeeklyPlanThursday(EventData data) {
-        String[] mealData = (String[]) data.getData();
-        String mealName = mealData[0];
-        try {
-            cantineService.editWeeklyPlan(mealName, "Thu");
-            screenManager.closeActiveWindow();
-            screenManager.showSuccessScreen("Meal updated for Thursday!");
-        } catch (SQLException | MealDoesntExistException e) {
-            screenManager.showErrorScreen("Error updating meal for Thursday: " + e.getMessage());
-        }
-    }
-
-    /**
-     * Handles editing the meal for Friday in the weekly plan.
-     * <p>
-     * Updates the meal for Friday based on the provided meal name.
-     * </p>
-     *
-     * @param data an Object array where the first element is the meal name as a String
-     */
-    public void handleEditWeeklyPlanFriday(EventData data) {
-        String[] mealData = (String[]) data.getData();
-        String mealName = mealData[0];
-        try {
-            cantineService.editWeeklyPlan(mealName, "Fri");
-            screenManager.closeActiveWindow();
-            screenManager.showSuccessScreen("Meal updated for Friday!");
-        } catch (SQLException | MealDoesntExistException e) {
-            screenManager.showErrorScreen("Error updating meal for Friday: " + e.getMessage());
-        }
-    }
 }

@@ -52,6 +52,9 @@ public enum EventType {
     EDIT_WEEKLY_PLAN(),
     RESET_WEEKLY_PLAN(),
     EDIT_WEEKLY_PLAN_MONDAY(),
+    EDIT_WEEKLY_PLAN_WEEKDAY(IntData.class),
+    EDIT_WEEKLY_PLAN_WEEKDAY_SUBMIT(StringArrayData.class),
+
     EDIT_WEEKLY_PLAN_MONDAY_SUBMIT(StringArrayData.class),
     EDIT_WEEKLY_PLAN_TUESDAY(),
     EDIT_WEEKLY_PLAN_TUESDAY_SUBMIT(StringArrayData.class),

@@ -503,11 +503,11 @@ public class ScreenManager {
      */
     public void showEditWeeklyPlanScreen() {
         List<MenuBuilder.MenuButton> weeklyPlanButtons = Arrays.asList(
-                new MenuBuilder.MenuButton("Monday", EventType.EDIT_WEEKLY_PLAN_MONDAY),
-                new MenuBuilder.MenuButton("Tuesday", EventType.EDIT_WEEKLY_PLAN_TUESDAY),
-                new MenuBuilder.MenuButton("Wednesday", EventType.EDIT_WEEKLY_PLAN_WEDNESDAY),
-                new MenuBuilder.MenuButton("Thursday", EventType.EDIT_WEEKLY_PLAN_THURSDAY),
-                new MenuBuilder.MenuButton("Friday", EventType.EDIT_WEEKLY_PLAN_FRIDAY),
+                new MenuBuilder.MenuButton("Monday", EventType.EDIT_WEEKLY_PLAN_WEEKDAY, new IntData(1)),
+                new MenuBuilder.MenuButton("Tuesday", EventType.EDIT_WEEKLY_PLAN_WEEKDAY, new IntData(2)),
+                new MenuBuilder.MenuButton("Wednesday", EventType.EDIT_WEEKLY_PLAN_WEEKDAY, new IntData(3)),
+                new MenuBuilder.MenuButton("Thursday", EventType.EDIT_WEEKLY_PLAN_WEEKDAY, new IntData(4)),
+                new MenuBuilder.MenuButton("Friday", EventType.EDIT_WEEKLY_PLAN_WEEKDAY, new IntData(5)),
                 new MenuBuilder.MenuButton("Reset Weekly Plan", EventType.RESET_WEEKLY_PLAN),
                 new MenuBuilder.MenuButton("Main Menu", EventType.SWITCH_MENU, new IntData(1))
         );
@@ -518,50 +518,15 @@ public class ScreenManager {
     }
 
     /**
-     * Displays the input screen for editing Monday's meal.
+     * Displays an input screen for editing the weekly plan for the specified weekday.
+     *
+     * @param weekday the name of the weekday (e.g., \"Monday\") to be edited
      */
-    public void showEditWeeklyPlanMonday() {
-        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Edit Monday");
+    public void showEditWeeklyPlanWeekday(String weekday) {
+        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Edit " + weekday);
         List<String> labels = List.of("Meal Name");
-        inputScreenBuilder.display(labels, EventType.EDIT_WEEKLY_PLAN_MONDAY_SUBMIT);
+        inputScreenBuilder.display(labels, EventType.EDIT_WEEKLY_PLAN_WEEKDAY_SUBMIT);
     }
-
-    /**
-     * Displays the input screen for editing Tuesday's meal.
-     */
-    public void showEditWeeklyPlanTuesday() {
-        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Edit Tuesday");
-        List<String> labels = List.of("Meal Name");
-        inputScreenBuilder.display(labels, EventType.EDIT_WEEKLY_PLAN_TUESDAY_SUBMIT);
-    }
-
-    /**
-     * Displays the input screen for editing Wednesday's meal.
-     */
-    public void showEditWeeklyPlanWednesday() {
-        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Edit Wednesday");
-        List<String> labels = List.of("Meal Name");
-        inputScreenBuilder.display(labels, EventType.EDIT_WEEKLY_PLAN_WEDNESDAY_SUBMIT);
-    }
-
-    /**
-     * Displays the input screen for editing Thursday's meal.
-     */
-    public void showEditWeeklyPlanThursday() {
-        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Edit Thursday");
-        List<String> labels = List.of("Meal Name");
-        inputScreenBuilder.display(labels, EventType.EDIT_WEEKLY_PLAN_THURSDAY_SUBMIT);
-    }
-
-    /**
-     * Displays the input screen for editing Friday's meal.
-     */
-    public void showEditWeeklyPlanFriday() {
-        InputScreenBuilder inputScreenBuilder = new InputScreenBuilder(gui, eventManager, "Edit Friday");
-        List<String> labels = List.of("Meal Name");
-        inputScreenBuilder.display(labels, EventType.EDIT_WEEKLY_PLAN_FRIDAY_SUBMIT);
-    }
-
     ////////////////////////////////////////////////////////////////////////////////
     // Notification and Closing Screens
     ////////////////////////////////////////////////////////////////////////////////

@@ -127,6 +127,32 @@ public class MealController extends AbstractController {
         }
     }
 
+    /**
+     * Creates a MealsRecord object from the provided meal data array.
+     * <p>
+     * This method extracts meal information from the String array, parses numeric values,
+     * and constructs a new MealsRecord with the extracted data. The array is expected to
+     * contain:
+     * <ul>
+     *   <li>Index 0: Meal ID (required, parsable to int)</li>
+     *   <li>Index 1: Meal name (optional)</li>
+     *   <li>Index 2: Price (optional, parsable to float)</li>
+     *   <li>Index 3: Calories (optional, parsable to int)</li>
+     *   <li>Index 4: Allergy information (optional)</li>
+     *   <li>Index 5: Meat flag (optional, parsable to int)</li>
+     * </ul>
+     * </p>
+     * <p>
+     * Only non-empty values from the array will be set on the returned MealsRecord.
+     * The method performs validation to ensure each field exists in the array before attempting
+     * to access it.
+     * </p>
+     *
+     * @param mealData The String array containing meal information
+     * @return A newly created MealsRecord populated with the extracted meal data
+     * @throws NumberFormatException If any numeric field cannot be parsed properly
+     * @throws ArrayIndexOutOfBoundsException If the array is empty (missing required meal ID)
+     */
     private static MealsRecord getMealsRecord(String[] mealData) {
         int mealId = Integer.parseInt(mealData[0]);
         MealsRecord meal = new MealsRecord();
@@ -203,7 +229,27 @@ public class MealController extends AbstractController {
             screenManager.showErrorScreen("There was an error while adding meal please try again!");
         }
     }
-
+    /**
+     * Creates a MealsRecord object from the provided EventData.
+     * <p>
+     * This method extracts meal information from the EventData object, parses numeric values,
+     * and constructs a new MealsRecord with the extracted data. The EventData is expected to
+     * contain an array with the following elements:
+     * <ul>
+     *   <li>Index 0: Meal name (String)</li>
+     *   <li>Index 1: Price (parsable to float)</li>
+     *   <li>Index 2: Calories (parsable to int)</li>
+     *   <li>Index 3: Allergy information (String)</li>
+     *   <li>Index 4: Meat flag (parsable to int, typically 0 or 1)</li>
+     * </ul>
+     * </p>
+     *
+     * @param data The EventData object containing meal information as a String array
+     * @return A newly created MealsRecord populated with the extracted meal data
+     * @throws NumberFormatException If any numeric field cannot be parsed properly
+     * @throws ArrayIndexOutOfBoundsException If the data array doesn't contain all required elements
+     * @throws ClassCastException If the data object is not a String array
+     */
     private static MealsRecord getMealsRecord(EventData data) {
         String[] mealData = (String[]) data.getData();
         String mealName = mealData[0];
