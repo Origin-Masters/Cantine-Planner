@@ -26,7 +26,6 @@ class WeeklyRepositoryTest {
     @Test
     void testGetWeeklyPlan() throws SQLException {
 
-
         MealsRepository mealsRepository = new MealsRepository(new HikariCPDataSource(PATH_TO_TEST_PROPERTIES));
 
         MealsRecord meal1 = new MealsRecord();

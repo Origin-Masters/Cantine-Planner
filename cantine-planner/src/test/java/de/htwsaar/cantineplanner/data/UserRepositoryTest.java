@@ -24,28 +24,66 @@ class UserRepositoryTest {
 
     }
 
+    @Test
+    public void testValidateUser() {
+        assertThrows(UserNotValidatedException.class,
+                () -> userRepository.validateUser("invalidUser", "invalidPassword"));
+        assertThrows(UserNotValidatedException.class,
+                () -> userRepository.validateUser("invalidUser2", "invalidPassword2"));
+    }
 
+    @Test
+    void validateUser() {
+        // Assuming 100 and 1000 is a non-existent user ID
+        assertThrows(UserNotValidatedException.class, () -> userRepository.validateUser(100, "invalidPassword"));
+        assertThrows(UserNotValidatedException.class, () -> userRepository.validateUser(1000, "invalidPassword2"));
+    }
+
+    @Test
+    void getUserId() {
+        assertThrows(UserDoesntExistException.class, () -> userRepository.getUserId("invalidUser"));
+        assertDoesNotThrow(() -> {
+            int userId = userRepository.getUserId("Xudong");
+            assertEquals(16, userId);
+        });
+    }
 
     @Test
     void getUser() {
-
+        assertDoesNotThrow(() -> {
+            UsersRecord user = userRepository.getUser("Xudong");
+            assertNotNull(user);
+            assertEquals("Xudong", user.getUsername());
+        });
     }
 
     @Test
     void getAllUser() {
+        assertDoesNotThrow(() -> {
+            userRepository.getAllUser();
+        });
     }
 
     @Test
     void getUserById() {
+        assertDoesNotThrow(() -> {
+            UsersRecord user = userRepository.getUserById(16);
+            assertNotNull(user);
+            assertEquals("Xudong", user.getUsername());
+        });
     }
 
     @Test
     void updateUserRole() {
+        assertDoesNotThrow(() -> {
+            int originalRole = userRepository.getUserById(16).getRole();
+            userRepository.updateUserRole(16, 1);
+            UsersRecord user = userRepository.getUserById(16);
+            assertEquals(1, user.getRole());
+            userRepository.updateUserRole(16, originalRole); // Restore original role
+        });
     }
 
-    @Test
-    void setAllergeneSettings() {
-    }
 
     @Test
     public void testIsAdmin() {
@@ -63,13 +101,6 @@ class UserRepositoryTest {
         });
     }
 
-    @Test
-    public void testValidateUser() {
-        assertThrows(UserNotValidatedException.class,
-                () -> userRepository.validateUser("invalidUser", "invalidPassword"));
-        assertThrows(UserNotValidatedException.class,
-                () -> userRepository.validateUser("invalidUser2", "invalidPassword2"));
-    }
 
     @Test
     public void testGetUserId() {
@@ -79,7 +110,6 @@ class UserRepositoryTest {
         //testing for existing user
         assertDoesNotThrow(() -> {
             int userId = userRepository.getUserId("Xudong");
-            assertNotNull(userId);
         });
 
     }
@@ -155,5 +185,16 @@ class UserRepositoryTest {
         });
     }
 
+    @Test
+    void setAllergeneSettings() {
+        assertDoesNotThrow(() -> {
+            int userId = 16;
+            String originalAllergeneSettings = userRepository.getUserById(userId).getDontShowMeal();
+            userRepository.setAllergeneSettings(userId, "G,T");
+            UsersRecord user = userRepository.getUserById(userId);
+            assertEquals("G,T", user.getDontShowMeal());
+            userRepository.setAllergeneSettings(userId, originalAllergeneSettings); // Restore original settings
+        });
+    }
 
 }

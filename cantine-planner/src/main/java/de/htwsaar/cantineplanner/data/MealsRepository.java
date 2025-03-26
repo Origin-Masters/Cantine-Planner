@@ -26,7 +26,7 @@ public class MealsRepository extends AbstractRepository {
      * Constructor for MealsRepository
      *
      * @param dataSource an instance of HikariCPDataSource, offering a connection pool
-     * for efficient and reliable database connectivity.
+     *                   for efficient and reliable database connectivity.
      */
     protected MealsRepository(HikariCPDataSource dataSource) {
         super(dataSource);
@@ -341,9 +341,13 @@ public class MealsRepository extends AbstractRepository {
             // Filter out meals that contain user's allergies
             return meals.stream()
                     .filter(meal -> {
-                        String[] mealAllergies = meal.getAllergy().split(",");
-                        for (String allergy : mealAllergies) {
-                            if (userAllergies.contains(allergy.trim())) {
+                        String allergy = meal.getAllergy();
+                        if (allergy == null || allergy.isEmpty()) {
+                            return true;
+                        }
+                        String[] mealAllergies = allergy.split(",");
+                        for (String allergyItem : mealAllergies) {
+                            if (userAllergies.contains(allergyItem.trim())) {
                                 return false;
                             }
                         }
@@ -364,7 +368,7 @@ public class MealsRepository extends AbstractRepository {
      * @throws SQLException             if a database access error occurs
      * @throws UserDoesntExistException if the user with the given ID doesn't exist
      */
-    private List<String> getUserAllergies(int userId) throws SQLException, UserDoesntExistException {
+    List<String> getUserAllergies(int userId) throws SQLException, UserDoesntExistException {
         try (Connection connection = dataSource.getConnection()) {
             var dsl = getDSLContext(connection);
 
