@@ -64,7 +64,7 @@ public class MealController extends AbstractController {
         eventManager.subscribe(EventType.SHOW_ADD_MEAL, (data) -> screenManager.showAddMealScreen());
         eventManager.subscribe(EventType.ADD_MEAL, this::handleAddMeal);
         eventManager.subscribe(EventType.DELETE_MEAL, this::handleDeleteMeal);
-        eventManager.subscribe(EventType.SHOW_SEARCH_MEAL_BY_ID, () -> screenManager.showMealDetailsById());
+        eventManager.subscribe(EventType.SHOW_SEARCH_MEAL_BY_ID, screenManager::showMealDetailsById);
         eventManager.subscribe(EventType.SHOW_MEAL_BY_ID, this::handleShowMealById);
         eventManager.subscribe(EventType.SHOW_SEARCH_MEAL_BY_NAME, (data) -> screenManager.showSearchMealByName());
         eventManager.subscribe(EventType.SHOW_MEAL_BY_NAME, this::handleShowMealByName);

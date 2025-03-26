@@ -26,17 +26,17 @@ class UserRepositoryTest {
 
     @Test
     public void testValidateUser() {
-        assertThrows(UserNotValidatedException.class,
-                () -> userRepository.validateUser("invalidUser", "invalidPassword"));
-        assertThrows(UserNotValidatedException.class,
-                () -> userRepository.validateUser("invalidUser2", "invalidPassword2"));
+
+       assertFalse(userRepository.validateUser("invalidUser", "invalidPassword"));
+       assertFalse(userRepository.validateUser("invalidUser2", "invalidPassword2"));
+
     }
 
     @Test
     void validateUser() {
         // Assuming 100 and 1000 is a non-existent user ID
-        assertThrows(UserNotValidatedException.class, () -> userRepository.validateUser(100, "invalidPassword"));
-        assertThrows(UserNotValidatedException.class, () -> userRepository.validateUser(1000, "invalidPassword2"));
+        assertFalse( userRepository.validateUser(100, "invalidPassword") );
+        assertFalse( userRepository.validateUser(1000, "invalidPassword2") );
     }
 
     @Test

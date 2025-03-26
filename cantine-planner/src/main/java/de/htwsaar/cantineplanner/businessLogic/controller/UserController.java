@@ -55,17 +55,17 @@ public class UserController extends AbstractController {
     @Override
     protected void subscribeToEvents() {
         // User-bezogene Events
-        eventManager.subscribe(EventType.SHOW_EDIT_USER_DATA, () -> screenManager.showEditUserDataScreen());
+        eventManager.subscribe(EventType.SHOW_EDIT_USER_DATA, screenManager::showEditUserDataScreen);
         eventManager.subscribe(EventType.EDIT_USER_DATA, this::handleEditUserData);
-        eventManager.subscribe(EventType.SHOW_EDIT_NEW_USER_DATA, () -> screenManager.showEditNewUserDataScreen());
+        eventManager.subscribe(EventType.SHOW_EDIT_NEW_USER_DATA, screenManager::showEditNewUserDataScreen);
         eventManager.subscribe(EventType.EDIT_NEW_USER_DATA, this::handleInputNewUserData);
         eventManager.subscribe(EventType.SHOW_REVIEWS_BY_USER, this::handleShowReviewsByUser);
-        eventManager.subscribe(EventType.SHOW_ALLERGEN_SETTINGS, () -> screenManager.showAllergeneSettings());
+        eventManager.subscribe(EventType.SHOW_ALLERGEN_SETTINGS, screenManager::showAllergeneSettings);
         eventManager.subscribe(EventType.ALLERGENE_SETTINGS, this::handleAllergeneSettings);
         eventManager.subscribe(EventType.SHOW_ALL_USERS, this::handleAllUser);
-        eventManager.subscribe(EventType.SHOW_DELETE_USER, () -> screenManager.showDeleteUserScreen());
+        eventManager.subscribe(EventType.SHOW_DELETE_USER, screenManager::showDeleteUserScreen);
         eventManager.subscribe(EventType.DELETE_USER, this::handleDeleteUser);
-        eventManager.subscribe(EventType.SHOW_UPDATE_USER_ROLE, () -> screenManager.showUpdateUserRoleScreen());
+        eventManager.subscribe(EventType.SHOW_UPDATE_USER_ROLE, screenManager::showUpdateUserRoleScreen);
         eventManager.subscribe(EventType.UPDATE_USER_ROLE, this::handleUpdateUserRole);
     }
 

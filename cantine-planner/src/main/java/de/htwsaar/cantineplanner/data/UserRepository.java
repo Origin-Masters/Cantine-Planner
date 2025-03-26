@@ -35,10 +35,9 @@ public class UserRepository extends AbstractRepository {
      * @param username          the username of the user to be validated
      * @param plainTextPassword the plain text password of the user to be validated
      * @return true if the user is successfully validated
-     * @throws SQLException              if a database access error occurs
      * @throws UserNotValidatedException if the username or password is invalid
      */
-    protected boolean validateUser(String username, String plainTextPassword) throws SQLException, UserNotValidatedException {
+    protected boolean validateUser(String username, String plainTextPassword) throws UserNotValidatedException {
         try (Connection connection = dataSource.getConnection()) {
             var dsl = getDSLContext(connection);
             String hashedPassword = dsl.select(Users.USERS.PASSWORD).from(Users.USERS).where(
@@ -49,6 +48,10 @@ public class UserRepository extends AbstractRepository {
             }
             return true;
         }
+        catch( UserNotValidatedException | SQLException exception){
+            return false;
+        }
+
     }
 
     /**
@@ -64,7 +67,7 @@ public class UserRepository extends AbstractRepository {
      * @throws SQLException              if a database access error occurs
      * @throws UserNotValidatedException if the password is invalid
      */
-    protected boolean validateUser(int userID, String plainTextPassword) throws SQLException, UserNotValidatedException {
+    protected boolean validateUser(int userID, String plainTextPassword) throws UserNotValidatedException {
         try (Connection connection = dataSource.getConnection()) {
             var dsl = getDSLContext(connection);
             String hashedPassword = dsl.select(Users.USERS.PASSWORD).from(Users.USERS).where(
@@ -74,6 +77,10 @@ public class UserRepository extends AbstractRepository {
                 throw new UserNotValidatedException("Invalid password!");
             }
             return true;
+        }
+
+        catch(UserNotValidatedException | SQLException exception){
+            return false;
         }
     }
 
