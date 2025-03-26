@@ -59,7 +59,8 @@ replay_pid*
 # 4) Release Artifacts (if any)
 ########################################
 
-# Allow jars in release/ if you have a manual release folder
+# Allow jars in release/ and ignore zips
+*.zip
 !cantine-planner/release/
 !cantine-planner/release/*.jar
 
