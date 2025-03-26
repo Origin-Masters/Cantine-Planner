@@ -19,9 +19,11 @@ java -jar cantine-planner-Abgabeversion-shaded.jar
 erstellt, dort findet man anschließend die zu nutzende Datenbank. Wir haben uns hierfür entschieden, da wir somit die Datenbank gefüllt mitliefern können.
 
 ---
+
 Die Anwendung kann mittels den Pfeiltasten, dem Tabulator zum wechseln zwischen angezeigten Fenstern sowie der Enter-Taste zur Bestätigung bedient werden.
 Die Eingabe von Text für die Anwendung erfolgt über die Buchstaben auf der Tastatur.
 Das Benutzen einer Maus / eines Trackpads ist nicht vorgesehen.
+
 ---
 Um Alle Funktionen des Programms Nutzen zu können, kann der **_Admin-User_** verwendet werden.
 Hierbei lauten die Login-Daten wie folgt :
