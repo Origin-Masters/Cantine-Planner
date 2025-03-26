@@ -150,5 +150,9 @@ public class ReviewRepository extends AbstractRepository {
                     .execute();
             return true;
         }
+
+        catch (SQLException sqlException){
+            return false;
+        }
     }
 }

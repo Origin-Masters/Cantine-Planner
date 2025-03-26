@@ -46,7 +46,7 @@ public class ScreenManager {
         this.cantineService = cantineService;
 
         try {
-            Screen screen = new DefaultTerminalFactory().createScreen();
+            var screen = new DefaultTerminalFactory().createScreen();
             screen.startScreen();
             this.gui = new MultiWindowTextGUI(screen);
         } catch (IOException e) {
@@ -318,7 +318,7 @@ public class ScreenManager {
      * @param reviews the list of review records.
      */
     public void showAllReviews(List<ReviewRecord> reviews) {
-        TableBuilder tableBuilder = new TableBuilder(gui, "All Reviews")
+        var tableBuilder = new TableBuilder(gui, "All Reviews")
                 .addColumn("ID")
                 .addColumn("Rating")
                 .addColumn("Comment")

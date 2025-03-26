@@ -48,9 +48,7 @@ public class InputScreenBuilder {
         panel.addComponent(new EmptySpace(), GridLayout.createHorizontallyFilledLayoutData(2));
 
         Panel buttonPanel = new Panel(new GridLayout(2));
-        buttonPanel.addComponent(new Button("Close", () -> {
-            gui.getActiveWindow().close();
-        }));
+        buttonPanel.addComponent(new Button("Close", () -> gui.getActiveWindow().close()));
         buttonPanel.addComponent(new Button("Submit", () -> {
             ArrayList<String> values = new ArrayList<>();
             for (TextBox textBox : textBoxes) {
