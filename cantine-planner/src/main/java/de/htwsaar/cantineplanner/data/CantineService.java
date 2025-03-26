@@ -339,7 +339,7 @@ public class CantineService {
      * @throws UserDoesntExistException if the user does not exist
      */
     public void setAllergeneSettings(int userId, String allergene) throws SQLException, UserDoesntExistException {
-        System.out.println(allergene);
+
         allergene = allergene.replaceAll("^\\[|]$", "");
         var allergeneArray = allergene.split(",");
         var abbrAllergene = new StringBuilder();
@@ -353,7 +353,7 @@ public class CantineService {
                 abbrAllergene.append(abbr);
             }
         }
-        System.out.println(abbrAllergene + " " + userId);
+
         userRepository.setAllergeneSettings(userId, abbrAllergene.toString());
     }
 

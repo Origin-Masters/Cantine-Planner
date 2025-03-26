@@ -33,9 +33,9 @@ public class MainController extends AbstractController {
      * @param cantineService the service to handle cantine-related operations
      * @param eventManager   the event manager to handle events
      */
-    public  MainController(ScreenManager screenManager,
-                             CantineService cantineService,
-                             EventManager eventManager) {
+    public MainController(ScreenManager screenManager,
+                          CantineService cantineService,
+                          EventManager eventManager) {
 
         super(screenManager, cantineService, eventManager);
         this.mealController = new MealController(screenManager, cantineService, eventManager);

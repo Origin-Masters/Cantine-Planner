@@ -41,10 +41,8 @@ public class DataBaseUtil {
             // Copies the file from the InputStream to the target path.
             Files.copy(inputStream, target);
 
-            System.out.println("Database loaded successfully: " + DATABASE_NAME + " -> " + targetPath);
-
         } catch (IOException e) {
-           throw new DataBaseLoadException("Error loading the DB...", e);
+            throw new DataBaseLoadException("Error loading the DB...", e);
         }
     }
 }

@@ -75,7 +75,7 @@ public class UserController extends AbstractController {
      * </p>
      */
     protected void showUserMenu() {
-        System.out.println(currentUser);
+
         try {
             screenManager.showUserMenuScreen(cantineService.isAdmin(currentUser.getUserid()));
         } catch (SQLException | UserDoesntExistException e) {
@@ -192,7 +192,6 @@ public class UserController extends AbstractController {
      * @param data an Object array containing allergen settings as Strings
      */
     private void handleAllergeneSettings(EventData data) {
-        System.out.println("Handle allergene settings");
         try {
             cantineService.setAllergeneSettings(currentUser.getUserid(), Arrays.toString((String[]) data.getData()));
             screenManager.closeActiveWindow();

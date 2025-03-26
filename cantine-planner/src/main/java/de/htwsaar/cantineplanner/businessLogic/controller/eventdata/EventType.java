@@ -87,11 +87,6 @@ public enum EventType {
         if(eventDataClass == null) {
             return true;
         }
-        if(eventData == null) {
-            System.out.println(eventDataClass.getSimpleName() + " with null data");
-        } else {
-            System.out.println(eventData.getClass().getSimpleName() + " " + eventDataClass.getSimpleName());
-        }
         return eventDataClass.isInstance(eventData);
     }
 }
