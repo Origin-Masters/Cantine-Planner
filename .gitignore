@@ -4,6 +4,7 @@
 
 # macOS
 .DS_Store
+cantine-planner/.DS_Store
 .AppleDouble
 .LSOverride
 
@@ -13,7 +14,7 @@ ehthumbs.db
 
 # IDE / build tool directories
 .idea/
-/cantine-planner/.idea/
+cantine-planner/.idea/
 *.iml
 *.ipr
 *.iws
