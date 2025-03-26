@@ -40,7 +40,7 @@ public class UserRepository extends AbstractRepository {
      */
     protected boolean validateUser(String username, String plainTextPassword) throws SQLException, UserNotValidatedException {
         try (Connection connection = dataSource.getConnection()) {
-            DSLContext dsl = getDSLContext(connection);
+            var dsl = getDSLContext(connection);
             String hashedPassword = dsl.select(Users.USERS.PASSWORD).from(Users.USERS).where(
                     Users.USERS.USERNAME.eq(username)).fetchOne(Users.USERS.PASSWORD);
 
@@ -66,7 +66,7 @@ public class UserRepository extends AbstractRepository {
      */
     protected boolean validateUser(int userID, String plainTextPassword) throws SQLException, UserNotValidatedException {
         try (Connection connection = dataSource.getConnection()) {
-            DSLContext dsl = getDSLContext(connection);
+            var dsl = getDSLContext(connection);
             String hashedPassword = dsl.select(Users.USERS.PASSWORD).from(Users.USERS).where(
                     Users.USERS.USERID.eq(userID)).fetchOne(Users.USERS.PASSWORD);
 
@@ -92,7 +92,7 @@ public class UserRepository extends AbstractRepository {
     //FIXME
     protected int getUserId(String username) throws SQLException, UserDoesntExistException {
         try (Connection connection = dataSource.getConnection()) {
-            DSLContext dsl = getDSLContext(connection);
+            var dsl = getDSLContext(connection);
 
             if (!dsl.fetchExists(dsl.selectFrom(Users.USERS).where(Users.USERS.USERNAME.eq(username)))) {
                 throw new UserDoesntExistException("The user with the given username doesn't exist!");
@@ -117,7 +117,7 @@ public class UserRepository extends AbstractRepository {
      */
     protected UsersRecord getUser(String username) throws SQLException, UserDoesntExistException {
         try (Connection connection = dataSource.getConnection()) {
-            DSLContext dsl = getDSLContext(connection);
+            var dsl = getDSLContext(connection);
 
             if (!dsl.fetchExists(dsl.selectFrom(Users.USERS).where(Users.USERS.USERNAME.eq(username)))) {
                 throw new UserDoesntExistException("The user with the given username doesn't exist!");
@@ -138,7 +138,7 @@ public class UserRepository extends AbstractRepository {
      */
     protected List<UsersRecord> getAllUser() throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
-            DSLContext dsl = getDSLContext(connection);
+            var dsl = getDSLContext(connection);
             return dsl.selectFrom(Users.USERS).fetchInto(UsersRecord.class);
         }
     }
@@ -157,7 +157,7 @@ public class UserRepository extends AbstractRepository {
      */
     protected UsersRecord getUserById(int userId) throws SQLException, UserDoesntExistException {
         try (Connection connection = dataSource.getConnection()) {
-            DSLContext dsl = getDSLContext(connection);
+            var dsl = getDSLContext(connection);
 
             if (!dsl.fetchExists(dsl.selectFrom(Users.USERS).where(Users.USERS.USERID.eq(userId)))) {
                 throw new UserDoesntExistException("The user with the given UserId doesn't exist!");
@@ -181,7 +181,7 @@ public class UserRepository extends AbstractRepository {
      */
     protected void updateUserRole(int userId, int role) throws SQLException, UserDoesntExistException {
         try (Connection connection = dataSource.getConnection()) {
-            DSLContext dsl = getDSLContext(connection);
+            var dsl = getDSLContext(connection);
 
             if (!dsl.fetchExists(dsl.selectFrom(Users.USERS).where(Users.USERS.USERID.eq(userId)))) {
                 throw new UserDoesntExistException("The user with the given UserId doesn't exist!");
@@ -206,7 +206,7 @@ public class UserRepository extends AbstractRepository {
     //FIXME
     protected boolean isAdmin(int userID) throws SQLException, UserDoesntExistException {
         try (Connection connection = dataSource.getConnection()) {
-            DSLContext dsl = getDSLContext(connection);
+            var dsl = getDSLContext(connection);
 
             if (!dsl.fetchExists(dsl.selectFrom(Users.USERS).where(Users.USERS.USERID.eq(userID)))) {
                 throw new UserDoesntExistException("The user with the given ID doesn't exist!");
@@ -234,7 +234,7 @@ public class UserRepository extends AbstractRepository {
      */
     protected UsersRecord registerUser(String username, String plainTextPassword, String email) throws SQLException, UserAlreadyExistsException, InvalidEmailTypeException {
         try (Connection connection = dataSource.getConnection()) {
-            DSLContext dsl = getDSLContext(connection);
+            var dsl = getDSLContext(connection);
 
             if (dsl.fetchExists(dsl.selectFrom(Users.USERS).where(Users.USERS.USERNAME.eq(username)))) {
                 throw new UserAlreadyExistsException("Username already exists, please choose another one!");
@@ -277,7 +277,7 @@ public class UserRepository extends AbstractRepository {
      */
     protected void deleteUserById(int userId) throws SQLException, UserDoesntExistException {
         try (Connection connection = dataSource.getConnection()) {
-            DSLContext dsl = getDSLContext(connection);
+            var dsl = getDSLContext(connection);
 
             if (!dsl.fetchExists(dsl.selectFrom(Users.USERS).where(Users.USERS.USERID.eq(userId)))) {
                 throw new UserDoesntExistException("The user with the given ID doesn't exist!");
@@ -300,7 +300,7 @@ public class UserRepository extends AbstractRepository {
      */
     protected void deleteUserByName(String UserName) throws SQLException, UserDoesntExistException {
         try (Connection connection = dataSource.getConnection()) {
-            DSLContext dsl = getDSLContext(connection);
+            var dsl = getDSLContext(connection);
 
             if (!dsl.fetchExists(dsl.selectFrom(Users.USERS).where(Users.USERS.USERNAME.eq(UserName)))) {
                 throw new UserDoesntExistException("The user with the given username doesn't exist!");
@@ -325,7 +325,7 @@ public class UserRepository extends AbstractRepository {
      */
     protected void editUserData(int currentUserId, String newPassword, String newEmail) throws SQLException, InvalidEmailTypeException {
         try (Connection connection = dataSource.getConnection()) {
-            DSLContext dsl = getDSLContext(connection);
+            var dsl = getDSLContext(connection);
 
             if (newEmail != null && !isValidEmail(newEmail)) {
                 throw new InvalidEmailTypeException("Invalid email type!");
@@ -359,7 +359,7 @@ public class UserRepository extends AbstractRepository {
     protected void setAllergeneSettings(int userId, String allergies) throws SQLException {
         //  String cleanAllergies = allergies.replace("[", "").replace("]", "");
         try (Connection connection = dataSource.getConnection()) {
-            DSLContext dsl = getDSLContext(connection);
+            var dsl = getDSLContext(connection);
             dsl.update(Users.USERS)
                     .set(Users.USERS.DONT_SHOW_MEAL, allergies)
                     .where(Users.USERS.USERID.eq(userId))
