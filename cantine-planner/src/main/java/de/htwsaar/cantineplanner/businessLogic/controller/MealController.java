@@ -31,11 +31,13 @@ public class MealController extends AbstractController {
      * @param screenManager  the screen manager to manage UI screens
      * @param cantineService the service to handle cantine-related operations
      * @param eventManager   the event manager to handle events
+     * @param sessionManager the session manager to manage user sessions
      */
     protected MealController(ScreenManager screenManager,
                              CantineService cantineService,
-                             EventManager eventManager) {
-        super(screenManager, cantineService, eventManager);
+                             EventManager eventManager,
+                             SessionManager sessionManager) {
+        super(screenManager, cantineService, eventManager,sessionManager);
         this.subscribeToEvents();
     }
 
@@ -80,7 +82,7 @@ public class MealController extends AbstractController {
      */
     protected void showMealMenu() {
         try {
-            if (cantineService.isAdmin(currentUser.getUserid())) {
+            if (cantineService.isAdmin(sessionManager.getCurrentUserId())) {
                 screenManager.showMealMenuScreen(true);
             } else {
                 screenManager.showErrorScreen("You do not have the necessary permissions to access the meal menu.");
@@ -364,7 +366,7 @@ public class MealController extends AbstractController {
      */
     private void handleSortMealByAllergy() {
         try {
-            List<MealsRecord> meals = cantineService.sortMealsByAllergy(currentUser.getUserid());
+            List<MealsRecord> meals = cantineService.sortMealsByAllergy(sessionManager.getCurrentUserId());
             screenManager.showAllMeals(meals);
         } catch (SQLException e) {
             screenManager.showErrorScreen("There was an error while sorting meals by allergy please try again!");

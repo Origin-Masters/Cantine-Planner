@@ -34,11 +34,13 @@ public class LoginController extends AbstractController {
      * @param screenManager  the screen manager to manage UI screens
      * @param cantineService the service to handle cantine-related operations
      * @param eventManager   the event manager to handle events
+     * @param sessionManager the session manager to manage user sessions
      */
     protected LoginController(ScreenManager screenManager,
                               CantineService cantineService,
-                              EventManager eventManager) {
-        super(screenManager, cantineService, eventManager);
+                              EventManager eventManager,
+                              SessionManager sessionManager) {
+        super(screenManager, cantineService, eventManager,sessionManager);
         this.subscribeToEvents();
     }
 
@@ -74,8 +76,7 @@ public class LoginController extends AbstractController {
         String password = credentials[1];
         try {
             if (cantineService.validateUser(username, password)) {
-                currentUser = cantineService.getUser(username);
-
+                sessionManager.setCurrentUser(cantineService.getUser(username));
                 screenManager.closeActiveWindow();
                 screenManager.showSuccessScreen("Login successful!");
                 eventManager.notify(EventType.SWITCH_MENU, new IntData(1));
@@ -113,8 +114,7 @@ public class LoginController extends AbstractController {
 
         } catch (InvalidEmailTypeException | UserAlreadyExistsException e) {
             screenManager.showErrorScreen(e.getMessage());
-        } catch (
-                Exception e) {  //TODO exeption handling besser machen das casten oben bereitet probleme wenn man nicht alle felder füllt!
+        } catch (Exception e) {
             screenManager.showErrorScreen("There was an error while registering please try again and check if you filled everything correctly!");
         }
     }

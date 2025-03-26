@@ -1,5 +1,6 @@
 package de.htwsaar.cantineplanner.presentation;
 
+import de.htwsaar.cantineplanner.businessLogic.controller.SessionManager;
 import de.htwsaar.cantineplanner.data.CantineService;
 import de.htwsaar.cantineplanner.businessLogic.EventManager;
 import de.htwsaar.cantineplanner.businessLogic.controller.MainController;
@@ -16,13 +17,15 @@ public class App {
         EventManager eventManager = new EventManager();
         CantineService cantineService = new CantineService(PATH_TO_PROPERTIES);
         ScreenManager screenManager = new ScreenManager(eventManager, cantineService);
+        SessionManager sessionManager = new SessionManager();
 
 
        // Instantiate and start the MainController:
         MainController mainController = new MainController(
              screenManager,
                cantineService,
-              eventManager
+              eventManager,
+                sessionManager
        );
 
        mainController.start();

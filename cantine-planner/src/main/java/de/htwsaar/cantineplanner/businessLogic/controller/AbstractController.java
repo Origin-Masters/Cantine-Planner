@@ -2,26 +2,24 @@ package de.htwsaar.cantineplanner.businessLogic.controller;
 
 import de.htwsaar.cantineplanner.data.CantineService;
 import de.htwsaar.cantineplanner.businessLogic.EventManager;
-import de.htwsaar.cantineplanner.codegen.tables.records.UsersRecord;
+import de.htwsaar.cantineplanner.businessLogic.controller.SessionManager;
 import de.htwsaar.cantineplanner.presentation.ScreenManager;
 
 public abstract class AbstractController {
-    protected static  ScreenManager screenManager;
-    protected static  CantineService cantineService;
-    protected static  EventManager eventManager;
-    protected static UsersRecord currentUser;
+    protected final ScreenManager screenManager;
+    protected final CantineService cantineService;
+    protected final EventManager eventManager;
+    protected final SessionManager sessionManager;
 
     public AbstractController(ScreenManager screenManager,
                               CantineService cantineService,
-                              EventManager eventManager) {
-        AbstractController.screenManager = screenManager;
-        AbstractController.cantineService = cantineService;
-        AbstractController.eventManager = eventManager;
+                              EventManager eventManager,
+                              SessionManager sessionManager) {
+        this.screenManager = screenManager;
+        this.cantineService = cantineService;
+        this.eventManager = eventManager;
+        this.sessionManager = sessionManager;
     }
 
-    public AbstractController() {
-
-    }
     protected abstract void subscribeToEvents();
-
 }

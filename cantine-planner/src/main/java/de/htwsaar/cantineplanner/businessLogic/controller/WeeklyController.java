@@ -30,11 +30,13 @@ public class WeeklyController extends AbstractController {
      * @param screenManager  the screen manager to manage UI screens
      * @param cantineService the service to handle cantine-related operations
      * @param eventManager   the event manager to handle events
+     * @param sessionManager the session manager to manage user sessions
      */
     protected WeeklyController(ScreenManager screenManager,
                             CantineService cantineService,
-                            EventManager eventManager) {
-        super(screenManager, cantineService, eventManager);
+                            EventManager eventManager,
+                            SessionManager sessionManager) {
+        super(screenManager, cantineService, eventManager, sessionManager);
         this.subscribeToEvents();
     }
 
@@ -71,7 +73,7 @@ public class WeeklyController extends AbstractController {
      */
     protected void showWeeklyMenu() {
         try {
-            screenManager.showWeeklyMenuScreen(cantineService.isAdmin(currentUser.getUserid()));
+            screenManager.showWeeklyMenuScreen(cantineService.isAdmin(sessionManager.getCurrentUserId()));
         } catch (SQLException e) {
             screenManager.showErrorScreen("There was an error while validating the user. Try again!");
         }

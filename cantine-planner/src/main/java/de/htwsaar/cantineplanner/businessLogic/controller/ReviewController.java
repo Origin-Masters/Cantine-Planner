@@ -30,11 +30,13 @@ public class ReviewController extends AbstractController {
      * @param screenManager  the screen manager to manage UI screens
      * @param cantineService the service to handle cantine-related operations
      * @param eventManager   the event manager to handle events
+     * @param sessionManager the session manager to manage user sessions
      */
     protected ReviewController(ScreenManager screenManager,
                                CantineService cantineService,
-                               EventManager eventManager) {
-        super(screenManager, cantineService, eventManager);
+                               EventManager eventManager,
+                               SessionManager sessionManager) {
+        super(screenManager, cantineService, eventManager, sessionManager);
         this.subscribeToEvents();
     }
 
@@ -91,7 +93,7 @@ public class ReviewController extends AbstractController {
             review.setMealId(mealId);
             review.setRating(rating);
             review.setComment(comment);
-            review.setUserid(currentUser.getUserid());
+            review.setUserid(sessionManager.getCurrentUserId());
             cantineService.addReview(review);
             screenManager.closeActiveWindow();
             screenManager.showSuccessScreen("Review added successfully!");
@@ -117,9 +119,9 @@ public class ReviewController extends AbstractController {
             int reviewId = Integer.parseInt(reviewData[0]);
             int reviewUserId = cantineService.getUserIdFromReviewId(reviewId);
             // Check if the current user is admin
-            boolean isAdmin = cantineService.isAdmin(currentUser.getUserid());
+            boolean isAdmin = cantineService.isAdmin(sessionManager.getCurrentUserId());
             // If not admin and review's user id does not match, reject deletion
-            if (!isAdmin && reviewUserId != currentUser.getUserid()) {
+            if (!isAdmin && reviewUserId != sessionManager.getCurrentUserId()) {
                 screenManager.showErrorScreen("Unauthorized: You can only delete your own reviews.");
                 return;
             }

@@ -32,17 +32,19 @@ public class MainController extends AbstractController {
      * @param screenManager  the screen manager to manage UI screens
      * @param cantineService the service to handle cantine-related operations
      * @param eventManager   the event manager to handle events
+     * @param sessionManager the session manager to manage user sessions
      */
     public MainController(ScreenManager screenManager,
                           CantineService cantineService,
-                          EventManager eventManager) {
+                          EventManager eventManager,
+                          SessionManager sessionManager) {
 
-        super(screenManager, cantineService, eventManager);
-        this.mealController = new MealController(screenManager, cantineService, eventManager);
-        this.reviewController = new ReviewController(screenManager, cantineService, eventManager);
-        this.userController = new UserController(screenManager, cantineService, eventManager);
-        this.weeklyController = new WeeklyController(screenManager, cantineService, eventManager);
-        this.loginController = new LoginController(screenManager, cantineService, eventManager);
+        super(screenManager, cantineService, eventManager,sessionManager);
+        this.mealController = new MealController(screenManager, cantineService, eventManager,sessionManager);
+        this.reviewController = new ReviewController(screenManager, cantineService, eventManager,sessionManager);
+        this.userController = new UserController(screenManager, cantineService, eventManager,sessionManager);
+        this.weeklyController = new WeeklyController(screenManager, cantineService, eventManager,sessionManager);
+        this.loginController = new LoginController(screenManager, cantineService, eventManager,sessionManager);
 
         subscribeToEvents();
     }
@@ -62,7 +64,7 @@ public class MainController extends AbstractController {
         eventManager.subscribe(EventType.SHOW_ERROR_SCREEN, (data) -> screenManager.showErrorScreen((String) data.getData()));
         eventManager.subscribe(EventType.LOGOUT, (data) -> {
             switchMenu(0);
-            currentUser = null;
+            sessionManager.logout();
         });
     }
 
