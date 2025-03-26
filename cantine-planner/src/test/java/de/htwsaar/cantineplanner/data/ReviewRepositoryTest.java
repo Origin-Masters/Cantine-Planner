@@ -34,6 +34,15 @@ class ReviewRepositoryTest {
 
     @Test
     void getUserIdFromReviewId() {
+        int reviewId = 74; //  74 and 75 is a valid review  in the test database
+        assertDoesNotThrow(() -> {
+            reviewRepository.getUserIdFromReviewId(reviewId);
+        });
+
+        int reviewId2 = 75;
+        assertDoesNotThrow(() -> {
+            reviewRepository.getUserIdFromReviewId(reviewId2);
+        });
 
     }
 

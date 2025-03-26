@@ -35,6 +35,7 @@ class MealsRepositoryTest {
                 assertTrue(meals.get(i - 1).getPrice() <= meals.get(i).getPrice());
             }
         });
+
     }
 
     @Test
@@ -44,8 +45,9 @@ class MealsRepositoryTest {
             assertNotNull(meals);
             assertFalse(meals.isEmpty());
             for (int i = 1; i < meals.size(); i++) {
-                assertTrue(mealsRepository.calculateMedianRatingForMeal(meals.get(i - 1).getMealId()) >=
-                        mealsRepository.calculateMedianRatingForMeal(meals.get(i).getMealId()));
+                double rating1 = mealsRepository.calculateMedianRatingForMeal(meals.get(i - 1).getMealId());
+                double rating2 = mealsRepository.calculateMedianRatingForMeal(meals.get(i).getMealId());
+                assertTrue(rating1 >= rating2);
             }
         });
     }
@@ -76,16 +78,30 @@ class MealsRepositoryTest {
 
     @Test
     void sortMealsByAllergy() {
-
+        assertDoesNotThrow(() -> {
+            List<MealsRecord> meals = mealsRepository.sortMealsByAllergy(16);
+            assertNotNull(meals);
+            assertFalse(meals.isEmpty());
+            for (MealsRecord meal : meals) {
+                String allergy = meal.getAllergy();
+                if (allergy != null && !allergy.isEmpty()) {
+                    String[] mealAllergies = allergy.split(",");
+                    for (String allergyItem : mealAllergies) {
+                        assertFalse(allergyItem.trim().equals("G") || allergyItem.trim().equals("T"));
+                    }
+                }
+            }
+        });
     }
 
-    @Test
-    void editMeal() {
-
-    }
 
     @Test
     void getAllAllergies() {
+        assertDoesNotThrow(() -> {
+            List<MealsRecord> allergies = mealsRepository.getAllAllergies();
+            assertNotNull(allergies);
+            assertFalse(allergies.isEmpty());
+        });
     }
 
     @Test
@@ -96,18 +112,53 @@ class MealsRepositoryTest {
         meal1.setCalories(600);
         meal1.setAllergy("None");
         meal1.setMeat(1);
-        meal1.setDay("Mon");
+        meal1.setDay("Wed");
 
         MealsRecord meal2 = new MealsRecord();
         meal2.setName("Test Meal 2");
         meal2.setPrice(20.0F);
-        meal2.setCalories(700);
+        meal2.setCalories(100);
         meal2.setAllergy("N");
         meal2.setMeat(0);
-        meal2.setDay("Tue");
+        meal2.setDay("Fri");
 
         assertThrows(MealAlreadyExistsException.class, () -> mealsRepository.addMeal(meal1));
         assertThrows(MealAlreadyExistsException.class, () -> mealsRepository.addMeal(meal2));
+    }
+
+    @Test
+    void editMeal() {
+        assertDoesNotThrow(() -> {
+            MealsRecord meal = mealsRepository.searchMealByName("Test Meal 1").get(0);
+            String originalName = meal.getName();
+            float originalPrice = meal.getPrice();
+            int originalCalories = meal.getCalories();
+            String originalAllergy = meal.getAllergy();
+            int originalMeat = meal.getMeat();
+
+            meal.setName("Updated Meal");
+            meal.setPrice(12.5F);
+            meal.setCalories(500);
+            meal.setAllergy("None");
+            meal.setMeat(1);
+
+            mealsRepository.editMeal(meal);
+
+            MealsRecord updatedMeal = mealsRepository.searchMealByName("Updated Meal").get(0);
+            assertEquals("Updated Meal", updatedMeal.getName());
+            assertEquals(12.5F, updatedMeal.getPrice());
+            assertEquals(500, updatedMeal.getCalories());
+            assertEquals("None", updatedMeal.getAllergy());
+            assertEquals(1, updatedMeal.getMeat());
+
+            // Restore original values
+            meal.setName(originalName);
+            meal.setPrice(originalPrice);
+            meal.setCalories(originalCalories);
+            meal.setAllergy(originalAllergy);
+            meal.setMeat(originalMeat);
+            mealsRepository.editMeal(meal);
+        });
     }
 
     @Test
