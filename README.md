@@ -1,15 +1,24 @@
 ![Version](https://img.shields.io/badge/version-Abgabeversion-purple)
 ![Build Status](https://github.com/Origin-Masters/Cantine-Planner/actions/workflows/maven.yml/badge.svg?branch=main)
 
-# Cantine Planner - Projekt in Programmierung 3
-
 #### Xudong Zhang, Christian Stehle, Valentin Straßer, Michał Roziel
 
 ---
 
 ## 1. Projektübersicht
+
+### Cantine Planner - Projekt in Programmierung 3
+
 Cantine Planner ist ein Programm, welches zu dem Verwalten von einer Mensa / Kantine dient. Es ermöglicht dem Nutzer, einen Überblick über die aktuell auftretenden Gerichte zu behalten, sowie eine Personalisierung durchzuführen.
 Eine Datenbank mit bereits existierenden Gerichten wird mitgeliefert.
+
+
+### _**Sorting Meals By Calories**_
+![Meals By Calories](images/mealsByCalories.png)
+
+### _**All Reviews**_
+![All Reviews](images/AllReviews.png)
+
 
 ---
 
@@ -22,7 +31,8 @@ Eine Datenbank mit bereits existierenden Gerichten wird mitgeliefert.
 - Gerichte können hinzugefügt und angezeigt werden.
 	- Hierbei wird Preis, Kalorien, Allergene, Fleischinhalt sowie Wochentag gesetzt.
 - Reviews bezüglich Gerichten können verfasst/gelöscht sowie angezeigt werden.
-- Mitgelieferte, bereits gefüllte Datenbank - Man kann direkt anfagen.
+
+- ** Mitgelieferte, bereits gefüllte Datenbank - Man kann direkt anfagen.**
 
 ---
 
@@ -62,15 +72,9 @@ Username : Admin
 Password : Admin
 ```
 
-Eingabe der Funktion **_Add Review_** : Rating : _3_, Comment : _Tastes Good !_ , Meal iD : _2_
-
+Eingabe der Funktion **_Add Review_** : Rating : _3_, Comment : _Tastes Good !_ , Meal iD : _2_ <br>
 Ausgabe : Review zu **_Ceasar Salad_**  kann in All Reviews gesehen werden.
 
-### Eingabe der Funktion _**Sorting Meals By Calories**_
-![Meals By Calories](images/mealsByCalories.png)
-
-### Eingabe der Funktion _**All Reviews**_
-![All Reviews](images/AllReviews.png)
 
 ---
 
