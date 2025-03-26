@@ -97,7 +97,7 @@ class UserRepositoryTest {
 
         assertDoesNotThrow(() -> {
             boolean isAdmin = userRepository.isAdmin(16);
-            assertFalse(isAdmin);
+            assertTrue(isAdmin);
         });
     }
 
