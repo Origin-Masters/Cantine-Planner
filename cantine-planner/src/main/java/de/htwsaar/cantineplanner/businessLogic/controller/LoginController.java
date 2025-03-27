@@ -80,6 +80,8 @@ public class LoginController extends AbstractController {
                 screenManager.closeActiveWindow();
                 screenManager.showSuccessScreen("Login successful!");
                 eventManager.notify(EventType.SWITCH_MENU, new IntData(1));
+            } else {
+                screenManager.showErrorScreen("Invalid username or password!");
             }
         } catch (UserNotValidatedException e) {
             screenManager.showErrorScreen(e.getMessage());
