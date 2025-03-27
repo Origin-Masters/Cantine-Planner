@@ -84,11 +84,11 @@ public class WeeklyController extends AbstractController {
             List<MealsRecord> weeklyPlan = cantineService.getWeeklyPlan();
             // Sort the weeklyPlan by the day field
             weeklyPlan.sort(Comparator.comparing(meal -> switch (meal.getDay()) {
-                case "Mon" -> 1;
-                case "Tue" -> 2;
-                case "Wed" -> 3;
-                case "Thu" -> 4;
-                case "Fri" -> 5;
+                case "Monday" -> 1;
+                case "Tuesday" -> 2;
+                case "Wednesday" -> 3;
+                case "Thursday" -> 4;
+                case "Friday" -> 5;
                 default -> 6;
             }));
             screenManager.showWeeklyPlanScreen(weeklyPlan);

@@ -509,7 +509,7 @@ public class ScreenManager {
                 new MenuBuilder.MenuButton("Thursday", EventType.EDIT_WEEKLY_PLAN_WEEKDAY, new IntData(4)),
                 new MenuBuilder.MenuButton("Friday", EventType.EDIT_WEEKLY_PLAN_WEEKDAY, new IntData(5)),
                 new MenuBuilder.MenuButton("Reset Weekly Plan", EventType.RESET_WEEKLY_PLAN),
-                new MenuBuilder.MenuButton("Main Menu", EventType.SWITCH_MENU, new IntData(1))
+                new MenuBuilder.MenuButton("Go Back", EventType.SWITCH_MENU, new IntData(1))
         );
         MenuBuilder weeklyPlan = new MenuBuilder(gui, eventManager)
                 .setTitle("Edit Weekly Plan")
