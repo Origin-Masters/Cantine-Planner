@@ -72,6 +72,26 @@ Username : Admin
 Password : Admin
 ```
 
+
+### Anwendungsbeispiel 1 : Ändern der Daten eines Meals
+
+<table>
+  <tr>
+    <!-- Left column: edit1 (top), edit3 (bottom) -->
+    <td>
+      <img src="images/edit1.png" height= 80 width="400" alt="Edit 1" /><br>
+      <img src="images/edit3.png" height= 80 width="400" alt="Edit 3" />
+    </td>
+    <!-- Right column: edit2 -->
+    <td>
+      <img src="images/edit2.png" width="240" alt="Edit 2" />
+    </td>
+  </tr>
+</table>
+
+### Anwendungsbeispiel 2 : Hinzufügen eines Reviews
+
+
 Eingabe der Funktion **_Add Review_** : Rating : _3_, Comment : _Tastes Good !_ , Meal iD : _2_ <br>
 Ausgabe : Review zu **_Ceasar Salad_**  kann in _**All Reviews**_ gesehen werden.
 
