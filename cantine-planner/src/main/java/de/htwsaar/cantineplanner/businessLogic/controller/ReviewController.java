@@ -1,12 +1,13 @@
 package de.htwsaar.cantineplanner.businessLogic.controller;
 
-import de.htwsaar.cantineplanner.data.CantineService;
-import de.htwsaar.cantineplanner.businessLogic.EventManager;
-import de.htwsaar.cantineplanner.businessLogic.controller.eventdata.EventData;
-import de.htwsaar.cantineplanner.businessLogic.controller.eventdata.EventType;
+import de.htwsaar.cantineplanner.businessLogic.manager.SessionManager;
+import de.htwsaar.cantineplanner.businessLogic.service.CantineService;
+import de.htwsaar.cantineplanner.businessLogic.manager.EventManager;
+import de.htwsaar.cantineplanner.businessLogic.types.eventdata.EventData;
+import de.htwsaar.cantineplanner.businessLogic.types.eventdata.EventType;
 import de.htwsaar.cantineplanner.codegen.tables.records.ReviewRecord;
-import de.htwsaar.cantineplanner.exceptions.MealDoesntExistException;
-import de.htwsaar.cantineplanner.exceptions.ReviewiDDoesntExistException;
+import de.htwsaar.cantineplanner.data.exceptions.MealDoesntExistException;
+import de.htwsaar.cantineplanner.data.exceptions.ReviewiDDoesntExistException;
 import de.htwsaar.cantineplanner.presentation.ScreenManager;
 
 import java.sql.SQLException;

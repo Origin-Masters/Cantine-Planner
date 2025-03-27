@@ -4,9 +4,9 @@ import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.gui2.*;
 import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.SGR;
-import de.htwsaar.cantineplanner.businessLogic.EventManager;
-import de.htwsaar.cantineplanner.businessLogic.controller.eventdata.EventType;
-import de.htwsaar.cantineplanner.businessLogic.controller.eventdata.StringArrayData;
+import de.htwsaar.cantineplanner.businessLogic.manager.EventManager;
+import de.htwsaar.cantineplanner.businessLogic.types.eventdata.EventType;
+import de.htwsaar.cantineplanner.businessLogic.types.eventdata.StringArrayData;
 
 import java.util.List;
 

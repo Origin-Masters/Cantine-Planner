@@ -1,15 +1,16 @@
 package de.htwsaar.cantineplanner.businessLogic.controller;
 
-import de.htwsaar.cantineplanner.data.CantineService;
-import de.htwsaar.cantineplanner.businessLogic.EventManager;
-import de.htwsaar.cantineplanner.businessLogic.controller.eventdata.EventData;
-import de.htwsaar.cantineplanner.businessLogic.controller.eventdata.EventType;
+import de.htwsaar.cantineplanner.businessLogic.manager.SessionManager;
+import de.htwsaar.cantineplanner.businessLogic.service.CantineService;
+import de.htwsaar.cantineplanner.businessLogic.manager.EventManager;
+import de.htwsaar.cantineplanner.businessLogic.types.eventdata.EventData;
+import de.htwsaar.cantineplanner.businessLogic.types.eventdata.EventType;
 import de.htwsaar.cantineplanner.codegen.tables.records.ReviewRecord;
 import de.htwsaar.cantineplanner.codegen.tables.records.UsersRecord;
-import de.htwsaar.cantineplanner.exceptions.InvalidEmailTypeException;
-import de.htwsaar.cantineplanner.exceptions.UserDoesntExistException;
-import de.htwsaar.cantineplanner.exceptions.UserNotValidatedException;
-import de.htwsaar.cantineplanner.exceptions.UseriDDoesntExcistException;
+import de.htwsaar.cantineplanner.data.exceptions.InvalidEmailTypeException;
+import de.htwsaar.cantineplanner.data.exceptions.UserDoesntExistException;
+import de.htwsaar.cantineplanner.data.exceptions.UserNotValidatedException;
+import de.htwsaar.cantineplanner.data.exceptions.UseriDDoesntExcistException;
 import de.htwsaar.cantineplanner.presentation.ScreenManager;
 
 import java.sql.SQLException;

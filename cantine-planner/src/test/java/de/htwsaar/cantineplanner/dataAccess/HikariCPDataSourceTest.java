@@ -1,5 +1,6 @@
 package de.htwsaar.cantineplanner.dataAccess;
 
+import de.htwsaar.cantineplanner.data.dataAccess.HikariCPDataSource;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

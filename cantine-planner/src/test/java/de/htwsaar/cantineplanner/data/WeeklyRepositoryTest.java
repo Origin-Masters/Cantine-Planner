@@ -1,7 +1,9 @@
 package de.htwsaar.cantineplanner.data;
 
 import de.htwsaar.cantineplanner.codegen.tables.records.MealsRecord;
-import de.htwsaar.cantineplanner.dataAccess.HikariCPDataSource;
+import de.htwsaar.cantineplanner.data.dataAccess.HikariCPDataSource;
+import de.htwsaar.cantineplanner.data.repository.MealsRepository;
+import de.htwsaar.cantineplanner.data.repository.WeeklyRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

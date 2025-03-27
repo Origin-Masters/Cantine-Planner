@@ -1,8 +1,8 @@
 package de.htwsaar.cantineplanner.businessLogic.controller;
 
-import de.htwsaar.cantineplanner.data.CantineService;
-import de.htwsaar.cantineplanner.businessLogic.EventManager;
-import de.htwsaar.cantineplanner.businessLogic.controller.SessionManager;
+import de.htwsaar.cantineplanner.businessLogic.manager.SessionManager;
+import de.htwsaar.cantineplanner.businessLogic.service.CantineService;
+import de.htwsaar.cantineplanner.businessLogic.manager.EventManager;
 import de.htwsaar.cantineplanner.presentation.ScreenManager;
 
 public abstract class AbstractController {

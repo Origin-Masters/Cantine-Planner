@@ -1,9 +1,10 @@
 package de.htwsaar.cantineplanner.data;
 
 import de.htwsaar.cantineplanner.codegen.tables.records.MealsRecord;
-import de.htwsaar.cantineplanner.dataAccess.HikariCPDataSource;
-import de.htwsaar.cantineplanner.exceptions.MealAlreadyExistsException;
-import de.htwsaar.cantineplanner.exceptions.MealiDNotFoundException;
+import de.htwsaar.cantineplanner.data.dataAccess.HikariCPDataSource;
+import de.htwsaar.cantineplanner.data.exceptions.MealAlreadyExistsException;
+import de.htwsaar.cantineplanner.data.exceptions.MealiDNotFoundException;
+import de.htwsaar.cantineplanner.data.repository.MealsRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

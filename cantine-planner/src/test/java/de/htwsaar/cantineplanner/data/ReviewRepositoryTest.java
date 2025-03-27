@@ -1,8 +1,9 @@
 package de.htwsaar.cantineplanner.data;
 
 import de.htwsaar.cantineplanner.codegen.tables.records.ReviewRecord;
-import de.htwsaar.cantineplanner.dataAccess.HikariCPDataSource;
-import de.htwsaar.cantineplanner.exceptions.ReviewiDDoesntExistException;
+import de.htwsaar.cantineplanner.data.dataAccess.HikariCPDataSource;
+import de.htwsaar.cantineplanner.data.exceptions.ReviewiDDoesntExistException;
+import de.htwsaar.cantineplanner.data.repository.ReviewRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
