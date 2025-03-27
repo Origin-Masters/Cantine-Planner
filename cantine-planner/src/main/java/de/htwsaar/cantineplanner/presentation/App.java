@@ -8,6 +8,7 @@ import de.htwsaar.cantineplanner.dbUtils.DataBaseUtil;
 
 
 public class App {
+
     public static void main(String[] args) {
         DataBaseUtil.loadInitialDataBase("./database/database.db");
 
