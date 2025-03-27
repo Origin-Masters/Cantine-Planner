@@ -81,8 +81,6 @@ Ausgabe : Review zu **_Ceasar Salad_**  kann in _**All Reviews**_ gesehen werden
 ## 7. Bekannte Einschränkungen
 
 Aufgrund einer Fehlerhaften Zeiteinschätung ist es nicht möglich persöhnliche Lieblingsgerichte zu setzen und EMail Benachrichtigungen übder dessen auftreten zu erhalten.<br>
-Zudem ist die Liste der Tage in dem Weekly Planner nicht Chronologisch sortiert.
-
 
 ---
 
