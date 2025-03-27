@@ -33,7 +33,8 @@ Eine Datenbank mit bereits existierenden Gerichten wird mitgeliefert.
 	- Hierbei wird Preis, Kalorien, Allergene, Fleischinhalt sowie Wochentag gesetzt.
 - Reviews bezüglich Gerichten können verfasst/gelöscht sowie angezeigt werden.
 
-- ** Mitgelieferte, bereits gefüllte Datenbank - Man kann direkt anfagen.
+
+-  **Mitgelieferte, bereits gefüllte Datenbank - Man kann direkt anfagen.**
 
 ---
 
@@ -72,12 +73,15 @@ Password : Admin
 ```
 
 Eingabe der Funktion **_Add Review_** : Rating : _3_, Comment : _Tastes Good !_ , Meal iD : _2_ <br>
-Ausgabe : Review zu **_Ceasar Salad_**  kann in All Reviews gesehen werden.
+Ausgabe : Review zu **_Ceasar Salad_**  kann in _**All Reviews**_ gesehen werden.
 
 
 ---
 
 ## 7. Bekannte Einschränkungen
+
+Aufgrund einer Fehlerhaften Zeiteinschätung ist es nicht möglich persöhnliche Lieblingsgerichte zu setzen und EMail Benachrichtigungen übder dessen auftreten zu erhalten.<br>
+Zudem ist die Liste der Tage in dem Weekly Planner nicht Chronologisch sortiert.
 
 
 ---
