@@ -2,6 +2,7 @@ package de.htwsaar.cantineplanner.businessLogic.mapper;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * The {@code AllergenMapper} class provides methods for mapping allergen codes to their full names and vice versa.
@@ -36,7 +37,7 @@ public class AllergenMapper {
      * @return the full name of the allergen, or the code if no mapping exists
      */
     public static String getAllergenFullName(String code) {
-        return allergenMap.getOrDefault(code, code);
+        return allergenMap.getOrDefault(code, Objects.equals(code, "X") ? "" : code);
     }
 
     /**
