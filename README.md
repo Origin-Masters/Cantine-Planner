@@ -12,7 +12,8 @@
 Cantine Planner ist ein Programm, welches zu dem Verwalten von einer Mensa / Kantine dient. Es ermöglicht dem Nutzer, einen Überblick über die aktuell auftretenden Gerichte zu behalten, sowie eine Personalisierung durchzuführen.
 Eine Datenbank mit bereits existierenden Gerichten wird mitgeliefert.
 
-
+### _**Weekly Plan**_
+![Weekly Plan](images/weekly.png)
 ### _**Sorting Meals By Calories**_
 ![Meals By Calories](images/mealsByCalories.png)
 
@@ -32,14 +33,12 @@ Eine Datenbank mit bereits existierenden Gerichten wird mitgeliefert.
 	- Hierbei wird Preis, Kalorien, Allergene, Fleischinhalt sowie Wochentag gesetzt.
 - Reviews bezüglich Gerichten können verfasst/gelöscht sowie angezeigt werden.
 
-- ** Mitgelieferte, bereits gefüllte Datenbank - Man kann direkt anfagen.**
+- ** Mitgelieferte, bereits gefüllte Datenbank - Man kann direkt anfagen.
 
 ---
 
 ## 3. Systemanforderungen
-Java Version : LTS 21
-
-Maven Version : 3.9.9
+Java Version : LTS 21 <br>Maven Version : 3.9.9
 
 ---
 ## 4. Installation
