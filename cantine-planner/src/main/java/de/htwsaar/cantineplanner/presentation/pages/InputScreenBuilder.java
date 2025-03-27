@@ -10,12 +10,23 @@ import de.htwsaar.cantineplanner.businessLogic.types.eventdata.StringArrayData;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The InputScreenBuilder class is responsible for building and displaying a screen
+ * with input text boxes in a terminal-based GUI.
+ */
 public class InputScreenBuilder {
     private final MultiWindowTextGUI gui;
     private final EventManager eventManager;
     private final String title;
     private final List<TextBox> textBoxes;
 
+    /**
+     * Constructs an InputScreenBuilder with the specified GUI, event manager, and title.
+     *
+     * @param gui the MultiWindowTextGUI instance
+     * @param eventManager the EventManager instance
+     * @param title the title of the screen
+     */
     public InputScreenBuilder(MultiWindowTextGUI gui, EventManager eventManager, String title) {
         this.gui = gui;
         this.eventManager = eventManager;
@@ -23,7 +34,12 @@ public class InputScreenBuilder {
         this.title = title;
     }
 
-    // Method to add a labeled TextBox to the panel
+    /**
+     * Adds a labeled TextBox to the specified panel.
+     *
+     * @param panel the panel to which the TextBox will be added
+     * @param labelText the label text of the TextBox
+     */
     private void addLabeledTextBox(Panel panel, String labelText) {
         panel.addComponent(new Label(labelText)
                 .setForegroundColor(new TextColor.RGB(29, 29, 29))
@@ -33,8 +49,12 @@ public class InputScreenBuilder {
         panel.addComponent(textBox);
     }
 
-
-    // Method to display the panel with a list of labels
+    /**
+     * Displays the panel with a list of labels and handles the submit and close actions.
+     *
+     * @param labels the list of labels for the TextBoxes
+     * @param eventType the event type to be notified on submit
+     */
     public void display(List<String> labels, EventType eventType) {
         Panel panel = new Panel(new GridLayout(2));
         GridLayout gridLayout = (GridLayout) panel.getLayoutManager();

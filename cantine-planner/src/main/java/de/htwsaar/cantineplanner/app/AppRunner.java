@@ -41,10 +41,10 @@ public class AppRunner {
     public AppRunner() {
         DataBaseUtil.loadInitialDataBase("./database/database.db");
 
-        String PATH_TO_PROPERTIES = "hikari.properties";
+
 
         EventManager eventManager = new EventManager();
-        CantineService cantineService = new CantineService(PATH_TO_PROPERTIES);
+        CantineService cantineService = new CantineService();
         ScreenManager screenManager = new ScreenManager(eventManager, cantineService);
         SessionManager sessionManager = new SessionManager();
 

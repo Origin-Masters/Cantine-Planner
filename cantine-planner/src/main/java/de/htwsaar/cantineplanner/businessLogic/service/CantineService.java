@@ -38,10 +38,10 @@ public class CantineService {
      *
      * @param propertiesFilePath the path to the properties file for configuring the HikariCP data source
      */
-    public CantineService(String propertiesFilePath) {
+    public CantineService() {
 
         // Initialize the HikariCP data source with the provided properties file path
-        var hikariCPDataSource = new HikariCPDataSource(propertiesFilePath);
+        var hikariCPDataSource = new HikariCPDataSource();
 
         // Initialize the repositories with the HikariCP data source
         this.mealsRepository = new MealsRepository(hikariCPDataSource);
