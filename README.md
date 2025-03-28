@@ -1,4 +1,4 @@
-![Version](https://img.shields.io/badge/version-Abgabeversion-purple)
+![Version](https://img.shields.io/badge/version-Abgabeversion-navy)
 ![Build Status](https://github.com/Origin-Masters/Cantine-Planner/actions/workflows/maven.yml/badge.svg?branch=main)
 
 #### Xudong Zhang, Christian Stehle, Valentin Straßer, Michał Roziel
@@ -105,11 +105,43 @@ Password : Admin
   </tr>
 </table>
 
+
+### Legende für unklare Eingaben
+- User-Rollen :
+  -   0 : Regulärer Benutzer (Eingeschränkte Nutzung)
+  -   1 : Admin Benutzer (Uneingeschränkte Nutzung)
+
+
+- Meat-Attribut in Meal :
+  -  0 : Meat
+  -  1 : Vegetarian
+  -  2 : Vegan
+
+
+- Meal-Allergene Setzen ( Mittels Komma trennen, "N,G" ):
+   -  X : None
+   -  F : Fish
+   -  N : Nuts
+   -  G : Gluten
+   -  M : Milk
+   -  E : Eggs
+   -  S : Soy
+   -  C : Celery
+   -  T : Mustard
+   -  U : Sesame
+   -  L : Lupins
+   -  P : Peanuts
+   -  K : Crustaceans
+   -  I : Sulfites
+   -  H : Molluscs
+   -  W : Tree Nuts
+
+
 ---
 
 ## 7. Bekannte Einschränkungen
 
-Aufgrund einer Fehlerhaften Zeiteinschätung ist es nicht möglich persöhnliche Lieblingsgerichte zu setzen und EMail Benachrichtigungen übder dessen auftreten zu erhalten.<br>
+Aufgrund einer Fehlerhaften Zeiteinschätung ist es nicht möglich persöhnliche Lieblingsgerichte zu setzen und Email Benachrichtigungen übder dessen auftreten zu erhalten.<br>
 
 ---
 
