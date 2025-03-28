@@ -27,10 +27,10 @@ Eine Datenbank mit bereits existierenden Gerichten wird mitgeliefert.
 - Das Programm lässt sich mittels eines TUI Interfaces bedienen.
 - Ein wöchentlicher Speiseplan kann angezeigt werden.
 - User können erstellt werden, hierbei unterscheiden wir zwischen User und Admin.
-	- Persönliche Allergene können ausgewählt werden.
-	- Lieblingsgericht kann gesetzt werden.
+  - Persönliche Allergene können ausgewählt werden.
+  - Lieblingsgericht kann gesetzt werden.
 - Gerichte können hinzugefügt und angezeigt werden.
-	- Hierbei wird Preis, Kalorien, Allergene, Fleischinhalt sowie Wochentag gesetzt.
+  - Hierbei wird Preis, Kalorien, Allergene, Fleischinhalt sowie Wochentag gesetzt.
 - Reviews bezüglich Gerichten können verfasst/gelöscht sowie angezeigt werden.
 
 
@@ -39,7 +39,7 @@ Eine Datenbank mit bereits existierenden Gerichten wird mitgeliefert.
 ---
 
 ## 3. Systemanforderungen
-Java Version : LTS 21 <br>Maven Version : 3.9.9
+Java Version : JDK LTS 21 <br>Maven Version : 3.9.9
 
 ---
 ## 4. Installation
@@ -92,9 +92,18 @@ Password : Admin
 ### Anwendungsbeispiel 2 : Hinzufügen eines Reviews
 
 
-Eingabe der Funktion **_Add Review_** : Rating : _3_, Comment : _Tastes Good !_ , Meal iD : _2_ <br>
-Ausgabe : Review zu **_Ceasar Salad_**  kann in _**All Reviews**_ gesehen werden.
-
+<table>
+  <tr>
+    <!-- Left column: review1 -->
+    <td>
+      <img src="images/review1.png" width="200" alt="Review 1" />
+    </td>
+    <!-- Right column: review2 -->
+    <td>
+      <img src="images/review2.png" height= 110 width="500" alt="Review 2" />
+    </td>
+  </tr>
+</table>
 
 ---
 
