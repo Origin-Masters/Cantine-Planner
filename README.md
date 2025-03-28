@@ -23,7 +23,7 @@ Eine Datenbank mit bereits existierenden Gerichten wird mitgeliefert.
 
 ---
 
-## 2. Features
+## 2. Einige Features
 - Das Programm lässt sich mittels eines TUI Interfaces bedienen.
 - Ein wöchentlicher Speiseplan kann angezeigt werden.
 - User können erstellt werden, hierbei unterscheiden wir zwischen User und Admin.
@@ -35,7 +35,7 @@ Eine Datenbank mit bereits existierenden Gerichten wird mitgeliefert.
 
 
 -  **Mitgelieferte, bereits gefüllte Datenbank - Man kann direkt anfagen.**
-
+ - Heads-up : Du bist an der Reihe die weiteren Funktionalitäten zu erkunden!
 ---
 
 ## 3. Systemanforderungen
@@ -59,6 +59,10 @@ Die JAR kann unter ` https://github.com/Origin-Masters/Cantine-Planner/releases/
 Bei Nutzung eines **_Windows_** Betriebssystems kann die JAR mittels eines Doppelklicks ausgeführt werden.
 
 Bei Nutzung eines **_Mac OsX_** oder **_Linux_** Betriebssystems bitten wir Sie die JAR mittels eines Terminals und des Befehls `java -jar cantine-planner-Abgabeversion-shaded.jar ` auszuführen.
+
+### Beim Erfolgreichen starten öffnet sich dieses Menü :
+
+<img src="images/login.png" height="272" width="311" alt="Edit 1" />
 
 ## 6. Anwendungsbeispiele
 Die Anwendung kann mittels den Pfeiltasten, dem Tabulator zum wechseln zwischen angezeigten Fenstern sowie der Enter-Taste zur Bestätigung bedient werden.
